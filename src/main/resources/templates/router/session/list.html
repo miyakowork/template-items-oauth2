@@ -1,0 +1,94 @@
+<div class="row">
+    <div id="session-toolbar" class="form-inline">
+        <button id="delete-session" class="btn btn-danger btn-sm"
+                rel="tooltip" data-placement="bottom"
+                data-reset-msg="您确定要剔除所选用户吗？"><i class="fa fa-minus-square-o"></i> 剔除用户
+        </button>&nbsp;
+        <label id="session-search-control" class="checkbox-inline">
+            <input type="checkbox" class="checkbox style-3">
+            <span>显示搜索控件</span>
+        </label>
+    </div>
+
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <table id="session-table">
+            <thead>
+            <tr>
+                <th data-checkbox="true"></th>
+
+                <th data-field="id" data-sortable="true"
+                    data-visible="false"
+                    data-title="ID" data-align="center"></th>
+
+                <th data-field="username"
+                    data-sortable="true"
+                    data-width="150"
+                    data-title="用户"
+                    data-filter-control="input"
+                    data-filter-control-placeholder="输入用户名"
+                    data-align="center"></th>
+
+                <th data-field="sessionId" data-sortable="true"
+                    data-sort-name="session_id"
+                    data-visible="false"
+                    data-searchable="true"
+                    data-title="会话ID" data-align="center"></th>
+
+                <th data-field="sessionBase64" data-visible="false"
+                    data-searchable="true" data-formatter="sessionBase64formatter"
+                    data-title="会话" data-align="center"></th>
+
+                <th data-field="ip"
+                    data-width="150"
+                    data-searchable="true"
+                    data-filter-control="input"
+                    data-filter-control-placeholder="用户最后访问ip"
+                    data-title="ip"
+                    data-align="center"></th>
+
+                <th data-field="sessionTimeout"
+                    data-sort-name="session_timeout"
+                    data-title="过期时间(毫秒)"
+                    data-align="center"></th>
+
+                <th data-field="firstVisitDate"
+                    data-width="250"
+                    data-sort-name="first_visit_date"
+                    data-formatter="date_formatter"
+                    data-sortable="true"
+                    data-visible="true"
+                    data-filter-control="datepicker"
+                    data-laydate-options="{format: 'YYYY-MM-DD hh:mm:ss', istime: true}"
+                    data-title="会话创建时间"
+                    data-align="center"></th>
+
+                <th data-field="lastVisitDate"
+                    data-width="250"
+                    data-sort-name="last_visit_date"
+                    data-formatter="date_formatter"
+                    data-sortable="true"
+                    data-filter-control="datepicker"
+                    data-laydate-options="{format: 'YYYY-MM-DD hh:mm:ss', istime: true}"
+                    data-title="会话最后访问时间"
+                    data-align="center"></th>
+
+                <th data-field="createUrl"
+                    data-sort-name="create_url"
+                    data-sortable="true"
+                    data-visible="false"
+                    data-title="会话创建URL"
+                    data-align="center"></th>
+
+                <th data-field="updateUrl"
+                    data-sort-name="updateUrl"
+                    data-sortable="true"
+                    data-title="会话最后更新URL"
+                    data-align="center"></th>
+
+            </tr>
+            </thead>
+        </table>
+    </article>
+
+</div>
+<script src="/static/oauth2/js/session.js"></script>

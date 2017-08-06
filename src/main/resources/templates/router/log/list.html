@@ -1,0 +1,58 @@
+<!-- row -->
+<div class="row">
+    <div id="log-toolbar" class="">
+        <label id="log-search-control" class="checkbox-inline">
+            <input type="checkbox" class="checkbox style-3">
+            <span>显示搜索控件</span>
+        </label>
+    </div>
+    <!-- NEW WIDGET START -->
+    <!-- WIDGET END -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <table id="log-table">
+            <thead>
+            <tr>
+                <th data-checkbox="true"></th>
+
+                <th data-field="id"
+                    data-sortable="true"
+                    data-searchable="true"
+                    data-title="ID"
+                    data-align="center"></th>
+
+                <th data-field="userId"
+                    data-title="用户id"
+                    data-align="center"></th>
+
+                <th data-field="username"
+                    data-sortable="true"
+                    data-title="用户名"
+                    data-filter-control="input"
+                    data-filter-control-placeholder="用户名"
+                    data-align="center"></th>
+
+                <th data-field="lastLoginDate"
+                    data-sort-name="last_login_date"
+                    data-sortable="true"
+                    data-title="用户登录时间"
+                    data-formatter="date_formatter"
+                    data-filter-control="datepicker"
+                    data-laydate-options="{format: 'YYYY-MM-DD hh:mm:ss', istime: true}"
+                    data-width="250"
+                    data-align="center"></th>
+
+                <th data-field="lastLoginIp"
+                    data-sort-name="last_login_ip"
+                    data-sortable="true"
+                    data-title="登录ip"
+                    data-align="center"></th>
+
+            </tr>
+            </thead>
+        </table>
+    </article>
+
+</div>
+
+
+<script src="/static/oauth2/js/log.js"></script>

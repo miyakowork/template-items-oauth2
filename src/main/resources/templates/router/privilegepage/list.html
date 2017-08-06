@@ -1,0 +1,706 @@
+<style type="text/css">
+    .dl {
+        display: inline-block;
+    }
+
+    .dl > .checkbox > input[type=checkbox] {
+        margin-left: 10px;
+    }
+</style>
+<!-- 树的展示-->
+<div class="row">
+    <!-- 树的展示-->
+    <div class="col-md-3" style="margin-top: 10px;">
+        <div class="panel panel-default">
+            <div class="panel-body" style="min-height: 300px;">
+                <ul id="privilegepageTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div id="toolbar" class="form-inline">
+            <button id="add-privilegepage" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
+            <button id="edit-privilegepage" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
+            <select class="form-control" name="enabled1">
+                <option value="">是否可用(全选)</option>
+                <option value="true">可用</option>
+                <option value="false">不可用</option>
+            </select>
+            <button id="search-privilegepage" class="btn btn-default btn-sm"><i class="fa fa-search"></i> 搜索</button>
+        </div>
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <table id="table">
+                <thead>
+                <tr>
+                    <th data-checkbox="true"></th>
+
+                    <th data-field="id"
+                        data-visible="false"
+                        data-width="150"
+                        data-title="页面资源ID"
+                        data-align="center"></th>
+
+                    <th data-field="resourceModuleId"
+                        data-visible="false"
+                        data-width="150"
+                        data-title="资源模块ID"
+                        data-align="center"></th>
+
+
+
+                    <th data-field="resourceId"
+                        data-sortable="true"
+                        data-searchable="true"
+                        data-sort-name="RESOURCE_ID"
+                        data-title="资源ID"
+                        data-align="center"></th>
+
+                    <th data-field="resourceName"
+                        data-width="150"
+                        data-title="资源名称"
+                        data-filter-control="input"
+                        data-filter-control-placeholder="输入名称"
+                        data-align="center"></th>
+
+                    <th data-field="name"
+                        data-sortable="true"
+                        data-title="资源模块名称"
+                        data-align="center"></th>
+
+                    <th data-field="enabled"
+                        data-formatter="enabledFormatter"
+                        data-title="是否使用"
+                        data-align="center"></th>
+                    <th data-field="remark"
+                        data-title="备注信息"
+                        data-align="center"></th>
+                    <th data-field="orderIndex"
+                        data-sort-name="order_index"
+                        data-sortable="true"
+                        data-title="排序索引"
+                        data-width="20"
+                        data-align="center"></th>
+                </tr>
+                </thead>
+            </table>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+</div>
+
+<!-- end row -->
+<div id="bigprivilegepage" class="hidden">
+    <!--添加页面资源-->
+    <div id="addprivilegepage">
+        <form class="form-horizontal" @submit.prevent="handleAddSubmit" method="post">
+            <fieldset>
+                <!--资源id-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.resourceIdError }">
+                    <label class="col-md-3 control-label">资源ID</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源ID" type="text"
+                               v-model="PrivilegePage.resourceId">
+                        <a id="addid" href="javascript:void(0);" style="margin-top: 15px;display: block;">获取资源ID</a>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.resourceIdError }">
+                            {{error.resourceIdErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <!--资源模块id-->
+                <div class="hidden">
+                    <label class="col-md-3 control-label">资源模块id</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源模块id" type="text"
+                               v-model="PrivilegePage.resourceModuleId">
+                    </div>
+                </div>
+
+                <!--资源模块名称-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">资源模块名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源模块名称" type="text" v-model="PrivilegePage.name"
+                               disabled="true">
+                    </div>
+                </div>
+
+                <!--//排序索引-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
+                    <label class="col-md-3 control-label">排序索引</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="排序索引" type="text"
+                               v-model="PrivilegePage.orderIndex">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
+                            {{error.orderErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--//是否可用-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">是否可用</label>
+                    <div class="col-md-9">
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="PrivilegePage.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="true" checked>
+                            <span>是</span>
+                        </label>
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="PrivilegePage.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="false" checked>
+                            <span>否</span>
+                        </label>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
+                            {{error.enabledErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--//备注信息-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注信息</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="PrivilegePage.remark">
+                    </div>
+                </div>
+
+
+            </fieldset>
+            <button id="add" type="submit" class="hidden"></button>
+
+        </form>
+    </div>
+    <!--编辑menu-->
+    <div id="editprivilegepage">
+        <form class="form-horizontal" @submit.prevent="handleEditSubmit" method="post">
+            <fieldset>
+
+                <!--id-->
+                <div class="hidden">
+                    <label class="col-md-3 control-label">id</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="id" type="text" v-model="PrivilegePage.id">
+                    </div>
+                </div>
+                <!--资源id-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.resourceIdError }">
+                    <label class="col-md-3 control-label">资源ID</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源ID" type="text"
+                               v-model="PrivilegePage.resourceId">
+                        <a id="editid" href="javascript:void(0);" style="margin-top: 15px;display: block;">获取资源ID</a>
+
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.resourceIdError }">
+                            {{error.resourceIdErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <!--资源模块id-->
+                <div class="hidden">
+                    <label class="col-md-3 control-label">资源模块id</label>
+                    <div class="col-md-9">
+                        <input id="pIdByTree" class="form-control" placeholder="资源模块id" type="text"
+                               v-model="PrivilegePage.resourceModuleId"
+                               readonly>
+                    </div>
+                </div>
+                <!--资源模块名称-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">资源模块名称</label>
+                    <div class="col-md-9">
+                        <input id="pNameByTree" class="form-control" placeholder="上级部门" type="text"
+                               v-model="PrivilegePage.name"
+                               readonly>
+                        <a id="editGetPId" href="javascript:void(0);"
+                           style="margin-top: 15px;display: block;">获取资源模块</a>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
+                            {{error.nameErrorMsg}}
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
+                    <label class="col-md-3 control-label">排序索引</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="排序索引" type="text"
+                               v-model="PrivilegePage.orderIndex">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
+                            {{error.orderErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">是否可用</label>
+                    <div class="col-md-9">
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="PrivilegePage.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="true" checked>
+                            <span>是</span>
+                        </label>
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="PrivilegePage.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="false" checked>
+                            <span>否</span>
+                        </label>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
+                            {{error.enabledErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注信息</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="PrivilegePage.remark">
+                    </div>
+                </div>
+
+
+            </fieldset>
+            <button id="edit" type="submit" class="hidden"></button>
+
+        </form>
+    </div>
+
+</div>
+<script type="text/javascript">
+
+    pageSetUp();
+
+    var app;
+    // page_function
+    var page_function = function () {
+        var $table = $("#table");
+        var query_params = function (params) {
+            return {
+                limit: params.limit,
+                offset: params.offset,
+                order: params.order,
+                sort: params.sort,
+                enabled: $("select[name=enabled1]").val(),
+                moduleId: getParentIdOnSort,
+                resourceName:$("input.bootstrap-table-filter-control-resourceName").val(),
+            };
+        };
+
+        $table.bootstrapTable({
+            sidePagination: "server",
+            url: "/privilegepage/api/list",
+            toolbar: '#toolbar',
+            showRefresh: true,
+            method: 'post',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",//post方式一定得改成这种contentType
+            queryParams: query_params,
+            height: getHeight(),
+            sortName: 'id',//第一次进页面默认的排序字段
+            sortOrder: 'asc',
+            idField: "id",
+            uniqueId: 'id',
+            checkboxHeader: true,
+            clickToSelect: true,
+            showColumns: true,
+            silentSort: false,
+            maintainSelected: true,
+            striped: true,
+            cache: false,
+            pagination: true,
+            paginationLoop: false,
+            pageList: '[5,10,25,50,100]',
+            escape: true,
+            filterControl: true,
+            filterShowClear: true,
+            searchTimeOut: 1000
+        });
+
+        app = new Vue({
+            el: "#bigprivilegepage",
+            data: {
+                error: {
+                    nameError: false,
+                    nameErrorMsg: '',
+                    orderError: false,
+                    orderErrorMsg: '',
+                    parentIdError: false,
+                    parentIdErrorMsg: '',
+                    resourceIdError: false,
+                    resourceIdErrorMsg: ''
+                },
+                PrivilegePage: {
+                    id: '',
+                    resourceId: '',
+                    resourceModuleId: '',
+                    name: '',
+                    enabled: 'true',
+                    orderIndex: '0',
+                    remark: ''
+                }
+            },
+            methods: {
+                //添加界面提交操作
+                handleAddSubmit: function () {
+                    this.$vuerify.clear();   //清之前的验证结果信息
+                    var check_result = this.$vuerify.check()// 手动触发校验所有数据
+                    var $errs = this.$vuerify.$errors
+                    app.error.orderError = Boolean($errs.orderIndex)
+                    app.error.enabledError = Boolean($errs.enabled)
+                    app.error.orderErrorMsg = $errs.orderIndex
+                    app.error.enabledErrorMsg = $errs.enabled
+                    app.error.resourceIdError = Boolean($errs.resourceId)
+                    app.error.resourceIdErrorMsg = $errs.resourceId
+                    if (!check_result) {
+                        TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    } else {
+                        var params = new URLSearchParams();
+                        var privilegepage = app.PrivilegePage
+                        for (var data in privilegepage) {
+                            params.append(data, privilegepage[data])
+                        }
+                        axios.post('/privilegepage/api/add', params)
+                            .then(function (response) {
+                                if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+
+                                    layer.msg(response.data.message);
+                                        $("#addprivilegepage").dialog("close");
+                                    var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
+                                    var nodes = treeObj.getCheckedNodes(true);
+                                     var opt = {
+                                        url: "/privilegepage/api/list",
+                                        silent: true,
+                                        query: {
+                                            moduleId:nodes[0].id
+                                        }
+                                        }
+                                        $table.bootstrapTable('refresh',query_params);
+                                        load_privilegepageTree();
+
+                                } else {
+                                    TF.show_error_msg(response.data.message)
+                                }
+                            })
+                            .catch(function (error) {
+                                TF.show_error_msg(error.response.data.message)
+                            });
+
+
+                    }
+
+                },
+
+                //编辑界面提交操作
+                handleEditSubmit: function () {
+                    this.$vuerify.clear();   //清之前的验证结果信息
+                    var check_result = this.$vuerify.check()// 手动触发校验所有数据
+                    var $errs = this.$vuerify.$errors
+                    app.error.nameError = Boolean($errs.name)
+                    app.error.orderError = Boolean($errs.orderIndex)
+                    app.error.enabledError = Boolean($errs.enabled)
+                    app.error.nameErrorMsg = $errs.name
+                    app.error.orderErrorMsg = $errs.orderIndex
+                    app.error.enabledErrorMsg = $errs.enabled
+                    app.error.resourceIdError = Boolean($errs.resourceId)
+                    app.error.resourceIdErrorMsg = $errs.resourceId
+                    if (!check_result) {
+                        TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    } else {
+                        var params = new URLSearchParams();
+                        var privilegepage = app.PrivilegePage
+                        params.append("id", app.PrivilegePage.id)
+                        params.append("resourceId", app.PrivilegePage.resourceId)
+                        params.append("resourceModuleId", app.PrivilegePage.resourceModuleId)
+                        params.append("enabled", app.PrivilegePage.enabled)
+                        params.append("orderIndex", app.PrivilegePage.orderIndex)
+                        params.append("remark", app.PrivilegePage.remark)
+                        axios.post('/privilegepage/api/edit', params)
+                            .then(function (response) {
+                                if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                                    layer.msg(response.data.message);
+                                    $("#editprivilegepage").dialog("close");
+                                    load_privilegepageTree();
+                                    var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
+                                    var nodes = treeObj.getCheckedNodes(true);
+                                    var opt = {
+                                        url: "/privilegepage/api/list",
+                                        silent: true,
+                                        query: {
+                                            moduleId:nodes[0].id
+                                        }
+                                    }
+                                    $table.bootstrapTable("refresh",query_params);
+                                } else {
+                                    TF.show_error_msg(response.data.message)
+                                }
+                            })
+                            .catch(function (error) {
+                                TF.show_error_msg(error.response.data.message)
+                            });
+                    }
+                }
+            },
+            computed: {
+                errors: function () {
+                    return this.$vuerify.$errors // 错误信息会在 $vuerify.$errors 内体现
+                }
+            },
+            vuerify: {
+                name: {
+                    test: function () {
+                        return String(app.PrivilegePage.name).length > 0
+                    },
+                    message: '模块名称不能为空'
+                },
+                parentId: {
+                    test: function () {
+                        return String(app.PrivilegePage.parentId).length > 0
+                    },
+                    message: '资源模块不能为空'
+                },
+                orderIndex: {
+                    test: function () {
+                        return String(app.PrivilegePage.orderIndex).length > 0
+                    },
+                    message: '排序索引不能为空'
+                },
+                resourceId: {
+
+                    test: function () {
+                        return String(app.PrivilegePage.resourceId).length > 0
+                    },
+                    message: '请选择资源ID'
+
+                }
+            }
+        });
+
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        })
+
+        //监听搜索按钮事件
+        $("#search-privilegepage").click(function () {
+
+            var params = new URLSearchParams();
+            var privilegepage = app.PrivilegePage;
+            var opt = {
+                url: "/privilegepage/api/list",
+                silent: true,
+                query: {
+                    enabled: $("select[name=enabled1]").val()
+                }
+            }
+            $table.bootstrapTable('refresh', opt);
+        })
+
+        //监听添加按钮点击事件
+        $("#add-privilegepage").click(function () {
+            var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
+            var nodes = treeObj.getCheckedNodes(true);
+            if (nodes.length==0) {
+                TF.show_error_message("错误选择提示", "请勾选资源模块再添加");
+            }
+            else {
+                    app.PrivilegePage.name = nodes[0].name;
+                    app.PrivilegePage.resourceModuleId = nodes[0].id;
+                    app.PrivilegePage.enabled = true;
+                    app.PrivilegePage.resourceId = '',
+                        app.PrivilegePage.id = '';
+                    app.PrivilegePage.orderIndex =0;
+                    app.PrivilegePage.remark = '';
+                    app.error.nameError = false;
+                    app.error.nameErrorMsg = '';
+                    app.error.orderError = false;
+                    app.error.orderErrorMsg = '';
+                    app.error.parentIdError = false;
+                    app.error.parentIdErrorMsg = '';
+                    app.error.resourceIdError = false;
+                    app.error.resourceIdErrorMsg = '';
+                    $("#addprivilegepage").dialog("open");
+                }
+        })
+        //监听编辑按钮点击事件
+        $("#edit-privilegepage").click(function () {
+            var editUsers = $table.bootstrapTable('getSelections');
+            if (editUsers.length != 1) {
+                TF.show_error_message("错误选择提示", "请选择一位用户以供编辑信息")
+            } else {
+                app.PrivilegePage.id = editUsers[0].id;
+                app.PrivilegePage.resourceId = editUsers[0].resourceId;
+                app.PrivilegePage.resourceModuleId = editUsers[0].resourceModuleId;
+                app.PrivilegePage.name = editUsers[0].name;
+                app.PrivilegePage.enabled = editUsers[0].enabled;
+                app.PrivilegePage.orderIndex = editUsers[0].orderIndex;
+                app.PrivilegePage.remark = editUsers[0].remark;
+                app.error.nameError = false;
+                app.error.nameErrorMsg = '';
+                app.error.orderError = false;
+                app.error.orderErrorMsg = '';
+                app.error.parentIdError = false;
+                app.error.parentIdErrorMsg = '';
+
+                app.error.resourceIdError = false;
+                app.error.resourceIdErrorMsg = '';
+
+                $("#editprivilegepage").dialog("open");
+            }
+        })
+
+        //添加弹出框操作
+        $("#addprivilegepage").dialog({
+            title: "<div class='widget-header'><h4><i class='icon-ok'></i>添加新页面权限</h4></div>",
+            autoOpen: false,
+            width: 600,
+            resizable: false,
+            modal: true,
+            buttons: [{
+                html: "<i class='fa fa-plus-square-o'></i>&nbsp;确认",
+                "class": "btn btn-primary",
+                click: function () {
+                    $("#add").trigger("click");
+
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp;取消",
+                "class": "btn btn-default",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]
+        })
+
+        //编辑弹出框操作
+        $("#editprivilegepage").dialog({
+            title: "<div class='widget-header'><h4><i class='icon-ok'></i> 编辑页面权限模块</h4></div>",
+            autoOpen: false,
+            width: 600,
+            resizable: false,
+            modal: true,
+            buttons: [{
+                html: "<i class='fa fa-plus-square-o'></i>&nbsp;确认",
+                "class": "btn btn-primary",
+                click: function () {
+                    $("#edit").trigger("click");
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp;取消",
+                "class": "btn btn-default",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]
+        })
+
+        //编辑界面修改模块资源弹出树
+        $("#editGetPId").click(function () {
+            layer.open({
+                type: 2,
+                area: ['300px', '400px'],
+                title: ['选择模块资源，双击选择', 'text-align:center;'],
+                fixed: true,
+                resize: false,
+                offset: '200px',
+                content: 'privilegepage/tree'
+            })
+        })
+
+        //监听是否可用
+        $("select[name=enabled1]").change(function () {
+            app.PrivilegePage.enabled = $(this).find('option:selected').val()
+            $table.bootstrapTable("refresh");
+        })
+        load_privilegepageTree();
+    };
+
+    //获取资源模块id
+    function getParentIdOnSort() {
+        if ($.fn.zTree.getZTreeObj("privilegepageTree") !== null) {
+            if ($.fn.zTree.getZTreeObj("privilegepageTree").getSelectedNodes().length == 0) {
+                return 0;
+            } else
+                return $.fn.zTree.getZTreeObj("privilegepageTree").getSelectedNodes()[0].id
+        }
+        else return 0;
+    }
+
+    //加载左侧树结构
+    var load_privilegepageTree = function () {
+        var settings = {
+
+            data: {
+                simpleData: {
+                    enable: true,
+                    rootPId: 0
+                }
+            },
+
+            check: {
+                enable: true,
+                chkStyle: "radio",
+                radioType: "all"
+            },
+
+            callback: {
+                onClick: function (event, treeId, treeNode) {
+                    if(treeNode.isParent){
+                        TF.show_error_message("错误消息提示", "请选择资源模块", 3000);
+                    }
+                    else {
+                        var $table = $("#table");
+                        var opt = {
+                            url: "/privilegepage/api/list",
+                            silent: true,
+                            query: {
+                                moduleId: treeNode.id,
+                            }
+                        };
+                        $table.bootstrapTable('refresh', opt);
+                    }
+                }
+            }
+        };
+        $.get("/privilegepage/api/selectPrivilegePage", function (json) {
+            $.fn.zTree.init($("#privilegepageTree"), settings, json.data);
+        })
+    };
+    //获取高度
+    function getHeight() {
+        return $(window).height() - $('header').outerHeight(true)
+            - $('div.page-footer').outerHeight(true)
+            - $('#ribbon').outerHeight(true)
+            - 25
+    }
+
+    /**
+     * 格式化是否可用一列显示方式
+     * @param val
+     */
+    function enabledFormatter(val) {
+        return val ? "<label class='label label-success'>可用</label>" : "<label class='label label-danger'>不可用</label>";
+    }
+
+    function parentNameFormatter(val) {
+        return val === null || val === "-" ? "根节点" : val;
+    }
+
+    // load related plugins
+
+            loadScript("/static/js/libs/vue/axios.min.js", function () {
+                loadScript("/static/js/libs/vue/vuerify.min.js", function () {
+                    loadScript("/static/js/libs/vue/url-search-params.min.js", page_function())
+                })
+            })
+</script>

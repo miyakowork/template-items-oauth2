@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="utf-8">
+    <title>权限管理系统</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/font-awesome.min.css">
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/static/css/smartadmin-production-plugins.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/smartadmin-production.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/smartadmin-skins.min.css">
+
+    <!-- SmartAdmin RTL Support -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/smartadmin-rtl.min.css">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/static/js/plugin/bootstrap-ztree/css/metroStyle/metroStyle.css">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/template-framework.css">
+    <link rel="stylesheet" href="/static/js/plugin/bootstrap-table/bootstrap-table.min.css"/>
+    <link rel="stylesheet"
+          href="/static/js/plugin/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.css"/>
+
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="/static/js/plugin/bootstrap-select/css/bootstrap-select.min.css">
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="/static/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/static/img/favicon/favicon.ico" type="image/x-icon">
+
+</head>
+
+
+<body class="smart-style-1 fixed-header fixed-ribbon fixed-page-footer fixed-navigation">
+
+<!-- #HEADER -->
+<header id="header">
+    <div id="logo-group">
+        <!-- PLACE YOUR LOGO HERE -->
+        <a href="/"><span id="logo" style="color: #ffffff;font-size: 20px;text-align: center;">
+            <img src="/static/img/favicon/favicon.ico" style="width: 30px;margin-bottom: 5px;"/> &nbsp;基础管理平台
+        </span></a>
+        <!-- END LOGO PLACEHOLDER -->
+    </div>
+
+    <div class="hidden-sm hidden-xs" id="menu-module">
+        <span class="active"> <i class="fa fa-cogs"></i> <span class="menu-module-text">系统管理</span></span>
+        <span> <i class="fa fa-file-text-o"></i> <span class="menu-module-text">个人设置</span></span>
+
+    </div>
+
+    <!-- pulled right: nav area -->
+    <div class="pull-right">
+
+        <div class="btn-header transparent pull-right">
+            <span> <a href="javascript:void(0);" data-action="minifyMenu" title="minify menu"><i
+                    class="fa fa-exchange"></i> </a> </span>
+        </div>
+
+        <!-- collapse menu button -->
+        <div id="hide-menu" class="btn-header pull-right">
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="折叠左侧菜单"><i
+                    class="fa fa-reorder"></i></a> </span>
+        </div>
+        <!-- end collapse menu -->
+
+        <!-- #MOBILE -->
+        <!-- Top menu profile link : this shows only when top menu is active -->
+        <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+            <li class="">
+                <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+                    <img src="/static/img/avatars/sunny.png" alt="John Doe" class="online"/>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i
+                                class="fa fa-cog"></i> Setting</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="#ajax/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i
+                                class="fa fa-user"></i> <u>P</u>rofile</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"
+                           data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"
+                           data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a href="/logout" class="padding-10 padding-top-5 padding-bottom-5"
+                           data-action="userLogout"><i
+                                class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- logout button -->
+        <div id="logout" class="btn-header transparent pull-right">
+            <span> <a href="/logout" title="Sign Out" data-action="userLogout"
+                      data-logout-msg="<h1>你即将退出你登录的帐号，是否继续?</h1>"><i
+                    class="fa fa-sign-out"></i></a> </span>
+        </div>
+        <!-- end logout button -->
+
+        <!-- search mobile button (this is hidden till mobile view port) -->
+        <div id="search-mobile" class="btn-header transparent pull-right">
+            <span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+        </div>
+        <!-- end search mobile button -->
+
+
+        <!-- fullscreen button -->
+        <div id="fullscreen" class="btn-header transparent pull-right">
+            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i
+                    class="fa fa-arrows-alt"></i></a> </span>
+        </div>
+        <!-- end fullscreen button -->
+
+
+    </div>
+    <!-- end pulled right: nav area -->
+    <!-- #PROJECTS: projects dropdown -->
+    <div class="hidden-xs pull-right" style="padding-top: 15px;">
+        <!--<span class="label font-md"></span>-->
+        <span class="label font-sm" id="tp-date"></span>
+    </div>
+
+</header>
+<!-- END HEADER -->
+
+<!-- #NAVIGATION -->
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS/SASS variables -->
+<aside id="left-panel">
+
+    <!-- User info -->
+    <div class="login-info">
+				<span> <!-- User image size is adjusted inside CSS, it should stay as is -->
+
+					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+						<img src="/static/img/avatars/sunny.png" alt="me" class="online"/>
+						<span>超级管理员</span>
+					</a>
+                    <a id="change-module" href="javascript:void(0);" class="pull-right" style="margin-top: 10px;">
+                       <i class="fa fa-window-restore"></i>
+                    </a>
+				</span>
+    </div>
+    <!-- end user info -->
+    <nav id="menu-app">
+        <ul>
+            <li>
+                <a href="/dashboard" title="管理系统首页"><i class="fa fa-lg fa-fw fa-dashboard"></i> <span
+                        class="menu-item-parent">管理系统首页</span></a>
+            </li>
+            <li>
+                <a href="#" title="系统模块管理"><i class="fa fa-lg fa-fw fa-cogs"></i> <span
+                        class="menu-item-parent">系统模块管理</span></a>
+                <ul>
+                    <li>
+                        <a href="/menumodule" title="菜单模块管理"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">菜单模块管理</span></a>
+                    </li>
+                    <li>
+                        <a href="/resmodule" title="资源模块管理"><i class="fa fa-fw fa-clone"></i> <span
+                                class="menu-item-parent">资源模块管理</span></a>
+                    </li>
+                    <li>
+                        <a href="/oauth2/system-module" title="系统模块管理"><i class="fa fa-fw fa-clone"></i> <span
+                                class="menu-item-parent">系统模块管理</span></a>
+                    </li>
+                    <li>
+                        <a href="/privilegepage" title="页面级权限管理"><i class="fa fa-fw fa-clone"></i> <span
+                                class="menu-item-parent">页面级资源管理</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" title="系统基本设置"><i class="fa fa-lg fa-fw fa-cogs"></i> <span
+                        class="menu-item-parent">系统基本设置</span></a>
+                <ul>
+                    <li>
+                        <a href="/department" title="部门机构管理"><i class="fa fa-fw fa-building-o"></i> <span
+                                class="menu-item-parent">部门机构管理</span></a>
+                    </li>
+                    <li>
+                        <a href="/sysparam" title="系统参数管理"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">系统参数管理</span></a>
+                    </li>
+                    <li>
+                        <a href="/operationprivilegetype" title="权限操作类型"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">权限操作类型</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" title="角色菜单设置"><i class="fa fa-lg fa-fw fa-home"></i> <span
+                        class="menu-item-parent">角色菜单权限</span></a>
+                <ul>
+                    <li>
+                        <a href="/menu" title="菜单配置"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">菜单配置</span></a>
+                    </li>
+                    <li>
+                        <a href="/resource" title="资源管理"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">资源管理</span></a>
+                        <ul>
+                            <li>
+                                <a href="/privilegepage" title="资源模块分组"><i class="fa fa-fw fa-address-book-o"></i> <span
+                                        class="menu-item-parent">资源分组</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/oauth2/role" title="角色管理"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">角色管理</span></a>
+                    </li>
+                    <li>
+                        <a href="/user" title="用户管理"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">用户管理</span></a>
+                    </li>
+                    <li>
+                        <a href="/privilege" title="权限管理"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">权限管理</span></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" title="系统日志监控"><i class="fa fa-lg fa-fw fa-cog"></i> <span
+                        class="menu-item-parent">系统日志监控</span></a>
+                <ul>
+                    <li>
+                        <a href="/log" title="用户登录日志"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">用户登录日志</span></a>
+                    </li>
+                    <li>
+                        <a href="/loginsum" title="用户登录统计"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">用户登录统计</span></a>
+                    </li>
+                    <li>
+                        <a href="/session" title="用户会话管理"><i class="fa fa-fw fa-list-ul"></i> <span
+                                class="menu-item-parent">用户会话管理</span></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</aside>
+<!-- END NAVIGATION -->
+
+<!-- #MAIN PANEL -->
+<div id="main" role="main">
+
+    <!-- RIBBON -->
+    <div id="ribbon">
+
+				<span class="ribbon-button-alignment">
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets"
+                          rel="tooltip" data-placement="bottom"
+                          data-reset-msg="您要复位所有保存的窗口小部件并清除吗？"><i
+                            class="fa fa-refresh"></i></span>
+				</span>
+
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <!-- This is auto generated -->
+        </ol>
+        <!-- end breadcrumb -->
+
+    </div>
+    <!-- END RIBBON -->
+
+    <!-- #MAIN CONTENT -->
+    <div id="content">
+    </div>
+
+    <!-- END #MAIN CONTENT -->
+
+</div>
+<!-- END #MAIN PANEL -->
+
+<!-- #PAGE FOOTER -->
+<div class="page-footer">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <span class="txt-color-white">欢迎您登录通用(权限)管理基础平台 <span class="hidden-xs"> - Powered By TemplateProject</span> © at 2016</span>
+        </div>
+
+        <div class="col-xs-6 col-sm-6 text-right hidden-xs">
+            <div class="txt-color-white inline-block">
+                <i class="txt-color-white hidden-mobile">登录系统时间：<i class="fa fa-clock-o"></i>
+                    <strong id="login-dt"> &nbsp;</strong> </i>
+                <!-- end btn-group-->
+            </div>
+            <!-- end div-->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- END FOOTER -->
+
+<!--================================================== -->
+<!-- #PLUGINS -->
+<script src="/static/js/libs/jquery-2.1.1.min.js"></script>
+<script src="/static/js/app.config.js"></script>
+<script src="/static/js/bootstrap/bootstrap.min.js"></script>
+<script src="/static/js/libs/jquery-ui-1.10.3.min.js"></script>
+<script src="/static/js/notification/SmartNotification.min.js"></script>
+<script src="/static/js/smartwidgets/jarvis.widget.min.js"></script>
+<script src="/static/js/libs/vue/vue.min.js"></script>
+<script src="/static/js/libs/vue/axios.min.js"></script>
+<script src="/static/js/libs/vue/vuerify.min.js"></script>
+<script src="/static/js/libs/vue/url-search-params.min.js"></script>
+<script src="/static/js/plugin/layui/lay/dest/layui.all.js"></script>
+<script src="/static/js/plugin/bootstrap-ztree/js/jquery.ztree.all.min.js"></script>
+<script src="/static/js/plugin/sparkline/jquery.sparkline.min.js"></script>
+<script src="/static/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+<script src="/static/js/plugin/select2/select2.min.js"></script>
+<script src="/static/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+<script src="/static/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+<script src="/static/js/smartwidgets/jarvis.widget.min.js"></script>
+<script src="/static/js/plugin/fastclick/fastclick.min.js"></script>
+<script src="/static/js/plugin/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/static/js/plugin/bootstrap-select/js/i18n/defaults-zh_CN.min.js"></script>
+<script src="/static/js/plugin/bootstrap-table/bootstrap-table.js"></script>
+<script src="/static/js/plugin/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/static/js/plugin/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+<script src="/static/js/plugin/bootstrap-table/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
+<!-- browser msie issue fix -->
+<script src="/static/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+<!--[if IE 8]>
+<h1>您的浏览器已过时，请下载最新的chrome浏览器以享受最完美的体验！</h1>
+<![endif]-->
+<!-- MAIN APP JS FILE -->
+<script src="/static/js/app.js"></script>
+<script src="/static/js/template.global.js"></script>
+</body>
+
+</html>

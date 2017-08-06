@@ -1,0 +1,554 @@
+<style type="text/css">
+    .dl {
+        display: inline-block;
+    }
+
+    .dl > .checkbox > input[type=checkbox] {
+        margin-left: 10px;
+    }
+</style>
+<div class="row">
+</div>
+<!-- row -->
+<div class="row">
+
+    <div id="toolbar" class="form-inline">
+        <a id="add-operationprivilegetype" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</a>
+        <button id="edit-operationprivilegetype" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
+        <button id="delete-operationprivilegetype" class="btn btn-danger btn-sm"><i class="fa fa-minus-square-o"></i> 删除</button>
+        &nbsp;
+        <select class="form-control"  name="enabled1" >
+            <option value="">是否可用(全选)</option>
+            <option value="true">可用</option>
+            <option value="false">不可用</option>
+        </select>
+        <button id="search-operationprivilegetype" class="btn btn-default btn-sm"><i class="fa fa-search"></i> 搜索</button>
+    </div>
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <table id="table">
+            <thead>
+            <tr>
+                <th data-checkbox="true"></th>
+                <th data-field="id" data-sortable="true"
+                    data-visible="false"
+                    data-searchable="true" data-width="200"
+                    data-title="id" data-align="center"></th>
+                <th data-field="name" data-sortable="true"
+                    data-search-formatter="false" data-title="名称"
+                    data-filter-control="input"
+                    data-filter-control-placeholder="输入名称"
+                    data-align="center"></th>
+                <th data-field="enabled"
+                    data-formatter="enabledFormatter" data-title="是否可用"
+                    data-align="center"></th>
+                <th data-field="remark"
+                    data-search-formatter="false" data-title="备注"
+                    data-align="center"></th>
+                <th data-field="createDate" data-formatter="date_formatter"
+                     data-title="创建日期" data-sort-name="create_date" data-sortable="true"
+                    data-align="center"></th>
+                <th data-field="createUserName"
+                    data-search-formatter="false" data-title="创建用户"
+                    data-align="center"></th>
+                <th data-field="updateDate"  data-formatter="date_formatter"
+                    data-sort-name="update_date" data-sortable="true"
+                     data-title="更新日期"
+                    data-align="center"></th>
+                <th data-field="updateUserName"
+                    data-search-formatter="false" data-title="更新用户"
+                    data-align="center"></th>
+                <th data-field="orderIndex" data-sortable="true" data-sort-name="order_index"
+                    data-title="排序" data-align="center" ></th>
+            </tr>
+            </thead>
+        </table>
+    </article>
+    <!-- WIDGET END -->
+</div>
+
+<!-- 弹出页面 -->
+<div id="add_edit" class="hidden">
+    <!-- 添加页面 -->
+<div id="dialog_simple" title="Dialog Simple Title">
+        <div class="col-md-8">
+            <form  class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
+                <fieldset>
+                    <!--名称-->
+                    <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
+                        <label class="col-md-3 control-label">名称：</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text" placeholder="操作级权限类型名称"
+                                   v-model="operationprivilegetype.name">
+                            <div class="note-error margin-bottom-0"
+                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
+                                {{error.nameErrorMsg}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--是否可用-->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">是否可用：</label>
+                        <div class="col-md-9">
+
+                            <label class="radio radio-inline">
+                                <input type="radio" v-model="operationprivilegetype.enabled"
+                                       class="radiobox style-0"
+                                       v-bind:value="true" checked>
+                                <span>是</span>
+                            </label>
+                            <label class="radio radio-inline">
+                                <input type="radio" v-model="operationprivilegetype.enabled"
+                                       class="radiobox style-0"
+                                       v-bind:value="false" checked>
+                                <span>否</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!--排序-->
+                    <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
+                        <label class="col-md-3 control-label">排序：</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="number" placeholder="排序"
+                                   v-model="operationprivilegetype.orderIndex">
+                            <div class="note-error margin-bottom-0"
+                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
+                                {{error.orderErrorMsg}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--备注-->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">备注：</label>
+                        <div class="col-md-9">
+                            <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="operationprivilegetype.remark">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <button id="sa" type="submit" class="hidden"></button>
+            </form>
+        </div>
+</div>
+
+<!-- 编辑页面 -->
+<div id="dialog_simple_edit" title="Dialog Simple Title" >
+        <div class="col-md-8">
+            <form  class="form-horizontal" @submit.prevent="handleSubmit_edit" method="post">
+                <fieldset>
+                    <!--名称-->
+                    <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
+                        <label class="col-md-3 control-label">名称：</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="text"
+                                   v-model="operationprivilegetype.name">
+                            <div class="note-error margin-bottom-0"
+                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
+                                {{error.nameErrorMsg}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--是否可用-->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">是否可用：</label>
+                        <div class="col-md-9">
+
+                            <label class="radio radio-inline">
+                                <input type="radio" v-model="operationprivilegetype.enabled"
+                                       class="radiobox style-0"
+                                       v-bind:value="true" checked>
+                                <span>是</span>
+                            </label>
+                            <label class="radio radio-inline">
+                                <input type="radio" v-model="operationprivilegetype.enabled"
+                                       class="radiobox style-0"
+                                       v-bind:value="false" checked>
+                                <span>否</span>
+                            </label>
+                        </div>
+                    </div>
+                    <!--排序-->
+                    <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
+                        <label class="col-md-3 control-label">排序：</label>
+                        <div class="col-md-9">
+                            <input class="form-control" type="number"
+                                   v-model="operationprivilegetype.orderIndex">
+                            <div class="note-error margin-bottom-0"
+                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
+                                {{error.orderErrorMsg}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--备注-->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">备注：</label>
+                        <div class="col-md-9">
+                            <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="operationprivilegetype.remark">
+                        </div>
+                    </div>
+
+                </fieldset>
+                <button id="sa_edit" type="submit" class="hidden"></button>
+            </form>
+        </div>
+</div>
+</div>
+<script type="text/javascript">
+    pageSetUp();
+    // page_function
+    var page_function = function () {
+        var $table = $("#table");
+        var query_params = function (params) {
+            var temp = {
+                limit: params.limit,
+                offset: params.offset,
+                order: params.order,
+                sort: params.sort,
+                name:$("input.bootstrap-table-filter-control-name").val(),
+                enabled: $("select[name=enabled1]").val()
+            }
+            return temp;
+        };
+
+        $table.bootstrapTable({
+            sidePagination: "server",
+            url: "/operationprivilegetype/api/list",
+            toolbar: '#toolbar',
+            showRefresh: true,
+            method: 'post',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",//post方式一定得改成这种contentType
+            queryParams: query_params,
+            height: getHeight(),
+            sortName: 'id',
+            sortOrder: 'asc',
+            idField: "id",
+            uniqueId: 'id',
+            checkboxHeader: true,
+            clickToSelect: true,
+            showColumns: true,
+            silentSort: false,
+            maintainSelected: true,
+            striped: true,
+            cache: false,
+            pagination: true,
+            paginationLoop: false,
+            pageList: '[3,5,10]',
+            escape: true,
+            filterControl: true,
+            filterShowClear: true,
+            searchTimeOut: 1000
+        });
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        });
+
+        //添加标题样式
+        $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+            _title: function (title) {
+                if (!this.options.title) {
+                    title.html("&#160;");
+                } else {
+                    title.html(this.options.title);
+                }
+            }
+        }));
+        //--------------------------------------------------------------------
+        var app = new Vue({
+            el: "#add_edit",
+            data: {
+                operationprivilegetype: {
+                    name: '',
+                    enabled:'1',
+                    orderIndex: null,
+                    remark: ''
+                },
+                error: {
+                    nameError: false,
+                    nameErrorMsg: '',
+
+                    orderError: false,
+                    orderErrorMsg: ''
+                }
+            },
+            computed: {
+                errors: function () {
+                    return this.$vuerify.$errors // 错误信息会在 $vuerify.$errors 内体现
+                }
+            },
+            methods: {
+                handleSubmit_add: function () {
+                    this.$vuerify.clear()//清空之前的验证结果信息
+                    var check_result = this.$vuerify.check()// 手动触发校验所有数据
+                    var $errs = this.$vuerify.$errors
+
+                    app.error.nameError = Boolean($errs.name)
+                    app.error.nameErrorMsg = $errs.name
+                    app.error.orderError = Boolean($errs.orderIndex)
+                    app.error.orderErrorMsg = $errs.orderIndex
+
+                    if (!check_result) {
+                        TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    } else {
+                        var params = new URLSearchParams();
+                        var datas = app.operationprivilegetype
+                        for (var data in datas) {
+                            params.append(data, datas[data])
+                        }
+                        axios.post('/operationprivilegetype/api/add', params)
+                            .then(function (response) {
+                                if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                                    layer.msg(response.data.message);
+                                    setTimeout(function () {
+                                        $("#dialog_simple").dialog("close");
+                                        $table.bootstrapTable('refresh');
+                                    }, 1000)
+                                } else {
+                                    TF.show_error_msg(response.data.message)
+                                }
+                            })
+                            .catch(function (error) {
+                                TF.show_error_msg(error.response.data.message)
+                            });
+                    }
+                    return false;
+                },
+                handleSubmit_edit: function () {
+                    this.$vuerify.clear()//清空之前的验证结果信息
+                    var check_result = this.$vuerify.check()// 手动触发校验所有数据
+                    var $errs = this.$vuerify.$errors
+
+                    app.error.nameError = Boolean($errs.name)
+                    app.error.nameErrorMsg = $errs.name
+                    app.error.orderError = Boolean($errs.orderIndex)
+                    app.error.orderErrorMsg = $errs.orderIndex
+
+                    if (!check_result) {
+                        TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    } else {
+                        var params = new URLSearchParams();
+                        var datas = app.operationprivilegetype
+                        for (var data in datas) {
+                            params.append(data, datas[data])
+                        }
+                        axios.post('/operationprivilegetype/api/doEdit', params)
+                            .then(function (response) {
+                                if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                                    layer.msg(response.data.message);
+                                    setTimeout(function () {
+                                        $("#dialog_simple_edit").dialog("close");
+                                        $table.bootstrapTable('refresh');
+                                    })
+                                } else {
+                                    TF.show_error_msg(response.data.message)
+                                }
+                            })
+                            .catch(function (error) {
+                                TF.show_error_msg(error.response.data.message)
+                            });
+                    }
+                    return false;
+                }
+            },
+            vuerify: {
+                name: {
+                    test: function () {
+                        return String(app.operationprivilegetype.name).length >= 3
+                    },
+                    message: '名字长度不能为空且不能过短'
+                },
+                orderIndex: {
+                    test: function () {
+                        return !isNaN(app.operationprivilegetype.orderIndex)
+                    },
+                    message: '不能为空且必须为数字'
+                },
+            }
+        });
+
+        //监听添加事件
+        $('#add-operationprivilegetype').click(function () {
+            $('#dialog_simple').dialog('open');
+
+            app.operationprivilegetype.id="";
+
+            app.operationprivilegetype.name="";
+
+            app.operationprivilegetype.enabled=true;
+
+            app.operationprivilegetype.orderIndex=0;
+
+            app.operationprivilegetype.remark="";
+
+            app.error.nameError=false;
+            app.error.nameErrorMsg='';
+
+            app.error.orderError=false;
+
+            app.error.orderErrorMsg='';
+
+            return false;
+        });
+        //添加面板属性设置
+        $('#dialog_simple').dialog({
+            autoOpen: false,
+            width: 600,
+            resizable: true,
+            modal: true,
+            title: "<div class='widget-header'><h4><i class='icon-ok'></i> 添加操作级权限类型模块</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-plus-square-o'></i>&nbsp; 添加",
+                "class": "btn btn-info",
+                click: function () {
+                    $("#sa").trigger("click");
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp; 取消",
+                "class": "btn btn-default",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]
+        });
+        //监听搜索按钮事件
+        $("#search-operationprivilegetype").click(function () {
+            var opt = {
+                url: "/operationprivilegetype/api/list",
+                silent: true,
+                query: {
+                    enabled: $("select[name=enabled1]").val()
+                }
+            }
+            $table.bootstrapTable('refresh', opt);
+        });
+        //监听编辑按钮事件
+        $('#edit-operationprivilegetype').click(function () {
+            if ($table.bootstrapTable('getSelections').length > 1) {
+                TF.show_error_msg("只能选择一条信息进行编辑")
+            } else if ($table.bootstrapTable('getSelections').length < 1) {
+                TF.show_error_msg("请选择您想要编辑的信息")
+            }
+            else {
+
+                var ss=$table.bootstrapTable('getSelections');
+                var res=ss[0];
+                $('#dialog_simple_edit').dialog('open');
+
+                app.operationprivilegetype.id=res.id;
+
+                app.operationprivilegetype.name=res.name;
+
+                app.operationprivilegetype.enabled=res.enabled;
+                app.operationprivilegetype.orderIndex=res.orderIndex;
+
+                app.operationprivilegetype.remark=res.remark;
+
+
+                app.error.nameError=false;
+                app.error.nameErrorMsg='';
+
+                app.error.orderError=false;
+
+                app.error.orderErrorMsg='';
+
+                return false;
+
+            }
+        });
+        //编辑面板属性设置
+        $('#dialog_simple_edit').dialog({
+            autoOpen: false,
+            width: 600,
+            resizable: true,
+            modal: true,
+            title: "<div class='widget-header'><h4><i class='icon-ok'></i> 编辑操作级权限类型模块</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-plus-square-o'></i>&nbsp; 修改",
+                "class": "btn btn-info",
+                click: function () {
+                    $("#sa_edit").trigger("click");
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp; 取消",
+                "class": "btn btn-default",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]
+        });
+        //监听删除按钮事件
+        $("#delete-operationprivilegetype").click(function () {
+            var $selectedEdit = $table.bootstrapTable("getSelections");
+            if ($selectedEdit == null || $selectedEdit.length == 0) {
+                TF.show_error_msg("请选择删除对象")
+            }
+            else {
+                $.SmartMessageBox({
+                    title: "<i class='fa fa-minus-square-o' style='color:red'></i> 确定要删除吗？",
+                    content: "你确定要删除所选择的所有的信息吗？",
+                    buttons: '[取消][确认]'
+                }, function (ButtonPressed) {
+                    if (ButtonPressed == "确认") {
+                        var ids = "";
+                        for (var idRow in $selectedEdit) {
+                            ids += $selectedEdit[idRow].id + ","
+                        }
+                        ids = ids.substr(0, ids.length - 1);
+                        axios.post("/operationprivilegetype/api/delete?ids=" + ids)
+                            .then(function (response) {
+                                if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                                    layer.msg(response.data.message);
+                                    setTimeout(function () {
+                                        $table.bootstrapTable("refresh");
+                                    }, 1000)
+                                } else {
+                                    TF.show_error_msg(response.data.message)
+                                }
+                            })
+                    }
+
+                });
+
+            }
+        })
+
+        //监听是否可用
+        $("select[name=enabled1]").change(function () {
+            app.operationprivilegetype.enabled = $(this).find('option:selected').val()
+            $table.bootstrapTable("refresh");
+        })
+
+    };
+
+
+
+    //设置是否可用的样式
+    function enabledFormatter(val) {
+        return val ? "<label class='label label-success'>可用</label>" : "<label class='label label-danger'>不可用</label>";
+    }
+    //日期格式化
+    function date_formatter(date) {
+        return date.year + "-" + date.monthValue + "-" + date.dayOfMonth+" "+date.hour+":"+date.minute+":"+date.second;
+    }
+
+
+    function getHeight() {
+        return $(window).height() - $('header').outerHeight(true)
+            - $('div.page-footer').outerHeight(true)
+            - $('#ribbon').outerHeight(true)
+            - 25
+    }
+
+    function columnDataFormatter(value) {
+        return value;
+    }
+    // load related plugins
+            loadScript("/static/js/libs/vue/axios.min.js", function () {
+                loadScript("/static/js/libs/vue/vuerify.min.js", function () {
+                    loadScript("/static/js/libs/vue/url-search-params.min.js", page_function())
+                })
+             })
+
+</script>
+

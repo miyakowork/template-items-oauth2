@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--/*@thymesVar id="status" type="java.lang.String"*/-->
+    <title th:text="${status}+'页面'"></title>
+</head>
+<body>
+<!--/*@thymesVar id="status" type="java.lang.String"*/-->
+<h1 th:text="${status}"></h1>
+<!--/*@thymesVar id="timestamp" type="java.time.LocalDateTime"*/-->
+<h1 th:text="${timestamp}"></h1>
+<!--/*@thymesVar id="error" type="java.lang.String"*/-->
+<h1 th:text="${error}"></h1>
+<!--/*@thymesVar id="message" type="java.lang.String"*/-->
+<h1 th:text="${message}"></h1>
+<!--/*@thymesVar id="path" type="java.lang.String"*/-->
+<h1 th:text="${path}"></h1>
+</body>
+</html>

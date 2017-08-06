@@ -1,0 +1,49 @@
+<link rel="stylesheet" type="text/css" media="screen"
+      href="/static/js/plugin/bootstrap-ztree/css/metroStyle/metroStyle.css">
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body" style="min-height: 300px;">
+                <ul id="DepartmentTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/static/js/libs/jquery-2.1.1.min.js"></script>
+<script src="/static/js/plugin/bootstrap-ztree/js/jquery.ztree.all.min.js"></script>
+<script src="/static/js/plugin/bootstrap-ztree/js/jquery.ztree.exhide.min.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        var settings = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    rootPId: 0
+                }
+            },
+            view:{
+                selectedMulti:false,
+            },
+            callback: {
+                    onDblClick: function (event, treeId, treeNode) {
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.app.OauthDepartment.parentId = treeNode.id;
+                        parent.$('#pNameByTree').val(treeNode.name);
+                        parent.layer.close(index);
+                }
+            }
+        };
+
+        $.get("/department/api/selectDepartmentTree",function (json) {
+            $.fn.zTree.init($("#DepartmentTree"),settings,json.data)
+            var hiddenId = parent.app.OauthDepartment.id;
+            var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
+            var node = treeObj.getNodeByParam("id",hiddenId,null);
+            treeObj.hideNode(node);
+        })
+    })
+
+</script>

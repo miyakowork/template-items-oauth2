@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh_CN" class="login-bg">
+<head>
+    <title>通用权限管理系统 - 登录</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="/static/css/login/bootstrap/bootstrap.css" rel="stylesheet"/>
+    <link href="/static/css/login/bootstrap/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="/static/css/login/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet"/>
+    <link href="/static/css/animate.min.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/login/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/static/css/login/signin.css" type="text/css" media="screen"/>
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="/static/img/favicon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/static/img/favicon/favicon.ico" type="image/x-icon">
+
+</head>
+<body>
+
+
+<div id="login-form" class="row-fluid login-wrapper">
+    <a href="index.html">
+        <img class="logo" src="/static/img/login-logo-white.png"/>
+    </a>
+
+    <div class="span4 box">
+        <div class="content-wrap">
+            <h4 style="color: #333e4a;">登 录</h4>
+            <transition name="custom-classes-transition"
+                        enter-active-class="animated shake">
+                <h6 v-if="error">
+                    <small class="text-error">{{errorMsg}}</small>
+                </h6>
+            </transition>
+            <input class="span12" type="text" placeholder="用户名" v-model="username"/>
+            <input class="span12" type="password" placeholder="密码" v-model="password" @keyup.enter="login"/>
+            <div class="remember">
+                <input id="rememberMe" name="rememberMe" type="checkbox" v-model="rememberMe"/>
+                <label for="rememberMe">记住我</label>
+            </div>
+            <a class="btn btn-glow primary login" @click="login">登录</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- scripts -->
+<script src="/static/js/libs/jquery-2.1.1.min.js"></script>
+<script src="/static/js/libs/vue/vue.min.js"></script>
+<script src="/static/js/base64.min.js"></script>
+<script src="/static/js/libs/vue/axios.min.js"></script>
+<script src="/static/js/libs/vue/url-search-params.min.js"></script>
+<script src="/static/oauth2/js/login.js"></script>
+
+</body>
+</html>

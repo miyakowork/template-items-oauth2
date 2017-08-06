@@ -1,0 +1,319 @@
+<div class="row" style="margin-left: -5px;margin-right: -5px;" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <div class="col-md-3" style="margin-top: 10px;">
+        <div class="row">
+            <input type="hidden" name="selectedModule">
+            <select class="form-control" title="系统模块选择" id="select-modules">
+            </select>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-body" style="min-height: 300px;">
+                    <ul id="roleTree" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div id="role-toolbar" class="form-inline">
+            <button id="add-role" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
+            <button id="edit-role" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
+            &nbsp;
+            <label id="role-search-control" class="checkbox-inline">
+                <input type="checkbox" class="checkbox style-3">
+                <span>显示搜索控件</span>
+            </label>
+        </div>
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <table id="role-table">
+                <thead>
+                <tr>
+                    <th data-checkbox="true"></th>
+
+                    <th data-field="id"
+                        data-visible="false"
+                        data-width="150"
+                        data-title="ID"
+                        data-align="center"></th>
+
+                    <th data-field="name"
+                        data-sortable="true"
+                        data-search-formatter="false"
+                        data-filter-control="input"
+                        data-filter-control-placeholder="输入角色标识"
+                        data-title="角色标识"
+                        data-align="center"
+                        data-width="150"></th>
+
+                    <th data-field="cnName"
+                        data-sort-name="cn_name"
+                        data-sortable="true"
+                        data-filter-control="input"
+                        data-filter-control-placeholder="输入角色名"
+                        data-search-formatter="false"
+                        data-title="角色名"
+                        data-align="center"
+                        data-width="150"></th>
+
+                    <th data-field="parentName"
+                        data-sortable="true"
+                        data-sort-name="parent_name"
+                        data-title="上级角色"
+                        data-formatter="parentNameFormatter"
+                        data-align="center"
+                        data-width="150"></th>
+
+                    <th data-field="parentId"
+                        data-visible="false"
+                        data-title="上级ID"
+                        data-align="center"
+                    ></th>
+
+                    <th data-field="systemModuleName"
+                        data-sort-name="SYSTEM_CODE"
+                        data-width="150"
+                        data-title="所属系统模块"
+                        data-align="center"></th>
+
+                    <th data-field="enabled"
+                        data-width="150"
+                        data-title="是否可用"
+                        data-formatter="enabledFormatter"
+                        data-filter-control="select"
+                        data-filter-data="url:/common/select"
+                        data-align="center"></th>
+
+                    <th data-field="updateDate"
+                        data-sort-name="update_date"
+                        data-sortable="true"
+                        data-title="修改时间"
+                        data-formatter="date_formatter"
+                        data-visible="false"
+                        data-align="center"></th>
+
+
+                    <th data-field="createDate"
+                        data-sort-name="create_date"
+                        data-sortable="true"
+                        data-visible="false"
+                        data-formatter="date_formatter"
+                        data-title="创建日期"
+                        data-align="center"></th>
+
+                    <th data-field="updateName"
+                        data-sort-name="update_name"
+                        data-title="修改人"
+                        data-visible="false"
+                        data-align="center"></th>
+
+                    <th data-field="createName"
+                        data-sort-name="create_name"
+                        data-title="创建人"
+                        data-visible="false"
+                        data-align="center"></th>
+
+                    <th data-field="orderIndex"
+                        data-sort-name="ORDER_INDEX"
+                        data-sortable="true"
+                        data-title="排序"
+                        data-align="center"></th>
+
+                    <th data-field="remark"
+                        data-sortable="true"
+                        data-title="备注"
+                        data-visible="false"
+                        data-align="center"></th>
+                </tr>
+                </thead>
+            </table>
+        </article>
+        <!-- WIDGET END -->
+    </div>
+</div>
+
+<div id="role_dialog">
+    <!--添加menu-->
+    <div id="addRole">
+        <form class="form-horizontal" @submit.prevent="handleAddSubmit" method="post">
+            <fieldset>
+                <!--角色名称-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
+                    <label class="col-md-3 control-label">角色标识</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="角色名称（英文大写/下划线）"
+                               v-model="role.name">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
+                            {{error.nameErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <!--角色名称-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.cnNameError }">
+                    <label class="col-md-3 control-label">角色名</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="角色名（中文）"
+                               v-model="role.cnName">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.cnNameError }">
+                            {{error.cnNameErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <!--//上级角色-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">上级Id</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="上级Id" type="text"
+                               v-model="role.parentId"
+                               readonly>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.parentIdErrorMsg }">
+                            {{error.parentIdErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--排序-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.orderIndexError }">
+                    <label class="col-md-3 control-label">排序</label>
+                    <div class="col-md-9">
+                        <input class="form-control" type="number" v-model="role.orderIndex">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderIndexError }">
+                            {{error.orderIndexErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--//是否可用-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">是否可用</label>
+                    <div class="col-md-9">
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="role.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="true" checked>
+                            <span>是</span>
+                        </label>
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="role.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="false" checked>
+                            <span>否</span>
+                        </label>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
+                            {{error.enabledErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--//备注信息-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注信息</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="role.remark">
+                    </div>
+                </div>
+
+
+            </fieldset>
+            <button id="doAddRole" type="submit" class="hidden"></button>
+        </form>
+    </div>
+    <!--编辑menu-->
+    <div id="editRole">
+        <form class="form-horizontal" @submit.prevent="handleEditSubmit" method="post">
+            <fieldset>
+                <!--角色名称-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
+                    <label class="col-md-3 control-label">角色标识</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="角色标识（大写英文/下划线）"
+                               v-model="role.name">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
+                            {{error.nameErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <!--角色名称-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.cnNameError }">
+                    <label class="col-md-3 control-label">角色名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="角色名称（中文）"
+                               v-model="role.cnName">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.cnNameError }">
+                            {{error.cnNameErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">上级角色ID</label>
+                    <div class="col-md-9">
+                        <input id="pIdByTree" class="form-control" placeholder="上级角色" type="text"
+                               v-model="role.parentId"
+                               readonly>
+                        <a id="editGetPId" href="javascript:void(0);"
+                           style="margin-top: 15px;display: block;">获取上级角色</a>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.parentError }">
+                            {{error.parentErrorMsg}}
+                        </div>
+
+                    </div>
+                </div>
+
+                <!--排序-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.orderIndexError }">
+                    <label class="col-md-3 control-label">排序</label>
+                    <div class="col-md-9">
+                        <input class="form-control" type="number" v-model="role.orderIndex">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderIndexError }">
+                            {{error.orderIndexErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--//是否可用-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">是否可用12</label>
+                    <div class="col-md-9">
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="role.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="true" checked>
+                            <span>是</span>
+                        </label>
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="role.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="false" checked>
+                            <span>否</span>
+                        </label>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
+                            {{error.enabledErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--//备注信息-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注信息</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" v-model="role.remark">
+                    </div>
+                </div>
+
+
+            </fieldset>
+            <button id="edit" type="submit" class="hidden"></button>
+        </form>
+    </div>
+
+</div>
+<script src="/static/oauth2/js/role.js"></script>
