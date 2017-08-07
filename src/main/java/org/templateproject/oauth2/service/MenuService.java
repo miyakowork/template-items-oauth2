@@ -3,9 +3,8 @@ package org.templateproject.oauth2.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.oauth2.entity.OauthMenu;
-import org.templateproject.oauth2.page.department.ZTreeBO;
-import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
+import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedList;
