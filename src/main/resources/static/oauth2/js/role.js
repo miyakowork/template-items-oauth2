@@ -17,6 +17,7 @@ var page_function = function () {
         })
     });
 
+    //取消勾选角色，并刷新树和表格内容
     $("#refreshRoleTree").click(function () {
         var treeObj = $.fn.zTree.getZTreeObj("roleTree");
         treeObj.cancelSelectedNode();
