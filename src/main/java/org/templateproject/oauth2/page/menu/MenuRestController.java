@@ -3,8 +3,8 @@ package org.templateproject.oauth2.page.menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.templateproject.oauth2.page.department.ZTreeBO;
 import org.templateproject.oauth2.service.MenuService;
+import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.pojo.response.R;
 
 import javax.servlet.http.HttpServletRequest;
