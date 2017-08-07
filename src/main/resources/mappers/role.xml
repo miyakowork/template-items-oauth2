@@ -3,7 +3,7 @@
     <findRolePage>
         SELECT
             tor.*,
-            tor1.CN_NAME     AS parent_name,
+            tor1.CN_NAME  AS parent_name,
             tou1.username AS create_name,
             tou2.username AS update_name,
             tosm.NAME     AS system_module_name
@@ -14,11 +14,15 @@
     </findRolePage>
 
     <findRoleTree>
-        SELECT * FROM T_OAUTH_ROLE tor WHERE tor.ENABLED =  1 AND tor.SYSTEM_CODE = ?
+        SELECT *
+        FROM T_OAUTH_ROLE tor
+        WHERE tor.ENABLED = 1 AND tor.SYSTEM_CODE = ?
     </findRoleTree>
 
     <checkIsParent>
-        SELECT COUNT(*) FROM t_oauth_role tor WHERE tor.ENABLED = 1 AND tor.PARENT_ID  = ?
+        SELECT count(0)
+        FROM T_OAUTH_ROLE tor
+        WHERE tor.ENABLED = 1 AND tor.PARENT_ID = ?
     </checkIsParent>
 
 </role>

@@ -13,6 +13,7 @@ import org.templateproject.oauth2.entity.OauthResourceModule;
 import org.templateproject.oauth2.entity.OauthSystemModule;
 import org.templateproject.oauth2.page.privilegepage.ZTreeBO;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.PrivilegePageBo;
 import org.templateproject.oauth2.support.pojo.vo.PrivilegePageVO;
 import org.templateproject.pojo.page.Page;
@@ -27,7 +28,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class PrivilegePageService extends AbstractBaseCrudService {
+public class PrivilegePageService extends SimpleBaseCrudService<OauthPrivilegePage,Integer> {
 
     private ResModuleService resModuleService;
 
@@ -155,7 +156,7 @@ public class PrivilegePageService extends AbstractBaseCrudService {
     * */
     private List<ZTreeBO> privilegepageToZtree() throws
             Exception {
-        Collection<OauthResourceModule> oauthResourceModules = findList(OauthResourceModule.class);
+        Collection<OauthResourceModule> oauthResourceModules = resModuleService.findList(OauthResourceModule.class);
         List<ZTreeBO> zTreeList = new LinkedList<>();
         for (OauthResourceModule next :
                 oauthResourceModules) {

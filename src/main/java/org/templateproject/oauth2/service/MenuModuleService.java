@@ -9,6 +9,7 @@ import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthMenuModule;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.MenuModuleBO;
 import org.templateproject.oauth2.support.pojo.vo.MenuModuleVO;
 import org.templateproject.pojo.page.Page;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class MenuModuleService extends AbstractBaseCrudService {
+public class MenuModuleService extends SimpleBaseCrudService<OauthMenuModule,Integer> {
     /**
      * 获得页面
      *

@@ -24,7 +24,9 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * 提供一个基础的实现类service
+ * 丰富接口的实现类，提供一下额额外的操作方法（接口中未包含的方法）
+ *
+ * @see AbstractBaseCrudService
  * Created by Wuwenbin on 2017/7/17.
  */
 @Service
@@ -32,6 +34,7 @@ import java.util.*;
 public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends AbstractBaseCrudService<Model, ID> {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(SimpleBaseCrudService.class);
+
 
         /**
          * 保存一条记录，id自动数据库生成
@@ -41,7 +44,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
          * @return 是否插入成功
          * @throws Exception 插入时生成的异常
          */
-        public  boolean save(Model model, Class<Model> clazz) throws Exception {
+        public boolean save(Model model, Class<Model> clazz) throws Exception {
                 SQLBeanBuilder sbb = SQLFactory.builder(clazz);
                 String insertSQL = sbb.insertRoutersWithoutPk(CommonConsts.UPDATE_ROUTER,
                         CommonConsts.ENABLED_ROUTER, CommonConsts.ORDER_ROUTER,
@@ -73,7 +76,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
          * @param ids 需要执行删除的值
          * @throws Exception 执行删除过程中发生的异常
          */
-        public  void deleteBatchByArrayIds(Class<Model> clazz, String[] ids) throws Exception {
+        public void deleteBatchByArrayIds(Class<Model> clazz, String[] ids) throws Exception {
                 SQLBeanBuilder sbb = SQLFactory.builder(clazz);
                 Collection<Map<String, Object>> maps = new ArrayList<>(ids.length);
                 for (String id : ids) {
@@ -158,6 +161,17 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
                 h2Dao.executeBatchByCollectionMaps(sql, maps);
         }
 
+        /**
+         * 查找所有记录
+         *
+         * @param clazz clazz
+         * @return List<Model>
+         */
+        public List<Model> findAll(Class<Model> clazz) {
+                SQLBeanBuilder sbb = SQLFactory.builder(clazz);
+                String sql = sbb.selectAll();
+                return h2Dao.findListBeanByArray(sql, clazz);
+        }
 
         /**
          * 查询分页

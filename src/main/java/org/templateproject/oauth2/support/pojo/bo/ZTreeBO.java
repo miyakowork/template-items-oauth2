@@ -7,7 +7,17 @@ import org.templateproject.pojo.ztree.Ztree;
  * 继承Ztree，添加一个set方法
  * Created by Wuwenbin on 2017/7/19.
  */
-public class ZTreeBO extends Ztree {
+public class ZTreeBO<T> extends Ztree {
+
+        private T other;
+
+        public T getOther() {
+                return other;
+        }
+
+        public void setOther(T other) {
+                this.other = other;
+        }
 
         public boolean getisParent() {
                 return isParent;

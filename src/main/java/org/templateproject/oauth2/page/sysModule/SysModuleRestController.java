@@ -3,11 +3,11 @@ package org.templateproject.oauth2.page.sysModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.templateproject.oauth2.aop.support.SQLSeat;
 import org.templateproject.oauth2.entity.OauthSystemModule;
 import org.templateproject.oauth2.service.SystemModuleService;
 import org.templateproject.oauth2.support.BaseRestController;
 import org.templateproject.oauth2.support.pojo.bo.SystemModuleBo;
+import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.oauth2.support.pojo.vo.SystemModuleVO;
 import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.pojo.page.Page;
@@ -40,7 +40,7 @@ public class SysModuleRestController extends BaseRestController {
          */
         @RequestMapping("list")
         public BootstrapTable<SystemModuleVO> list(Page<SystemModuleVO> page, SystemModuleBo systemModuleBo) {
-                page = systemModuleService.findSystemModulePage(SQLSeat.seat(), page, systemModuleBo);
+                page = systemModuleService.findSystemModulePage( page, systemModuleBo);
                 return bootstrapTable(page);
         }
 
@@ -52,7 +52,7 @@ public class SysModuleRestController extends BaseRestController {
          */
         @RequestMapping("add")
         public R add(OauthSystemModule systemModule) {
-                if (systemModuleService.isExistSystemCode(SQLSeat.seat(),systemModule.getSystemCode()))
+                if (systemModuleService.isExistSystemCode(systemModule.getSystemCode()))
                         return R.error("系统模块代码已存在");
                 else {
                         try {
@@ -97,7 +97,7 @@ public class SysModuleRestController extends BaseRestController {
         public R delete(String ids) {
                 String[] idArr = ids.split(",");
                 try {
-                        systemModuleService.deleteModules(SQLSeat.seat(),idArr);
+                        systemModuleService.deleteModules( idArr);
                         return R.ok("删除/修改系统模块成功");
                 } catch (Exception e) {
                         LOGGER.error("删除/修改系统模块发生异常，异常信息：{}", e.getMessage());
@@ -110,7 +110,17 @@ public class SysModuleRestController extends BaseRestController {
          */
         @RequestMapping("find/modules/enabled")
         public List<OauthSystemModule> findModulesEnabled() {
-                return systemModuleService.findAllEnabledSystemModules(SQLSeat.seat());
+                return systemModuleService.findAllEnabledSystemModules();
+        }
+
+        /**
+         * 获取系统模块的zTree树，无异步加载
+         *
+         * @return List<ZTreeBO>
+         */
+        @RequestMapping("/find/modules/enabled/moduleTree")
+        public List<ZTreeBO<String>> findModulesTreeEnabled() {
+                return systemModuleService.module2ZTree(systemModuleService.findAllEnabledSystemModules());
         }
 
 }

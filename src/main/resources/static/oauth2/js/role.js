@@ -17,6 +17,25 @@ var page_function = function () {
         })
     });
 
+    $("#refreshRoleTree").click(function () {
+        var treeObj = $.fn.zTree.getZTreeObj("roleTree");
+        treeObj.cancelSelectedNode();
+        var nodes = treeObj.getCheckedNodes(true);
+        if (nodes.length === 0) {
+            layer.msg("并没有选择父角色，取消勾选无效！");
+            return;
+        }
+        for (var i = 0, l = nodes.length; i < l; i++) {
+            treeObj.checkNode(nodes[i], false, true);
+        }
+        TF.reInitTable($table, {
+            url: "/oauth2/role/api/list",
+            toolbar: '#role-toolbar',
+            queryParams: query_params,
+            filterControl: true
+        })
+    });
+
     var query_params = function (params) {
         return {
             limit: params.limit,
@@ -82,17 +101,17 @@ var page_function = function () {
                             continue
                         params.append(data, datas[data])
                     }
-                    params.append('systemCode',$selectedModule.val())
+                    params.append('systemCode', $selectedModule.val())
 
                     axios.post('/oauth2/role/api/add', params)
                         .then(function (response) {
                             if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
-                                    $("#addRole").dialog("close");
-                                    $table.bootstrapTable("refresh");
-                                    var treeObj = $.fn.zTree.getZTreeObj("roleTree");
-                                    treeObj.destroy();
-                                    loadRoleTree();
+                                $("#addRole").dialog("close");
+                                $table.bootstrapTable("refresh");
+                                var treeObj = $.fn.zTree.getZTreeObj("roleTree");
+                                treeObj.destroy();
+                                loadRoleTree();
                             } else {
                                 TF.show_error_msg(response.data.message)
                             }
@@ -181,28 +200,34 @@ var page_function = function () {
     $("#add-role").click(function () {
         var treeObj = $.fn.zTree.getZTreeObj("roleTree");
         var nodes = treeObj.getCheckedNodes(true);
+
+        $("#sca").val($("#select-modules").find("option:selected").text());
+        app.role.name = '';
+        app.role.cnName = '';
+        app.role.remark = '';
+        app.role.orderIndex = 0;
+        app.role.enabled = true;
+
+        app.error.nameError = false;
+        app.error.nameErrorMsg = '';
+        app.error.cnNameError = false;
+        app.error.cnNameErrorMsg = '';
+        app.error.orderError = false;
+        app.error.orderErrorMsg = '';
+        app.error.parentIdError = false;
+        app.error.parentIdErrorMsg = '';
+
         if (nodes.length === 0) {
-            TF.show_error_message("错误选择提示", "请勾选树节点选择角色以添加子角色")
+            app.role.parentId = 0;
+            layer.confirm('即将添加一级角色节点！<br/>若要添加其它级请在左侧选择父角色节点！', function (index) {
+                layer.close(index);
+                $("#addRole").dialog("open");
+            });
         } else {
-            app.role.parentId = nodes[0].id
-            app.role.name = ''
-            app.role.cnName = ''
-            app.role.remark = ''
-            app.role.orderIndex = 0
-            app.role.enabled = true
-
-            app.error.nameError = false;
-            app.error.nameErrorMsg = '',
-                app.error.cnNameError = false;
-            app.error.cnNameErrorMsg = '',
-                app.error.orderError = false;
-            app.error.orderErrorMsg = '';
-            app.error.parentIdError = false;
-            app.error.parentIdErrorMsg = '';
+            app.role.parentId = nodes[0].id;
             $("#addRole").dialog("open");
-
         }
-    })
+    });
 
     //监听编辑按钮点击事件
     $("#edit-role").click(function () {
@@ -210,6 +235,7 @@ var page_function = function () {
         if (editUsers.length !== 1) {
             TF.show_error_message("错误选择提示", "请在角色树中选择父级角色以添加子角色")
         } else {
+            $("#scb").val($("#select-modules").find("option:selected").text());
             app.role.id = editUsers[0].id;
             app.role.name = editUsers[0].name;
             app.role.parentId = editUsers[0].parentId;
@@ -285,12 +311,12 @@ var page_function = function () {
         layer.open({
             type: 2,
             area: ['300px', '400px'],
-            title: [$('#select-modules').find("option:selected").text()+' - (双击选择)  ', 'text-align:center;'],
+            title: [$('#select-modules').find("option:selected").text() + ' - (双击选择)  ', 'text-align:center;'],
             fixed: true,
             resize: false,
             offset: '200px',
             scrollbar: false,
-            content: 'role/tree'
+            content: '/oauth2/role/tree'
         })
     })
 
@@ -382,7 +408,7 @@ function loadRoleTree() {
             }
         }
     };
-    $.get("/oauth2/role/api/selectRole?id=0&systemModuleCode=" + $selectedModule.val(), function (json) {
+    $.get("/oauth2/role/api/selectRole?systemModuleCode=" + $selectedModule.val(), function (json) {
         $.fn.zTree.init($("#roleTree"), settings, json)
     });
 }

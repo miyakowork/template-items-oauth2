@@ -11,6 +11,7 @@ import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.*;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.service.shiro.ShiroUserService;
 import org.templateproject.oauth2.support.pojo.bo.UserBO;
 import org.templateproject.oauth2.support.pojo.vo.UserVO;
@@ -26,7 +27,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class UserService extends AbstractBaseCrudService {
+public class UserService extends SimpleBaseCrudService<OauthUser,Integer> {
 
 
     @Autowired

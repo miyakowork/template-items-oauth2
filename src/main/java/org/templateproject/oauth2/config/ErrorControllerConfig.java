@@ -11,8 +11,12 @@ import org.springframework.http.HttpStatus;
  * Created by wuwenbin on 2017/5/21.
  */
 @Configuration
-public class ErrorConfig {
+public class ErrorControllerConfig {
 
+        /**
+         * springBoot内嵌tomcat的拦截异常处理方式
+         * @return EmbeddedServletContainerCustomizer
+         */
         @Bean
         public EmbeddedServletContainerCustomizer containerCustomizer() {
                 return container -> {
@@ -23,5 +27,6 @@ public class ErrorConfig {
                         container.addErrorPages(new ErrorPage(Throwable.class, "/error/exception"));
                 };
         }
+
 }
 

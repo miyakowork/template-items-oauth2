@@ -2,6 +2,7 @@ package org.templateproject.oauth2.service;
 
 import org.templateproject.oauth2.entity.OauthPrivilegePage;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.oauth2.support.pojo.vo.PrivilegeVO;
 
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by tuchen on 2017/7/21.
  */
-public class PrivilegeService extends AbstractBaseCrudService<OauthPrivilegePage, Integer> {
+public class PrivilegeService extends SimpleBaseCrudService {
 
 
     /**

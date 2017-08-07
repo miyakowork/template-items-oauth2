@@ -7,6 +7,7 @@ import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthResource;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.ResourceBO;
 import org.templateproject.oauth2.support.pojo.vo.ResourceVO;
 import org.templateproject.pojo.page.Page;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class ResourceService extends AbstractBaseCrudService<OauthResource, Integer> {
+public class ResourceService extends SimpleBaseCrudService<OauthResource, Integer> {
 
     /**
      * 根据权限标识查询数据

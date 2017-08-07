@@ -9,6 +9,7 @@ import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthDepartment;
 import org.templateproject.oauth2.page.department.ZTreeBO;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.DepartmentBO;
 import org.templateproject.oauth2.support.pojo.vo.DeptVO;
 import org.templateproject.pojo.page.Page;
@@ -24,7 +25,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class DepartmentService extends AbstractBaseCrudService<OauthDepartment, Integer> {
+public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, Integer> {
 
     /**
      * 调用findPage()返回Page

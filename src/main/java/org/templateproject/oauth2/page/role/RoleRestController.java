@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.templateproject.oauth2.aop.support.SQLSeat;
 import org.templateproject.oauth2.entity.OauthRole;
 import org.templateproject.oauth2.service.RoleService;
 import org.templateproject.oauth2.support.BaseRestController;
@@ -41,7 +40,7 @@ public class RoleRestController extends BaseRestController {
          */
         @RequestMapping("/list")
         public BootstrapTable<RoleVO> sysParams(RoleBo roleBo, Page<RoleVO> page) {
-                page = roleService.findRolePage(SQLSeat.seat(), page, roleBo);
+                page = roleService.findRolePage(page, roleBo);
                 return bootstrapTable(page);
         }
 
@@ -86,10 +85,14 @@ public class RoleRestController extends BaseRestController {
          *
          * @return json R
          */
-        @RequestMapping(value = {"selectRole", "selectPartRole"})
+        @RequestMapping("selectRole")
         public List<ZTreeBO> selectRoleZTree(String id, String systemModuleCode) {
-                int roleId = StringUtils.isEmpty(id) ? 0 : Integer.valueOf(id);
-                return roleService.findRoleTree(SQLSeat.seat(), roleId, systemModuleCode);
+                if (StringUtils.isNotEmpty(id)) {
+                        int roleId = Integer.parseInt(id);
+                        return roleService.findRoleTree(roleId, systemModuleCode);
+                } else {
+                        return roleService.findRoleTree(Integer.MIN_VALUE + 1, systemModuleCode);
+                }
         }
 
 }

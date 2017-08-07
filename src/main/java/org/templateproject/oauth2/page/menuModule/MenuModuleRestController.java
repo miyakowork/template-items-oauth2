@@ -1,10 +1,11 @@
-package org.templateproject.oauth2.page.menumodule;
+package org.templateproject.oauth2.page.menuModule;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.templateproject.oauth2.entity.OauthMenuModule;
 import org.templateproject.oauth2.service.MenuModuleService;
+import org.templateproject.oauth2.support.BaseRestController;
 import org.templateproject.oauth2.support.TemplateController;
 import org.templateproject.oauth2.support.pojo.bo.MenuModuleBO;
 import org.templateproject.oauth2.support.pojo.vo.MenuModuleVO;
@@ -15,11 +16,11 @@ import org.templateproject.pojo.response.R;
 import java.util.List;
 
 /**
- * Created by yuanqi on 2017/7/12/012.
+ * Created by Wuwenbin on 2017/08/01.
  */
 @RestController
 @RequestMapping("menumodule/api")
-public class MenuModuleRestController extends TemplateController {
+public class MenuModuleRestController extends BaseRestController {
 
     private MenuModuleService menuModuleService;
 

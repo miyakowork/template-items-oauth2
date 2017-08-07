@@ -9,6 +9,7 @@ import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthOperationPrivilegeType;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.OperationPrivilegeTypeBo;
 import org.templateproject.oauth2.support.pojo.vo.OperationPrivilegeTypeVO;
 import org.templateproject.pojo.page.Page;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Service
 @Transactional
-public class OperationPrivilegeTypeService extends AbstractBaseCrudService<OauthOperationPrivilegeType, Integer> {
+public class OperationPrivilegeTypeService extends SimpleBaseCrudService<OauthOperationPrivilegeType, Integer> {
 
 
     /*

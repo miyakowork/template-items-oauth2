@@ -3,7 +3,9 @@ package org.templateproject.oauth2.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.oauth2.entity.OauthDepartment;
+import org.templateproject.oauth2.entity.OauthUserLoginLog;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.LoginSumBO;
 import org.templateproject.oauth2.support.pojo.vo.LoginSumVO;
 
@@ -16,7 +18,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class LoginSumService extends AbstractBaseCrudService {
+public class LoginSumService extends SimpleBaseCrudService<OauthUserLoginLog,Integer> {
 
 
     /**

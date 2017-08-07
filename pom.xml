@@ -6,10 +6,10 @@
     <groupId>me.wuwenbin</groupId>
     <artifactId>template-items-oauth2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>template-items-oauth2</name>
-    <description>通用权限控制中心管理系统</description>
+    <description>基础通用权限控制中心管理系统</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -24,6 +24,7 @@
         <java.version>1.8</java.version>
         <shiro.version>1.3.2</shiro.version>
     </properties>
+
 
     <dependencies>
         <dependency>
@@ -43,23 +44,22 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-devtools</artifactId>-->
-        <!--</dependency>-->
-        <!--以下2个一个为jrebel热部署在tomcat可用-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
+            <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--以下2个一个为jrebel热部署在tomcat可用-->
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+
 
         <!--shiro-->
         <dependency>
@@ -131,5 +131,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+
     </build>
 </project>

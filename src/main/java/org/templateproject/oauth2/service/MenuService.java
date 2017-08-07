@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.oauth2.entity.OauthMenu;
 import org.templateproject.oauth2.page.department.ZTreeBO;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
+import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedList;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class MenuService extends AbstractBaseCrudService {
+public class MenuService extends SimpleBaseCrudService<OauthMenu,Integer> {
 
     /**
      * 根据role_id查询返回ZTree

@@ -113,12 +113,6 @@ public interface IBaseCrudService<T extends BaseEntity, ID> {
      */
     <S extends T> int[] delete(ID[] ids, Class<S> clazz) throws Exception;
 
-    /**
-     * 根据所给的id集合删除对应的实体
-     *
-     * @param ids 删除id的集合
-     */
-    <S extends T> void delete(Collection<ID> ids, Class<S> clazz) throws Exception;
 
     /**
      * 保存给定的实体。
@@ -132,15 +126,7 @@ public interface IBaseCrudService<T extends BaseEntity, ID> {
      */
     <S extends T> S saveBean(S entity, Class<S> clazz) throws Exception;
 
-    /**
-     * 保存给的所有实体
-     *
-     * @param entities 插入的实体集合
-     * @param clazz    实体类型
-     * @return 保存的实体集合
-     * @throws IllegalArgumentException 路给所给的实体参数集合为 {@literal null}.
-     */
-    <S extends T> Collection<S> save(Collection<S> entities, Class<S> clazz) throws Exception;
+
 
     /**
      * 修改所给的实体

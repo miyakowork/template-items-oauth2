@@ -2,6 +2,7 @@ package org.templateproject.oauth2.support.controller;
 
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.templateproject.oauth2.support.TemplateController;
 import org.templateproject.oauth2.support.webeditor.DateEditor;
@@ -16,14 +17,15 @@ import java.util.Date;
  * Created by wuwenbin on 2017/5/20.
  */
 @ControllerAdvice
-public class HandlerControllerAdvice extends TemplateController {
+public class ControllerAdviceHandler extends TemplateController {
 
-    @InitBinder
-    protected void initBinderByCustom(ServletRequestDataBinder binder) throws Exception {
-        binder.registerCustomEditor(int.class, new IntegerEditor());
-        binder.registerCustomEditor(long.class, new LongEditor());
-        binder.registerCustomEditor(double.class, new DoubleEditor());
-        binder.registerCustomEditor(Date.class, new DateEditor());
-    }
+        @InitBinder
+        protected void initBinderByCustom(ServletRequestDataBinder binder) throws Exception {
+                binder.registerCustomEditor(int.class, new IntegerEditor());
+                binder.registerCustomEditor(long.class, new LongEditor());
+                binder.registerCustomEditor(double.class, new DoubleEditor());
+                binder.registerCustomEditor(Date.class, new DateEditor());
+        }
+
 
 }

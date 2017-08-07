@@ -15,6 +15,7 @@
     </div>
     <div class="col-md-9">
         <div id="role-toolbar" class="form-inline">
+            <button id="refreshRoleTree" class="btn btn-sm btn-primary"><i class="fa fa-times"></i> 取消勾选角色</button>
             <button id="add-role" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
             <button id="edit-role" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
             &nbsp;
@@ -162,9 +163,9 @@
                 </div>
                 <!--//上级角色-->
                 <div class="form-group">
-                    <label class="col-md-3 control-label">上级Id</label>
+                    <label class="col-md-3 control-label">上级ID</label>
                     <div class="col-md-9">
-                        <input class="form-control" placeholder="上级Id" type="text"
+                        <input class="form-control" placeholder="上级ID"
                                v-model="role.parentId"
                                readonly>
                         <div class="note-error margin-bottom-0"
@@ -173,6 +174,14 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">系统模块名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" id="sca" readonly>
+                    </div>
+                </div>
+
 
                 <!--排序-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.orderIndexError }">
@@ -231,7 +240,7 @@
                     <label class="col-md-3 control-label">角色标识</label>
                     <div class="col-md-9">
                         <input class="form-control" placeholder="角色标识（大写英文/下划线）"
-                               v-model="role.name">
+                               v-model="role.name" readonly>
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
                             {{error.nameErrorMsg}}
@@ -265,6 +274,14 @@
 
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-md-3 control-label">系统模块名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" id="scb" readonly>
+                    </div>
+                </div>
+
 
                 <!--排序-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.orderIndexError }">

@@ -15,7 +15,6 @@
 <script src="/static/js/plugin/bootstrap-ztree/js/jquery.ztree.exhide.min.js"></script>
 <script type="text/javascript">
 
-
     //    treeObj.hideNodes(nodes[0].children);
     $(function () {
         var settings = {
@@ -25,14 +24,8 @@
                     rootPId: 0
                 }
             },
-            async: {
-                enable: true,
-                url: "/oauth2/role/api/selectPartRole",
-                autoParam: ["id"],
-                otherParam: ["systemModuleCode", parent.$selectedModule.val()]
-            },
             view: {
-                selectedMulti: false,
+                selectedMulti: false
             },
             callback: {
                 onDblClick: function (event, treeId, treeNode) {

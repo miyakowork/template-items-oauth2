@@ -53,8 +53,4 @@ public class IndexController extends TemplateController {
                 return "router/dashboard";
         }
 
-        @RequestMapping("/a")
-        public String a() {
-                return "a";
-        }
 }
