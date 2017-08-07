@@ -190,7 +190,8 @@
                 }]
             })
         })
-    }
+    };
+
     //加载左侧树结构
     var load_departmentTree = function () {
         var settings = {
@@ -207,7 +208,7 @@
             },
             async: {
                 enable: true,
-                url: "/department/api/selectPartDepartment",
+                url: "/department/api/selectDepartment",
                 autoParam: ["id"]
             },
             view: {

@@ -6,7 +6,7 @@ import org.templateproject.oauth2.entity.OauthDepartment;
  * 部门管理页面的对象VO
  * Created by wuwenbin on 2017/7/16.
  */
-public class DeptVO extends OauthDepartment {
+public class DepartmentVO extends OauthDepartment {
 
     private String parentName;
 

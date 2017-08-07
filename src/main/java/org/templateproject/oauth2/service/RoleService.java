@@ -44,7 +44,7 @@ public class RoleService extends SimpleBaseCrudService<OauthRole, Integer> {
          */
         public List<ZTreeBO> findRoleTree(int roleId, String systemModuleCode) {
                 List<OauthRole> oauthRoles = h2Dao.findListBeanByArray(sql(), OauthRole.class, systemModuleCode);
-                if (roleId != Integer.MIN_VALUE + 1) {
+                if (roleId != Integer.MIN_VALUE + 1) {//此处表示
                         oauthRoles.add(OauthRole.root());//添加角色树根节点，上帝角色（包含所有系统模块的角色）
                 }
                 return roleToZTree(oauthRoles);

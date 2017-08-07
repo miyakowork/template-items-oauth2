@@ -1,30 +1,30 @@
 package org.templateproject.oauth2.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.templateproject.lang.TP;
 import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthDepartment;
 import org.templateproject.oauth2.page.department.ZTreeBO;
-import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
+import org.templateproject.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.oauth2.support.pojo.bo.DepartmentBO;
-import org.templateproject.oauth2.support.pojo.vo.DeptVO;
+import org.templateproject.oauth2.support.pojo.vo.DepartmentVO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.sql.entrance.SQLFactory;
 import org.templateproject.sql.factory.SQLBeanBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 部门管理service
- * Created by Liurongqi on 2017/7/12.
+ * Created by Wuwenbin on 2017/08/07.
  */
 @Service
 @Transactional
+@SqlMapper("department")
 public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, Integer> {
 
     /**
@@ -33,40 +33,8 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      * @param departmentBO 页面查询对象
      * @return 当前Page页
      */
-    public Page<DeptVO> getDepartmentPage(DepartmentBO departmentBO, Page<DeptVO> page) {
-        String sql = "SELECT tod.*, tod1.name as parent_name , tou1.username as create_name, tou2.username as update_name"+
-                " FROM t_oauth_user tou1,t_oauth_user tou2 ,t_oauth_department tod"+
-                " left join t_oauth_department tod1 on tod1.id = tod.parent_id"+
-                " WHERE tod.create_user = tou1.id AND tod.update_user = tou2.id";
-        String orderSQL = "";
-        //先组装order部分
-        if (StringUtils.isNotEmpty(page.getOrderField()) && StringUtils.isNotEmpty(page.getOrderDirection())) {
-            orderSQL = TP.placeholder.format(" ORDER BY {} {}", page.getOrderField(), page.getOrderDirection());
-        }
-
-//        if (departmentBO.getEnabled()!=null){
-//            sql += " AND tod.enabled = "+ departmentBO.getEnabled();
-//        }
-
-        //如果参数不为空
-        if (departmentBO.getParentId() != null && StringUtils.isNotEmpty(departmentBO.getName())) {
-            sql += " AND tod.name LIKE :name AND tod.parent_id = :pid" + orderSQL;
-            Map<String, Object> pMap = new HashMap<>();
-            pMap.put("name", "%" + departmentBO.getName() + "%");
-            pMap.put("pid", departmentBO.getParentId());
-            return findPage(page, DeptVO.class, sql, pMap);
-        } else if (StringUtils.isNotEmpty(departmentBO.getName())) {
-            sql += " AND tod.name LIKE :name" + orderSQL;
-            Map<String, Object> pMap = new HashMap<>();
-            pMap.put("name", "%" + departmentBO.getName() + "%");
-            return findPage(page, DeptVO.class, sql, pMap);
-        } else if (departmentBO.getParentId() != null) {
-            sql += " AND tod.parent_id = ?" + orderSQL;
-            return findPage(page, DeptVO.class, sql, departmentBO.getParentId());
-        } else {
-            sql += orderSQL;
-            return findPage(page, DeptVO.class, sql);
-        }
+    public Page<DepartmentVO> findDepartmentPage(DepartmentBO departmentBO, Page<DepartmentVO> page) {
+        return findPagination(page, DepartmentVO.class, sql(), departmentBO);
     }
 
     /**
@@ -75,7 +43,7 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      * @param departments 部门集合对象
      * @return 部门的ztree
      */
-    private List<ZTreeBO> departmentToZtree(Collection<OauthDepartment> departments) throws Exception{
+    private List<ZTreeBO> departmentToZtree(Collection<OauthDepartment> departments) {
         List<ZTreeBO> zTreeList = new LinkedList<>();
         for (OauthDepartment next : departments) {
             ZTreeBO ztree = new ZTreeBO();
@@ -85,9 +53,9 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
             ztree.setOpen(true);
 
             //根据是否有子节点设置isParent属性
-            if (checkIsParent(next.getId())){
+            if (checkIsParent(next.getId())) {
                 ztree.setisParent(true);
-            }else{
+            } else {
                 ztree.setisParent(false);
             }
             zTreeList.add(ztree);
@@ -97,52 +65,34 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
 
 
     /**
-     * 非异步加载时生成zTree
-     * @return
-     * @throws Exception
-     */
-    public List<ZTreeBO> findDepartmentTree() throws Exception{
-        List<OauthDepartment> departments = (List<OauthDepartment>) findList(OauthDepartment.class);
-        departments.add(OauthDepartment.root());
-        return this.departmentToZtree(departments);
-
-    }
-
-    /**
      * zTree形式的菜单列表
      * 根据父节点id生成一级子节点的zTree
+     *
      * @return ztree树
      */
-    public List<ZTreeBO> findDepartmentTree(Page<OauthDepartment> page, HttpServletRequest request)throws Exception {
-        int pId = Integer.parseInt(request.getParameter("id") );
-        List<OauthDepartment> departments = findChildList(pId);
-        if (0 == pId){
+    public List<ZTreeBO> findDepartmentTree(int roleId) {
+        String sql = "SELECT * FROM t_oauth_department tod WHERE tod.ENABLED = 1 AND tod.parent_id  = ?";
+        List<OauthDepartment> departments = h2Dao.findListBeanByArray(sql, OauthDepartment.class, roleId);
+        if (roleId != Integer.MIN_VALUE + 1) {
             departments.add(OauthDepartment.root());
         }
         return this.departmentToZtree(departments);
     }
 
-    /**
-     * 获取指定节点的子节点
-     * @param id
-     * @return
-     */
-    public List<OauthDepartment> findChildList(int id){
-        String sql = "SELECT * FROM t_oauth_department tod WHERE 1=1 AND tod.parent_id  = ?";
-        return h2Dao.findListBeanByArray(sql,OauthDepartment.class,id);
-    }
 
     /**
      * 根据节点id判断指定节点是否为父节点
+     *
      * @param id
      * @return
      * @throws Exception
      */
-    public  boolean checkIsParent(int id) throws Exception{
+    public boolean checkIsParent(int id) {
         String sql = "SELECT COUNT(*) FROM t_oauth_department tod WHERE 1=1 AND tod.parent_id  = ?";
-        long count = h2Dao.queryNumberByArray(sql,Long.class,id);
-        return count!=0;
+        long count = h2Dao.queryNumberByArray(sql, Long.class, id);
+        return count != 0;
     }
+
     /**
      * 新增部门数据
      *

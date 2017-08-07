@@ -37,7 +37,7 @@
             }
         };
 
-        $.get("/department/api/selectDepartmentTree",function (json) {
+        $.get("/department/api/selectDepartment",function (json) {
             $.fn.zTree.init($("#DepartmentTree"),settings,json.data)
             var hiddenId = parent.app.OauthDepartment.id;
             var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");

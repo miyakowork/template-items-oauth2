@@ -1,12 +1,25 @@
-
 pageSetUp();
 
 var app;
 
 // page_function
 var page_function = function () {
+
     load_departmentTree();
+
     var $table = $("#table");
+
+    //搜索控件显影的监听事件
+    $("#department-search-control").on("click", function () {
+        window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
+        TF.reInitTable($table, {
+            url: "/department/api/list",
+            toolbar: '#department-toolbar',
+            queryParams: query_params,
+            filterControl: true
+        })
+    });
+
     var query_params = function (params) {
         return {
             limit: params.limit,
@@ -22,7 +35,7 @@ var page_function = function () {
     $table.bootstrapTable({
         sidePagination: "server",
         url: "/department/api/list",
-        toolbar: '#toolbar',
+        toolbar: '#department-toolbar',
         showRefresh: true,
         method: 'post',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",//post方式一定得改成这种contentType
@@ -313,8 +326,8 @@ var load_departmentTree = function () {
         },
         async: {
             enable: true,
-            url: "/department/api/selectPartDepartment",
-            autoParam: ["id"],
+            url: "/department/api/selectDepartment",
+            autoParam: ["id"]
         },
         view: {
             selectedMulti: false,
@@ -393,6 +406,7 @@ function getParentIdOnSort() {
     }
     return 0
 }
+
 // load related plugins
 
 loadScript("/static/js/libs/vue/axios.min.js", function () {
