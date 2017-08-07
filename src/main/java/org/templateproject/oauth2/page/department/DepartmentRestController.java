@@ -9,6 +9,7 @@ import org.templateproject.oauth2.service.DepartmentService;
 import org.templateproject.oauth2.support.BaseRestController;
 import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.oauth2.support.pojo.bo.DepartmentBO;
+import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.oauth2.support.pojo.vo.DepartmentVO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
@@ -50,12 +51,8 @@ public class DepartmentRestController extends BaseRestController {
      * @return json R
      */
     @RequestMapping("selectDepartment")
-    public List<ZTreeBO> selectDepartment(String id) {
-        if (StringUtils.isNotEmpty(id)) {
-            return departmentService.findDepartmentTree(Integer.parseInt(id));
-        } else {
-            return departmentService.findDepartmentTree(Integer.MIN_VALUE + 1);
-        }
+    public List<ZTreeBO> selectDepartment() {
+        return departmentService.findDepartmentTree();
     }
 
 

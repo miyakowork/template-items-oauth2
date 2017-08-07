@@ -1,6 +1,7 @@
 <!--list页面-->
-<div class="row">
-    <div class="col-md-4" style="margin-top: 10px;">
+<div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+     xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <div class="col-md-4" style="margin-top: 5px;">
         <div class="panel panel-blueDark">
             <div class="panel-heading">
                 <span><i class="fa fa-building"></i> 部门树</span>
@@ -12,6 +13,8 @@
     </div>
     <div class="col-md-8">
         <div id="department-toolbar" class="form-inline">
+            <button id="refreshDepartmentTree" class="btn btn-sm btn-primary"><i class="fa fa-times"></i> 取消勾选部门
+            </button>
             <button id="add-department" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
             <button id="edit-department" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
             &nbsp;
@@ -22,7 +25,7 @@
         </div>
         <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <table id="table">
+            <table id="department-table">
                 <thead>
                 <tr>
                     <th data-checkbox="true"></th>
@@ -113,7 +116,7 @@
                 <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
                     <label class="col-md-3 control-label">部门名称</label>
                     <div class="col-md-9">
-                        <input class="form-control" placeholder="部门名称" type="text"
+                        <input class="form-control" placeholder="部门名称"
                                v-model="OauthDepartment.name">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
@@ -124,9 +127,9 @@
 
                 <!--//上级部门-->
                 <div class="form-group">
-                    <label class="col-md-3 control-label">上级部门</label>
+                    <label class="col-md-3 control-label">上级部门ID</label>
                     <div class="col-md-9">
-                        <input class="form-control" placeholder="上级部门" type="text"
+                        <input class="form-control" placeholder="上级部门ID"
                                v-model="OauthDepartment.parentId"
                                readonly>
                         <div class="note-error margin-bottom-0"
@@ -140,7 +143,7 @@
                 <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
                     <label class="col-md-3 control-label">排序索引</label>
                     <div class="col-md-9">
-                        <input class="form-control" placeholder="排序索引" type="text"
+                        <input class="form-control" placeholder="排序索引"
                                v-model="OauthDepartment.orderIndex">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
@@ -176,13 +179,13 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">备注信息</label>
                     <div class="col-md-9">
-                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="OauthDepartment.remark">
+                        <input class="form-control" placeholder="备注信息（选填）" v-model="OauthDepartment.remark">
                     </div>
                 </div>
 
 
             </fieldset>
-            <button id="add" type="submit" class="hidden"></button>
+            <button id="departmentAdd" type="submit" class="hidden"></button>
 
         </form>
     </div>
@@ -269,7 +272,7 @@
 
 
             </fieldset>
-            <button id="edit" type="submit" class="hidden"></button>
+            <button id="departmentEdit" type="submit" class="hidden"></button>
 
         </form>
     </div>

@@ -7,7 +7,7 @@ var page_function = function () {
 
     load_departmentTree();
 
-    var $table = $("#table");
+    var $table = $("#department-table");
 
     //搜索控件显影的监听事件
     $("#department-search-control").on("click", function () {
@@ -28,38 +28,18 @@ var page_function = function () {
             sort: params.sort,
             parentId: getParentIdOnSort(),
             name: $("input.bootstrap-table-filter-control-name").val(),
-            enabled: $("#enabledSelector option:selected").val()
+            enabled: $(".bootstrap-table-filter-control-enabled").val()
         };
     };
 
-    $table.bootstrapTable({
-        sidePagination: "server",
+    //加载表格
+    TF.initTable($table, {
         url: "/department/api/list",
         toolbar: '#department-toolbar',
-        showRefresh: true,
-        method: 'post',
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",//post方式一定得改成这种contentType
         queryParams: query_params,
-        height: getHeight(),
-        sortName: 'id',//第一次进页面默认的排序字段
-        sortOrder: 'asc',
-        idField: "id",
-        uniqueId: 'id',
-        checkboxHeader: true,
-        clickToSelect: true,
-        showColumns: true,
-        silentSort: false,
-        maintainSelected: true,
-        striped: true,
-        cache: false,
-        pagination: true,
-        paginationLoop: false,
-        pageList: '[5,10,25,50,100]',
-        escape: true,
-        filterControl: true,
-        filterShowClear: true,
-        searchTimeOut: 1000
+        filterControl: true
     });
+
 
     app = new Vue({
         el: "#bigDepartment",
@@ -107,14 +87,11 @@ var page_function = function () {
                     }
                     axios.post('/department/api/add', params)
                         .then(function (response) {
-                            if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
-                                setTimeout(function () {
-                                    $("#addDepartment").dialog("close");
-                                    $table.bootstrapTable("refresh");
-                                    load_departmentTree();
-
-                                }, 1000)
+                                $("#addDepartment").dialog("close");
+                                $table.bootstrapTable("refresh");
+                                load_departmentTree();
                             } else {
                                 TF.show_error_msg(response.data.message)
                             }
@@ -184,7 +161,7 @@ var page_function = function () {
         vuerify: {
             name: {
                 test: function () {
-                    return String(app.OauthDepartment.name).length >= 0
+                    return String(app.OauthDepartment.name).length > 0
                 },
                 message: '部门名称不能为空'
             },
@@ -203,32 +180,32 @@ var page_function = function () {
         }
     });
 
-
-    $(window).resize(function () {
-        $table.bootstrapTable('resetView', {
-            height: getHeight()
-        });
-    })
-
     //监听添加按钮点击事件
     $("#add-department").click(function () {
         var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
         var nodes = treeObj.getCheckedNodes(true);
-        if (nodes.length == 0) {
+        if (nodes.length === 0) {
             TF.show_error_message("错误选择提示", "请选择部门以添加子部门")
         } else {
             app.OauthDepartment.parentId = nodes[0].id;
             app.OauthDepartment.name = '';
             app.OauthDepartment.remark = '';
-            $("#addDepartment").dialog("open");
 
+            app.error.nameError = false;
+            app.error.orderError = false;
+            app.error.enabledError = false;
+
+            app.error.nameErrorMsg = '';
+            app.error.orderErrorMsg = '';
+            app.error.enabledErrorMsg = '';
+            $("#addDepartment").dialog("open");
         }
     })
 
     //监听编辑按钮点击事件
     $("#edit-department").click(function () {
         var editUsers = $table.bootstrapTable('getSelections');
-        if (editUsers.length != 1) {
+        if (editUsers.length !== 1) {
             TF.show_error_message("错误选择提示", "请选择部门以供编辑信息")
         } else {
             app.OauthDepartment.id = editUsers[0].id;
@@ -254,8 +231,7 @@ var page_function = function () {
             html: "<i class='fa fa-plus-square-o'></i>&nbsp;确认",
             "class": "btn btn-primary",
             click: function () {
-                $("#add").trigger("click");
-
+                $("#departmentAdd").trigger("click");
             }
         }, {
             html: "<i class='fa fa-times'></i>&nbsp;取消",
@@ -264,7 +240,7 @@ var page_function = function () {
                 $(this).dialog("close");
             }
         }]
-    })
+    });
 
     //编辑弹出框操作
     $("#editDepartment").dialog({
@@ -277,7 +253,7 @@ var page_function = function () {
             html: "<i class='fa fa-plus-square-o'></i>&nbsp;确认",
             "class": "btn btn-primary",
             click: function () {
-                $("#edit").trigger("click");
+                $("#departmentEdit").trigger("click");
 
             }
         }, {
@@ -307,7 +283,25 @@ var page_function = function () {
         })
     })
 
-
+    //取消勾选部门树，并刷新树和表格
+    $("#refreshDepartmentTree").click(function () {
+        var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
+        treeObj.cancelSelectedNode();
+        var nodes = treeObj.getCheckedNodes(true);
+        if (nodes.length === 0) {
+            layer.msg("并没有选择父部门，取消勾选无效！");
+            return;
+        }
+        for (var i = 0, l = nodes.length; i < l; i++) {
+            treeObj.checkNode(nodes[i], false, true);
+        }
+        TF.reInitTable($table, {
+            url: "/department/api/list",
+            toolbar: '#department-toolbar',
+            queryParams: query_params,
+            filterControl: true
+        })
+    });
 };
 
 //加载左侧树结构
@@ -324,63 +318,32 @@ var load_departmentTree = function () {
             chkStyle: "radio",
             radioType: "all"
         },
-        async: {
-            enable: true,
-            url: "/department/api/selectDepartment",
-            autoParam: ["id"]
-        },
         view: {
             selectedMulti: false,
         },
         callback: {
             onClick: function (event, treeId, treeNode) {
-                var $table = $("#table");
+                var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
+                treeObj.checkNode(treeNode, true, false);
+                var $table = $("#department-table");
                 var opt = {
                     url: "/department/api/list",
                     silent: true,
                     query: {
                         parentId: treeNode.id,
-                        name: $("input[name=name]").val()
+                        name: $("input.bootstrap-table-filter-control-name").val(),
                     }
                 };
                 $table.bootstrapTable('refresh', opt);
             }
         }
     };
-    $.get("/department/api/selectDepartment?id=0", function (json) {
-        $.fn.zTree.init($("#DepartmentTree"), settings, json.data)
+    $.get("/department/api/selectDepartment", function (json) {
+        $.fn.zTree.init($("#DepartmentTree"), settings, json)
     })
 
 };
 
-function search() {
-    var opt = {
-        url: "/department/api/list",
-        silent: true,
-        query: {
-            parentId: $.fn.zTree.getZTreeObj("DepartmentTree") !== null ? $.fn.zTree.getZTreeObj("DepartmentTree").getSelectedNodes()[0].id : 0,
-            name: $("input.bootstrap-table-filter-control-name").val(),
-            enabled: $("#enabledSelector option:selected").val()
-        }
-    }
-    $("#table").bootstrapTable('refresh', opt);
-}
-
-//获取高度
-function getHeight() {
-    return $(window).height() - $('header').outerHeight(true)
-        - $('div.page-footer').outerHeight(true)
-        - $('#ribbon').outerHeight(true)
-        - 25
-}
-
-/**
- * 格式化是否可用一列显示方式
- * @param val
- */
-function enabledFormatter(val) {
-    return val ? "<label class='label label-success'>可用</label>" : "<label class='label label-danger'>不可用</label>";
-}
 
 /**
  * 格式化上级部门显示方式
@@ -390,13 +353,6 @@ function parentNameFormatter(val) {
     return val === null || val === "-" ? "根节点" : val;
 }
 
-/**
- * 格式化日期显示方式
- * @param date
- */
-function date_formatter(date) {
-    return date.year + "-" + date.monthValue + "-" + date.dayOfMonth + " " + date.hour + ":" + date.minute + ":" + date.second;
-}
 
 function getParentIdOnSort() {
     if ($.fn.zTree.getZTreeObj("DepartmentTree") !== null) {
@@ -407,10 +363,9 @@ function getParentIdOnSort() {
     return 0
 }
 
-// load related plugins
-
-loadScript("/static/js/libs/vue/axios.min.js", function () {
-    loadScript("/static/js/libs/vue/vuerify.min.js", function () {
-        loadScript("/static/js/libs/vue/url-search-params.min.js", page_function())
-    })
-})
+// load related plugins,如果需要额外的js
+//则使用loadScript("*.js",function(){
+// loadScript("*.js",page_function()
+// });
+// 类似的嵌套脚本
+page_function();

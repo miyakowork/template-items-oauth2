@@ -5,10 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthDepartment;
-import org.templateproject.oauth2.page.department.ZTreeBO;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.oauth2.support.pojo.bo.DepartmentBO;
+import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.oauth2.support.pojo.vo.DepartmentVO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.sql.entrance.SQLFactory;
@@ -43,7 +43,7 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      * @param departments 部门集合对象
      * @return 部门的ztree
      */
-    private List<ZTreeBO> departmentToZtree(Collection<OauthDepartment> departments) {
+    private List<ZTreeBO> department2ZTree(Collection<OauthDepartment> departments) {
         List<ZTreeBO> zTreeList = new LinkedList<>();
         for (OauthDepartment next : departments) {
             ZTreeBO ztree = new ZTreeBO();
@@ -70,13 +70,10 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      *
      * @return ztree树
      */
-    public List<ZTreeBO> findDepartmentTree(int roleId) {
-        String sql = "SELECT * FROM t_oauth_department tod WHERE tod.ENABLED = 1 AND tod.parent_id  = ?";
-        List<OauthDepartment> departments = h2Dao.findListBeanByArray(sql, OauthDepartment.class, roleId);
-        if (roleId != Integer.MIN_VALUE + 1) {
-            departments.add(OauthDepartment.root());
-        }
-        return this.departmentToZtree(departments);
+    public List<ZTreeBO> findDepartmentTree() {
+        String sql = "SELECT * FROM t_oauth_department tod WHERE tod.ENABLED = 1";
+        List<OauthDepartment> departments = h2Dao.findListBeanByArray(sql, OauthDepartment.class);
+        return this.department2ZTree(departments);
     }
 
 
