@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-@SqlMapper("systemModule")
+@SqlMapper("system_module")
 public class SystemModuleService extends SimpleBaseCrudService<OauthSystemModule, Integer> {
 
         /**
