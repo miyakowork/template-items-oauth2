@@ -86,8 +86,8 @@ public class RoleRestController extends BaseRestController {
      * @return json R
      */
     @RequestMapping("selectRole")
-    public List<ZTreeBO> selectRoleZTree(String systemModuleCode) {
-        return roleService.findRoleTree(systemModuleCode);
+    public List<ZTreeBO> selectRoleZTree(String id, String systemModuleCode) {
+        return roleService.findRoleTree(id, systemModuleCode);
     }
 
 }
