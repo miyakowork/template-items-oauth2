@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.templateproject.oauth2.constant.CommonConsts;
+import org.templateproject.oauth2.constant.ShiroConsts;
 import org.templateproject.pojo.response.R;
 
 import javax.servlet.ServletRequest;
@@ -50,9 +51,13 @@ public class SessionTimeoutFilter extends AccessControlFilter {
         if (isLoginUriOrRouter)
             return true;
 
-
         Subject subject = getSubject(servletRequest, servletResponse);
         Session session = subject.getSession(false);
+
+        //保存登录之前的url，以供登录成功之后跳转
+        if (request.getQueryString() != null)
+            URI = URI.concat("?").concat(request.getQueryString());
+        request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
 
         boolean isSubjectNull = subject == null;
         boolean isSessionTimeout = session == null

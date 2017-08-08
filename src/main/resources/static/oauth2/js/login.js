@@ -27,9 +27,9 @@ var vm = new Vue({
                 .then(function (result) {
                     result = result.data;
                     if (result.code === 200) {//登录成功
-                        parent.location.href = '/';
+                        parent.location.href = '/#' + result.data || '/';
                     } else if (result.code === 302) {
-                        parent.location.href = result.data || '/';
+                        parent.location.href = '/#' + result.data || '/';
                     } else {
                         vm.error = true;
                         vm.errorMsg = result.message;
