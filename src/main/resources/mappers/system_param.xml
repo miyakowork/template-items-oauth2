@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<systemParam>
+
+    <findSystemParamPage>
+        SELECT
+            tosp.*,
+            tou1.username AS create_user_name,
+            tou2.username AS update_user_name
+        FROM
+            T_OAUTH_SYSTEM_PARAM tosp, t_oauth_user tou1, t_oauth_user tou2
+        WHERE tosp.CREATE_USER = tou1.id AND tosp.update_user = tou2.id
+    </findSystemParamPage>
+
+    <findValueByParamKey>
+        SELECT *
+        FROM t_oauth_system_param
+        WHERE `name` = ?
+    </findValueByParamKey>
+</systemParam>

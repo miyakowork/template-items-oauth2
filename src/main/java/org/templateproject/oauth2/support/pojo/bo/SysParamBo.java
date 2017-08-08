@@ -1,6 +1,8 @@
 package org.templateproject.oauth2.support.pojo.bo;
 
 
+import org.templateproject.oauth2.support.annotation.query.QueryColumn;
+import org.templateproject.oauth2.support.enumerate.Operator;
 import org.templateproject.oauth2.support.pojo.PageQueryBO;
 
 /**
@@ -9,8 +11,9 @@ import org.templateproject.oauth2.support.pojo.PageQueryBO;
  */
 public class SysParamBo extends PageQueryBO {
 
-    private String  name;
+    private String name;
 
+    @QueryColumn(value = "enabled", operation = Operator.EQ, table = "tosp")
     private Boolean selectEnabled;
 
     private String value;
