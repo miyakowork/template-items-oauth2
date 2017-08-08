@@ -184,29 +184,45 @@ var page_function = function () {
     $("#add-department").click(function () {
         var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
         var nodes = treeObj.getCheckedNodes(true);
+
+        app.OauthDepartment.name = '';
+        app.OauthDepartment.remark = '';
+
+        app.error.nameError = false;
+        app.error.orderError = false;
+        app.error.enabledError = false;
+
+        app.error.nameErrorMsg = '';
+        app.error.orderErrorMsg = '';
+        app.error.enabledErrorMsg = '';
+
         if (nodes.length === 0) {
-            TF.show_error_message("错误选择提示", "请选择部门以添加子部门")
+            app.OauthDepartment.parentId = 0;
+            layer.confirm('即将添加一级部门节点！<br/>若要添加其它级请在左侧选择上级部门节点！', function (index) {
+                layer.close(index);
+                $("#addDepartment").dialog("open");
+            });
         } else {
             app.OauthDepartment.parentId = nodes[0].id;
-            app.OauthDepartment.name = '';
-            app.OauthDepartment.remark = '';
-
-            app.error.nameError = false;
-            app.error.orderError = false;
-            app.error.enabledError = false;
-
-            app.error.nameErrorMsg = '';
-            app.error.orderErrorMsg = '';
-            app.error.enabledErrorMsg = '';
             $("#addDepartment").dialog("open");
         }
     })
 
     //监听编辑按钮点击事件
     $("#edit-department").click(function () {
+        app.OauthDepartment.name = '';
+        app.OauthDepartment.remark = '';
+
+        app.error.nameError = false;
+        app.error.orderError = false;
+        app.error.enabledError = false;
+
+        app.error.nameErrorMsg = '';
+        app.error.orderErrorMsg = '';
+        app.error.enabledErrorMsg = '';
         var editUsers = $table.bootstrapTable('getSelections');
         if (editUsers.length !== 1) {
-            TF.show_error_message("错误选择提示", "请选择部门以供编辑信息")
+            TF.show_error_message("错误选择提示", "请选择一个部门来予以修改")
         } else {
             app.OauthDepartment.id = editUsers[0].id;
             app.OauthDepartment.name = editUsers[0].name;
@@ -283,8 +299,18 @@ var page_function = function () {
         })
     })
 
+    var $refreshDepartmentTree = $("#refreshDepartmentTree");
+    var tipsIndex;
+    $refreshDepartmentTree.hover(function () {
+        tipsIndex = layer.tips($(this).attr("title"), '#refreshDepartmentTree');
+        $(this).addClass("fa-spin");
+    }, function () {
+        $(this).removeClass("fa-spin");
+        layer.close(tipsIndex);
+    });
+
     //取消勾选部门树，并刷新树和表格
-    $("#refreshDepartmentTree").click(function () {
+    $refreshDepartmentTree.click(function () {
         var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
         treeObj.cancelSelectedNode();
         var nodes = treeObj.getCheckedNodes(true);

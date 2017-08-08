@@ -41,24 +41,18 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      * 將department列表转为zTree树对象
      *
      * @param departments 部门集合对象
-     * @return 部门的ztree
+     * @return 部门的zTree
      */
-    private List<ZTreeBO> department2ZTree(Collection<OauthDepartment> departments) {
+    public List<ZTreeBO> department2ZTree(Collection<OauthDepartment> departments) {
         List<ZTreeBO> zTreeList = new LinkedList<>();
         for (OauthDepartment next : departments) {
-            ZTreeBO ztree = new ZTreeBO();
-            ztree.setId(next.getId().toString());
-            ztree.setpId(next.getParentId().toString());
-            ztree.setName(next.getName());
-            ztree.setOpen(true);
-
-            //根据是否有子节点设置isParent属性
-            if (checkIsParent(next.getId())) {
-                ztree.setisParent(true);
-            } else {
-                ztree.setisParent(false);
-            }
-            zTreeList.add(ztree);
+            ZTreeBO zTree = new ZTreeBO();
+            zTree.setId(next.getId().toString());
+            zTree.setpId(next.getParentId().toString());
+            zTree.setName(next.getName());
+            zTree.setOpen(next.getParentId() == 0);
+            zTree.setisParent(checkIsParent(next.getId()));  //根据是否有子节点设置isParent属性
+            zTreeList.add(zTree);
         }
         return zTreeList;
     }
@@ -68,66 +62,25 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      * zTree形式的菜单列表
      * 根据父节点id生成一级子节点的zTree
      *
-     * @return ztree树
+     * @return zTree树
      */
-    public List<ZTreeBO> findDepartmentTree() {
-        String sql = "SELECT * FROM t_oauth_department tod WHERE tod.ENABLED = 1";
-        List<OauthDepartment> departments = h2Dao.findListBeanByArray(sql, OauthDepartment.class);
-        return this.department2ZTree(departments);
+    public List<OauthDepartment> findEnabledDepartments(String depId) {
+        List<OauthDepartment> departments = h2Dao.findListBeanByArray(sql(), OauthDepartment.class);
+        if ("0".equalsIgnoreCase(depId))//如果需要显示部门根节点，则传递参数id=0即可
+            departments.add(OauthDepartment.root());
+        return departments;
     }
 
 
     /**
      * 根据节点id判断指定节点是否为父节点
      *
-     * @param id
-     * @return
-     * @throws Exception
+     * @param id 部门id
+     * @return 是否有子节点
      */
     public boolean checkIsParent(int id) {
-        String sql = "SELECT COUNT(*) FROM t_oauth_department tod WHERE 1=1 AND tod.parent_id  = ?";
-        long count = h2Dao.queryNumberByArray(sql, Long.class, id);
+        long count = h2Dao.queryNumberByArray(sql(), Long.class, id);
         return count != 0;
     }
 
-    /**
-     * 新增部门数据
-     *
-     * @param oauthDepartment 新增的bu部门对象
-     * @return 新增是否成功
-     * @throws Exception 保存异常
-     */
-    public boolean save(OauthDepartment oauthDepartment) throws Exception {
-        SQLBeanBuilder sqlBeanBuilder = SQLFactory.builder(OauthDepartment.class);
-        String insertSQL = sqlBeanBuilder.insertRoutersWithoutPk(
-                ServiceConsts.DEFAULT_ROUTER,
-                CommonConsts.UPDATE_ROUTER,
-                CommonConsts.CREATE_ROUTER,
-                CommonConsts.ENABLED_ROUTER,
-                CommonConsts.ORDER_ROUTER,
-                CommonConsts.REMARK_ROUTER
-        );
-        oauthDepartment.preInsert();
-        return h2Dao.executeBean(insertSQL, oauthDepartment) > 0;
-    }
-
-    /**
-     * 编辑部门数据
-     *
-     * @param oauthDepartment 编辑对象
-     * @return 编辑部门对象
-     * @throws Exception 编辑过程中出现的异常
-     */
-    public boolean edit(OauthDepartment oauthDepartment) throws Exception {
-        SQLBeanBuilder sqlBeanBuilder = SQLFactory.builder(OauthDepartment.class);
-        String updateSQL = sqlBeanBuilder.updateRoutersByPk(
-                ServiceConsts.DEFAULT_ROUTER,
-                CommonConsts.UPDATE_ROUTER,
-                CommonConsts.ENABLED_ROUTER,
-                CommonConsts.ORDER_ROUTER,
-                CommonConsts.REMARK_ROUTER
-        );
-        oauthDepartment.preUpdate();
-        return h2Dao.executeBean(updateSQL, oauthDepartment) > 0;
-    }
 }
