@@ -324,30 +324,33 @@ var page_function = function () {
     //获取下拉框内容
     axios.post('/oauth2/system-module/api/find/modules/enabled', {})
         .then(function (response) {
-            if (response.data.length > 0) {
+            if (response && response.status === 200) {
                 app.role.systemCode = response.data;
                 var $selectSystemCode = app.role.systemCode;
-                app.role.systemCode.selected = $selectSystemCode[0].systemCode;
-                for (var i = 0; i < $selectSystemCode.length; i++) {
-                    $('#select-modules').append("<option value=" + $selectSystemCode[i].systemCode + ">" + $selectSystemCode[i].name + "</option>");
-                }
                 $selectedModule = $("input[name=selectedModule]");
-                $selectedModule.val($selectSystemCode[0].systemCode);
-
-                //循环完select之后加载左侧角色树
-                loadRoleTree();
-                //循环完之后加载表格
-                TF.initTable($table, {
-                    url: "/oauth2/role/api/list",
-                    toolbar: '#role-toolbar',
-                    queryParams: function (params) {
-                        var opt = query_params(params);
-                        opt.systemCode = $selectedModule.val();
-                        return opt;
-                    },
-                    filterControl: true
-                });
+                if (response.data.length > 0) {
+                    app.role.systemCode.selected = $selectSystemCode[0].systemCode;
+                    for (var i = 0; i < $selectSystemCode.length; i++) {
+                        $('#select-modules').append("<option value=" + $selectSystemCode[i].systemCode + ">" + $selectSystemCode[i].name + "</option>");
+                    }
+                    $selectedModule.val($selectSystemCode[0].systemCode);
+                } else {
+                    $selectedModule.val("");
+                }
             }
+            //循环完select之后加载左侧角色树
+            loadRoleTree();
+            //循环完之后加载表格
+            TF.initTable($table, {
+                url: "/oauth2/role/api/list",
+                toolbar: '#role-toolbar',
+                queryParams: function (params) {
+                    var opt = query_params(params);
+                    opt.systemCode = $selectedModule.val();
+                    return opt;
+                },
+                filterControl: true
+            });
         })
         .catch(function (error) {
             TF.show_error_msg(error.response.data.message)
