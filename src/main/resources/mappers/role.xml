@@ -10,7 +10,8 @@
         FROM t_oauth_user tou1, t_oauth_user tou2,
             t_oauth_role tor LEFT JOIN t_oauth_role tor1 ON tor1.id = tor.parent_id
             LEFT JOIN T_OAUTH_SYSTEM_MODULE tosm ON tor.SYSTEM_CODE = tosm.SYSTEM_CODE
-        WHERE tor.create_user = tou1.id AND tor.update_user = tou2.id
+        WHERE tor.create_user = tou1.id AND tor.update_user = tou2.id AND
+        tosm.SYSTEM_CODE = tor.SYSTEM_CODE
     </findRolePage>
 
     <findRoleTree>
