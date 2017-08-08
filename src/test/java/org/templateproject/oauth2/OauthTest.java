@@ -34,7 +34,7 @@ public class OauthTest {
 //        filterChainDefinitionMap.put("/**", "forceLogout,sto,user");
 //        System.out.println(getKeyByValue(filterChainDefinitionMap, "anon"));
 
-
+        System.out.println(TP.webDate.string2Date("2017-11-01 09:00:00", "yyyy-MM-dd HH:mm:ss"));
     }
 //
 //    private static String getKeyByValue(Map<String, String> map, String value) {

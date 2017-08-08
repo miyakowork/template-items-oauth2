@@ -1,8 +1,11 @@
 package org.templateproject.oauth2;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.templateproject.dao.ancestor.AncestorDao;
 import org.templateproject.dao.factory.DaoFactory;
 import org.templateproject.oauth2.config.support.password.PasswordHelper;
@@ -21,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class Oauth2ApplicationTests extends AbstractBaseCrudService<OauthMenuModule, Integer> {
 
     public static void main(String[] args) {
@@ -91,7 +94,7 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService<OauthMenuMod
     @Test
     public void addTestUser() throws Exception {
         OauthUser user = new OauthUser();
-        user.setUsername("wwb");
+        user.setUsername("sa");
         user.setPassword("123456");
         user.setCname("伍文彬");
         user.setDefaultRoleId(1);
