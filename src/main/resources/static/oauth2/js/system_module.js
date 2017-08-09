@@ -52,6 +52,8 @@ var page_function = function () {
             error: {
                 nameError: false,
                 nameErrorMsg: '',
+                systemCodeError: false,
+                systemCodeErrorMsg: '',
                 orderIndexError: false,
                 orderIndexErrorMsg: ''
             }
@@ -66,11 +68,13 @@ var page_function = function () {
                 this.$vuerify.clear()//清空之前的验证结果信息
                 var check_result = this.$vuerify.check()// 手动触发校验所有数据
                 var $errs = this.$vuerify.$errors
-
+                debugger
                 app.error.nameError = Boolean($errs.name)
                 app.error.nameErrorMsg = $errs.name
                 app.error.orderIndexError = Boolean($errs.orderIndex)
                 app.error.orderIndexErrorMsg = $errs.orderIndex
+                app.error.systemCodeError = Boolean($errs.systemCode)
+                app.error.systemCodeErrorMsg = $errs.systemCode
 
                 if (!check_result) {
                     TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
@@ -82,7 +86,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/system-module/api/add', params)
                         .then(function (response) {
-                            if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
                                 $("#dialog_simple").dialog("close");
                                 $table.bootstrapTable('refresh');
@@ -116,7 +120,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/system-module/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
                                 $("#dialog_simple_edit").dialog("close");
                                 $table.bootstrapTable('refresh');
@@ -144,6 +148,12 @@ var page_function = function () {
                 },
                 message: '不能为空且必须为数字'
             },
+            systemCode: {
+                test: function () {
+                    return String(app.systemmodule.systemCode).length > 3;
+                },
+                message: '不能为空且不能过短'
+            }
         }
     });
 
@@ -160,6 +170,8 @@ var page_function = function () {
         app.error.nameErrorMsg = '';
         app.error.orderError = false;
         app.error.orderErrorMsg = '';
+        app.error.systemCodeError = false;
+        app.error.systemCodeErrorMsg = '';
         return false;
     })
 
@@ -208,6 +220,8 @@ var page_function = function () {
             app.error.nameErrorMsg = '';
             app.error.orderError = false;
             app.error.orderErrorMsg = '';
+            app.error.systemCodeError = false;
+            app.error.systemCodeErrorMsg = '';
             return false;
 
         }

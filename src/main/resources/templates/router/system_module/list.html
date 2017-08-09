@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 
     <div id="system-module-toolbar" class="form-inline">
         <a id="add-systemmodule" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</a>
@@ -106,11 +106,16 @@
                         </div>
                     </div>
                     <!--系统代码-->
-                    <div class="form-group">
+                    <div class="form-group" v-bind:class="{ 'has-error': error.systemCodeError }">
                         <label class="col-md-3 control-label">系统代码：</label>
                         <div class="col-md-9">
-                            <input class="form-control" placeholder="系统代码" type="text"
+                            <input class="form-control" placeholder="系统代码"
                                    v-model="systemmodule.systemCode">
+
+                            <div class="note-error margin-bottom-0"
+                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.systemCodeError }">
+                                {{error.systemCodeErrorMsg}}
+                            </div>
                         </div>
                     </div>
                     <!--是否可用-->
