@@ -1,5 +1,6 @@
 package org.templateproject.oauth2.entity.base;
 
+import org.templateproject.oauth2.util.UserUtils;
 import org.templateproject.sql.annotation.SQLColumn;
 
 import java.time.LocalDateTime;
@@ -27,15 +28,15 @@ public class DataEntity extends BaseEntity {
 
     @Override
     public void preInsert() {
-        super.createUser = 1;
-        super.updateUser = 1;
+        super.createUser = UserUtils.getLoginUser().getId();
+        super.updateUser = UserUtils.getLoginUser().getId();
         super.createDate = LocalDateTime.now();
         super.updateDate = LocalDateTime.now();
     }
 
     @Override
     public void preUpdate() {
-        super.updateUser = 1;
+        super.updateUser = UserUtils.getLoginUser().getId();
         super.updateDate = LocalDateTime.now();
     }
 
