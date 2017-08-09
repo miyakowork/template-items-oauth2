@@ -4,11 +4,10 @@ import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.templateproject.oauth2.config.support.session.H2SessionDao;
+import org.templateproject.oauth2.config.support.session.MySQLSessionDao;
 import org.templateproject.oauth2.constant.ShiroConsts;
 import org.templateproject.oauth2.entity.shiro.ShiroSession;
 import org.templateproject.oauth2.service.shiro.ShiroSessionService;
-import org.templateproject.oauth2.support.BaseController;
 import org.templateproject.oauth2.support.TemplateController;
 import org.templateproject.oauth2.support.pojo.bo.SessionBO;
 import org.templateproject.oauth2.support.pojo.BootstrapTable;
@@ -23,10 +22,10 @@ import org.templateproject.pojo.response.R;
 public class SessionRestController extends TemplateController {
 
     private ShiroSessionService shiroSessionService;
-    private H2SessionDao sessionDao;
+    private MySQLSessionDao sessionDao;
 
     @Autowired
-    public SessionRestController(ShiroSessionService shiroSessionService, H2SessionDao sessionDao) {
+    public SessionRestController(ShiroSessionService shiroSessionService, MySQLSessionDao sessionDao) {
         this.shiroSessionService = shiroSessionService;
         this.sessionDao = sessionDao;
     }

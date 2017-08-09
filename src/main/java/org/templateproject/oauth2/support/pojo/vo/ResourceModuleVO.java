@@ -1,6 +1,5 @@
 package org.templateproject.oauth2.support.pojo.vo;
 
-import org.templateproject.oauth2.entity.OauthDepartment;
 import org.templateproject.oauth2.entity.OauthResourceModule;
 
 /**
@@ -12,6 +11,8 @@ public class ResourceModuleVO extends OauthResourceModule {
     private String createUserName;
 
     private String updateUserName;
+
+    private String systemModuleName;
 
     public String getCreateUserName() {
         return createUserName;
@@ -27,5 +28,13 @@ public class ResourceModuleVO extends OauthResourceModule {
 
     public void setUpdateUserName(String updateUserName) {
         this.updateUserName = updateUserName;
+    }
+
+    public String getSystemModuleName() {
+        return systemModuleName;
+    }
+
+    public void setSystemModuleName(String systemModuleName) {
+        this.systemModuleName = systemModuleName;
     }
 }
