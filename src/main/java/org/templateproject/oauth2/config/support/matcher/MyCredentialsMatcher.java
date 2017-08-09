@@ -17,11 +17,8 @@ import org.templateproject.oauth2.constant.ShiroConsts;
 import org.templateproject.oauth2.entity.OauthUser;
 import org.templateproject.oauth2.service.LogService;
 import org.templateproject.oauth2.service.shiro.ShiroUserService;
-import org.templateproject.oauth2.util.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -80,8 +77,7 @@ public class MyCredentialsMatcher extends SimpleCredentialsMatcher {
             try {
                 logService.traceLog(userService.findByUserName(username).getId(), getRemoteAddr(request));
             } catch (Exception e) {
-                e.printStackTrace();
-                LOGGER.error("记录用户登录日志失败，异常信息：{}", e.getMessage());
+                LOGGER.error("记录用户登录日志失败，异常信息：{}", e);
             }
         }
         return matches;
