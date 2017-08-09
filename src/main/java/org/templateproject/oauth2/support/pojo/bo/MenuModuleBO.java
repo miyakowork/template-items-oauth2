@@ -1,6 +1,8 @@
 package org.templateproject.oauth2.support.pojo.bo;
 
 
+import org.templateproject.oauth2.support.annotation.query.QueryColumn;
+import org.templateproject.oauth2.support.enumerate.Operator;
 import org.templateproject.oauth2.support.pojo.PageQueryBO;
 
 /**
@@ -10,6 +12,7 @@ public class MenuModuleBO  extends PageQueryBO {
 
     private String name;
 
+    @QueryColumn(value = "system_code", operation = Operator.EQ, table = "tomm")
     private String systemCodeName;
 
     public Boolean enabled;
