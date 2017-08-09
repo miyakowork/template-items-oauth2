@@ -4,5 +4,5 @@
    |_| |___|_|  |_|_| |____/_/ \_\_| |___|   |___| |_| |___|_|  |_|    \___/_/ \_\___/  |_| |_||_|
 
  :: template-item-oauth : 通用权限管理系统 -> created by wuwenbin on 2017年05月18日10:33:18
- :: SpringBoot v1.5.3 + h2 v1.9 + SmartAdminUI v1.8.5.2 + vue2.x
+ :: SpringBoot v1.5.3 +mysql v5.7 + SmartAdminUI v1.8.5.2 + vue2.x
 
