@@ -92,7 +92,7 @@ var TF = {
                 content: '<p>' + content + '</p>' || '<p>请修正错误信息之后再提交</p><br/>',
                 color: "#b94a48",
                 timeout: timeout || 3000,
-                icon: "fa fa-times"
+                icon: "fa fa-times-rectangle-o"
             });
         },
 
