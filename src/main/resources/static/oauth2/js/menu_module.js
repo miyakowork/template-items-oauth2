@@ -88,7 +88,7 @@ var page_function = function () {
                         .then(function (response) {
                             if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
-                                $("#menuModuleAdd").dialog("close");
+                                $("#add_menumodule_dialog").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
                                 TF.show_error_msg(response.data.message)
@@ -228,7 +228,7 @@ var page_function = function () {
             html: "<i class='fa fa-plus-square-o'></i>&nbsp; 确定",
             "class": "btn btn-info",
             click: function () {
-                $("#edit").trigger("click");
+                $("#menuModuleEdit").trigger("click");
             }
         }, {
             html: "<i class='fa fa-times'></i>&nbsp; 取消",
