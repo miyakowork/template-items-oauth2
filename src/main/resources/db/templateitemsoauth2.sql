@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-08-08 20:36:00
+Date: 2017-08-09 10:26:58
 */
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -385,6 +385,7 @@ CREATE TABLE `t_oauth_session` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -447,6 +448,7 @@ CREATE TABLE `t_oauth_system_param` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -532,6 +534,7 @@ CREATE TABLE `t_oauth_user_login_log` (
   CONSTRAINT `user_login_log_fk1` FOREIGN KEY (`user_id`) REFERENCES `t_oauth_user` (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 8
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -550,6 +553,30 @@ CREATE TABLE `t_oauth_user_role` (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+DROP TRIGGER IF EXISTS `menu_module_tg1`;
+DELIMITER ;;
+CREATE TRIGGER `menu_module_tg1`
+AFTER UPDATE ON `t_oauth_menu_module`
+FOR EACH ROW
+  BEGIN
+    UPDATE t_oauth_menu
+    SET enabled = new.enabled
+    WHERE menu_module_id = old.id;
+  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `operation_privilege_type_tg1`;
+DELIMITER ;;
+CREATE TRIGGER `operation_privilege_type_tg1`
+AFTER UPDATE ON `t_oauth_operation_privilege_type`
+FOR EACH ROW
+  BEGIN
+    UPDATE t_oauth_privilege_operation
+    SET enabled = new.enabled
+    WHERE operation_type_id = old.id;
+  END
+;;
+DELIMITER ;
 DROP TRIGGER IF EXISTS `system_module_tg1`;
 DELIMITER ;;
 CREATE TRIGGER `system_module_tg1`
