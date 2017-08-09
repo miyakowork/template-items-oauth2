@@ -25,7 +25,7 @@ var page_function = function () {
             order: params.order,
             sort: params.sort,
             name: $("input.bootstrap-table-filter-control-name").val(),
-            systemCodeName: $("input.bootstrap-table-filter-control-systemCode").val()
+            systemCodeName: $(".bootstrap-table-filter-control-systemCode").val()
         };
     };
 
@@ -88,7 +88,7 @@ var page_function = function () {
                         .then(function (response) {
                             if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
-                                $(this).dialog("close");
+                                $("#menuModuleAdd").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
                                 TF.show_error_msg(response.data.message)
@@ -196,6 +196,11 @@ var page_function = function () {
     //监听编辑按钮事件
     $("#edit-menumodule").click(function () {
 
+        app.error.nameError = false;
+        app.error.nameErrorMsg = '';
+        app.error.orderIndexError = false;
+        app.error.orderIndexErrorMsg = '';
+
         var ss = $table.bootstrapTable('getSelections');
         if (ss.length === 1) {
 
@@ -234,15 +239,15 @@ var page_function = function () {
         }]
     });
 
-    //监听删除按钮事件
+    //监听禁用按钮事件
     $("#delete-menumodule").click(function () {
         var ss = $table.bootstrapTable('getSelections');
-        if (ss.length == 0) {
-            TF.show_error_message("错误选择", "请至少选择一行数据进行删除")
+        if (ss.length === 0) {
+            TF.show_error_message("错误选择", "请至少选择一项进行禁用操作")
         } else {
             $.SmartMessageBox({
-                title: "<i class='fa fa-minus-square-o' style='color:red'></i> 删除角色数据?",
-                content: $this.data('reset.msg') || "确认要删除角色数据?",
+                title: "<i class='fa fa-minus-square-o' style='color:red'></i> 禁用以下菜单模块?",
+                content: $this.data('reset.msg') || "确认要禁用以下菜单模块?",
                 buttons: '[取消][确定]'
             }, function (ButtonPressed) {
                 if (ButtonPressed === "确定") {
@@ -266,19 +271,6 @@ var page_function = function () {
         }
     });
 
-    //监听搜索按钮事件
-    $("#search").click(function () {
-        var opt = {
-            url: "/oauth2/menuModule/api/list",
-            silent: true,
-            query: {
-                name: $("input[name=name]").val(),
-                systemCodeName: $("input[name=systemCodeName]").val(),
-                enabled: $("#enabled_select").val()
-            }
-        }
-        $table.bootstrapTable('refresh', opt);
-    });
 
     //获取下拉框内容
     axios.post('/oauth2/system-module/api/find/modules/enabled', {})
@@ -299,8 +291,4 @@ var page_function = function () {
 
 
 // load related plugins
-loadScript("/static/js/libs/vue/axios.min.js", function () {
-    loadScript("/static/js/libs/vue/vuerify.min.js", function () {
-        loadScript("/static/js/libs/vue/url-search-params.min.js", page_function())
-    })
-})
+page_function();

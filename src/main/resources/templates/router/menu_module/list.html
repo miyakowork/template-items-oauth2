@@ -38,8 +38,8 @@
                     data-sortable="true"
                     data-search-formatter="false"
                     data-title="系统编码"
-                    data-filter-control="input"
-                    data-filter-control-placeholder="输入系统编码"
+                    data-filter-control="select"
+                    data-filter-data="url:/oauth2/menuModule/api/systemModule/select"
                     data-align="center"></th>
 
                 <th data-field="enabled"
@@ -189,10 +189,8 @@
                     <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
                         <label class="col-md-2 control-label" for="menumodule-selector-edit">系统编码</label>
                         <div class="col-md-10">
-                            <select class="form-control" v-model="menumodule.systemCode.selected"
-                                    id="menumodule-selector-edit"
-                                    data-live-search="true">
-                            </select>
+                            <input class="form-control" v-model="menumodule.systemCode.selected" readonly
+                                   id="menumodule-selector-edit"/>
                         </div>
                     </div>
 
@@ -215,6 +213,18 @@
                             <div class="note-error margin-bottom-0"
                                  v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
                                 {{error.enabledErrorMsg}}
+                            </div>
+                        </div>
+                    </div>
+                    <!--排序-->
+                    <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
+                        <label class="col-md-2 control-label">排序</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="number"
+                                   v-model="menumodule.orderIndex">
+                            <div class="note-error margin-bottom-0"
+                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
+                                {{error.orderErrorMsg}}
                             </div>
                         </div>
                     </div>

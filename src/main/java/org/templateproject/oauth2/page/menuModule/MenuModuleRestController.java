@@ -1,16 +1,23 @@
 package org.templateproject.oauth2.page.menuModule;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.templateproject.oauth2.entity.OauthMenuModule;
+import org.templateproject.oauth2.entity.OauthSystemModule;
 import org.templateproject.oauth2.service.MenuModuleService;
+import org.templateproject.oauth2.service.SystemModuleService;
 import org.templateproject.oauth2.support.BaseRestController;
-import org.templateproject.oauth2.support.pojo.bo.MenuModuleBO;
-import org.templateproject.oauth2.support.pojo.vo.MenuModuleVO;
 import org.templateproject.oauth2.support.pojo.BootstrapTable;
+import org.templateproject.oauth2.support.pojo.bo.MenuModuleBO;
+import org.templateproject.oauth2.support.pojo.bo.SelectBO;
+import org.templateproject.oauth2.support.pojo.vo.MenuModuleVO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Wuwenbin on 2017/08/01.
@@ -20,10 +27,16 @@ import org.templateproject.pojo.response.R;
 public class MenuModuleRestController extends BaseRestController {
 
     private MenuModuleService menuModuleService;
+    private SystemModuleService systemModuleService;
 
     @Autowired
     public void setMenuModuleService(MenuModuleService menuModuleService) {
         this.menuModuleService = menuModuleService;
+    }
+
+    @Autowired
+    public void setSystemModuleService(SystemModuleService systemModuleService) {
+        this.systemModuleService = systemModuleService;
     }
 
     /**
@@ -93,5 +106,21 @@ public class MenuModuleRestController extends BaseRestController {
             LOGGER.error("禁用菜单模块发生异常，异常信息：{}", e);
             return R.error("禁用菜单模块发生异常，异常信息：" + e.getMessage());
         }
+    }
+
+    /**
+     * 表格中使用系统模块查询的下拉框操作
+     *
+     * @return 下拉框对象
+     */
+    @RequestMapping("systemModule/select")
+    public Map<Object, Object> systemModuleSelect() {
+        List<SelectBO> selectBOs = new ArrayList<>();
+        List<OauthSystemModule> systemModules = systemModuleService.findAllEnabledSystemModules();
+        for (OauthSystemModule systemModule : systemModules) {
+            SelectBO selectBO = SelectBO.create(systemModule.getSystemCode(), systemModule.getName());
+            selectBOs.add(selectBO);
+        }
+        return searchSelect(selectBOs);
     }
 }

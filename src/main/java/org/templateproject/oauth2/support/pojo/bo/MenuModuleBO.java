@@ -2,20 +2,23 @@ package org.templateproject.oauth2.support.pojo.bo;
 
 
 import org.templateproject.oauth2.support.annotation.query.QueryColumn;
+import org.templateproject.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.oauth2.support.enumerate.Operator;
 import org.templateproject.oauth2.support.pojo.PageQueryBO;
 
 /**
  * Created by yuanqi on 2017/7/12/012.
  */
-public class MenuModuleBO  extends PageQueryBO {
+@QueryTable("tomm")
+public class MenuModuleBO extends PageQueryBO {
 
     private String name;
 
-    @QueryColumn(value = "system_code", operation = Operator.EQ, table = "tomm")
+    @QueryColumn(value = "system_code", operation = Operator.EQ)
     private String systemCodeName;
 
-    public Boolean enabled;
+    @QueryColumn(operation = Operator.EQ)
+    public String enabled;
 
     public String getName() {
         return name;
@@ -33,11 +36,11 @@ public class MenuModuleBO  extends PageQueryBO {
         this.systemCodeName = systemCodeName;
     }
 
-    public Boolean getEnabled() {
+    public String getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(String enabled) {
         this.enabled = enabled;
     }
 }
