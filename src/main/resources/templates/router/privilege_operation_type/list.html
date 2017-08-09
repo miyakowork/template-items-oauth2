@@ -1,12 +1,4 @@
-<style type="text/css">
-    .dl {
-        display: inline-block;
-    }
 
-    .dl > .checkbox > input[type=checkbox] {
-        margin-left: 10px;
-    }
-</style>
 <div class="row">
 </div>
 <!-- row -->
@@ -17,11 +9,10 @@
         <button id="edit-operationprivilegetype" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
         <button id="delete-operationprivilegetype" class="btn btn-danger btn-sm"><i class="fa fa-minus-square-o"></i> 删除</button>
         &nbsp;
-        <select class="form-control"  name="enabled1" >
-            <option value="">是否可用(全选)</option>
-            <option value="true">可用</option>
-            <option value="false">不可用</option>
-        </select>
+        <label id="opt-search-control" class="checkbox-inline">
+            <input type="checkbox" class="checkbox style-3">
+            <span>显示搜索控件</span>
+        </label>
         <button id="search-operationprivilegetype" class="btn btn-default btn-sm"><i class="fa fa-search"></i> 搜索</button>
     </div>
     <!-- NEW WIDGET START -->
@@ -212,7 +203,7 @@
 
         $table.bootstrapTable({
             sidePagination: "server",
-            url: "/operationprivilegetype/api/list",
+            url: "/oauth2/privilegeOperationType/api/list",
             toolbar: '#toolbar',
             showRefresh: true,
             method: 'post',
@@ -296,7 +287,7 @@
                         for (var data in datas) {
                             params.append(data, datas[data])
                         }
-                        axios.post('/operationprivilegetype/api/add', params)
+                        axios.post('/oauth2/privilegeOperationType/api/add', params)
                             .then(function (response) {
                                 if (response.data.code == TF.STATUS_CODE.SUCCESS) {
                                     layer.msg(response.data.message);
@@ -332,9 +323,9 @@
                         for (var data in datas) {
                             params.append(data, datas[data])
                         }
-                        axios.post('/operationprivilegetype/api/doEdit', params)
+                        axios.post('/oauth2/privilegeOperationType/api/doEdit', params)
                             .then(function (response) {
-                                if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                                if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                     layer.msg(response.data.message);
                                     setTimeout(function () {
                                         $("#dialog_simple_edit").dialog("close");
@@ -414,7 +405,7 @@
         //监听搜索按钮事件
         $("#search-operationprivilegetype").click(function () {
             var opt = {
-                url: "/operationprivilegetype/api/list",
+                url: "/oauth2/privilegeOperationType/api/list",
                 silent: true,
                 query: {
                     enabled: $("select[name=enabled1]").val()
@@ -489,15 +480,15 @@
                     content: "你确定要删除所选择的所有的信息吗？",
                     buttons: '[取消][确认]'
                 }, function (ButtonPressed) {
-                    if (ButtonPressed == "确认") {
+                    if (ButtonPressed === "确认") {
                         var ids = "";
                         for (var idRow in $selectedEdit) {
                             ids += $selectedEdit[idRow].id + ","
                         }
                         ids = ids.substr(0, ids.length - 1);
-                        axios.post("/operationprivilegetype/api/delete?ids=" + ids)
+                        axios.post("/oauth2/privilegeOperationType/api/delete?ids=" + ids)
                             .then(function (response) {
-                                if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                                if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                     layer.msg(response.data.message);
                                     setTimeout(function () {
                                         $table.bootstrapTable("refresh");

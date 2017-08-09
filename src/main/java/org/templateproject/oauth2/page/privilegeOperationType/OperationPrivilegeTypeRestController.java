@@ -1,26 +1,23 @@
-package org.templateproject.oauth2.page.operationprivilegetype;
+package org.templateproject.oauth2.page.privilegeOperationType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.templateproject.oauth2.entity.OauthOperationPrivilegeType;
 import org.templateproject.oauth2.service.OperationPrivilegeTypeService;
-import org.templateproject.oauth2.support.TemplateController;
+import org.templateproject.oauth2.support.BaseRestController;
+import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.oauth2.support.pojo.bo.OperationPrivilegeTypeBo;
 import org.templateproject.oauth2.support.pojo.vo.OperationPrivilegeTypeVO;
-import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Created by zhangteng on 2017/7/12.
  */
 @RestController
-@RequestMapping("operationprivilegetype/api")
-public class OperationPrivilegeTypeRestController extends TemplateController {
+@RequestMapping("oauth2/privilegeOperationType/api")
+public class OperationPrivilegeTypeRestController extends BaseRestController {
 
 
     private OperationPrivilegeTypeService operationPrivilegeTypeService;
@@ -30,12 +27,17 @@ public class OperationPrivilegeTypeRestController extends TemplateController {
         this.operationPrivilegeTypeService = operationPrivilegeTypeService;
     }
 
+    /**
+     * 权限操作类型page
+     *
+     * @param page
+     * @param operationPrivilegeTypeBo
+     * @return
+     */
     @RequestMapping("list")
-    public BootstrapTable<OperationPrivilegeTypeVO> org(Page<OperationPrivilegeTypeVO> page, OperationPrivilegeTypeBo operationPrivilegeTypeBo, HttpServletRequest request) {
-        page = queryParam2Page(operationPrivilegeTypeBo, page);
+    public BootstrapTable<OperationPrivilegeTypeVO> org(Page<OperationPrivilegeTypeVO> page, OperationPrivilegeTypeBo operationPrivilegeTypeBo) {
         page = operationPrivilegeTypeService.getPage(page, operationPrivilegeTypeBo);
-        List result = page.getResult();
-        return new BootstrapTable<>(page.getTotalCount(), result);
+        return bootstrapTable(page);
     }
 
 
