@@ -207,6 +207,12 @@ var page_function = function () {
             app.resModule.orderIndex = $editResModule.orderIndex
             app.resModule.remark = $editResModule.remark
             app.resModule.systemCode.selected = $editResModule.systemCode
+
+            app.error.nameError = false;
+            app.error.nameErrorMsg = '';
+            app.error.orderIndexError = false;
+            app.error.orderIndexErrorMsg = '';
+
             $('#edit_res_module_dialog').dialog('open');
         }
         return false;

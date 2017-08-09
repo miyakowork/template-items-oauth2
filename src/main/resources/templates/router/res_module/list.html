@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <!--系统编码-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
+                <div class="form-group">
                     <label class="col-md-2 control-label">系统编码</label>
                     <div class="col-md-10">
                         <select id="resource-module-selector-add" @change="selectSystemCode($event)"
@@ -108,12 +108,11 @@
                     </div>
                 </div>
                 <!--系统编码-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
+                <div class="form-group">
                     <label class="col-md-2 control-label">系统编码</label>
                     <div class="col-md-10">
-                        <select class="form-control" v-model="resModule.systemCode.selected"
-                                id="resource-module-selector-edit">
-                        </select>
+                        <input class="form-control" v-model="resModule.systemCode.selected" readonly
+                               id="resource-module-selector-edit" title="系统编码"/>
                     </div>
                 </div>
                 <!--排序-->
