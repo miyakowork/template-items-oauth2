@@ -12,12 +12,10 @@ import org.templateproject.oauth2.constant.ShiroConsts;
 import org.templateproject.oauth2.entity.shiro.ShiroSession;
 import org.templateproject.oauth2.service.shiro.ShiroSessionService;
 import org.templateproject.oauth2.util.SerializableUtils;
-import org.templateproject.oauth2.util.ShiroUtils;
 import org.templateproject.oauth2.util.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -25,9 +23,9 @@ import java.util.Collection;
  * Created by Wuwenbin on 2017/7/19.
  */
 @Component
-public class H2SessionDao extends CachingSessionDAO {
+public class MySQLSessionDao extends CachingSessionDAO {
 
-    private static final Logger LOG = LoggerFactory.getLogger(H2SessionDao.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MySQLSessionDao.class);
 
     private ShiroSessionService shiroSessionService = SpringUtils.getBean(ShiroSessionService.class);
 
