@@ -74,11 +74,10 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @return 插入条数
      * @throws Exception 插入发生的异常
      */
-    public int insertShiroSession(ShiroSession shiroSession) throws Exception {
+    public void insertShiroSession(ShiroSession shiroSession) throws Exception {
         SQLBeanBuilder sbb = SQLFactory.builder(ShiroSession.class);
         String sql = sbb.insertRoutersWithoutPk(ServiceConsts.DEFAULT_ROUTER);
-        shiroSession.preInsert();
-        return h2Dao.executeBean(sql, shiroSession);
+        h2Dao.executeBean(sql, shiroSession);
     }
 
 
