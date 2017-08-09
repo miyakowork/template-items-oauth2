@@ -13,7 +13,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.templateproject.oauth2.config.support.realm.UserRealm;
-import org.templateproject.oauth2.config.support.session.H2SessionDao;
+import org.templateproject.oauth2.config.support.session.MySQLSessionDao;
 import org.templateproject.oauth2.constant.CacheConsts;
 
 /**
@@ -97,7 +97,7 @@ public class ShiroConfig implements CacheConsts {
      * @return
      */
     @Bean
-    public DefaultWebSessionManager sessionManager(SimpleCookie sessionIdCookie, H2SessionDao sessionDao) {
+    public DefaultWebSessionManager sessionManager(SimpleCookie sessionIdCookie, MySQLSessionDao sessionDao) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(30 * 60 * 1000);//session有效空闲时间30分钟默认
         sessionManager.setDeleteInvalidSessions(true);//删除失效的会话

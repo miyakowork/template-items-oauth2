@@ -24,79 +24,80 @@ import java.util.Map;
 @Configuration
 public class ShiroFilterConfig {
 
-        @Bean
-        public MyFormAuthenticationFilter formAuthenticationFilter() {
-                MyFormAuthenticationFilter formAuthenticationFilter = new MyFormAuthenticationFilter();
-                formAuthenticationFilter.setUsernameParam("userName");
-                formAuthenticationFilter.setPasswordParam("userPass");
-                formAuthenticationFilter.setRememberMeParam("rememberMe");
-                formAuthenticationFilter.setLoginUrl("/login");
-                return formAuthenticationFilter;
-        }
+    @Bean
+    public MyFormAuthenticationFilter formAuthenticationFilter() {
+        MyFormAuthenticationFilter formAuthenticationFilter = new MyFormAuthenticationFilter();
+        formAuthenticationFilter.setUsernameParam("userName");
+        formAuthenticationFilter.setPasswordParam("userPass");
+        formAuthenticationFilter.setRememberMeParam("rememberMe");
+        formAuthenticationFilter.setLoginUrl("/login");
+        return formAuthenticationFilter;
+    }
 
 
-        /**
-         * Shiro的Web过滤器
-         *
-         * @param securityManager
-         * @param formAuthenticationFilter
-         * @return
-         */
-        @Bean("shiroFilter")
-        public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager,
-                                                  MyFormAuthenticationFilter formAuthenticationFilter,
-                                                  ForceLogoutFilter forceLogoutFilter,
-                                                  SessionTimeoutFilter sessionTimeoutFilter,
-                                                  UserFilter myUserFilter) {
+    /**
+     * Shiro的Web过滤器
+     *
+     * @param securityManager
+     * @param formAuthenticationFilter
+     * @return
+     */
+    @Bean("shiroFilter")
+    public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager,
+                                              MyFormAuthenticationFilter formAuthenticationFilter,
+                                              ForceLogoutFilter forceLogoutFilter,
+                                              SessionTimeoutFilter sessionTimeoutFilter,
+                                              UserFilter myUserFilter) {
 
-                ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-                shiroFilterFactoryBean.setSecurityManager(securityManager);
-                shiroFilterFactoryBean.setLoginUrl("/login");
-                shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
-                shiroFilterFactoryBean.setSuccessUrl("/index");
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+        shiroFilterFactoryBean.setSecurityManager(securityManager);
+        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
+        shiroFilterFactoryBean.setSuccessUrl("/index");
 
-                Map<String, Filter> filters = new LinkedHashMap<>();
-                filters.put("myAuthc", formAuthenticationFilter);
-                filters.put("forceLogout", forceLogoutFilter);
-                filters.put("sto", sessionTimeoutFilter);
-                filters.put("user", myUserFilter);
-                shiroFilterFactoryBean.setFilters(filters);
+        Map<String, Filter> filters = new LinkedHashMap<>();
+        filters.put("myAuthc", formAuthenticationFilter);
+        filters.put("forceLogout", forceLogoutFilter);
+        filters.put("sto", sessionTimeoutFilter);
+        filters.put("user", myUserFilter);
+        shiroFilterFactoryBean.setFilters(filters);
 
-                Map<String, String> filterChainDefinitionMap = new HashMap<>();
-                filterChainDefinitionMap.put("/favicon.ico", "anon");
-                filterChainDefinitionMap.put("/login/router", "anon");
-            filterChainDefinitionMap.put("/oauth2/**", "forceLogout,sto,user");
-                shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        Map<String, String> filterChainDefinitionMap = new HashMap<>();
+        filterChainDefinitionMap.put("/favicon.ico", "anon");
+        filterChainDefinitionMap.put("/login/router", "anon");
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/oauth2/**", "forceLogout,sto,user");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
-                return shiroFilterFactoryBean;
-        }
+        return shiroFilterFactoryBean;
+    }
 
-        /**
-         * 保证实现了Shiro内部lifecycle函数的bean执行（shiro生命周期处理器）
-         *
-         * @return
-         */
-        @Bean
-        public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
-                return new LifecycleBeanPostProcessor();
-        }
+    /**
+     * 保证实现了Shiro内部lifecycle函数的bean执行（shiro生命周期处理器）
+     *
+     * @return
+     */
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
 
-        /**
-         * AOP式方法级权限检查
-         *
-         * @return
-         */
-        @Bean
-        public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-                DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
-                proxyCreator.setProxyTargetClass(true);
-                return proxyCreator;
-        }
+    /**
+     * AOP式方法级权限检查
+     *
+     * @return
+     */
+    @Bean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
+        proxyCreator.setProxyTargetClass(true);
+        return proxyCreator;
+    }
 
-        @Bean
-        public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-                AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-                advisor.setSecurityManager(securityManager);
-                return advisor;
-        }
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(securityManager);
+        return advisor;
+    }
 }
