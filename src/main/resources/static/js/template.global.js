@@ -484,4 +484,28 @@ window.__searchValues = {
     start: '',
     end: '',
     single: ''
-}
+};
+
+//全局设置axios请求头
+axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
+
+//全局ajax拦截处理
+$.ajaxSetup({
+    success: function (data) {
+        if (data instanceof Object && this.type === "POST") {
+            if (data.code) {
+                if (data.code === 301) {
+                    TF.show_error_msg(data.message || "登录超时，请重新登录");
+                } else if (data.code !== 200) {
+                    TF.show_error_msg(data.message || "请求发生错误，请稍后重试");
+                }
+            }
+        }
+    }, error: function (xhr, err, ex) {
+        var resp = xhr.responseJSON;
+        var status = resp.data.status;
+        var errorMsg = resp.data.error;
+        var exceptionMsg = resp.data.exception;
+        TF.show_error_msg("请求发生异常！<br/>状态码：" + status + "<br/>错误信息：" + errorMsg + "<br/>异常信息：" + exceptionMsg);
+    }
+});
