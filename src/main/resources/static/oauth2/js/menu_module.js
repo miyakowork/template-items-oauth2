@@ -48,7 +48,9 @@ var page_function = function () {
                 },
                 enabled: true,
                 orderIndex: null,
-                remark: ''
+                remark: '',
+                iconLarger: '',
+                iconMini: ''
             },
             error: {
                 nameError: false,
@@ -289,6 +291,16 @@ var page_function = function () {
         });
 };
 
+/**
+ * 列中显示字体图标
+ * @param value
+ * @returns {string}
+ */
+function iconMiniFormatter(value) {
+    if (value === null || value === "")
+        return "-";
+    return "<i class='" + value + "'></i>";
+}
 
 // load related plugins
 page_function();
