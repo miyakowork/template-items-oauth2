@@ -64,9 +64,11 @@ public class ShiroFilterConfig {
 
         Map<String, String> filterChainDefinitionMap = new HashMap<>();
         filterChainDefinitionMap.put("/favicon.ico", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/login/router", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/oauth2/**", "forceLogout,sto,user");
+        filterChainDefinitionMap.put("/management/**", "forceLogout,sto,user");
+        filterChainDefinitionMap.put("/oauth2/**", "forceLogout,sto,myAuthc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;
