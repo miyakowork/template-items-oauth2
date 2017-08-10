@@ -19,6 +19,12 @@ public class OauthMenuModule extends DataEntity {
     @SQLColumn
     private String systemCode;
 
+    @SQLColumn
+    private String iconLarger;
+
+    @SQLColumn
+    private String iconMini;
+
     public String getSystemCode() {
         return systemCode;
     }
@@ -33,5 +39,21 @@ public class OauthMenuModule extends DataEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIconLarger() {
+        return iconLarger;
+    }
+
+    public void setIconLarger(String iconLarger) {
+        this.iconLarger = iconLarger;
+    }
+
+    public String getIconMini() {
+        return iconMini;
+    }
+
+    public void setIconMini(String iconMini) {
+        this.iconMini = iconMini;
     }
 }
