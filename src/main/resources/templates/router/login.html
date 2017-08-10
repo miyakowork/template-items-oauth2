@@ -1,19 +1,10 @@
 <h4 style="margin-top: 10px;">
-    系统将在 <span id="time">4</span> 秒钟后自动跳转至登录界面，如果未能跳转，<a href="javascript:loadLogin();" title="点击访问">请点击</a>。</h4>
+    登录过期！系统即将自动跳转至登录界面，如果未能跳转，<a href="javascript:loadLogin();" title="点击访问">请点击</a>。
+</h4>
 <script type="text/javascript">
-    delayURL();
-
-    function delayURL() {
-        var delay = document.getElementById("time").innerHTML;
-        var t = setTimeout("delayURL()", 1000);
-        if (delay > 1) {
-            delay--;
-            document.getElementById("time").innerHTML = delay;
-        } else {
-            clearTimeout(t);
-            window.location.href = TF.getRootPath() + "/login";
-        }
-    }
+    setTimeout(function () {
+        loadLogin();
+    }, 1500);
 
     function loadLogin() {
         window.location.href = TF.getRootPath() + "/login";
