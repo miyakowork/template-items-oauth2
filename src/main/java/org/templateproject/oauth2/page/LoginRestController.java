@@ -38,7 +38,7 @@ public class LoginRestController extends TemplateController {
             return R.error("用户名/密码错误");
         } else if (ExcessiveAttemptsException.class.getName().equals(exceptionName)) {
             LOGGER.error("验证失败次数超过限制");
-            return R.error("账户/密码输入错误次数过多");
+            return R.error("输入错误次数过多，请稍后尝试");
         } else if (LockedAccountException.class.getName().equals(exceptionName)) {
             LOGGER.error("帐号已被锁定");
             return R.error("帐号被锁定");
@@ -46,7 +46,7 @@ public class LoginRestController extends TemplateController {
             LOGGER.error("帐号验证失败");
             return R.error("账户验证失败");
         } else if (exceptionName != null) {
-            LOGGER.error("位置的错误：" + exceptionName);
+            LOGGER.error("未知的错误：" + exceptionName);
             return R.error("发生未知错误");
         }
 
