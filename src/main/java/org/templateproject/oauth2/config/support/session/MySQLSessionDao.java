@@ -1,5 +1,6 @@
 package org.templateproject.oauth2.config.support.session;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.ValidatingSession;
 import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
@@ -11,7 +12,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.templateproject.oauth2.constant.ShiroConsts;
 import org.templateproject.oauth2.entity.shiro.ShiroSession;
 import org.templateproject.oauth2.service.shiro.ShiroSessionService;
+import org.templateproject.oauth2.util.HttpUtils;
 import org.templateproject.oauth2.util.SerializableUtils;
+import org.templateproject.oauth2.util.ShiroUtils;
 import org.templateproject.oauth2.util.SpringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,32 +43,26 @@ public class MySQLSessionDao extends CachingSessionDAO {
             return; //如果会话过期/停止 没必要再更新了
         }
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        if (request != null) {
-            String uri = request.getRequestURI();
-            if (uri.startsWith("/static/")) {
-                LOG.info("-- load static resources:[" + uri + "], session is not treated");
-                return;
+        if (!isStaticFile(request)) {
+            ShiroSession shiroSession = new ShiroSession();
+            shiroSession.setSessionId(session.getId().toString());
+            Object loggedUsername = request.getSession().getAttribute(ShiroConsts.SESSION_USERNAME_KEY);
+            if (loggedUsername != null)
+                shiroSession.setUsername(loggedUsername.toString());
+            else
+                shiroSession.setUsername(HttpUtils.getRemoteAddr(request));
+            shiroSession.setSessionBase64(SerializableUtils.serialize(session));
+            shiroSession.setLastVisitDate(session.getLastAccessTime());
+            shiroSession.setUpdateUrl(request.getRequestURL().toString());
+            shiroSession.setIp(session.getHost());
+            shiroSession.setSessionTimeout(session.getTimeout());
+            shiroSession.setUserAgent(request.getHeader("User-Agent"));
+            try {
+                int n = shiroSessionService.updateShiroSession(shiroSession);
+                LOG.info("更新shiroSession，影响条目:[{}]", n);
+            } catch (Exception e) {
+                LOG.error("更新shiroSession出现异常，异常信息：", e);
             }
-            if (uri.startsWith("/templates/") || uri.endsWith(".jsp") || uri.endsWith(".html")) {
-                LOG.info("visit template view:[" + uri + "],session is not treated");
-                return;
-            }
-        }
-
-        ShiroSession shiroSession = new ShiroSession();
-        shiroSession.setSessionId(session.getId().toString());
-        shiroSession.setSessionBase64(SerializableUtils.serialize(session));
-        shiroSession.setLastVisitDate(session.getLastAccessTime());
-        assert request != null;
-        shiroSession.setUpdateUrl(request.getRequestURL().toString());
-        shiroSession.setIp(session.getHost());
-        shiroSession.setSessionTimeout(session.getTimeout());
-        shiroSession.setUserAgent(request.getHeader("User-Agent"));
-        try {
-            int n = shiroSessionService.updateShiroSession(shiroSession);
-            LOG.info("更新shiroSession，影响条目:[{}]", n);
-        } catch (Exception e) {
-            LOG.error("更新shiroSession出现异常，异常信息：", e);
         }
     }
 
@@ -88,15 +85,15 @@ public class MySQLSessionDao extends CachingSessionDAO {
         if (isStaticFile(request)) return null;
         Serializable sessionId = generateSessionId(session); //获取自定义 SessionID
         assignSessionId(session, sessionId);//设置SessionID
-//        session.setTimeout(5000);//ShiroConfig中设置了全局的超时时间，此处可单独设置每个的超时间以覆盖全局的，此处仅
+//        session.setTimeout(5000);//ShiroConfig中设置了全局的超时时间，此处可单独设置每个的超时间以覆盖全局的
         ShiroSession shiroSession = new ShiroSession();
         shiroSession.setSessionId(session.getId().toString());
+        Object loggedUsername = request.getSession().getAttribute(ShiroConsts.SESSION_USERNAME_KEY);
         String username;
-        if (request.getSession().getAttribute(ShiroConsts.SESSION_USERNAME_KEY) != null) {
-            username = request.getSession().getAttribute(ShiroConsts.SESSION_USERNAME_KEY).toString();
-        } else {
-            username = session.getHost();
-        }
+        if (loggedUsername != null)
+            username = loggedUsername.toString();
+        else
+            username = HttpUtils.getRemoteAddr(request);
         shiroSession.setUsername(username);
         shiroSession.setFirstVisitDate(session.getStartTimestamp());
         shiroSession.setSessionBase64(SerializableUtils.serialize(session));
@@ -139,7 +136,7 @@ public class MySQLSessionDao extends CachingSessionDAO {
     private boolean isStaticFile(HttpServletRequest request) {
         if (request != null) {
             String uri = request.getRequestURI();
-            if (uri.startsWith("/static/")) {
+            if (uri.contains("/static/")) {
                 LOG.info("访问静态资源文件session不做处理");
                 return true;
             }
