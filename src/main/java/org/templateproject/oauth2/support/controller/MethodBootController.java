@@ -12,7 +12,7 @@ public class MethodBootController extends FieldBootController {
     /**
      * 获取IP地址
      * <p>
-     * 使用Nginx等反向代理软件， 则不能通过request.getRemoteAddr()获取IP地址
+     * 使用nginx等反向代理软件， 则不能通过request.getRemoteAddr()获取IP地址
      * 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
      *
      * @return
@@ -59,9 +59,7 @@ public class MethodBootController extends FieldBootController {
      */
     protected boolean isJson() {
         String headerAccept = getRequest().getHeader("Accept");
-        if (StringUtils.isEmpty(headerAccept))
-            return false;
-        return headerAccept.contains("application/json");
+        return !StringUtils.isEmpty(headerAccept) && headerAccept.contains("application/json");
     }
 
     /**
@@ -71,9 +69,7 @@ public class MethodBootController extends FieldBootController {
      */
     protected boolean isRouter() {
         String headerAccept = getRequest().getHeader("Accept");
-        if (StringUtils.isEmpty(headerAccept))
-            return false;
-        return headerAccept.contains("text/html") && !isJson() && isAjax() && isGet();
+        return !StringUtils.isEmpty(headerAccept) && headerAccept.contains("text/html") && !isJson() && isAjax() && isGet();
     }
 
     /**
