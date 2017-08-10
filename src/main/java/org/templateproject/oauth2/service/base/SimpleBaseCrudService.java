@@ -99,11 +99,11 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
          * @return 删除条数
          * @throws Exception 删除过程中的异常
          */
-        public int deleteByColumn(String columnName, Object columnValue, Class<BaseEntity> clazz) throws Exception {
+        public void deleteByColumn(String columnName, Object columnValue, Class<? extends BaseEntity> clazz) throws Exception {
                 SQLBeanBuilder sbb = SQLFactory.builder(clazz);
                 SQLStrBuilder ssb = SQLFactory.builder();
                 String sql = ssb.deleteByColumns(sbb.getTableName(), columnName);
-                return h2Dao.executeArray(sql, columnValue);
+            h2Dao.executeArray(sql, columnValue);
         }
 
 
