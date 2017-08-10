@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ShiroConsts;
+import org.templateproject.oauth2.util.HttpUtils;
 import org.templateproject.oauth2.util.ShiroUtils;
 import org.templateproject.oauth2.util.SpringUtils;
 import org.templateproject.pojo.response.R;
@@ -45,37 +46,25 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter {
         String method = req.getMethod();
         LOG.info("-- FormAuthenticationFilter，访问URI：[{}]，请求方式：[{}]", URI, method);
 
-        //如果是ico
-        if (URI.contains(CommonConsts.FAVICON))
-            return true;
-
-        //如果是静态资源，pass
-        if (URI.startsWith("/static/")) return true;
-
-        //如果是登录url（路由形式的）并且是get请求方式，pass
-        if (URI.equalsIgnoreCase(CommonConsts.LOGIN_ROUTER) && method.equals(RequestMethod.GET.name()))
-            return true;
-
-        //如果是登录url（普通url的请求形式），并且是get请求方式，pass
-        return (URI.equalsIgnoreCase(CommonConsts.LOGIN_URL) || URI.contains(";JSESSIONID=")) && method.equals(RequestMethod.GET.name()) || super.isAccessAllowed(request, response, mappedValue);
-
+        return super.isAccessAllowed(request, response, mappedValue);
     }
 
     @Override
     protected boolean onLoginSuccess(AuthenticationToken token, Subject subject, ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+        httpServletRequest.getSession().removeAttribute(ShiroConsts.SESSION_FORCE_LOGOUT_KEY);
         Object URI = httpServletRequest.getSession().getAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL);
         String uri = URI != null ? StringUtils.isNotEmpty(URI.toString()) ? URI.toString() : getSuccessUrl() : getSuccessUrl();
-        if (!"XMLHttpRequest".equalsIgnoreCase(httpServletRequest.getHeader("X-Requested-With"))) {// 不是ajax请求
+        if (!HttpUtils.isAjax(httpServletRequest)) {// 不是ajax请求
             WebUtils.getAndClearSavedRequest(request);
             WebUtils.redirectToSavedRequest(request, response, uri);
-//            return super.onLoginSuccess(token, subject, request, response);
             return false;
         } else {
             httpServletResponse.setCharacterEncoding("UTF-8");
             PrintWriter out = httpServletResponse.getWriter();
-            String json = JoddJsonUtils.serializer().include("code", "message", "data").serialize(R.ok("登录成功", uri));
+            String json = JoddJsonUtils.serializer()
+                    .include("code", "message", "data").serialize(R.ok("登录成功", uri));
             out.println(json);
             out.flush();
             out.close();
