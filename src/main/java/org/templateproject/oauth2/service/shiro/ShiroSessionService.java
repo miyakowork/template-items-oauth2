@@ -5,10 +5,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.shiro.ShiroSession;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
+import org.templateproject.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.oauth2.support.pojo.bo.SessionBO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.sql.entrance.SQLFactory;
 import org.templateproject.sql.factory.SQLBeanBuilder;
+import org.templateproject.sql.factory.SQLStrBuilder;
 
 
 /**
@@ -17,6 +19,7 @@ import org.templateproject.sql.factory.SQLBeanBuilder;
  */
 @Service
 @Transactional
+@SqlMapper("shiro_session")
 public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Integer> {
 
     /**
@@ -27,7 +30,8 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @return 查询的页面结果信息
      */
     public Page<ShiroSession> findPage(Page<ShiroSession> page, SessionBO sessionBO) {
-        String sql = "SELECT * FROM T_OAUTH_SESSION";
+        SQLStrBuilder ssb = SQLFactory.builder();
+        String sql = ssb.selectAll("t_oauth_session");
         return findPagination(page, ShiroSession.class, sql, sessionBO);
     }
 
@@ -38,7 +42,8 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @return session对象
      */
     public ShiroSession fetchSessionById(String sessionId) {
-        String sql = "SELECT * FROM T_OAUTH_SESSION WHERE SESSION_ID = ?";
+        SQLStrBuilder ssb = SQLFactory.builder();
+        String sql = ssb.selectAllByColumns("t_oauth_session", "session_id");
         return h2Dao.findBeanByArray(sql, ShiroSession.class, sessionId);
     }
 
@@ -50,9 +55,7 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @throws Exception 更新时出现的异常
      */
     public int updateShiroSession(ShiroSession shiroSession) throws Exception {
-        String sql = "UPDATE T_OAUTH_SESSION SET SESSION_BASE64 = :sessionBase64,last_visit_date = :lastVisitDate,IP = :ip," +
-                "UPDATE_URL = :updateUrl WHERE SESSION_ID = :sessionId";
-        return h2Dao.executeBean(sql, shiroSession);
+        return h2Dao.executeBean(sql(), shiroSession);
     }
 
     /**
@@ -62,9 +65,8 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @return 删除的影响条数
      * @throws Exception 删除中出现的异常
      */
-    public int deleteShiroSession(String sessionId) throws Exception {
-        String sql = "DELETE FROM T_OAUTH_SESSION WHERE SESSION_ID = ?";
-        return h2Dao.executeArray(sql, sessionId);
+    public void deleteShiroSession(String sessionId) throws Exception {
+        deleteByColumn("session_id", sessionId, ShiroSession.class);
     }
 
     /**
