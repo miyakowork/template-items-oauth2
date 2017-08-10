@@ -1,4 +1,4 @@
-package org.templateproject.oauth2.page.privilegeOperationType;
+package org.templateproject.oauth2.page.operationPrviilegeType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import org.templateproject.pojo.response.R;
  * Created by zhangteng on 2017/7/12.
  */
 @RestController
-@RequestMapping("oauth2/privilegeOperationType/api")
+@RequestMapping("oauth2/operationPrivilegeType/api")
 public class OperationPrivilegeTypeRestController extends BaseRestController {
 
 
@@ -36,59 +36,48 @@ public class OperationPrivilegeTypeRestController extends BaseRestController {
      */
     @RequestMapping("list")
     public BootstrapTable<OperationPrivilegeTypeVO> org(Page<OperationPrivilegeTypeVO> page, OperationPrivilegeTypeBo operationPrivilegeTypeBo) {
-        page = operationPrivilegeTypeService.getPage(page, operationPrivilegeTypeBo);
+        page = operationPrivilegeTypeService.findOperationPrivilegeTypePage(page, operationPrivilegeTypeBo);
         return bootstrapTable(page);
     }
 
 
+    /**
+     * 添加操作级权限类型
+     *
+     * @param resource
+     * @return
+     */
     @RequestMapping("add")
     public R add(OauthOperationPrivilegeType resource) {
-        boolean b = false;
         try {
-            b = operationPrivilegeTypeService.save(resource);
+            if (operationPrivilegeTypeService.save(resource, OauthOperationPrivilegeType.class))
+                return R.ok("添加操作级权限类型成功");
+            else
+                return R.error("添加操作级权限类型失败");
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (b) {
-            return R.ok("添加操作级权限类型成功");
-        } else {
-            return R.ok("添加操作权限类型失败");
+            LOGGER.error("添加操作级权限类型异常，异常信息：{}", e);
+            return R.error("添加操作级权限类型异常，异常信息：" + e.getMessage());
         }
     }
 
-
-    @RequestMapping("doEdit")
-    public R doEdit(OauthOperationPrivilegeType resource) {
-        boolean flag = false;
+    /**
+     * 编辑操作级权限类型对象
+     *
+     * @param resource
+     * @return
+     */
+    @RequestMapping("edit")
+    public R edit(OauthOperationPrivilegeType resource) {
         try {
-            flag = operationPrivilegeTypeService.edit(resource);
+            if (operationPrivilegeTypeService.edit(resource, OauthOperationPrivilegeType.class))
+                return R.ok("修改操作级权限类型成功");
+            else
+                return R.error("修改操作级权限类型失败");
         } catch (Exception e) {
-
-            e.printStackTrace();
-        } finally {
-
-            if (flag) {
-
-                return R.ok("更新模块成功");
-            } else {
-
-                return R.ok("更新模块失败");
-            }
-
+            LOGGER.error("修改操作级权限类型异常，异常信息：{}", e);
+            return R.error("修改操作级权限类型异常，异常信息：" + e.getMessage());
         }
-
     }
 
-    @RequestMapping("delete")
-    public R delete(String ids) {
-
-        try {
-            operationPrivilegeTypeService.delete(ids);
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-        return R.ok("删除模块成功");
-    }
 
 }
