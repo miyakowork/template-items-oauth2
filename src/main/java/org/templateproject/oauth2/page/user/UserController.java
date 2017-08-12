@@ -9,13 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("oauth2/user")
 public class UserController {
-
-    @RequestMapping
-    public ModelAndView list(){
-        return  new ModelAndView("router/user/list");
-    }
 
     @RequestMapping("treeDept")
     public ModelAndView deptTree(){

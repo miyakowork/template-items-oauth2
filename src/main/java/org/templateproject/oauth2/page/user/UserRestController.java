@@ -5,107 +5,133 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.templateproject.oauth2.entity.OauthUser;
 import org.templateproject.oauth2.service.UserService;
-import org.templateproject.oauth2.support.TemplateController;
+import org.templateproject.oauth2.service.shiro.ShiroUserService;
+import org.templateproject.oauth2.support.BaseRestController;
 import org.templateproject.oauth2.support.pojo.bo.UserBO;
 import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.oauth2.support.pojo.vo.UserVO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
 
-import java.util.List;
-
 /**
- * Created by yuanqi on 2017/7/19/019.
+ * Created by wuwenbin on 2017/8/8/.
  */
 @RestController
-@RequestMapping("user/api")
-
-public class UserRestController extends TemplateController {
+@RequestMapping("oauth2/user/api")
+public class UserRestController extends BaseRestController {
 
     /**
      * 注入UserService层
      */
     private UserService userService;
+    private ShiroUserService shiroUserService;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    @Autowired
+    public void setShiroUserService(ShiroUserService shiroUserService) {
+        this.shiroUserService = shiroUserService;
+    }
+
 
     /**
      * 显示数据
+     *
      * @param page
      * @param userBO
      * @return
      */
     @RequestMapping("list")
-    public BootstrapTable<UserVO> list(Page<UserVO> page, UserBO userBO){
-
-        page = userService.getPage(queryParam2Page(userBO,page),userBO);
-        List<UserVO> result = page.getTResult();
-        return new BootstrapTable<>(page.getTotalCount(), result);
+    public BootstrapTable<UserVO> list(Page<UserVO> page, UserBO userBO) {
+        page = userService.findUserPage(queryParam2Page(userBO, page), userBO);
+        return bootstrapTable(page);
     }
 
     /**
-     * 添加数据
-     */
-    @RequestMapping("add")
-    public R add(UserVO userVO){
-        boolean flag= false;
-        try {
-            flag = userService.save1(userVO);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            if (flag)
-                return R.ok("添加成功");
-            else {
-                return R.error("添加失败");
-            }
-        }
-    }
-
-    /**
-     * 编辑
+     * 添加用户
+     *
+     * @param user
      * @return
      */
-    @RequestMapping("doEdit")
-    public R doEdit(OauthUser oauthUser)  {
-
-        boolean flag = false;
+    @RequestMapping("add")
+    public R add(OauthUser user) {
+        if (shiroUserService.findByUserName(user.getUsername()) != null) {
+            return R.error("此账号已存在！");
+        }
         try {
-            flag = userService.edit1(oauthUser);
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            if (flag) {
-                return R.ok("更新成功");
-            } else {
-                return R.ok("更新失败");
-            }
+            if (shiroUserService.addNewUser(user) == 1)
+                return R.ok("添加用户成功！");
+            else
+                return R.error("添加用户失败！");
+        } catch (Exception e) {
+            LOGGER.error("添加用户出现异常，异常信息：{}", e);
+            return R.error("添加用户异常，原因：" + e.getMessage());
         }
     }
 
     /**
-     * 删除
+     * 编辑用户
+     *
+     * @param oauthUser
+     * @return
+     */
+    @RequestMapping("edit")
+    public R doEdit(OauthUser oauthUser) {
+        try {
+            if (userService.edit(oauthUser))
+                return R.ok("修改用户成功！");
+            else
+                return R.error("修改用户失败！");
+        } catch (Exception e) {
+            LOGGER.error("修改用户出现异常，异常信息：{}", e);
+            return R.error("修改用户异常，原因：" + e.getMessage());
+        }
+    }
+
+
+    /**
+     * 修改用户密码
+     *
+     * @param username
+     * @param newPwd
+     * @return
+     */
+    @RequestMapping("editPwd")
+    public R doEditPwd(String username, String newPwd) {
+        OauthUser user = shiroUserService.findByUserName(username);
+        if (user != null) {
+            try {
+                shiroUserService.changePasswordByUser(user, newPwd);
+                return R.ok("修改用户密码成功！");
+            } catch (Exception e) {
+                LOGGER.error("修改用户密码出现异常，异常信息：{}", e);
+                return R.error("修改用户密码异常，原因：" + e.getMessage());
+            }
+        } else {
+            return R.ok("用户不存在，修改失败！");
+        }
+    }
+
+
+    /**
+     * 禁用用户
+     *
+     * @param ids
+     * @return
      */
     @RequestMapping("delete")
-    public R delete(String id){
+    public R delete(String ids) {
         try {
-            userService.delete(id);
-        }catch (Exception e){
-            e.printStackTrace();
+            userService.disabledUser(ids);
+            return R.ok("禁用用户成功！");
+        } catch (Exception e) {
+            LOGGER.error("禁用用户出现异常，异常信息：{}", e);
+            return R.error("禁用用户异常，原因：" + e.getMessage());
         }
-        return R.ok("删除成功");
     }
 
-    /**
-     * 从角色表获取添加用户模块下的角色下拉菜单
-     */
-    @RequestMapping("getRole")
-    public R getRole(){
-        return R.ok(userService.getRole1());
-    }
 
 }

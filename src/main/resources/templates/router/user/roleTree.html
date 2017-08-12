@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body" style="min-height: 300px;">
-                <ul id="RoleTree1" class="ztree"></ul>
+                <ul id="userRoleTree" class="ztree"></ul>
             </div>
         </div>
     </div>
@@ -17,7 +17,6 @@
 <script type="text/javascript">
 
 
-
     //    treeObj.hideNodes(nodes[0].children);
     $(function () {
 
@@ -28,22 +27,26 @@
                     rootPId: 0
                 }
             },
+            async: {
+                enable: true,
+                url: '/oauth2/role/api/selectRole',
+                autoParam: ['other=systemModuleCode']
+            },
             view: {
-                selectedMulti: false,
+                selectedMulti: false
             },
             callback: {
                 onDblClick: function (event, treeId, treeNode) {
                     var index = parent.layer.getFrameIndex(window.name);
                     parent.app.user1.roleName = treeNode.name;
                     parent.app.user1.defaultRoleId = treeNode.id;
-                    parent.$('#pRoleByTree1').val(treeNode.name);
                     parent.layer.close(index);
                 }
             }
         };
 
-        $.get("/oauth2/role/api/selectRoleTree", function (json) {
-            $.fn.zTree.init($("#RoleTree1"), settings, json)
+        $.get("/oauth2/system-module/api/find/modules/enabled/moduleTree", function (json) {
+            $.fn.zTree.init($("#userRoleTree"), settings, json)
 
         })
     })

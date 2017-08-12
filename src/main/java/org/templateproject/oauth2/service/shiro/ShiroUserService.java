@@ -57,7 +57,7 @@ public class ShiroUserService extends SimpleBaseCrudService<OauthUser, Integer> 
     public void changePasswordByUser(OauthUser user, String newPassword) throws Exception {
         user.setPassword(newPassword);
         passwordHelper.encryptPassword(user);
-        save(user, OauthUser.class);
+        edit(user, OauthUser.class);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ShiroUserService extends SimpleBaseCrudService<OauthUser, Integer> 
     public OauthUser findByUserName(String username) {
         if (StringUtils.isEmpty(username))
             return null;
-        String sql = "SELECT * FROM T_OAUTH_USER WHERE USERNAME = ? AND ENABLED = 1";
+        String sql = "SELECT * FROM T_OAUTH_USER WHERE USERNAME = ?";
         return h2Dao.findBeanByArray(sql, OauthUser.class, username);
     }
 
@@ -85,7 +85,9 @@ public class ShiroUserService extends SimpleBaseCrudService<OauthUser, Integer> 
         String sql = sbb.insertRoutersWithoutPk(CommonConsts.CREATE_ROUTER,
                 CommonConsts.ENABLED_ROUTER, CommonConsts.ORDER_ROUTER,
                 CommonConsts.REMARK_ROUTER, ServiceConsts.DEFAULT_ROUTER,
-                CommonConsts.UPDATE_ROUTER,CommonConsts.UPDATE_ROUTER);
+                CommonConsts.UPDATE_ROUTER);
+        user.preInsert();
+        passwordHelper.encryptPassword(user);
         return h2Dao.executeBean(sql, user);
     }
 }
