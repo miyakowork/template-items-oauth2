@@ -13,7 +13,7 @@ var page_function = function () {
     $("#department-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
         TF.reInitTable($table, {
-            url: "/department/api/list",
+            url: "/oauth2/department/api/list",
             toolbar: '#department-toolbar',
             queryParams: query_params,
             filterControl: true
@@ -34,7 +34,7 @@ var page_function = function () {
 
     //加载表格
     TF.initTable($table, {
-        url: "/department/api/list",
+        url: "/oauth2/department/api/list",
         toolbar: '#department-toolbar',
         queryParams: query_params,
         filterControl: true
@@ -85,7 +85,7 @@ var page_function = function () {
                     for (var data in departments) {
                         params.append(data, departments[data])
                     }
-                    axios.post('/department/api/add', params)
+                    axios.post('/oauth2/department/api/add', params)
                         .then(function (response) {
                             if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
@@ -128,9 +128,9 @@ var page_function = function () {
                     params.append("enabled", app.OauthDepartment.enabled)
                     params.append("orderIndex", app.OauthDepartment.orderIndex)
                     params.append("remark", app.OauthDepartment.remark)
-                    axios.post('/department/api/edit', params)
+                    axios.post('/oauth2/department/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
                                 $("#editDepartment").dialog("close");
 
@@ -322,7 +322,7 @@ var page_function = function () {
             treeObj.checkNode(nodes[i], false, true);
         }
         TF.reInitTable($table, {
-            url: "/department/api/list",
+            url: "/oauth2/department/api/list",
             toolbar: '#department-toolbar',
             queryParams: query_params,
             filterControl: true
@@ -353,7 +353,7 @@ var load_departmentTree = function () {
                 treeObj.checkNode(treeNode, true, false);
                 var $table = $("#department-table");
                 var opt = {
-                    url: "/department/api/list",
+                    url: "/oauth2/department/api/list",
                     silent: true,
                     query: {
                         parentId: treeNode.id,
@@ -364,7 +364,7 @@ var load_departmentTree = function () {
             }
         }
     };
-    $.get("/department/api/selectDepartment", function (json) {
+    $.get("/oauth2/department/api/selectDepartment", function (json) {
         $.fn.zTree.init($("#DepartmentTree"), settings, json)
     })
 

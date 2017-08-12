@@ -10,13 +10,8 @@ import org.templateproject.oauth2.support.TemplateController;
  * Created by Liurongqi on 2017/7/12.
  */
 @Controller
-@RequestMapping("department")
+@RequestMapping("oauth2/department")
 public class DepartmentController extends TemplateController {
-
-    @RequestMapping
-    public ModelAndView list() {
-        return new ModelAndView("router/department/list");
-    }
 
     @RequestMapping("tree")
     public ModelAndView Tree() {

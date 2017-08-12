@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Liurongqi on 2017/7/12.
  */
 @RestController
-@RequestMapping("/department/api")
+@RequestMapping("oauth2/department/api")
 public class DepartmentRestController extends BaseRestController {
 
     private DepartmentService departmentService;
