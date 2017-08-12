@@ -208,7 +208,7 @@
             },
             async: {
                 enable: true,
-                url: "/department/api/selectDepartment",
+                url: "/oauth2/department/api/selectDepartment",
                 autoParam: ["id"]
             },
             view: {
@@ -221,7 +221,7 @@
                 }
             }
         };
-        $.get("/department/api/selectDepartment?id=0", function (json) {
+        $.get("/oauth2/department/api/selectDepartment?id=0", function (json) {
             $.fn.zTree.init($("#DepartmentTree"), settings, json.data)
         })
 
