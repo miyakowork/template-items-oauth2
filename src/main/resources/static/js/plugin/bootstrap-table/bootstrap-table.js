@@ -2023,17 +2023,15 @@
             contentType: this.options.contentType,
             dataType: this.options.dataType,
             success: function (res) {
+                // TF.ajaxSuccess(res, this.type); //全局已设置，此处已不需要
                 res = calculateObjectValue(that.options, that.options.responseHandler, [res], res);
 
                 that.load(res);
                 that.trigger('load-success', res);
                 if (!silent) that.$tableLoading.hide();
-                // if (window.__onchoose__date__) {
-                //     window.__onchoose__date__.dateElem.val(window.__onchoose__date__.date);
-                //     window.__onchoose__date__.dateElemMore.val(window.__onchoose__date__.date);
-                // }
             },
             error: function (res) {
+                // TF.ajaxError(res)  //全局已设置，此处已不需要
                 that.trigger('load-error', res.status, res);
                 if (!silent) that.$tableLoading.hide();
             }
