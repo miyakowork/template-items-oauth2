@@ -1,23 +1,13 @@
 package org.templateproject.oauth2.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.templateproject.oauth2.config.support.password.PasswordHelper;
-import org.templateproject.oauth2.constant.CommonConsts;
-import org.templateproject.oauth2.constant.ServiceConsts;
-import org.templateproject.oauth2.entity.OauthRole;
 import org.templateproject.oauth2.entity.OauthUser;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.oauth2.support.pojo.bo.UserBO;
 import org.templateproject.oauth2.support.pojo.vo.UserVO;
 import org.templateproject.pojo.page.Page;
-import org.templateproject.sql.entrance.SQLFactory;
-import org.templateproject.sql.factory.SQLBeanBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by wuwenbin on 2017/8/7.
