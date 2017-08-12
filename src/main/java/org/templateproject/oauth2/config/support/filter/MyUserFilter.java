@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * created by Wuwenbin on 2017/8/2 at 20:44
  */
-public class MyUserFilter extends UserFilter {
+public class MyUserFilter extends UserFilter implements TemplateFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(MyUserFilter.class);
 
@@ -39,8 +39,7 @@ public class MyUserFilter extends UserFilter {
      */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        FilterUtils.onAccessDenied(servletRequest, servletResponse, "登录过期，请重新登录！", CommonConsts.LOGIN_URL);
-        return false;
+        return denyControl(servletRequest, servletResponse, "登录过期，请重新登录！", CommonConsts.LOGIN_URL);
     }
 
 }

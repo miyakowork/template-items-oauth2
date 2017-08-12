@@ -19,7 +19,7 @@ import java.util.UUID;
  * Created by wuwenbin on 2017/8/9.
  */
 @Component
-public class ForceLogoutFilter extends AccessControlFilter {
+public class ForceLogoutFilter extends AccessControlFilter implements TemplateFilter {
 
     private static Logger LOG = LoggerFactory.getLogger(ForceLogoutFilter.class);
 
@@ -48,16 +48,22 @@ public class ForceLogoutFilter extends AccessControlFilter {
      */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        try {
-            getSubject(servletRequest, servletResponse).logout();//强制退出
-        } catch (Exception e) {/*ignore exception*/}
-
         HttpServletRequest request = WebUtils.toHttp(servletRequest);
-        request.getSession().setAttribute(ShiroConsts.SESSION_FORCE_LOGOUT_KEY, Boolean.TRUE);
+        //如果shiro session不为空，则强制退出
+        if (getSubject(servletRequest, servletResponse).getSession(false) != null) {
+            try {
+                getSubject(servletRequest, servletResponse).logout();//强制退出
+            } catch (Exception e) {/*ignore exception*/}
+        }
 
-        String loginUrl = getLoginUrl() + (getLoginUrl().contains("?") ? "&" : "?") + "forceLogout=" + UUID.randomUUID().toString().replace("-", "");
-        FilterUtils.onAccessDenied(servletRequest, servletResponse, "您已被强制退出！", loginUrl);
-
-        return false;
+        //退出之后开始确定登录url
+        String loginUrl = getLoginUrl();
+        String message = "请重新登录！";
+        //如果不为空，则确定是被强制退出的，loginUrl加上forceLogout参数
+        if (request.getSession().getAttribute(ShiroConsts.SESSION_FORCE_LOGOUT_KEY) != null) {
+            loginUrl += (getLoginUrl().contains("?") ? "&" : "?") + "forceLogout=" + UUID.randomUUID().toString().replace("-", "");
+            message = "您已被强制退出，请重新登录！";
+        }
+        return denyControl(servletRequest, servletResponse, message, loginUrl);
     }
 }

@@ -19,36 +19,17 @@ import java.io.PrintWriter;
 public class FilterUtils {
 
     /**
-     * 通用被拒绝时候的处理
-     *
-     * @param servletRequest
-     * @param servletResponse
+     *如果是ajax请求返回的处理信息
+     * @param response
      * @param ajaxMessage
-     * @param loginUrl
      * @throws IOException
      */
-    public static void onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse, String ajaxMessage, String loginUrl) throws IOException {
-        HttpServletRequest request = WebUtils.toHttp(servletRequest);
-        HttpServletResponse response = WebUtils.toHttp(servletResponse);
-        if (HttpUtils.isAjax(request)) {
-            if (HttpUtils.isRouter(request)) {
-                WebUtils.issueRedirect(servletRequest, servletResponse, CommonConsts.LOGIN_ROUTER);
-            } else {
-                response.setCharacterEncoding("UTF-8");
-                PrintWriter out = response.getWriter();
-                String json = JoddJsonUtils.serializer()
-                        .include("code", "message")
-                        .serialize(R.custom(301, ajaxMessage));
-                out.println(json);
-                out.flush();
-                out.close();
-            }
-        } else {
-            if (loginUrl == null || "".equals(loginUrl)) {
-                loginUrl = CommonConsts.LOGIN_URL;
-            }
-            WebUtils.saveRequest(servletRequest);
-            WebUtils.issueRedirect(request, response, loginUrl);
-        }
+    public static void ajaxControl(HttpServletResponse response, String ajaxMessage) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        String json = JoddJsonUtils.serializer().include("code", "message").serialize(R.custom(301, ajaxMessage));
+        out.println(json);
+        out.flush();
+        out.close();
     }
 }

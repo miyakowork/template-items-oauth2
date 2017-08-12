@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by wuwenbin on 2017/6/1.
  */
 @Component
-public class SessionTimeoutFilter extends AccessControlFilter {
+public class SessionTimeoutFilter extends AccessControlFilter implements TemplateFilter {
 
     private static Logger LOG = LoggerFactory.getLogger(SessionTimeoutFilter.class);
 
@@ -58,8 +58,7 @@ public class SessionTimeoutFilter extends AccessControlFilter {
      */
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        FilterUtils.onAccessDenied(servletRequest, servletResponse, "登录过期超时，请重新登录！", CommonConsts.LOGIN_URL);
-        return false;
+        return denyControl(servletRequest, servletResponse, "登录过期超时，请重新登录！", CommonConsts.LOGIN_URL);
     }
 
 }

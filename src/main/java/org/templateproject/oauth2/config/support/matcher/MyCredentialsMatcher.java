@@ -17,9 +17,11 @@ import org.templateproject.oauth2.constant.ShiroConsts;
 import org.templateproject.oauth2.entity.OauthUser;
 import org.templateproject.oauth2.service.LogService;
 import org.templateproject.oauth2.service.shiro.ShiroUserService;
+import org.templateproject.oauth2.support.controller.TemplateRequestWrapper;
 import org.templateproject.oauth2.util.HttpUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -72,9 +74,13 @@ public class MyCredentialsMatcher extends SimpleCredentialsMatcher {
         if (matches) {
             //clear retry count
             passwordRetryCache.remove(username);
-            //验证用户成功了，把用户名信息放到session中去
+
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-            request.getSession().setAttribute(ShiroConsts.SESSION_USERNAME_KEY, username);
+            HttpSession session = request.getSession();
+            //验证用户成功了，把用户名信息放到session中去
+            session.setAttribute(ShiroConsts.SESSION_USERNAME_KEY, username);
+            //验证用户成功了，删除强制登录的标识
+            session.removeAttribute(ShiroConsts.SESSION_FORCE_LOGOUT_KEY);
             try {
                 logService.traceLog(userService.findByUserName(username).getId(), HttpUtils.getRemoteAddr(request));
             } catch (Exception e) {
