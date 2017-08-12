@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class FieldBootController {
 
-    @Autowired
     private HttpServletRequest request;
 
     /**
@@ -24,6 +23,10 @@ public class FieldBootController {
      */
     protected Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    public void setHttpServletRequest(HttpServletRequest request) {
+        this.request = request;
+    }
 
     /**
      * 获取request
