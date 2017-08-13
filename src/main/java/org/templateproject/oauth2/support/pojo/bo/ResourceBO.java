@@ -1,13 +1,19 @@
 package org.templateproject.oauth2.support.pojo.bo;
 
+import org.templateproject.oauth2.support.annotation.query.QueryColumn;
+import org.templateproject.oauth2.support.annotation.query.QueryTable;
+import org.templateproject.oauth2.support.enumerate.Operator;
 import org.templateproject.oauth2.support.pojo.PageQueryBO;
 
 /**
  * Created by Liurongqi on 2017/7/13.
  */
+@QueryTable("tor")
 public class ResourceBO extends PageQueryBO {
     private String url; //资源路径
+    @QueryColumn("permission_mark")
     private String permissionMark;   //资源标识
+    @QueryColumn(value = "system_code", operation = Operator.EQ)
     private String systemCode;  //系统代码
     private String name;  //名称
     private Boolean enabled;   //是否可用
