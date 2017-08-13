@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resource>
+
+    <findResourcePage>
+        SELECT
+            tor.*,
+            tou1.username AS create_name,
+            tou2.username AS update_name,
+            tosm.name     AS systemModuleName
+        FROM t_oauth_resource tor, t_oauth_user tou1, t_oauth_user tou2, t_oauth_system_module tosm
+        WHERE tor.create_user = tou1.id AND tor.update_user = tou2.id AND tosm.system_code = tor.system_code
+    </findResourcePage>
+
+    <hideResourceByIds>
+        UPDATE t_oauth_resource
+        SET enabled = 0
+        WHERE id = :id
+    </hideResourceByIds>
+
+</resource>

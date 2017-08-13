@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<privilegeSort>
+
+    <findPrivilegeSortPage>
+        SELECT
+            topp.*,
+            torm.name,
+            tor.name AS resourceName
+        FROM T_OAUTH_PRIVILEGE_PAGE topp LEFT JOIN T_OAUTH_RESOURCE_MODULE torm ON topp.resource_module_id = torm.id
+            LEFT JOIN T_OAUTH_RESOURCE tor ON topp.RESOURCE_ID = tor.id
+    </findPrivilegeSortPage>
+
+</privilegeSort>

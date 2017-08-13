@@ -10,6 +10,8 @@ public class ResourceVO extends OauthResource {
 
     private String updateName;
 
+    private String systemModuleName;
+
 
     public String getCreateName() {
         return createName;
@@ -25,5 +27,13 @@ public class ResourceVO extends OauthResource {
 
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
+    }
+
+    public String getSystemModuleName() {
+        return systemModuleName;
+    }
+
+    public void setSystemModuleName(String systemModuleName) {
+        this.systemModuleName = systemModuleName;
     }
 }

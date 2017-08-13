@@ -6,14 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.templateproject.oauth2.entity.OauthResource;
 import org.templateproject.oauth2.service.ResourceService;
 import org.templateproject.oauth2.support.BaseRestController;
-import org.templateproject.oauth2.support.TemplateController;
 import org.templateproject.oauth2.support.pojo.bo.ResourceBO;
 import org.templateproject.oauth2.support.pojo.vo.ResourceVO;
 import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
-
-import java.util.List;
 
 /**
  * Created by Wuwenbin on 2017/8/3.
@@ -38,7 +35,7 @@ public class ResourceRestController extends BaseRestController {
      */
     @RequestMapping("list")
     public BootstrapTable<ResourceVO> resources(Page<ResourceVO> page, ResourceBO resourceBO) {
-        page = resourceService.getResourcePage(resourceBO, queryParam2Page(resourceBO, page));
+        page = resourceService.findResourcePage(resourceBO, queryParam2Page(resourceBO, page));
         return bootstrapTable(page);
     }
 
@@ -79,7 +76,7 @@ public class ResourceRestController extends BaseRestController {
     @RequestMapping("hide")
     public R hide(String ids) {
         try {
-            resourceService.hide(ids);
+            resourceService.hideResourceByIds(ids);
             return R.ok("删除成功");
         } catch (Exception e) {
             LOGGER.error("删除过程出现异常，异常信息：{}", e);

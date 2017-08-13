@@ -9,6 +9,8 @@ import org.templateproject.oauth2.support.pojo.bo.MenuModuleBO;
 import org.templateproject.oauth2.support.pojo.vo.MenuModuleVO;
 import org.templateproject.pojo.page.Page;
 
+import java.util.List;
+
 /**
  * Created by Wuwenbin on 2017/8/102/.
  */
@@ -35,9 +37,16 @@ public class MenuModuleService extends SimpleBaseCrudService<OauthMenuModule, In
      * @param ids 禁用的菜单模块的id集合
      * @throws Exception e
      */
-    public void forbidMenuModule(String ids) throws Exception {
+    public void hideMenuModule(String ids) throws Exception {
         executeBatch(sql(), "id", ids.split(","));
     }
 
-
+    /**
+     * 查询所有可用的菜单模块，根据系统模块代码
+     *
+     * @return
+     */
+    public List<OauthMenuModule> findEnabledMenuModule(String systemModuleCode) {
+        return h2Dao.findListBeanByArray(sql(), OauthMenuModule.class, systemModuleCode);
+    }
 }

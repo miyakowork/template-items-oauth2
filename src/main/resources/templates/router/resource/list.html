@@ -1,103 +1,105 @@
 <!--list页面-->
 <div class="row">
     <div id="resource-toolbar" class="form-inline">
-            <button id="add-resource" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
-            <button id="edit-resource" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
-            <button id="delete-resource" class="btn btn-danger btn-sm"><i class="fa fa-minus-square-o"></i> 删除</button>
+        <button id="add-resource" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
+        <button id="edit-resource" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
+        <button id="delete-resource" class="btn btn-danger btn-sm"><i class="fa fa-minus-square-o"></i> 删除</button>
         &nbsp;
         <label id="resource-search-control" class="checkbox-inline">
             <input type="checkbox" class="checkbox style-3">
             <span>显示搜索控件</span>
         </label>
-        </div>
-        <!-- NEW WIDGET START -->
-        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <table id="resource-table">
-                <thead>
-                <tr>
-                    <th data-checkbox="true"></th>
+    </div>
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <table id="resource-table">
+            <thead>
+            <tr>
+                <th data-checkbox="true"></th>
 
-                    <th data-field="id"
-                        data-sortable="true"
-                        data-visible="false"
-                        data-searchable="true"
-                        data-width="150"
-                        data-title="资源ID"
-                        data-align="center"></th>
+                <th data-field="id"
+                    data-sortable="true"
+                    data-visible="false"
+                    data-searchable="true"
+                    data-width="150"
+                    data-title="资源ID"
+                    data-align="center"></th>
 
-                    <th data-field="url"
-                        data-title="资源路径"
-                        data-align="center"
-                        data-filter-control="input"
-                        data-filter-control-placeholder="输入资源路径"></th>
+                <th data-field="url"
+                    data-title="资源路径"
+                    data-align="center"
+                    data-filter-control="input"
+                    data-filter-control-placeholder="输入资源路径"></th>
 
-                    <th data-field="name"
-                        data-sortable="true"
-                        data-title="资源名称"
-                        data-filter-control="input"
-                        data-filter-control-placeholder="输入资源名称"
-                        data-sort-name="name"
-                        data-align="center"></th>
+                <th data-field="name"
+                    data-sortable="true"
+                    data-title="资源名称"
+                    data-filter-control="input"
+                    data-filter-control-placeholder="输入资源名称"
+                    data-sort-name="name"
+                    data-align="center"></th>
 
-                    <th data-field="permissionMark"
-                        data-sortable="true"
-                        data-title="资源标识"
-                        data-filter-control="input"
-                        data-filter-control-placeholder="输入资源标识"
-                        data-sort-name="permission_mark"
-                        data-align="center"></th>
+                <th data-field="permissionMark"
+                    data-sortable="true"
+                    data-title="资源标识"
+                    data-filter-control="input"
+                    data-filter-control-placeholder="输入资源标识"
+                    data-sort-name="permission_mark"
+                    data-align="center"></th>
 
-                    <th data-field="systemCode"
-                        data-sortable="true"
-                        data-title="系统代码"
-                        data-filter-control="input"
-                        data-filter-control-placeholder="输入系统代码"
-                        data-sort-name="system_code"
-                        data-align="center"></th>
+                <th data-field="systemModuleName"
+                    data-sortable="true"
+                    data-title="系统模块名称"
+                    data-filter-control="select"
+                    data-filter-data="url:/oauth2/systemModule/select"
+                    data-sort-name="system_code"
+                    data-align="center"></th>
 
-                    <th data-field="orderIndex"
-                        data-sortable="true"
-                        data-title="排序索引" data-width="20"
-                        data-sort-name="order_index"
-                        data-align="center"></th>
+                <th data-field="orderIndex"
+                    data-sortable="true"
+                    data-title="排序索引" data-width="20"
+                    data-sort-name="order_index"
+                    data-align="center"></th>
 
-                    <th data-field="enabled"
-                        data-formatter="enabledFormatter"
-                        data-title="是否使用"
-                        data-align="center"></th>
+                <th data-field="enabled"
+                    data-formatter="enabledFormatter"
+                    data-title="是否使用"
+                    data-filter-control="select"
+                    data-filter-data="url:/oauth2/common/select"
+                    data-align="center"></th>
 
-                    <th data-field="createName"
-                        data-title="创建用户"
-                        data-visible="false"
-                        data-align="center"></th>
+                <th data-field="createName"
+                    data-title="创建用户"
+                    data-visible="false"
+                    data-align="center"></th>
 
-                    <th data-field="updateName"
-                        data-title="更新用户"
-                        data-visible="false"
-                        data-align="center"></th>
+                <th data-field="updateName"
+                    data-title="更新用户"
+                    data-visible="false"
+                    data-align="center"></th>
 
-                    <th data-field="createDate"
-                        data-sort-name="create_date"
-                        data-formatter="date_formatter"
-                        data-title="创建日期"
-                        data-visible="false"
-                        data-align="center"></th>
+                <th data-field="createDate"
+                    data-sort-name="create_date"
+                    data-formatter="date_formatter"
+                    data-title="创建日期"
+                    data-visible="false"
+                    data-align="center"></th>
 
-                    <th data-field="updateDate"
-                        data-sort-name="update_date"
-                        data-formatter="date_formatter"
-                        data-title="更新日期"
-                        data-visible="false"
-                        data-align="center"></th>
+                <th data-field="updateDate"
+                    data-sort-name="update_date"
+                    data-formatter="date_formatter"
+                    data-title="更新日期"
+                    data-visible="false"
+                    data-align="center"></th>
 
-                    <th data-field="remark"
-                        data-title="备注信息"
-                        data-align="center"></th>
-                </tr>
-                </thead>
-            </table>
-        </article>
-        <!-- WIDGET END -->
+                <th data-field="remark"
+                    data-title="备注信息"
+                    data-align="center"></th>
+            </tr>
+            </thead>
+        </table>
+    </article>
+    <!-- WIDGET END -->
 </div>
 
 <!--添加/编辑页面-->
@@ -108,9 +110,9 @@
             <fieldset>
                 <!--资源url-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.urlError }">
-                    <label class="col-md-2 control-label">资源url</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="资源url" type="text"
+                    <label class="col-md-3 control-label">资源url</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源url"
                                v-model="Resource.url">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.urlError }">
@@ -121,9 +123,9 @@
 
                 <!--资源名称-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                    <label class="col-md-2 control-label">资源名称</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="资源名称" type="text"
+                    <label class="col-md-3 control-label">资源名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源名称"
                                v-model="Resource.name">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
@@ -134,9 +136,9 @@
 
                 <!--资源标识-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.permissionMarkError }">
-                    <label class="col-md-2 control-label">资源标识</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="资源标识" type="text"
+                    <label class="col-md-3 control-label">资源标识</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源标识"
                                v-model="Resource.permissionMark">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.permissionMarkError }">
@@ -147,8 +149,8 @@
 
                 <!--系统代码-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.systemCodeError }">
-                    <label class="col-md-2 control-label">系统代码</label>
-                    <div class="col-md-10">
+                    <label class="col-md-3 control-label">系统代码</label>
+                    <div class="col-md-9">
                         <select v-model="Resource.systemCode.selected" class="form-control"
                                 id="systemCode-selector-add"
                         >
@@ -162,8 +164,8 @@
 
                 <!--是否可用-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.enabledError }">
-                    <label class="col-md-2 control-label">是否可用</label>
-                    <div class="col-md-10">
+                    <label class="col-md-3 control-label">是否可用</label>
+                    <div class="col-md-9">
                         <label class="radio radio-inline">
                             <input type="radio" v-model="Resource.enabled"
                                    class="radiobox style-0"
@@ -185,9 +187,9 @@
 
                 <!--排序索引-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                    <label class="col-md-2 control-label">排序索引</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="排序索引" type="text"
+                    <label class="col-md-3 control-label">排序索引</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="排序索引"
                                v-model="Resource.orderIndex">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
@@ -198,15 +200,15 @@
 
                 <!--备注信息-->
                 <div class="form-group">
-                    <label class="col-md-2 control-label">备注信息</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="Resource.remark">
+                    <label class="col-md-3 control-label">备注信息</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" v-model="Resource.remark">
                     </div>
                 </div>
 
             </fieldset>
 
-            <button id="add" type="submit" class="hidden"></button>
+            <button id="resourceAdd" type="submit" class="hidden"></button>
 
         </form>
     </div>
@@ -216,9 +218,9 @@
             <fieldset>
                 <!--资源url-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.urlError }">
-                    <label class="col-md-2 control-label">资源url</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="资源url" type="text"
+                    <label class="col-md-3 control-label">资源url</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源url"
                                v-model="Resource.url">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.urlError }">
@@ -229,9 +231,9 @@
 
                 <!--资源名称-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                    <label class="col-md-2 control-label">资源名称</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="资源名称" type="text"
+                    <label class="col-md-3 control-label">资源名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源名称"
                                v-model="Resource.name">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
@@ -242,9 +244,9 @@
 
                 <!--资源标识-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.permissionMarkError }">
-                    <label class="col-md-2 control-label">资源标识</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="资源标识" type="text"
+                    <label class="col-md-3 control-label">资源标识</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="资源标识"
                                v-model="Resource.permissionMark">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.permissionMarkError }">
@@ -255,8 +257,8 @@
 
                 <!--系统代码-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.systemCodeError }">
-                    <label class="col-md-2 control-label">系统代码</label>
-                    <div class="col-md-10">
+                    <label class="col-md-3 control-label">系统代码</label>
+                    <div class="col-md-9">
                         <select v-model="Resource.systemCode.selected" class="form-control"
                                 id="systemCode-selector-edit">
                         </select>
@@ -269,8 +271,8 @@
 
                 <!--是否可用-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.enabledError }">
-                    <label class="col-md-2 control-label">是否可用</label>
-                    <div class="col-md-10">
+                    <label class="col-md-3 control-label">是否可用</label>
+                    <div class="col-md-9">
                         <label class="radio radio-inline">
                             <input type="radio" v-model="Resource.enabled"
                                    class="radiobox style-0"
@@ -292,9 +294,9 @@
 
                 <!--排序索引-->
                 <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                    <label class="col-md-2 control-label">排序索引</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="排序索引" type="text"
+                    <label class="col-md-3 control-label">排序索引</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="排序索引"
                                v-model="Resource.orderIndex">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
@@ -305,14 +307,14 @@
 
                 <!--备注信息-->
                 <div class="form-group">
-                    <label class="col-md-2 control-label">备注信息</label>
-                    <div class="col-md-10">
-                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="Resource.remark">
+                    <label class="col-md-3 control-label">备注信息</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" v-model="Resource.remark">
                     </div>
                 </div>
 
             </fieldset>
-            <button id="edit" type="submit" class="hidden"></button>
+            <button id="resourceEdit" type="submit" class="hidden"></button>
         </form>
     </div>
 </div>

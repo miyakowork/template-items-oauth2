@@ -89,7 +89,7 @@ public class MenuModuleRestController extends BaseRestController {
     @RequestMapping("forbid")
     public R delete(String id) {
         try {
-            menuModuleService.forbidMenuModule(id);
+            menuModuleService.hideMenuModule(id);
             return R.ok("删除成功");
         } catch (Exception e) {
             LOGGER.error("禁用菜单模块发生异常，异常信息：{}", e);

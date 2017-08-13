@@ -8,9 +8,7 @@ import org.templateproject.oauth2.support.pojo.PageQueryBO;
  */
 public class PrivilegePageBo extends PageQueryBO {
 
-
     private String name;  //资源模块名称
-
 
     private Boolean enabled;  //是否可用
 

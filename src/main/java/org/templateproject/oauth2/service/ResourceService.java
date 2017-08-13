@@ -24,7 +24,7 @@ public class ResourceService extends SimpleBaseCrudService<OauthResource, Intege
      * @param page
      * @return page<OauthResource>
      */
-    public Page<ResourceVO> getResourcePage(ResourceBO resourceBO, Page<ResourceVO> page) {
+    public Page<ResourceVO> findResourcePage(ResourceBO resourceBO, Page<ResourceVO> page) {
         return findPagination(page, ResourceVO.class, sql(), resourceBO);
     }
 
@@ -34,9 +34,8 @@ public class ResourceService extends SimpleBaseCrudService<OauthResource, Intege
      * @param hideIds
      * @throws Exception
      */
-    public void hide(String hideIds) throws Exception {
+    public void hideResourceByIds(String hideIds) throws Exception {
         String[] ids = hideIds.split(",");
-        String sql = "UPDATE t_oauth_resource SET enabled = 0 WHERE id = :id";
         executeBatch(sql(), "id", ids);
     }
 

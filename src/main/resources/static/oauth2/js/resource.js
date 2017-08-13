@@ -21,7 +21,7 @@ var page_function = function () {
             sort: params.sort,
             url: $("input.bootstrap-table-filter-control-url").val(),
             permissionMark: $("input.bootstrap-table-filter-control-permissionMark").val(),
-            systemCode: $("input.bootstrap-table-filter-control-systemCode").val(),
+            systemCode: $(".bootstrap-table-filter-control-systemModuleName").val(),
             name: $("input.bootstrap-table-filter-control-name").val(),
             enabled: $(".bootstrap-table-filter-control-enabled").val()
         };
@@ -96,20 +96,18 @@ var page_function = function () {
                         params.append(data, resources[data])
                     }
                     params.append("systemCode", app.Resource.systemCode.selected)
-                    axios.post('/resource/api/add', params)
+                    axios.post('/oauth2/resource/api/add', params)
                         .then(function (response) {
-                            if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
-                                setTimeout(function () {
-                                    app.Resource.id = " ";
-                                    app.Resource.name = " ";
-                                    app.Resource.url = " ";
-                                    app.Resource.permissionMark = " ";
-                                    app.Resource.orderIndex = " ";
-                                    app.Resource.remark = " ";
-                                    $("#addResource").dialog("close");
-                                    $table.bootstrapTable("refresh");
-                                }, 1000)
+                                app.Resource.id = " ";
+                                app.Resource.name = " ";
+                                app.Resource.url = " ";
+                                app.Resource.permissionMark = " ";
+                                app.Resource.orderIndex = " ";
+                                app.Resource.remark = " ";
+                                $("#addResource").dialog("close");
+                                $table.bootstrapTable("refresh");
                             } else {
                                 TF.show_error_msg(response.data.message)
                             }
@@ -140,7 +138,6 @@ var page_function = function () {
                     TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
-                    var resources = app.Resource
                     params.append("id", app.Resource.id)
                     params.append("name", app.Resource.name)
                     params.append("url", app.Resource.url)
@@ -149,20 +146,18 @@ var page_function = function () {
                     params.append("enabled", app.Resource.enabled)
                     params.append("orderIndex", app.Resource.orderIndex)
                     params.append("remark", app.Resource.remark)
-                    axios.post('/resource/api/edit', params)
+                    axios.post('/oauth2/resource/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code == TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
-                                setTimeout(function () {
-                                    app.Resource.id = " ";
-                                    app.Resource.name = " ";
-                                    app.Resource.url = " ";
-                                    app.Resource.permissionMark = " ";
-                                    app.Resource.orderIndex = " ";
-                                    app.Resource.remark = " ";
-                                    $("#editResource").dialog("close");
-                                    $table.bootstrapTable("refresh");
-                                }, 1000)
+                                app.Resource.id = " ";
+                                app.Resource.name = " ";
+                                app.Resource.url = " ";
+                                app.Resource.permissionMark = " ";
+                                app.Resource.orderIndex = " ";
+                                app.Resource.remark = " ";
+                                $("#editResource").dialog("close");
+                                $table.bootstrapTable("refresh");
                             } else {
                                 TF.show_error_msg(response.data.message)
                             }
@@ -214,6 +209,19 @@ var page_function = function () {
 
     //监听新增按钮事件
     $("#add-resource").click(function () {
+        for (var f in app.error) {
+            if (f.indexOf("Msg") > -1) {
+                app.error[f] = "";
+            } else {
+                app.error[f] = false;
+            }
+        }
+        app.Resource.id = "";
+        app.Resource.name = "";
+        app.Resource.url = "";
+        app.Resource.permissionMark = "";
+        app.Resource.orderIndex = 0;
+        app.Resource.remark = "";
         $("#addResource").dialog("open");
         return false;
     });
@@ -248,21 +256,17 @@ var page_function = function () {
                 content: "是否删除当前所选资源信息？",
                 buttons: '[取消][确认]'
             }, function (ButtonPressed) {
-                if (ButtonPressed === "取消") {
-                    window.location.hash = "/resource"
-                } else if (ButtonPressed === "确认") {
+                if (ButtonPressed === "确认") {
                     var deleteIds = "";
                     for (var idRow in deleteResources) {
                         deleteIds += deleteResources[idRow].id + ",";
                     }
                     deleteIds = deleteIds.substr(0, deleteIds.length - 1);
-                    axios.post('/resource/api/delete?ids=' + deleteIds)
+                    axios.post('/oauth2/resource/api/delete?ids=' + deleteIds)
                         .then(function (response) {
                             if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
-                                setTimeout(function () {
-                                    $table.bootstrapTable("refresh");
-                                }, 1000)
+                                $table.bootstrapTable("refresh");
                             } else {
                                 TF.show_error_msg(response.data.message)
                             }
@@ -279,14 +283,14 @@ var page_function = function () {
     $("#addResource").dialog({
         title: "<div class='widget-header'><h4><i class='icon-ok'></i> 添加新资源</h4></div>",
         autoOpen: false,
-        width: 600,
+        width: 550,
         resizable: false,
         modal: true,
         buttons: [{
             html: "<i class='fa fa-plus-square-o'></i>&nbsp;确认",
             "class": "btn btn-primary",
             click: function () {
-                $("#add").trigger("click");
+                $("#resourceAdd").trigger("click");
 
             }
         }, {
@@ -309,7 +313,7 @@ var page_function = function () {
             html: "<i class='fa fa-life-saver'></i>&nbsp;确认",
             "class": "btn btn-primary",
             click: function () {
-                $("#edit").trigger("click");
+                $("#resourceEdit").trigger("click");
 
             }
         }, {
@@ -336,7 +340,7 @@ var page_function = function () {
                 var $selectSystemCode = response.data;
                 app.Resource.systemCode.selected = $selectSystemCode[0].systemCode;//默认给下拉菜单选中第一个
                 for (var i = 0; i < $selectSystemCode.length; i++) {
-                    $('#systemCode-selector-add,#systemCode-selector-edit').append("<option value=" + $selectSystemCode[i].systemCode + ">" + $selectSystemCode[i].systemCode + "</option>");
+                    $('#systemCode-selector-add,#systemCode-selector-edit').append("<option value=" + $selectSystemCode[i].systemCode + ">" + $selectSystemCode[i].name + "</option>");
                 }
             }
         })

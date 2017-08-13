@@ -1,14 +1,16 @@
-package org.templateproject.oauth2.page.privilegepage;
+package org.templateproject.oauth2.page.privilegeSort;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.templateproject.oauth2.entity.OauthMenuModule;
 import org.templateproject.oauth2.entity.OauthPrivilegePage;
+import org.templateproject.oauth2.service.MenuModuleService;
 import org.templateproject.oauth2.service.PrivilegePageService;
-import org.templateproject.oauth2.support.TemplateController;
+import org.templateproject.oauth2.support.BaseRestController;
+import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.oauth2.support.pojo.bo.PrivilegePageBo;
 import org.templateproject.oauth2.support.pojo.vo.PrivilegePageVO;
-import org.templateproject.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
 
@@ -18,44 +20,43 @@ import java.util.List;
  * Created by zhangteng on 2017/7/19.
  */
 @RestController
-@RequestMapping("privilegepage/api")
-public class PrivilegePageRestController extends TemplateController {
+@RequestMapping("oauth2/privilegeSort/api")
+public class PrivilegePageRestController extends BaseRestController {
 
 
     private PrivilegePageService privilegePageService;
-
+    private MenuModuleService menuModuleService;
 
     @Autowired
-    public void setPrivilegePageService(PrivilegePageService privilegePageService) {
+    public PrivilegePageRestController(PrivilegePageService privilegePageService, MenuModuleService menuModuleService) {
         this.privilegePageService = privilegePageService;
-    }
-
-
-    /*
-    * 获取资源模块的树形结构
-    *
-    * */
-    @RequestMapping("selectPrivilegePage")
-    public R selectPrivilegePage() throws Exception {
-
-        return R.ok(privilegePageService.findResourceModulTree());
-
+        this.menuModuleService = menuModuleService;
     }
 
 
     @RequestMapping("list")
-    public BootstrapTable<PrivilegePageVO> org(Page<PrivilegePageVO> page, PrivilegePageBo privilegePageBo, javax.servlet.http.HttpServletRequest request) throws Exception {
-        page = queryParam2Page(privilegePageBo, page);
-        page = privilegePageService.list(page, privilegePageBo);
-        List<PrivilegePageVO> result = page.getTResult();
-        return new BootstrapTable<>(page.getTotalCount(), result);
+    public BootstrapTable<PrivilegePageVO> org(Page<PrivilegePageVO> page, PrivilegePageBo privilegePageBo) throws Exception {
+        page = privilegePageService.findPrivilegeSortPage(page, privilegePageBo);
+        return bootstrapTable(page);
     }
 
+    /**
+     * 获取左侧菜单模块树
+     *
+     * @param systemModuleCode
+     * @return
+     */
+    @RequestMapping("selectMenuModuleTree")
+    public List<OauthMenuModule> selectMenuModuleTree(String systemModuleCode) {
+        return menuModuleService.findEnabledMenuModule(systemModuleCode);
+    }
+
+
     @RequestMapping("add")
-    public R add(PrivilegePageVO resource) {
+    public R add(OauthPrivilegePage resource) {
         boolean b = false;
         try {
-            b = privilegePageService.save(resource);
+            b = privilegePageService.save(resource, OauthPrivilegePage.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +72,7 @@ public class PrivilegePageRestController extends TemplateController {
 
         boolean flag = false;
         try {
-            flag = privilegePageService.edit(resource);
+            flag = privilegePageService.edit(resource, OauthPrivilegePage.class);
             if (flag) {
                 return R.ok("更新模块成功");
             }
