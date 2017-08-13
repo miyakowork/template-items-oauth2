@@ -15,6 +15,7 @@ public class OauthMenu extends DataEntity {
     private String name;    //名称
     private Integer resourceId;     //资源id
     private String icon;    //菜单图标
+    private String iconLarger;//菜单大图标
     private String menuType;       //菜单类型
     private String href;            //外部链接地址
     private String onclick;         //onclick事件
@@ -45,6 +46,14 @@ public class OauthMenu extends DataEntity {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getIconLarger() {
+        return iconLarger;
+    }
+
+    public void setIconLarger(String iconLarger) {
+        this.iconLarger = iconLarger;
     }
 
     public String getMenuType() {
