@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-08-12 16:08:00
+Date: 2017-08-13 12:48:14
 */
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -75,6 +75,8 @@ CREATE TABLE `t_oauth_menu` (
   COMMENT '系统模块代码',
   `icon`           VARCHAR(50)               DEFAULT NULL
   COMMENT '菜单图标',
+  `icon_larger`    VARCHAR(50)               DEFAULT NULL
+  COMMENT '菜单大图标',
   `menu_type`      VARCHAR(10)      NOT NULL
   COMMENT '菜单类型(1:：权限菜单，2：外部url菜单，3：js事件)',
   `href`           VARCHAR(500)              DEFAULT NULL
@@ -465,18 +467,12 @@ CREATE TABLE `t_oauth_session` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 296
+  AUTO_INCREMENT = 299
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_session
 -- ----------------------------
-INSERT INTO `t_oauth_session` VALUES ('295', 'sa', '6622490d-f69a-4f01-b896-4fc341ad1fc4',
-                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDY2MjI0OTBkLWY2OWEtNGYwMS1iODk2LTRmYzM0MWFkMWZjNHNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV3Ve37KeHNxAH4AA3cIAAABXdV8BRh4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AC4vb2F1dGgyL3N5c3RlbS1tb2R1bGUvYXBpL2ZpbmQvbW9kdWxlcy9lbmFibGVkdABNb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LnN1cHBvcnQuRGVmYXVsdFN1YmplY3RDb250ZXh0X1BSSU5DSVBBTFNfU0VTU0lPTl9LRVlzcgAyb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LlNpbXBsZVByaW5jaXBhbENvbGxlY3Rpb26of1glxqMISgMAAUwAD3JlYWxtUHJpbmNpcGFsc3QAD0xqYXZhL3V0aWwvTWFwO3hwc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhxAH4ABj9AAAAAAAAMdwgAAAAQAAAAAXQAO29yZy50ZW1wbGF0ZXByb2plY3Qub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8xc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAAQP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgASeHh4',
-                                             '127.0.0.1', '2017-08-12 16:07:07', '2017-08-12 16:07:41', '1800000',
-                                             'http://127.0.0.1:8082/oauth2/user',
-                                             'http://127.0.0.1:8082/privilegepage/api/selectPrivilegePage',
-                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
 
 -- ----------------------------
 -- Table structure for t_oauth_system_module
@@ -616,8 +612,8 @@ INSERT INTO `t_oauth_user` VALUES
         '765934806@qq.com', '765934806', NULL, '181xxxxxxxx', '1', '2017-08-08 20:05:42', '1', '2017-08-08 20:05:42',
    '1', '0', '伍文彬wwb');
 INSERT INTO `t_oauth_user` VALUES
-  ('2', 'wuwenbin', 'c9fec9c8be69b86536cc2a9099570e68', '681b8bdcb5b2707c6f46cd24c3650554', '伍文彬', '3', '1',
-        '765934806@qq.com', NULL, NULL, '181xxxxxxxx', '1', '2017-08-12 15:58:54', '1', '2017-08-08 20:05:42', '1', '0',
+  ('2', 'wuwenbin', '1b0b3d9df72b8a911c0948ae2133e2b7', 'b8dbba89e4717f8549f91309e5a80b52', '伍文彬', '3', '1',
+        '765934806@qq.com', NULL, NULL, '181xxxxxxxx', '1', '2017-08-13 10:57:57', '1', '2017-08-08 20:05:42', '1', '0',
    NULL);
 INSERT INTO `t_oauth_user` VALUES
   ('3', 'test1', '5ad9dbfabd53f02cff01a6b663ea73e1', 'f168be98ce323815e3bd079bade7b6cb', '测试用户', '4', '4',
@@ -656,7 +652,7 @@ CREATE TABLE `t_oauth_user_login_log` (
   CONSTRAINT `user_login_log_fk1` FOREIGN KEY (`user_id`) REFERENCES `t_oauth_user` (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 104
+  AUTO_INCREMENT = 107
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -868,6 +864,12 @@ INSERT INTO `t_oauth_user_login_log`
 VALUES ('102', '2', '2017-08-12 15:59:23', '0:0:0:0:0:0:0:1', '1', '2017-08-12 15:59:23', NULL, NULL, NULL, '0', NULL);
 INSERT INTO `t_oauth_user_login_log`
 VALUES ('103', '1', '2017-08-12 16:07:11', '127.0.0.1', '1', '2017-08-12 16:07:11', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('104', '1', '2017-08-13 10:42:46', '127.0.0.1', '1', '2017-08-13 10:42:46', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('105', '1', '2017-08-13 10:57:50', '127.0.0.1', '1', '2017-08-13 10:57:50', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('106', '2', '2017-08-13 10:58:11', '127.0.0.1', '1', '2017-08-13 10:58:11', NULL, NULL, NULL, '0', NULL);
 
 -- ----------------------------
 -- Table structure for t_oauth_user_role
@@ -910,6 +912,18 @@ FOR EACH ROW
     UPDATE t_oauth_privilege_operation
     SET enabled = new.enabled
     WHERE operation_type_id = old.id;
+  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `resource_tg1`;
+DELIMITER ;;
+CREATE TRIGGER `resource_tg1`
+AFTER UPDATE ON `t_oauth_resource`
+FOR EACH ROW
+  BEGIN
+    UPDATE t_oauth_menu
+    SET enabled = new.enabled
+    WHERE id = old.id;
   END
 ;;
 DELIMITER ;
