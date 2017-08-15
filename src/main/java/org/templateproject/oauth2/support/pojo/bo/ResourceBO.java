@@ -16,7 +16,7 @@ public class ResourceBO extends PageQueryBO {
     @QueryColumn(value = "system_code", operation = Operator.EQ)
     private String systemCode;  //系统代码
     private String name;  //名称
-    private Boolean enabled;   //是否可用
+    private String enabled;   //是否可用
 
 
     public String getUrl() {
@@ -51,11 +51,11 @@ public class ResourceBO extends PageQueryBO {
         this.name = name;
     }
 
-    public Boolean getEnabled() {
+    public String getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(String enabled) {
         this.enabled = enabled;
     }
 }

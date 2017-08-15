@@ -37,14 +37,23 @@ public class ResModuleService extends SimpleBaseCrudService<OauthResourceModule,
 
 
     /**
-     * 查询ResModuleTree
+     * 查询所有可用的资源模块
      *
      * @return list
      */
     public List<OauthResourceModule> findEnabledResModules() {
-        return h2Dao.findListBeanByArray(sql(), OauthResourceModule.class);
+        return mysql.findListBeanByArray(sql(), OauthResourceModule.class);
     }
 
+    /**
+     * 根据系统模块查询所有可用的资源模块
+     *
+     * @param systemModuleCode
+     * @return
+     */
+    public List<OauthResourceModule> findEnabledResModulesBySystemModuleCode(String systemModuleCode) {
+        return mysql.findListBeanByArray(sql(), OauthResourceModule.class, systemModuleCode);
+    }
 
     /**
      * 將resModule列表转为zTree树对象
@@ -52,16 +61,14 @@ public class ResModuleService extends SimpleBaseCrudService<OauthResourceModule,
      * @param oauthResourceModules 需要转换的resModule
      * @return zTree
      */
-    public List<ZTreeBO> resModuleToZtree(Collection<OauthResourceModule> oauthResourceModules) {
+    public List<ZTreeBO> resModuleToZTree(Collection<OauthResourceModule> oauthResourceModules) {
         List<ZTreeBO> zTreeList = new LinkedList<>();
         for (OauthResourceModule resModule : oauthResourceModules) {
-            ZTreeBO ztree = new ZTreeBO();
-            ztree.setId(resModule.getId().toString());
-            ztree.setpId("0");
-            ztree.setisParent(true);
-            ztree.setName(resModule.getName());
-            ztree.setOpen(true);
-            zTreeList.add(ztree);
+            ZTreeBO zTreeBO = new ZTreeBO();
+            zTreeBO.setId(resModule.getId().toString());
+            zTreeBO.setpId("0");
+            zTreeBO.setName(resModule.getName());
+            zTreeList.add(zTreeBO);
         }
         return zTreeList;
     }

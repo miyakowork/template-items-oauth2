@@ -27,7 +27,7 @@ public class ShiroRoleService extends SimpleBaseCrudService<OauthRole, Integer> 
         String sql = "SELECT tor.* FROM T_OAUTH_ROLE tor WHERE tor.ID IN" +
                 " (SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?)" +
                 " AND tor.ENABLED = 1";
-        List<OauthRole> roles = h2Dao.findListBeanByArray(sql, OauthRole.class, user.getId());
+        List<OauthRole> roles = mysql.findListBeanByArray(sql, OauthRole.class, user.getId());
         return new HashSet<>(roles);
     }
 
@@ -41,7 +41,7 @@ public class ShiroRoleService extends SimpleBaseCrudService<OauthRole, Integer> 
         String sql = "SELECT tor.* FROM T_OAUTH_ROLE tor WHERE tor.ID IN" +
                 " (SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?)" +
                 " AND tor.ENABLED = 1";
-        List<OauthRole> roles = h2Dao.findListBeanByArray(sql, OauthRole.class, userId);
+        List<OauthRole> roles = mysql.findListBeanByArray(sql, OauthRole.class, userId);
         return new HashSet<>(roles);
     }
 
@@ -55,7 +55,7 @@ public class ShiroRoleService extends SimpleBaseCrudService<OauthRole, Integer> 
         String sql = "SELECT tor.name AS role_name FROM T_OAUTH_ROLE tor WHERE tor.ID IN" +
                 " (SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?)" +
                 " AND tor.ENABLED = 1";
-        List<Map<String, Object>> roles = h2Dao.findListMapByArray(sql, userId);
+        List<Map<String, Object>> roles = mysql.findListMapByArray(sql, userId);
         Set<String> roleNames = new HashSet<>(roles.size());
         for (Map<String, Object> m : roles) {
             roleNames.add(m.get("role_name").toString());
@@ -76,7 +76,7 @@ public class ShiroRoleService extends SimpleBaseCrudService<OauthRole, Integer> 
             String sql = "SELECT tor.* FROM T_OAUTH_ROLE tor WHERE tor.ID IN" +
                     " (SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?)" +
                     " AND tor.ENABLED = 1";
-            List<OauthRole> roles = h2Dao.findListBeanByArray(sql, OauthRole.class, user.getId());
+            List<OauthRole> roles = mysql.findListBeanByArray(sql, OauthRole.class, user.getId());
             return new HashSet<>(roles);
         }
     }

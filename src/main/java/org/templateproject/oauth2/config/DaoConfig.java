@@ -22,7 +22,7 @@ public class DaoConfig implements ConfigConsts {
         public DataSourceX dataSourceX(DruidDataSource dataSource) {
                 DataSourceX dataSourceX = new DataSourceX();
                 dataSourceX.setDataSource(dataSource);
-                dataSourceX.setInitDbType(DbType.H2);
+            dataSourceX.setInitDbType(DbType.Mysql);
                 return dataSourceX;
         }
 

@@ -296,16 +296,17 @@ var TF = {
         var opt = {
             height: TF.getHeight(),
             striped: true,//设置为 true 会有隔行变色效果
-            method: 'post',
+            // method: 'post',//默认是get
             cache: false,//设置为 false 禁用 AJAX 数据缓存
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",//post方式一定得改成这种contentType
+            // contentType: "application/x-www-form-urlencoded; charset=UTF-8",//post方式一定得改成这种contentType,默认是application/json
             pagination: true,
             paginationLoop: false,
             sidePagination: "server",
             pageList: '[1,5,10,25,50,100,150,200,500,1000]',
             selectItemName: this.CHECKBOX_NAME,//radio or checkbox 的字段名
             escape: true,
-            searchTimeOut: TF.COMMON.SEARCH_TRIGGER_TIME,
+            searchTimeOut: TF.COMMON.SEARCH_TRIGGER_TIME,//触发搜索时间，此处为1秒
+            // searchTimeout: 0,//触发搜索延迟时间，我们不要延迟所说义设置为0秒
             trimOnSearch: false,//设置为 true 将允许空字符搜索
             showToggle: true,//是否显示 切换试图（table/card）按钮
             idField: "id",
@@ -315,7 +316,7 @@ var TF = {
             showColumns: true,//是否显示 内容列下拉框
             showRefresh: true,
             showMultiSort: true,//多列排序
-            filterShowClear: true//Set true to add a button to clear all the controls added by this plugin.
+            filterShowClear: true,//Set true to add a button to clear all the controls added by this plugin.
         };
         //组装laydate的options参数
         opt.extend = function (obj) {
@@ -323,7 +324,6 @@ var TF = {
                 this[o] = obj[o]
             }
         };
-
         opt.extend(mainOptions);
         $table.bootstrapTable(opt);
     }
@@ -338,8 +338,21 @@ var TF = {
     reInitTable: function ($table, mainOptions) {
         $table.bootstrapTable("destroy");
         TF.initTable($table, mainOptions);
-    }
-    ,
+    },
+
+    toggleTableSearch: function (has2Datepicker) {
+        var $header = $("div.bootstrap-table>div.fixed-table-container>div.fixed-table-header");
+        if (window.__customControls___) {
+            if (has2Datepicker) {
+                $header.css("height", "108px");
+            } else {
+                $header.css("height", "74px");
+            }
+        } else {
+            $header.css('height', '37px');
+        }
+    },
+
     /**
      * 表格列表页面获取高度
      * @returns {number}
@@ -517,9 +530,11 @@ $doc.ajaxSuccess(function (event, xhr, options) {
 });
 
 $doc.ajaxError(function (event, xhr, options, exc) {
-    var resp = xhr.responseJSON;
-    var status = resp.data.status;
-    var errorMsg = resp.data.error;
-    var exceptionMsg = resp.data.exception;
-    TF.show_error_msg("请求发生异常！<br/>状态码：" + status + "<br/>错误信息：" + errorMsg + "<br/>异常信息：" + exceptionMsg);
+    if (xhr.responseJSON !== undefined && xhr.responseJSON) {
+        var resp = xhr.responseJSON;
+        var status = resp.data.status;
+        var errorMsg = resp.data.error;
+        var exceptionMsg = resp.data.exception;
+        TF.show_error_msg("请求发生异常！<br/>状态码：" + status + "<br/>错误信息：" + errorMsg + "<br/>异常信息：" + exceptionMsg);
+    }
 });

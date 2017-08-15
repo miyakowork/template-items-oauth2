@@ -2,8 +2,6 @@ package org.templateproject.oauth2.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.templateproject.oauth2.constant.CommonConsts;
-import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthDepartment;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.annotation.sql.SqlMapper;
@@ -11,8 +9,6 @@ import org.templateproject.oauth2.support.pojo.bo.DepartmentBO;
 import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.oauth2.support.pojo.vo.DepartmentVO;
 import org.templateproject.pojo.page.Page;
-import org.templateproject.sql.entrance.SQLFactory;
-import org.templateproject.sql.factory.SQLBeanBuilder;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -65,7 +61,7 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      * @return zTree树
      */
     public List<OauthDepartment> findEnabledDepartments(String depId) {
-        List<OauthDepartment> departments = h2Dao.findListBeanByArray(sql(), OauthDepartment.class);
+        List<OauthDepartment> departments = mysql.findListBeanByArray(sql(), OauthDepartment.class);
         if ("0".equalsIgnoreCase(depId))//如果需要显示部门根节点，则传递参数id=0即可
             departments.add(OauthDepartment.root());
         return departments;
@@ -79,7 +75,7 @@ public class DepartmentService extends SimpleBaseCrudService<OauthDepartment, In
      * @return 是否有子节点
      */
     public boolean checkIsParent(int id) {
-        long count = h2Dao.queryNumberByArray(sql(), Long.class, id);
+        long count = mysql.queryNumberByArray(sql(), Long.class, id);
         return count != 0;
     }
 

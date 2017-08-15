@@ -42,7 +42,7 @@ public class PrivilegePageService extends SimpleBaseCrudService<OauthPrivilegePa
      * @return
      * @throws Exception
      */
-    public Page<PrivilegePageVO> findPrivilegeSortPage(Page<PrivilegePageVO> page, PrivilegePageBo privilegePageBo) throws Exception {
+    public Page<PrivilegePageVO> findPrivilegePagePage(Page<PrivilegePageVO> page, PrivilegePageBo privilegePageBo) throws Exception {
         return findPagination(page, PrivilegePageVO.class, sql(), privilegePageBo);
     }
 
@@ -111,7 +111,7 @@ public class PrivilegePageService extends SimpleBaseCrudService<OauthPrivilegePa
                 "T_OAUTH_RESOURCE_MODULE torm " + "LEFT JOIN T_OAUTH_SYSTEM_MODULE tosm ON   " + "torm.SYSTEM_CODE=tosm.SYSTEM_CODE ";
 
         List<OauthSystemModule> li =
-                h2Dao.findListBeanByArray(sql, OauthSystemModule.class);
+                mysql.findListBeanByArray(sql, OauthSystemModule.class);
 
         return li;
     }

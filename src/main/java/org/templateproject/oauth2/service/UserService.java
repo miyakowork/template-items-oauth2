@@ -38,7 +38,7 @@ public class UserService extends SimpleBaseCrudService<OauthUser, Integer> {
      * @throws Exception
      */
     public boolean edit(OauthUser oauthUser) throws Exception {
-        return h2Dao.executeBean(sql(), oauthUser) == 1;
+        return mysql.executeBean(sql(), oauthUser) == 1;
     }
 
 

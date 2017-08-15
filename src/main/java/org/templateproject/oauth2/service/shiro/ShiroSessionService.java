@@ -44,7 +44,7 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
     public ShiroSession fetchSessionById(String sessionId) {
         SQLStrBuilder ssb = SQLFactory.builder();
         String sql = ssb.selectAllByColumns("t_oauth_session", "session_id");
-        return h2Dao.findBeanByArray(sql, ShiroSession.class, sessionId);
+        return mysql.findBeanByArray(sql, ShiroSession.class, sessionId);
     }
 
     /**
@@ -55,7 +55,7 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @throws Exception 更新时出现的异常
      */
     public int updateShiroSession(ShiroSession shiroSession) throws Exception {
-        return h2Dao.executeBean(sql(), shiroSession);
+        return mysql.executeBean(sql(), shiroSession);
     }
 
     /**
@@ -79,7 +79,7 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
     public void insertShiroSession(ShiroSession shiroSession) throws Exception {
         SQLBeanBuilder sbb = SQLFactory.builder(ShiroSession.class);
         String sql = sbb.insertRoutersWithoutPk(ServiceConsts.DEFAULT_ROUTER);
-        h2Dao.executeBean(sql, shiroSession);
+        mysql.executeBean(sql, shiroSession);
     }
 
 

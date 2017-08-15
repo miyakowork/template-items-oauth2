@@ -777,7 +777,7 @@
 
                 halign = sprintf('text-align: %s; ', column.halign ? column.halign : column.align);
                 align = sprintf('text-align: %s; ', column.align);
-                style = sprintf('vertical-align: %s; ', column.valign);
+                style = sprintf('vertical-align: %s; ', column.valign ? column.valign : "top");
                 style += sprintf('width: %s; ', (column.checkbox || column.radio) && !width ?
                     '36px' : (width ? width + unitWidth : undefined));
 
@@ -2232,7 +2232,7 @@
             }
 
             falign = sprintf('text-align: %s; ', column.falign ? column.falign : column.align);
-            valign = sprintf('vertical-align: %s; ', column.valign);
+            valign = sprintf('vertical-align: %s; ', column.valign ? column.valign : "top");
 
             style = calculateObjectValue(null, that.options.footerStyle);
 

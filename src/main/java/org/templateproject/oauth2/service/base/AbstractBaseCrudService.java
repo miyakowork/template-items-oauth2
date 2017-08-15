@@ -3,10 +3,6 @@ package org.templateproject.oauth2.service.base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.templateproject.dao.ancestor.AncestorDao;
 import org.templateproject.dao.factory.DaoFactory;
 import org.templateproject.oauth2.entity.base.BaseEntity;
@@ -29,7 +25,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
 
         private SqlMap sqlMap;
 
-        protected AncestorDao h2Dao;//数据层操作dao
+    protected AncestorDao mysql;//数据层操作dao
 
         @Autowired
         public void setSqlMap(SqlMap sqlMap) {
@@ -37,8 +33,8 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
         }
 
         @Autowired
-        public void setH2Dao(DaoFactory daoFactory) {
-                this.h2Dao = daoFactory.dynamicDao;
+        public void setMysql(DaoFactory daoFactory) {
+            this.mysql = daoFactory.dynamicDao;
         }
 
         /**
@@ -62,7 +58,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
         @Override
         public long count(Class<T> clazz) {
                 SQLBeanBuilder sbb = SQLFactory.builder(clazz);
-                return h2Dao.queryNumberByArray(sbb.countAll(), Long.class);
+            return mysql.queryNumberByArray(sbb.countAll(), Long.class);
         }
 
         @Override
@@ -73,7 +69,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
         @Override
         public <S extends T> S findOne(ID id, Class<S> clazz) {
                 SQLBeanBuilder sbb = SQLFactory.builder(clazz);
-                return h2Dao.findBeanByArray(sbb.selectAllByPk(), clazz, id);
+            return mysql.findBeanByArray(sbb.selectAllByPk(), clazz, id);
         }
 
         @Override
@@ -90,22 +86,22 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
                 SQLBeanBuilder sbb = SQLFactory.builder(clazz);
                 String findSQL = sbb.selectAll();
                 LOGGER.info("SQL:[{}]", findSQL);
-                return h2Dao.findListBeanByArray(findSQL, clazz);
+            return mysql.findListBeanByArray(findSQL, clazz);
         }
 
         @Override
         public <S extends T> Page<S> findPage(Page<S> page, Class<S> clazz, String sql, Object... arrayParameters) {
-                return h2Dao.findPageListBeanByArray(sql, clazz, page, arrayParameters);
+            return mysql.findPageListBeanByArray(sql, clazz, page, arrayParameters);
         }
 
         @Override
         public <S extends T> Page<S> findPage(Page<S> page, Class<S> clazz, String sql, Map<String, Object> mapParameter) {
-                return h2Dao.findPageListBeanByMap(sql, clazz, page, mapParameter);
+            return mysql.findPageListBeanByMap(sql, clazz, page, mapParameter);
         }
 
         @Override
         public <S extends T> Page<S> findPage(Page<S> page, Class<S> clazz, String sql, S beanParameter) {
-                return h2Dao.findPageListBeanByBean(sql, clazz, page, beanParameter);
+            return mysql.findPageListBeanByBean(sql, clazz, page, beanParameter);
         }
 
         @Override
@@ -114,7 +110,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
                 SQLStrBuilder ssb = SQLFactory.builder();
                 String deleteSQL = ssb.deleteByColumns(sbb.getTableName(), sbb.getPkField().getName());
                 LOGGER.info("SQL:[{}]", deleteSQL);
-                h2Dao.executeArray(deleteSQL, id);
+            mysql.executeArray(deleteSQL, id);
         }
 
         @Override
@@ -122,7 +118,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
                 SQLBeanBuilder sbb = SQLFactory.builder(entity.getClass());
                 String deleteSQL = sbb.deleteByPk();
                 LOGGER.info("SQL:[{}]", deleteSQL);
-                h2Dao.executeBean(deleteSQL, entity);
+            mysql.executeBean(deleteSQL, entity);
         }
 
         @Override
@@ -136,7 +132,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
                         map.put(pk, id);
                         maps.add(map);
                 }
-                return h2Dao.executeBatchByCollectionMaps(deleteSQL, maps);
+            return mysql.executeBatchByCollectionMaps(deleteSQL, maps);
         }
 
         @Override
@@ -145,7 +141,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
                 String saveSQL = sbb.insertAllWithoutPk();
                 LOGGER.info("SQL:[{}]", saveSQL);
                 entity.preInsert();
-                return h2Dao.insertBeanAutoGenKeyOutBean(saveSQL, entity, clazz, sbb.getTableName());
+            return mysql.insertBeanAutoGenKeyOutBean(saveSQL, entity, clazz, sbb.getTableName());
         }
 
         @Override
@@ -154,7 +150,7 @@ public abstract class AbstractBaseCrudService<T extends BaseEntity, ID> implemen
                 String updateSQL = sbb.updateRoutersByPk(routers);
                 LOGGER.info("SQL:[{}]", updateSQL);
                 entity.preUpdate();
-                int affect = h2Dao.executeBean(updateSQL, entity);
+            int affect = mysql.executeBean(updateSQL, entity);
                 return affect == 1;
         }
 }

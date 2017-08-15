@@ -42,7 +42,7 @@ public class RoleService extends SimpleBaseCrudService<OauthRole, Integer> {
      * @return role tree
      */
     public List<ZTreeBO> findRoleTree(String roleId, String systemModuleCode) {
-        List<OauthRole> oauthRoles = h2Dao.findListBeanByArray(sql(), OauthRole.class, systemModuleCode);
+        List<OauthRole> oauthRoles = mysql.findListBeanByArray(sql(), OauthRole.class, systemModuleCode);
         if ("0".equalsIgnoreCase(roleId))
             oauthRoles.add(OauthRole.root());
         return roleToZTree(oauthRoles);
@@ -77,7 +77,7 @@ public class RoleService extends SimpleBaseCrudService<OauthRole, Integer> {
      */
 
     private boolean checkIsParent(int roleId) {
-        long count = h2Dao.queryNumberByArray(sql(), Long.class, roleId);
+        long count = mysql.queryNumberByArray(sql(), Long.class, roleId);
         return count != 0;
     }
 

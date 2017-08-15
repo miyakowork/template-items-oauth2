@@ -1,18 +1,15 @@
 pageSetUp();
 
 var app;
+var $selectedModule = $("input[name=selectedModulePs]");
+
 // page_function
 var page_function = function () {
-    var $table = $("#privilegeSort-table");
+    var $table = $("#privilegePage-table");
     //搜索控件显影的监听事件
-    $("#privilegeSort-search-control").on("click", function () {
+    $("#privilegePage-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.reInitTable($table, {
-            url: "/oauth2/privilegeSort/api/list",
-            toolbar: '#privilegeSort-toolbar',
-            queryParams: query_params,
-            filterControl: true
-        })
+        TF.toggleTableSearch(false);
     });
 
     var query_params = function (params) {
@@ -21,9 +18,9 @@ var page_function = function () {
             offset: params.offset,
             order: params.order,
             sort: params.sort,
-            enabled: $("select[name=enabled1]").val(),
+            enabled: $(".bootstrap-table-filter-control-enabled").val(),
             moduleId: getParentIdOnSort,
-            resourceName: $("input.bootstrap-table-filter-control-resourceName").val(),
+            resourceName: $("input.bootstrap-table-filter-control-resourceName").val()
         };
     };
 
@@ -71,14 +68,14 @@ var page_function = function () {
                     for (var data in privilegepage) {
                         params.append(data, privilegepage[data])
                     }
-                    axios.post('/oauth2/privilegeSort/api/add', params)
+                    axios.post('/oauth2/privilegePage/api/add', params)
                         .then(function (response) {
                             if (response.data.code === TF.STATUS_CODE.SUCCESS) {
 
                                 layer.msg(response.data.message);
                                 $("#addprivilegepage").dialog("close");
                                 $table.bootstrapTable('refresh');
-                                load_privilegepageTree();
+                                load_privilegePageTree();
 
                             } else {
                                 TF.show_error_msg(response.data.message)
@@ -117,12 +114,12 @@ var page_function = function () {
                     params.append("enabled", app.PrivilegePage.enabled)
                     params.append("orderIndex", app.PrivilegePage.orderIndex)
                     params.append("remark", app.PrivilegePage.remark)
-                    axios.post('/oauth2/privilegeSort/api/edit', params)
+                    axios.post('/oauth2/privilegePage/api/edit', params)
                         .then(function (response) {
                             if (response.data.code === TF.STATUS_CODE.SUCCESS) {
                                 layer.msg(response.data.message);
                                 $("#editprivilegepage").dialog("close");
-                                load_privilegepageTree();
+                                load_privilegePageTree();
                                 $table.bootstrapTable("refresh");
                             } else {
                                 TF.show_error_msg(response.data.message)
@@ -285,11 +282,10 @@ var page_function = function () {
     axios.post('/oauth2/system-module/api/find/modules/enabled', {})
         .then(function (response) {
             if (response && response.status === 200) {
-                var $selectedModule = $("input[name=selectedModulePs]");
                 var $selectModuleControl = $('#select-modules-ps');
                 if (response.data.length > 0) {
                     var systemModules = response.data;
-                    $selectModuleControl.append("<option value=''>全部系统模块</option>");
+                    $selectModuleControl.append("<option value=''>全部系统平台</option>");
                     for (var i = 0; i < systemModules.length; i++) {
                         $selectModuleControl.append("<option value=" + systemModules[i].systemCode + ">" + systemModules[i].name + "</option>");
                     }
@@ -297,15 +293,18 @@ var page_function = function () {
                 }
             }
             //循环完select之后加载左侧角色树
-            load_privilegepageTree();
-            //循环完之后加载表格
+            load_privilegePageTree();
+            //循环完之后加载表格,加载全部页面级权限的资源，不区分资源模块模块
             TF.initTable($table, {
-                url: "/oauth2/privilegeSort/api/list",
-                toolbar: '#privilegeSort-toolbar',
+                url: "/oauth2/privilegePage/api/list",
+                toolbar: '#privilegePage-toolbar',
                 queryParams: function (params) {
-                    var opt = query_params(params);
-                    opt.systemCode = $selectedModule.val();
-                    return opt;
+                    return {
+                        limit: params.limit,
+                        offset: params.offset,
+                        order: params.order,
+                        sort: params.sort
+                    };
                 },
                 filterControl: true
             });
@@ -317,7 +316,47 @@ var page_function = function () {
                 TF.show_error_msg(error)
         });
 
+    //监听下拉框改变而来改变左侧的资源模块树
+    $("#select-modules-ps").on("change", function () {
+        var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
+        treeObj.destroy();
+        $selectedModule.val($(this).val());
+        load_privilegePageTree();
+        $table.bootstrapTable("removeAll");
+    });
 
+    //取消勾选资源模块，并刷新树和表格内容
+    $("#refreshResModuleTree").click(function () {
+        var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
+        treeObj.cancelSelectedNode();
+        var nodes = treeObj.getCheckedNodes(true);
+        if (nodes.length === 0) {
+            layer.msg("没有勾选资源模块，取消勾选无效！");
+            return;
+        }
+        for (var i = 0, l = nodes.length; i < l; i++) {
+            treeObj.checkNode(nodes[i], false, true);
+        }
+        TF.reInitTable($table, {
+            url: "/oauth2/privilegePage/api/list",
+            toolbar: '#privilegePage-toolbar',
+            queryParams: query_params,
+            filterControl: true
+        })
+    });
+
+    //获取资源
+    $("#getResource").click(function () {
+        layer.open({
+            type: 2,
+            title: "资源树(双击选定)",
+            area: ['300px', '420px'],
+            fixed: true,
+            resize: false,
+            offset: '200px',
+            content: "/oauth2/privilege-page/resourceSelect"
+        })
+    })
 };
 
 //获取资源模块id
@@ -332,7 +371,7 @@ function getParentIdOnSort() {
 }
 
 //加载左侧树结构
-var load_privilegepageTree = function () {
+var load_privilegePageTree = function () {
     var settings = {
         data: {
             simpleData: {
@@ -347,27 +386,26 @@ var load_privilegepageTree = function () {
         },
         callback: {
             onClick: function (event, treeId, treeNode) {
-                if (treeNode.isParent) {
-                    TF.show_error_message("错误消息提示", "请选择资源模块", 3000);
-                }
-                else {
-                    var $table = $("#privilegeSort-table");
-                    var opt = {
-                        url: "/oauth2/privilegeSort/api/list",
-                        silent: true,
-                        query: {
-                            moduleId: treeNode.id
-                        }
-                    };
-                    $table.bootstrapTable('refresh', opt);
-                }
+                var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
+                treeObj.checkNode(treeNode, true, false);
+
+                var $table = $("#privilegePage-table");
+                var opt = {
+                    url: "/oauth2/privilegePage/api/list",
+                    silent: true,
+                    query: {
+                        moduleId: treeNode.id
+                    }
+                };
+                $table.bootstrapTable('refresh', opt);
             }
         }
     };
-    $.get("/oauth2/privilegeSort/api/selectMenuModuleTree", function (json) {
+    $.get("/oauth2/resModule/api/resModuleTree?systemModuleCode=" + $selectedModule.val(), function (json) {
         $.fn.zTree.init($("#privilegepageTree"), settings, json);
     })
 };
+
 
 function parentNameFormatter(val) {
     return val === null || val === "-" ? "根节点" : val;

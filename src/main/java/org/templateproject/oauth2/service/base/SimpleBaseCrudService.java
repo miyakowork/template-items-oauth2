@@ -50,7 +50,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
                 CommonConsts.ENABLED_ROUTER, CommonConsts.ORDER_ROUTER,
                 CommonConsts.REMARK_ROUTER, CommonConsts.CREATE_ROUTER, ServiceConsts.DEFAULT_ROUTER);
         model.preInsert();
-        return h2Dao.executeBean(insertSQL, model) == 1;
+        return mysql.executeBean(insertSQL, model) == 1;
     }
 
     /**
@@ -66,7 +66,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
         String updateSQL = sbb.updateRoutersByPk(ServiceConsts.DEFAULT_ROUTER, CommonConsts.UPDATE_ROUTER,
                 CommonConsts.ENABLED_ROUTER, CommonConsts.ORDER_ROUTER, CommonConsts.REMARK_ROUTER);
         model.preUpdate();
-        return h2Dao.executeBean(updateSQL, model) == 1;
+        return mysql.executeBean(updateSQL, model) == 1;
 
     }
 
@@ -85,7 +85,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
             maps.add(map);
         }
         String sql = sbb.deleteByPk();
-        h2Dao.executeBatchByCollectionMaps(sql, maps);
+        mysql.executeBatchByCollectionMaps(sql, maps);
     }
 
     /**
@@ -103,7 +103,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
         SQLBeanBuilder sbb = SQLFactory.builder(clazz);
         SQLStrBuilder ssb = SQLFactory.builder();
         String sql = ssb.deleteByColumns(sbb.getTableName(), columnName);
-        h2Dao.executeArray(sql, columnValue);
+        mysql.executeArray(sql, columnValue);
     }
 
 
@@ -116,7 +116,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
      * @throws Exception e
      */
     public boolean executeArray(String sql, Object... arrayParameters) throws Exception {
-        return h2Dao.executeArray(sql, arrayParameters) == 1;
+        return mysql.executeArray(sql, arrayParameters) == 1;
     }
 
     /**
@@ -128,7 +128,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
      * @throws Exception e
      */
     public boolean executeBean(String sql, Model model) throws Exception {
-        return h2Dao.executeBean(sql, model) == 1;
+        return mysql.executeBean(sql, model) == 1;
     }
 
     /**
@@ -140,7 +140,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
      * @throws Exception e
      */
     public boolean executeMap(String sql, Map<String, Object> mapParameter) throws Exception {
-        return h2Dao.executeMap(sql, mapParameter) == 1;
+        return mysql.executeMap(sql, mapParameter) == 1;
     }
 
     /**
@@ -158,7 +158,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
             map.put(constraintName, id);//是通过id主键来约束的，即 where pk = :id
             maps.add(map);
         }
-        h2Dao.executeBatchByCollectionMaps(sql, maps);
+        mysql.executeBatchByCollectionMaps(sql, maps);
     }
 
     /**
@@ -170,7 +170,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
     public List<Model> findAll(Class<Model> clazz) {
         SQLBeanBuilder sbb = SQLFactory.builder(clazz);
         String sql = sbb.selectAll();
-        return h2Dao.findListBeanByArray(sql, clazz);
+        return mysql.findListBeanByArray(sql, clazz);
     }
 
     /**
@@ -308,6 +308,6 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
         if (finalSQL.endsWith(","))
             finalSQL = finalSQL.substring(0, finalSQL.length() - 1);
 
-        return h2Dao.findPageListBeanByMap(finalSQL, pageModelClass, page, params2Value);
+        return mysql.findPageListBeanByMap(finalSQL, pageModelClass, page, params2Value);
     }
 }

@@ -27,7 +27,7 @@
             },
             async: {
                 enable: true,
-                url: "/oauth2/privilegeSort/api/selectPrivilegePage",
+                url: "/oauth2/privilegePage/api/selectPrivilegePage",
                 autoParam: ["id"],
             },
             view: {
@@ -48,7 +48,7 @@
                 }
             }
         };
-        $.get("/oauth2/privilegeSort/api/selectPrivilegePage", function (json) {
+        $.get("/oauth2/privilegePage/api/selectPrivilegePage", function (json) {
             $.fn.zTree.init($("#privilegepage"), settings, json.data)
         })
     })

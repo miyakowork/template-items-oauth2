@@ -12,8 +12,10 @@ import org.templateproject.oauth2.config.support.password.PasswordHelper;
 import org.templateproject.oauth2.constant.CommonConsts;
 import org.templateproject.oauth2.constant.ServiceConsts;
 import org.templateproject.oauth2.entity.OauthMenuModule;
+import org.templateproject.oauth2.entity.OauthResource;
 import org.templateproject.oauth2.entity.OauthResourceModule;
 import org.templateproject.oauth2.entity.OauthUser;
+import org.templateproject.oauth2.service.ResourceService;
 import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
 import org.templateproject.oauth2.service.shiro.ShiroUserService;
 import org.templateproject.sql.entrance.SQLFactory;
@@ -34,6 +36,9 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService<OauthMenuMod
     }
 
     private AncestorDao dao;
+
+    @Autowired
+    private ResourceService resourceService;
 
     @Autowired
     private PasswordHelper passwordHelper;
@@ -81,7 +86,7 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService<OauthMenuMod
 
     @Test
     public void testLike() {
-        String sql = "select * from t_oauth_resource_module where name LIKE :aname ";
+        String sql = "SELECT * FROM t_oauth_resource_module WHERE name LIKE :aname ";
         Map<String, Object> map = new HashMap<>();
         map.put("aname", "%ada%");
         map.put("field", "id");
@@ -108,5 +113,32 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService<OauthMenuMod
         passwordHelper.encryptPassword(user);
         user.preInsert();
         int i = shiroUserService.addNewUser(user);
+    }
+
+    @Test
+    public void addTestResource() throws Exception {
+        for (int i = 4; i < 100; i++) {
+            OauthResource resource = new OauthResource();
+            resource.setUrl("/management/atest" + i);
+            resource.setName("A测试" + i);
+            resource.setPermissionMark("sys:atest" + i + ":list");
+            resource.setSystemCode("SYS_BASE_PLATFORM");
+            resource.setEnabled(true);
+            resource.setOrderIndex(i);
+            resource.preInsert();
+            resourceService.save(resource, OauthResource.class);
+        }
+
+        for (int i = 1; i < 100; i++) {
+            OauthResource resource = new OauthResource();
+            resource.setUrl("/management/btest" + i);
+            resource.setName("B测试" + i);
+            resource.setPermissionMark("sys:btest" + i + ":list");
+            resource.setSystemCode("SYS_WECHAT_PLATFORM");
+            resource.setEnabled(true);
+            resource.setOrderIndex(i);
+            resource.preInsert();
+            resourceService.save(resource, OauthResource.class);
+        }
     }
 }

@@ -70,7 +70,7 @@ public class ShiroUserService extends SimpleBaseCrudService<OauthUser, Integer> 
         if (StringUtils.isEmpty(username))
             return null;
         String sql = "SELECT * FROM T_OAUTH_USER WHERE USERNAME = ?";
-        return h2Dao.findBeanByArray(sql, OauthUser.class, username);
+        return mysql.findBeanByArray(sql, OauthUser.class, username);
     }
 
     /**
@@ -88,6 +88,6 @@ public class ShiroUserService extends SimpleBaseCrudService<OauthUser, Integer> 
                 CommonConsts.UPDATE_ROUTER);
         user.preInsert();
         passwordHelper.encryptPassword(user);
-        return h2Dao.executeBean(sql, user);
+        return mysql.executeBean(sql, user);
     }
 }

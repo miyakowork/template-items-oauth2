@@ -35,6 +35,6 @@ public class SystemParamService extends SimpleBaseCrudService<OauthSystemParam, 
      * @return value
      */
     public <T> T findValueByParamKey(String keyName, Class<T> clazz) {
-        return h2Dao.findBeanByArray(sql(), clazz, keyName);
+        return mysql.findBeanByArray(sql(), clazz, keyName);
     }
 }

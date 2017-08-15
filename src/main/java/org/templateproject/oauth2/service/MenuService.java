@@ -26,7 +26,7 @@ public class MenuService extends SimpleBaseCrudService<OauthMenu,Integer> {
         int pId = Integer.parseInt(request.getParameter("pId"));
         int roleId = Integer.parseInt(request.getParameter("roleId") );
         String sql = "SELECT * FROM T_OAUTH_MENU  WHERE T_OAUTH_MENU.ROLE_ID = ? AND T_OAUTH_MENU.PARENT_ID = ?";
-        List<OauthMenu> oauthMenus = h2Dao.findListBeanByArray(sql, OauthMenu.class,roleId,pId);
+        List<OauthMenu> oauthMenus = mysql.findListBeanByArray(sql, OauthMenu.class, roleId, pId);
         if (0==pId){
             oauthMenus.add(OauthMenu.root());
         }
@@ -56,7 +56,7 @@ public class MenuService extends SimpleBaseCrudService<OauthMenu,Integer> {
 
     public  boolean checkIsParent(int id) throws Exception{
         String sql = "SELECT COUNT(*) FROM T_OAUTH_MENU WHERE 1=1 AND T_OAUTH_MENU.PARENT_ID = ?";
-        long count = h2Dao.queryNumberByArray(sql,Long.class,id);
+        long count = mysql.queryNumberByArray(sql, Long.class, id);
         return count!=0;
     }
 }

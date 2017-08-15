@@ -7,13 +7,7 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#session-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.reInitTable($table, {
-            url: "/session/api/list",
-            toolbar: '#session-toolbar',
-            queryParams: query_params,
-            filterControl: true,
-            datepickerBetween: datepicker_between
-        })
+        TF.toggleTableSearch(true)
     });
 
     //设置表格的搜索参数

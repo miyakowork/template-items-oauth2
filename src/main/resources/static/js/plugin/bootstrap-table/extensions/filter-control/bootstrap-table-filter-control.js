@@ -13,7 +13,7 @@
 
     //一开始是没有的，是undefined，会报错，所以此处哈应该做一个判断
     var getOptionsFromSelectControl = function (selectControl) {
-        if (window.__customControls___ && selectControl.length > 0)
+        if (/*window.__customControls___ &&*/ selectControl.length > 0)
             return selectControl.get(selectControl.length - 1).options;
         else
             return '';
@@ -80,7 +80,7 @@
             if (filterDatepickerBetween) {
                 that.$tableHeader.css("height", "108px");
             } else {
-                that.$tableHeader.css("height", "77px");
+                that.$tableHeader.css("height", "74px");
             }
         } else {
             that.$tableHeader.css('height', '37px');
@@ -374,7 +374,7 @@
             if (!column.visible) {
                 return;
             }
-            if (!column.filterControl || !window.__customControls___) {
+            if (!column.filterControl/* || !window.__customControls___*/) {
                 html.push('<div class="no-filter-control"></div>');
             } else {
                 html.push('<div class="filter-control">');

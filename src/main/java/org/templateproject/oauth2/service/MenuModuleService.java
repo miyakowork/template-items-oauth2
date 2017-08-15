@@ -47,6 +47,7 @@ public class MenuModuleService extends SimpleBaseCrudService<OauthMenuModule, In
      * @return
      */
     public List<OauthMenuModule> findEnabledMenuModule(String systemModuleCode) {
-        return h2Dao.findListBeanByArray(sql(), OauthMenuModule.class, systemModuleCode);
+        return mysql.findListBeanByArray(sql(), OauthMenuModule.class, systemModuleCode);
     }
+
 }

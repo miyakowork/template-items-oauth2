@@ -29,7 +29,7 @@ public class ShiroPermissionService extends SimpleBaseCrudService<OauthRole, Int
                 " WHERE tor.ENABLED = 1 AND tor.ID IN " +
                 "(SELECT tom.RESOURCE_ID FROM T_OAUTH_MENU tom" +
                 " WHERE tom.ENABLED = 1 AND tom.RESOURCE_ID = tor.ID AND tom.ROLE_ID = ?)";
-        List<Map<String, Object>> permissions = h2Dao.findListMapByArray(sql, roleId);
+        List<Map<String, Object>> permissions = mysql.findListMapByArray(sql, roleId);
         Set<String> permissionMarks = new HashSet<>(permissions.size());
         for (Map<String, Object> map : permissions) {
             permissionMarks.add(map.get("pm").toString());
@@ -49,7 +49,7 @@ public class ShiroPermissionService extends SimpleBaseCrudService<OauthRole, Int
                 "(SELECT tom.RESOURCE_ID FROM T_OAUTH_MENU tom " +
                 "WHERE tom.RESOURCE_ID = tor.ID AND tom.ENABLED = 1 AND tom.ROLE_ID IN " +
                 "(SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?))";
-        List<Map<String, Object>> permissions = h2Dao.findListMapByArray(sql, userId);
+        List<Map<String, Object>> permissions = mysql.findListMapByArray(sql, userId);
         Set<String> permissionMarks = new HashSet<>(permissions.size());
         for (Map<String, Object> map : permissions) {
             permissionMarks.add(map.get("pm").toString());

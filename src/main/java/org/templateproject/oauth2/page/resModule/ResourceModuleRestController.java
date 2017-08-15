@@ -1,5 +1,6 @@
 package org.templateproject.oauth2.page.resModule;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,8 +91,11 @@ public class ResourceModuleRestController extends BaseRestController {
      * @return list zTree
      */
     @RequestMapping("resModuleTree")
-    public List<ZTreeBO> resourceModulesTree() {
-        return resModuleService.resModuleToZtree(resModuleService.findEnabledResModules());
+    public List<ZTreeBO> resourceModulesTree(String systemModuleCode) {
+        if (StringUtils.isEmpty(systemModuleCode))
+            return resModuleService.resModuleToZTree(resModuleService.findEnabledResModules());
+        else
+            return resModuleService.resModuleToZTree(resModuleService.findEnabledResModulesBySystemModuleCode(systemModuleCode));
     }
 
 

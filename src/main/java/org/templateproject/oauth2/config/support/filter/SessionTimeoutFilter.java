@@ -40,7 +40,8 @@ public class SessionTimeoutFilter extends AccessControlFilter implements Templat
         //保存登录之前的url，以供登录成功之后跳转
         if (request.getQueryString() != null)
             URI = URI.concat("?").concat(request.getQueryString());
-        request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
+        if (!isLoginOrFavicon(URI))
+            request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
 
         boolean isSessionTimeout = session == null || System.currentTimeMillis() - session.getLastAccessTime().getTime() > session.getTimeout();
         return !isSessionTimeout;

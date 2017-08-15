@@ -30,6 +30,12 @@ public class ForceLogoutFilter extends AccessControlFilter implements TemplateFi
         String method = req.getMethod();
         LOG.info("--SessionTimeoutFilter，访问URI:[{}]，请求方式:[{}]", URI, method);
 
+        //保存登录之前的url，以供登录成功之后跳转
+        if (req.getQueryString() != null)
+            URI = URI.concat("?").concat(req.getQueryString());
+        if (!isLoginOrFavicon(URI))
+            req.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
+
         Session session = getSubject(request, response).getSession(false);
         if (session != null) {
             Object forceLogoutFlag = session.getAttribute(ShiroConsts.SESSION_FORCE_LOGOUT_KEY);

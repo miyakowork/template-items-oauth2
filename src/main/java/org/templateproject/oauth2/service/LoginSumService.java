@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.oauth2.entity.OauthDepartment;
 import org.templateproject.oauth2.entity.OauthUserLoginLog;
-import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.LoginSumBO;
 import org.templateproject.oauth2.support.pojo.vo.LoginSumVO;
@@ -55,7 +54,7 @@ public class LoginSumService extends SimpleBaseCrudService<OauthUserLoginLog,Int
      */
     public List<OauthDepartment> getDeptId(List<OauthDepartment> list,Integer id){
         String sql = "SELECT * FROM t_oauth_department tod WHERE 1=1 AND tod.parent_id  = ?";
-        List<OauthDepartment> departments = h2Dao.findListBeanByArray(sql,OauthDepartment.class,id);
+        List<OauthDepartment> departments = mysql.findListBeanByArray(sql, OauthDepartment.class, id);
         list.addAll(departments);
         Iterator<OauthDepartment> iterator = departments.iterator();
         while (iterator.hasNext()){
@@ -96,7 +95,7 @@ public class LoginSumService extends SimpleBaseCrudService<OauthUserLoginLog,Int
                     "SELECT T_OAUTH_USER.ID FROM T_OAUTH_USER WHERE T_OAUTH_USER.DEPT_ID IN ("+deptIds+")" +
                     ") AND T_OAUTH_USER_LOGIN_LOG.LAST_LOGIN_DATE = ?";
 
-            sumList[i]=(h2Dao.queryNumberByArray(sql,Integer.class,TimeSpan.get(i)));
+            sumList[i] = (mysql.queryNumberByArray(sql, Integer.class, TimeSpan.get(i)));
             dateList[i]=(dateFormatter(TimeSpan.get(i)));
         }
 

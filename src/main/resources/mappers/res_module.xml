@@ -3,12 +3,12 @@
 
     <findResModulePage>
         SELECT
-            torm.*,
-            tosm.name     AS systemModuleName,
-            tou1.username AS create_user_name,
-            tou2.username AS update_user_name
+        torm.*,
+        tosm.name AS systemModuleName,
+        tou1.username AS create_user_name,
+        tou2.username AS update_user_name
         FROM
-            t_oauth_resource_module torm, t_oauth_user tou1, t_oauth_user tou2, t_oauth_system_module tosm
+        t_oauth_resource_module torm, t_oauth_user tou1, t_oauth_user tou2, t_oauth_system_module tosm
         WHERE torm.CREATE_USER = tou1.id AND torm.update_user = tou2.id AND tosm.system_code = torm.system_code
     </findResModulePage>
 
@@ -17,5 +17,11 @@
         FROM t_oauth_resource_module
         WHERE enabled = 1
     </findEnabledResModules>
+
+    <findEnabledResModulesBySystemModuleCode>
+        SELECT *
+        FROM t_oauth_resource_module
+        WHERE enabled = 1 AND system_code = ?
+    </findEnabledResModulesBySystemModuleCode>
 
 </resModule>

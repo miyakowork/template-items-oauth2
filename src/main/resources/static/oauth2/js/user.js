@@ -402,7 +402,7 @@ var page_function = function () {
     $("#addGetRole,#editGetRole").click(function () {
         layer.open({
             type: 2,
-            area: ['300px', '400px'],
+            area: ['300px', '420px'],
             title: '选择默认角色(双击选定)',
             fixed: true,
             resize: false,

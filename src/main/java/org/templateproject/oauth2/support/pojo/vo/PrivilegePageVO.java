@@ -8,16 +8,16 @@ import org.templateproject.oauth2.entity.OauthPrivilegePage;
  */
 public class PrivilegePageVO extends OauthPrivilegePage {
 
-    private String name;  //资源模块名称
+    private String resourceModuleName;  //资源模块名称
 
     private String resourceName;
 
-    public String getName() {
-        return name;
+    public String getResourceModuleName() {
+        return resourceModuleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setResourceModuleName(String resourceModuleName) {
+        this.resourceModuleName = resourceModuleName;
     }
 
     public String getResourceName() {

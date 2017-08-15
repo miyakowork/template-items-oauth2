@@ -75,4 +75,14 @@ public interface TemplateFilter {
         return true;
     }
 
+    /**
+     * 判断url是不是登录页面、登录路由或者事favicon
+     *
+     * @param uri
+     * @return
+     */
+    default boolean isLoginOrFavicon(String uri) {
+        return uri.contains(CommonConsts.LOGIN_ROUTER) || uri.contains(CommonConsts.LOGIN_URL) || uri.contains(CommonConsts.FAVICON);
+    }
+
 }

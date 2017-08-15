@@ -1,19 +1,25 @@
 package org.templateproject.oauth2.support.pojo.bo;
 
+import org.templateproject.oauth2.support.annotation.query.QueryColumn;
+import org.templateproject.oauth2.support.annotation.query.QueryTable;
+import org.templateproject.oauth2.support.enumerate.Operator;
 import org.templateproject.oauth2.support.pojo.PageQueryBO;
 
 /**
  * Created by zhangteng on 2017/7/19.
  * 页面资源表BO
  */
+@QueryTable("topp")
 public class PrivilegePageBo extends PageQueryBO {
 
     private String name;  //资源模块名称
 
-    private Boolean enabled;  //是否可用
+    private String enabled;  //是否可用
 
+    @QueryColumn(value = "resource_module_id", operation = Operator.EQ)
     private String moduleId;  //资源模块ID
 
+    @QueryColumn(value = "name", table = "tor")
     private String resourceName;  //资源名称
 
     public String getName() {
@@ -24,11 +30,11 @@ public class PrivilegePageBo extends PageQueryBO {
         this.name = name;
     }
 
-    public Boolean getEnabled() {
+    public String getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(String enabled) {
         this.enabled = enabled;
     }
 

@@ -40,6 +40,13 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter impleme
         String URI = req.getRequestURI();
         String method = req.getMethod();
         LOG.info("-- FormAuthenticationFilter，访问URI：[{}]，请求方式：[{}]", URI, method);
+
+        //保存登录之前的url，以供登录成功之后跳转
+        if (req.getQueryString() != null)
+            URI = URI.concat("?").concat(req.getQueryString());
+        if (!isLoginOrFavicon(URI))
+            req.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
+
         return super.isAccessAllowed(request, response, mappedValue);
     }
 

@@ -258,5 +258,10 @@ var page_function = function () {
 
 };
 
+function selectSystemCode(e) {
+    app.resModule.systemCode.selected = e.target.value
+}
+
+
 // load related plugins
 page_function();

@@ -8,6 +8,10 @@ body.smart-style-1 {
     font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif !important;
 }
 
+.router-container {
+    margin-left: 10px;
+}
+
 .smart-style-1 #toolbar {
     padding-bottom: 5px;
 }

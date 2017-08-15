@@ -40,7 +40,7 @@ public class LogService extends SimpleBaseCrudService<OauthUserLoginLog, Integer
      */
     public int traceLog(int userId, String lastLoginIp) throws Exception {
         String sql = "INSERT INTO T_OAUTH_USER_LOGIN_LOG(USER_ID,LAST_LOGIN_DATE,LAST_LOGIN_IP) VALUES(?,current_timestamp(),?)";
-        return h2Dao.executeArray(sql, userId, lastLoginIp);
+        return mysql.executeArray(sql, userId, lastLoginIp);
     }
 
 

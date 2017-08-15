@@ -1,7 +1,5 @@
 package org.templateproject.oauth2.service;
 
-import org.templateproject.oauth2.entity.OauthPrivilegePage;
-import org.templateproject.oauth2.service.base.AbstractBaseCrudService;
 import org.templateproject.oauth2.service.base.SimpleBaseCrudService;
 import org.templateproject.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.oauth2.support.pojo.vo.PrivilegeVO;
@@ -26,7 +24,7 @@ public class PrivilegeService extends SimpleBaseCrudService {
                 "WHERE T_OAUTH_RESOURCE.ID IN( " +
                 "SELECT T_OAUTH_PRIVILEGE_PAGE.ID FROM T_OAUTH_PRIVILEGE_PAGE " +
                 "WHERE RESOURCE_MODULE_ID = ? )";
-        List<PrivilegeVO> list = h2Dao.findListBeanByArray(sql, PrivilegeVO.class,pId);
+        List<PrivilegeVO> list = mysql.findListBeanByArray(sql, PrivilegeVO.class, pId);
         //将list转为Ztree
         for (int i=0;i<list.size();i++){
 

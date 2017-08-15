@@ -47,7 +47,7 @@ public class SystemModuleService extends SimpleBaseCrudService<OauthSystemModule
      * @return 查找所有可用的系统模块
      */
     public List<OauthSystemModule> findAllEnabledSystemModules() {
-        return h2Dao.findListBeanByArray(sql(), OauthSystemModule.class);
+        return mysql.findListBeanByArray(sql(), OauthSystemModule.class);
     }
 
 
@@ -65,7 +65,6 @@ public class SystemModuleService extends SimpleBaseCrudService<OauthSystemModule
             zTreeBO.setpId("0");
             zTreeBO.setName(oauthSystemModule.getName());
             zTreeBO.setOther(oauthSystemModule.getSystemCode());
-            zTreeBO.setisParent(true);
             zTreeBOList.add(zTreeBO);
         }
         return zTreeBOList;
@@ -78,7 +77,7 @@ public class SystemModuleService extends SimpleBaseCrudService<OauthSystemModule
      * @return 是否存在
      */
     public boolean isExistSystemCode(String systemCode) {
-        long cnt = h2Dao.queryNumberByArray(sql(), Long.class, systemCode);
+        long cnt = mysql.queryNumberByArray(sql(), Long.class, systemCode);
         return cnt > 0;
     }
 

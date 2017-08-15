@@ -26,7 +26,7 @@ public class ShiroMenuService extends SimpleBaseCrudService<OauthDepartment, Int
      */
     public List<OauthMenu> findAllMenusByRoleId(int roleId, int menuModuleId, String systemCode) {
         String sql = "SELECT * FROM T_OAUTH_MENU WHERE ROLE_ID = ? AND MENU_MODULE_ID = ? AND SYSTEM_CODE = ? AND ENABLED = 1";
-        return h2Dao.findListBeanByArray(sql, OauthMenu.class, roleId, menuModuleId, systemCode);
+        return mysql.findListBeanByArray(sql, OauthMenu.class, roleId, menuModuleId, systemCode);
     }
 
     /**
@@ -41,7 +41,7 @@ public class ShiroMenuService extends SimpleBaseCrudService<OauthDepartment, Int
         String sql = "SELECT tom.* FROM T_OAUTH_MENU tom WHERE tom.ENABLED = 1 AND tom.ROLE_ID = ? " +
                 "AND tom.MENU_MODULE_ID = ? AND tom.SYSTEM_CODE = ? AND tom.RESOURCE_ID IN " +
                 "(SELECT topp.RESOURCE_ID FROM T_OAUTH_PRIVILEGE_PAGE topp WHERE topp.ENABLED = 1)";
-        return h2Dao.findListBeanByArray(sql, OauthMenu.class, roleId, menuModuleId, systemCode);
+        return mysql.findListBeanByArray(sql, OauthMenu.class, roleId, menuModuleId, systemCode);
 
     }
 
