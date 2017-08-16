@@ -12,12 +12,7 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#department-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.reInitTable($table, {
-            url: "/oauth2/department/api/list",
-            toolbar: '#department-toolbar',
-            queryParams: query_params,
-            filterControl: true
-        })
+        TF.toggleTableSearch(false);
     });
 
     var query_params = function (params) {
@@ -295,7 +290,7 @@ var page_function = function () {
             fixed: true,
             resize: false,
             offset: '200px',
-            content: 'department/tree'
+            content: '/oauth2/department/tree'
         })
     })
 

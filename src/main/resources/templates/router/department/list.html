@@ -1,7 +1,6 @@
 <!--list页面-->
-<div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
-     xmlns:v-bind="http://www.w3.org/1999/xhtml">
-    <div class="col-md-4" style="margin-top: 5px;">
+<div class="row">
+    <div class="col-md-4 margin-top-10">
         <div class="panel panel-blueDark">
             <div class="panel-heading">
                 <span><i class="fa fa-building"></i> 部门树</span>
@@ -196,7 +195,7 @@
                 <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
                     <label class="col-md-3 control-label">部门名称</label>
                     <div class="col-md-9">
-                        <input class="form-control" placeholder="部门名称" type="text"
+                        <input class="form-control" placeholder="部门名称"
                                v-model="OauthDepartment.name">
                         <div class="note-error margin-bottom-0"
                              v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
