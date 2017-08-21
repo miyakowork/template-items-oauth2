@@ -40,7 +40,7 @@ public class DepartmentRestController extends BaseRestController {
      */
     @RequestMapping("list")
     public BootstrapTable<DepartmentVO> departments(Page<DepartmentVO> page, DepartmentBO departmentBo) {
-        page = departmentService.findDepartmentPage(departmentBo, queryParam2Page(departmentBo, page));
+        page = departmentService.findDepartmentPage(departmentBo, page);
         return bootstrapTable(page);
     }
 
@@ -62,7 +62,7 @@ public class DepartmentRestController extends BaseRestController {
      */
     @RequestMapping("add")
     public R add(IDepartment iDepartment) {
-        return addModel("部门", departmentService, iDepartment, IDepartment.class);
+        return ajaxDoneAdd("部门", departmentService, iDepartment, IDepartment.class);
     }
 
     /**
@@ -73,7 +73,7 @@ public class DepartmentRestController extends BaseRestController {
      */
     @RequestMapping("edit")
     public R edit(IDepartment iDepartment) {
-        return editModel("部门", departmentService, iDepartment, IDepartment.class);
+        return ajaxDoneEdit("部门", departmentService, iDepartment, IDepartment.class);
     }
 
 

@@ -41,7 +41,7 @@ public class BaseRestController extends TemplateController {
      * @param <CrudService>
      * @return
      */
-    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R addModel(String moduleMessage, CrudService service, Entity entity, Class<Entity> clazz) {
+    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneAdd(String moduleMessage, CrudService service, Entity entity, Class<Entity> clazz) {
         try {
             if (service.save(entity, clazz)) {
                 moduleMessage = TP.placeholder.format("添加{}成功！", moduleMessage);
@@ -67,7 +67,7 @@ public class BaseRestController extends TemplateController {
      * @param <CrudService>
      * @return
      */
-    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R editModel(String moduleMessage, CrudService service, Entity entity, Class<Entity> clazz) {
+    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneEdit(String moduleMessage, CrudService service, Entity entity, Class<Entity> clazz) {
         try {
             if (service.edit(entity, clazz)) {
                 moduleMessage = TP.placeholder.format("修改{}成功！", moduleMessage);
@@ -93,7 +93,7 @@ public class BaseRestController extends TemplateController {
      * @param <CrudService>
      * @return
      */
-    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R disabledModels(String moduleMessage, String[] ids, CrudService service, Class<Entity> clazz) {
+    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneHide(String moduleMessage, String[] ids, CrudService service, Class<Entity> clazz) {
         try {
             service.disabledBatch(ids, clazz);
             moduleMessage = TP.placeholder.format("禁用{}成功！", moduleMessage);
@@ -116,7 +116,7 @@ public class BaseRestController extends TemplateController {
      * @param <CrudService>
      * @return
      */
-    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R deleteModels(String moduleMessage, String[] ids, CrudService service, Class<Entity> clazz) {
+    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneDelete(String moduleMessage, String[] ids, CrudService service, Class<Entity> clazz) {
         try {
             service.deleteBatch(clazz, ids);
             moduleMessage = TP.placeholder.format("删除{}成功！", moduleMessage);

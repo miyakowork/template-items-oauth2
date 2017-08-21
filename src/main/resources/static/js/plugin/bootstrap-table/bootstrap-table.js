@@ -2133,7 +2133,7 @@
         fixedBody.scrollHeight > fixedBody.clientHeight + this.$header.outerHeight() ?
             getScrollBarWidth() : 0;
 
-        this.$el.css('margin-top', -this.$header.outerHeight());
+        this.$el.css('margin-top', -this.$header.outerHeight() + 1);
 
         focused = $(':focus');
         if (focused.length > 0) {

@@ -46,7 +46,7 @@ public class UserRestController extends BaseRestController {
      */
     @RequestMapping("list")
     public BootstrapTable<UserVO> list(Page<UserVO> page, UserBO userBO) {
-        page = userService.findUserPage(queryParam2Page(userBO, page), userBO);
+        page = userService.findUserPage(page, userBO);
         return bootstrapTable(page);
     }
 

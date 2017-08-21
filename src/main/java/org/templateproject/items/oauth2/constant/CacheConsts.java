@@ -30,4 +30,9 @@ public interface CacheConsts {
      * 登录记录缓存
      */
     String PASSWORD_RETRY_CACHE = "passwordRetryCache";
+
+    /**
+     * xml的反射sql中的缓存
+     */
+    String SQL_CACHE = "sql_cache";
 }

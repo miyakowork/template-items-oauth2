@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html >
 <html lang="zh_CN">
 <head>
     <meta charset="utf-8">
@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/static/css/smartadmin-rtl.min.css">
     <link rel="stylesheet" type="text/css" media="screen"
           href="/static/js/plugin/bootstrap-ztree/css/metroStyle/metroStyle.css">
+    <link rel=" stylesheet" type="text/css" media="screen" href="/static/css/layout-skins-settings.css"/>
 
     <link rel="stylesheet" type="text/css" media="screen" href="/static/css/template-framework.css">
     <link rel="stylesheet" href="/static/js/plugin/bootstrap-table/bootstrap-table.min.css"/>
@@ -58,8 +59,8 @@
     <!-- pulled right: nav area -->
     <div class="pull-right">
 
-        <div class="btn-header transparent pull-right">
-            <span> <a href="javascript:void(0);" data-action="minifyMenu" title="minify menu"><i
+        <div class="btn-header pull-right">
+            <span> <a href="javascript:void(0);" data-action="minifyMenu" title="最小化左侧带单"><i
                     class="fa fa-exchange"></i> </a> </span>
         </div>
 
@@ -114,13 +115,6 @@
                     class="fa fa-sign-out"></i></a> </span>
         </div>
         <!-- end logout button -->
-
-        <!-- search mobile button (this is hidden till mobile view port) -->
-        <div id="search-mobile" class="btn-header transparent pull-right">
-            <span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
-        </div>
-        <!-- end search mobile button -->
-
 
         <!-- fullscreen button -->
         <div id="fullscreen" class="btn-header transparent pull-right">
@@ -199,7 +193,7 @@
                     <li>
                         <a href="/oauth2/operation-privilege-type" title="权限操作类型"><i class="fa fa-fw fa-list-ul"></i>
                             <span
-                                class="menu-item-parent">权限操作类型</span></a>
+                                    class="menu-item-parent">权限操作类型</span></a>
                     </li>
                 </ul>
             </li>
@@ -315,19 +309,12 @@
 <script src="/static/js/bootstrap/bootstrap.min.js"></script>
 <script src="/static/js/libs/jquery-ui-1.10.3.min.js"></script>
 <script src="/static/js/notification/SmartNotification.min.js"></script>
-<script src="/static/js/smartwidgets/jarvis.widget.min.js"></script>
 <script src="/static/js/libs/vue/vue.min.js"></script>
 <script src="/static/js/libs/vue/axios.min.js"></script>
 <script src="/static/js/libs/vue/vuerify.min.js"></script>
 <script src="/static/js/libs/vue/url-search-params.min.js"></script>
 <script src="/static/js/plugin/layui/lay/dest/layui.all.js"></script>
 <script src="/static/js/plugin/bootstrap-ztree/js/jquery.ztree.all.min.js"></script>
-<script src="/static/js/plugin/sparkline/jquery.sparkline.min.js"></script>
-<script src="/static/js/plugin/jquery-validate/jquery.validate.min.js"></script>
-<script src="/static/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-<script src="/static/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
-<script src="/static/js/smartwidgets/jarvis.widget.min.js"></script>
-<script src="/static/js/plugin/fastclick/fastclick.min.js"></script>
 <script src="/static/js/plugin/bootstrap-table/bootstrap-table.js"></script>
 <script src="/static/js/plugin/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="/static/js/plugin/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.js"></script>
@@ -340,6 +327,6 @@
 <!-- MAIN APP JS FILE -->
 <script src="/static/js/app.js"></script>
 <script src="/static/js/template.global.js"></script>
+<script src="/static/js/layout-skins-settings.js"></script>
 </body>
-
 </html>

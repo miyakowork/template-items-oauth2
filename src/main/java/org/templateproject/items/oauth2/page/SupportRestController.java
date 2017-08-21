@@ -49,7 +49,7 @@ public class SupportRestController extends TemplateController {
     @RequestMapping("/systemModule/select")
     public Map<Object, Object> systemModuleSelect() {
         List<SelectBO> selectBOs = new ArrayList<>();
-        List<ISystemModule> systemModules = systemModuleService.findAllEnabledSystemModules();
+        List<ISystemModule> systemModules = systemModuleService.findEnabledListBean(ISystemModule.class);
         for (ISystemModule systemModule : systemModules) {
             SelectBO selectBO = SelectBO.create(systemModule.getSystemCode(), systemModule.getName());
             selectBOs.add(selectBO);

@@ -583,7 +583,6 @@
                     field, isVisible, getDirectionOfSelectOptions(that.options.alignmentSelectControlOptions));
             },
             datepicker: function (that, field, isVisible) {
-
                 var filterDatepickerBetween = false;//日期选择的匹配条件是两个日期之间的（即是between），默认false，即只有一个条件>/</=等
                 var cols = that.options.datepickerBetween;
                 for (var f in cols) {
@@ -703,7 +702,6 @@
     };
 
     BootstrapTable.prototype.initHeader = function () {
-
         _initHeader.apply(this, Array.prototype.slice.apply(arguments));
 
         if (!this.options.filterControl) {

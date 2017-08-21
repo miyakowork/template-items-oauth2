@@ -1,0 +1,90 @@
+<div th:fragment="addMenuModule" id="add_menumodule_dialog">
+    <section id="add-menumodule-app" class="row">
+        <form id="add-menumodule-form" class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
+            <fieldset>
+                <!--名称-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
+                    <label class="col-md-3 control-label">名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="菜单模块名称"
+                               v-model="menumodule.name">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
+                            {{error.nameErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+
+                <!--系统编码-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="menumodule-selector-add">所属系统模块</label>
+                    <div class="col-md-9">
+                        <select class="form-control" v-model="menumodule.systemCode.selected"
+                                id="menumodule-selector-add">
+                        </select>
+                    </div>
+                </div>
+
+                <!--菜单模块大图标-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">菜单模块大图标</label>
+                    <div class="col-md-9">
+                        <input class="form-control" v-model="menumodule.iconLarger" placeholder="大图标，图片地址"/>
+                    </div>
+                </div>
+
+                <!--菜单模块小图标-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">菜单模块小图标</label>
+                    <div class="col-md-9">
+                        <input class="form-control" v-model="menumodule.iconMini" placeholder="小图标，字体图标class名"/>
+                    </div>
+                </div>
+
+                <!--是否可用-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.enabledError }">
+                    <label class="col-md-3 control-label">是否可用</label>
+                    <div class="col-md-9">
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="menumodule.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="true">
+                            <span>是</span>
+                        </label>
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="menumodule.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="false">
+                            <span>否</span>
+                        </label>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
+                            {{error.enabledErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <!--排序-->
+                <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
+                    <label class="col-md-3 control-label">排序</label>
+                    <div class="col-md-9">
+                        <input class="form-control" type="number"
+                               v-model="menumodule.orderIndex">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
+                            {{error.orderErrorMsg}}
+                        </div>
+                    </div>
+                </div>
+                <!--备注-->
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="menumodule.remark">
+                    </div>
+                </div>
+
+            </fieldset>
+            <button id="menuModuleAdd" type="submit" class="hidden"></button>
+        </form>
+    </section>
+</div>

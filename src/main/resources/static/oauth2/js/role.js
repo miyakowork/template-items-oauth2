@@ -106,7 +106,7 @@ var page_function = function () {
 
                     axios.post('/oauth2/role/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addRole").dialog("close");
                                 $table.bootstrapTable("refresh");
@@ -151,7 +151,7 @@ var page_function = function () {
                     params.append("systemCode", $selectedModule.val())
                     axios.post('/oauth2/role/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#editRole").dialog("close");
                                 $table.bootstrapTable("refresh");

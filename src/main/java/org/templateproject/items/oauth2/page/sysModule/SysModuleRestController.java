@@ -55,15 +55,7 @@ public class SysModuleRestController extends BaseRestController {
         if (systemModuleService.isExistSystemCode(systemModule.getSystemCode()))
             return R.error("系统模块代码已存在");
         else {
-            try {
-                if (systemModuleService.save(systemModule, ISystemModule.class))
-                    return R.ok("添加系统模块成功");
-                else
-                    return R.error("添加系统模块失败");
-            } catch (Exception e) {
-                LOGGER.error("添加系统模块发生异常，异常信息：{}", e.getMessage());
-                return R.error("添加系统模块发生异常，异常信息：" + e.getMessage());
-            }
+            return ajaxDoneAdd("系统模块", systemModuleService, systemModule, ISystemModule.class);
         }
     }
 
@@ -75,15 +67,7 @@ public class SysModuleRestController extends BaseRestController {
      */
     @RequestMapping("edit")
     public R doEdit(ISystemModule systemModule) {
-        try {
-            if (systemModuleService.edit(systemModule, ISystemModule.class))
-                return R.ok("修改系统模块成功");
-            else
-                return R.error("修改系统模块失败");
-        } catch (Exception e) {
-            LOGGER.error("修改系统模块发生异常，异常信息：{}", e.getMessage());
-            return R.error("修改系统模块发生异常，异常信息：" + e.getMessage());
-        }
+        return ajaxDoneEdit("系统模块", systemModuleService, systemModule, ISystemModule.class);
     }
 
 
@@ -96,13 +80,7 @@ public class SysModuleRestController extends BaseRestController {
     @RequestMapping("delete")
     public R delete(String ids) {
         String[] idArr = ids.split(",");
-        try {
-            systemModuleService.deleteModules(idArr);
-            return R.ok("删除/修改系统模块成功");
-        } catch (Exception e) {
-            LOGGER.error("删除/修改系统模块发生异常，异常信息：{}", e.getMessage());
-            return R.error("删除/修改系统模块发生异常，异常信息：" + e.getMessage());
-        }
+        return ajaxDoneDelete("系统模块", idArr, systemModuleService, ISystemModule.class);
     }
 
     /**
@@ -110,7 +88,7 @@ public class SysModuleRestController extends BaseRestController {
      */
     @RequestMapping("find/modules/enabled")
     public List<ISystemModule> findModulesEnabled() {
-        return systemModuleService.findAllEnabledSystemModules();
+        return systemModuleService.findEnabledListBean(ISystemModule.class);
     }
 
     /**
@@ -120,7 +98,7 @@ public class SysModuleRestController extends BaseRestController {
      */
     @RequestMapping("/find/modules/enabled/moduleTree")
     public List<ZTreeBO<String>> findModulesTreeEnabled() {
-        return systemModuleService.module2ZTree(systemModuleService.findAllEnabledSystemModules());
+        return systemModuleService.module2ZTree(systemModuleService.findEnabledListBean(ISystemModule.class));
     }
 
 }

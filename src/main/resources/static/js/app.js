@@ -1537,6 +1537,46 @@ function loadScript(scriptName, callback) {
     });
 }
 
+/**
+ * 加载模板文件
+ * @param templateName
+ * @param callback
+ */
+function loadTemplate(templateName, callback) {
+
+    if (!jsArray[templateName]) {
+        var promise = jQuery.Deferred();
+
+        // adding the script tag to the head as suggested before
+        var body = document.getElementsByTagName('body')[0],
+            script = document.createElement('script');
+        script.type = 'text/html';
+        script.src = templateName;
+
+        // then bind the event to the callback function
+        // there are several events for cross browser compatibility
+        script.onload = function () {
+            promise.resolve();
+        };
+
+        // fire the loading
+        body.appendChild(script);
+
+        // clear DOM reference
+        //body = null;
+        //script = null;
+
+        jsArray[templateName] = promise.promise();
+
+    } else if (debugState)
+        root.root.console.log("This script was already loaded %c: " + scriptName, debugStyle_warning);
+
+    jsArray[templateName].then(function () {
+        if (typeof callback === 'function')
+            callback();
+    });
+}
+
 /* ~ END: LOAD SCRIPTS */
 
 /*
@@ -1971,13 +2011,29 @@ function pageSetUp() {
     $("input[type=checkbox]").prop("checked", window.__customControls___ || false);//判断是否要勾选显示搜索控件的勾选框
 
     //监听panel面板的高度
-    if ($("div.panel-body")) {
-        var height = TF.getHeight() - 85;
-        $(".panel-body").css("min-height", height).css("max-height", height).css("height", height);
+    if ($("div.panel").length > 0) {
+        var height;
+        if ($("div.panel-body").length > 0) {
+            if ($("div.panel-heading").length > 0) {
+                height = TF.getHeight() - 115;
+            } else {
+                height = TF.getHeight() - 85;
+            }
+            $(".panel-body").css("min-height", height).css("max-height", height).css("height", height);
+        }
     }
     $(window).resize(function () {
-        var height = TF.getHeight() - 85;
-        $(".panel-body").css("min-height", height).css("max-height", height).css("height", height);
+        if ($("div.panel").length > 0) {
+            var height;
+            if ($("div.panel-body").length > 0) {
+                if ($("div.panel-heading").length > 0) {
+                    height = TF.getHeight() - 115;
+                } else {
+                    height = TF.getHeight() - 85;
+                }
+                $(".panel-body").css("min-height", height).css("max-height", height).css("height", height);
+            }
+        }
     });
 
     if (thisDevice === "desktop") {

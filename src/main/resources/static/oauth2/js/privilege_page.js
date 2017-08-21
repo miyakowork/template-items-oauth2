@@ -6,11 +6,6 @@ var $selectedModule = $("input[name=selectedModulePs]");
 // page_function
 var page_function = function () {
     var $table = $("#privilegePage-table");
-    //搜索控件显影的监听事件
-    $("#privilegePage-search-control").on("click", function () {
-        window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.toggleTableSearch(false);
-    });
 
     var query_params = function (params) {
         return {
@@ -70,7 +65,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/privilegePage/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
 
                                 layer.msg(response.data.message);
                                 $("#addprivilegepage").dialog("close");
@@ -116,7 +111,7 @@ var page_function = function () {
                     params.append("remark", app.PrivilegePage.remark)
                     axios.post('/oauth2/privilegePage/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#editprivilegepage").dialog("close");
                                 load_privilegePageTree();

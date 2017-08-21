@@ -3,19 +3,7 @@ pageSetUp();
 // page_function
 var page_function = function () {
 
-
     var $table = $("#menu-module-table");
-
-    //搜索控件显影的监听事件
-    $("#menu-module-search-control").on("click", function () {
-        window.__customControls___ = $("input[type=checkbox]").prop("checked");
-        TF.reInitTable($table, {
-            url: "/oauth2/menuModule/api/list",
-            toolbar: '#menu-module-toolbar',
-            queryParams: query_params,
-            filterControl: true
-        })
-    });
 
     //设置表格的搜索参数
     var query_params = function (params) {
@@ -33,7 +21,8 @@ var page_function = function () {
     TF.initTable($table, {
         url: "/oauth2/menuModule/api/list",
         toolbar: '#menu-module-toolbar',
-        queryParams: query_params
+        queryParams: query_params,
+        filterControl: true
     });
 
     var app = new Vue({
@@ -66,7 +55,7 @@ var page_function = function () {
         },
         methods: {
             handleSubmit_add: function () {
-                this.$vuerify.clear()//清空之前的验证结果信息
+                this.$vuerify.clear();//清空之前的验证结果信息
                 var check_result = this.$vuerify.check()// 手动触发校验所有数据
                 var $errs = this.$vuerify.$errors
                 app.error.nameError = Boolean($errs.name)
@@ -88,7 +77,7 @@ var page_function = function () {
                     params.append("systemCode", app.menumodule.systemCode.selected);
                     axios.post('/oauth2/menuModule/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#add_menumodule_dialog").dialog("close");
                                 $table.bootstrapTable("refresh");
@@ -126,7 +115,7 @@ var page_function = function () {
                     params.append("systemCode", datas.systemCode.selected)
                     axios.post(' /oauth2/menuModule/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#edit_menumodule_dialog").dialog("close");
                                 $table.bootstrapTable('refresh');
@@ -158,7 +147,7 @@ var page_function = function () {
     });
 
     //监听添加事件
-    $("#add-menumodule").click(function () {
+    $("#add-menu-module").click(function () {
         app.menumodule.id = "";
         app.menumodule.name = "";
         app.menumodule.enabled = true;
@@ -196,7 +185,7 @@ var page_function = function () {
     });
 
     //监听编辑按钮事件
-    $("#edit-menumodule").click(function () {
+    $("#edit-menu-module").click(function () {
 
         app.error.nameError = false;
         app.error.nameErrorMsg = '';
@@ -241,35 +230,13 @@ var page_function = function () {
         }]
     });
 
-    //监听禁用按钮事件
-    $("#delete-menumodule").click(function () {
+    //删除
+    $("#delete-menu-module").click(function () {
         var ss = $table.bootstrapTable('getSelections');
         if (ss.length === 0) {
             TF.show_error_message("错误选择", "请至少选择一项进行禁用操作")
         } else {
-            $.SmartMessageBox({
-                title: "<i class='fa fa-minus-square-o' style='color:red'></i> 禁用以下菜单模块?",
-                content: $this.data('reset.msg') || "确认要禁用以下菜单模块?",
-                buttons: '[取消][确定]'
-            }, function (ButtonPressed) {
-                if (ButtonPressed === "确定") {
-                    var ids = "";
-                    for (var i = 0; i < ss.length; i++) {
-                        ids += ss[i].id + ",";
-                    }
-                    ids = ids.substr(0, ids.length - 1);//去除最后一个逗号
-                    axios.post("/oauth2/menuModule/api/forbid?id=" + ids)
-                        .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
-                                layer.msg(response.data.message);
-                                $table.bootstrapTable("refresh");
-                            } else {
-                                TF.show_error_msg(response.data.message)
-                            }
-                        })
-
-                }
-            })
+            TF.deleteItems($table, "/oauth2/menuModule/api/delete", "name");
         }
     });
 

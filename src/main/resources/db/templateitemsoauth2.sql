@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-08-14 15:35:31
+Date: 2017-08-18 15:20:03
 */
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -43,7 +43,7 @@ CREATE TABLE `t_oauth_department` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 6
+  AUTO_INCREMENT = 7
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -54,11 +54,13 @@ VALUES ('1', '江西财经大学', '0', '1', '2017-08-08 20:03:47', '1', '2017-0
 INSERT INTO `t_oauth_department`
 VALUES ('2', '软件与通信工程学院', '1', '1', '2017-08-08 20:21:34', '1', '2017-08-08 20:21:34', '1', '0', '学院');
 INSERT INTO `t_oauth_department`
-VALUES ('3', '南昌大学', '0', '1', '2017-08-08 20:21:42', '1', '2017-08-08 20:21:42', '1', '0', '大学');
+VALUES ('3', '南昌大学', '0', '1', '2017-08-16 21:36:05', '1', '2017-08-08 20:21:42', '1', '0', '大学');
 INSERT INTO `t_oauth_department`
 VALUES ('4', '江西师范大学', '0', '1', '2017-08-08 20:21:52', '1', '2017-08-08 20:21:52', '1', '0', '大学');
 INSERT INTO `t_oauth_department`
 VALUES ('5', '古汉语文学', '3', '1', '2017-08-09 20:06:35', '1', '2017-08-08 20:22:02', '1', '0', '专业');
+INSERT INTO `t_oauth_department` VALUES
+  ('6', '中国中国中国中国中国中国中国中国中国中国中国中国中国中国中国中国', '0', '1', '2017-08-18 11:04:57', '1', '2017-08-18 11:04:57', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_menu
@@ -319,21 +321,606 @@ CREATE TABLE `t_oauth_resource` (
   CONSTRAINT `resource_fk1` FOREIGN KEY (`system_code`) REFERENCES `t_oauth_system_module` (`system_code`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 4
+  AUTO_INCREMENT = 199
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_resource
 -- ----------------------------
 INSERT INTO `t_oauth_resource` VALUES
-  ('1', '/management/test1', '测试1', 'sys:test1:list', 'SYS_BASE_PLATFORM', '1', '2017-08-14 13:55:57', '1',
+  ('1', '/management/atest1', 'A测试1', 'sys:atest1:list', 'SYS_BASE_PLATFORM', '1', '2017-08-14 13:55:57', '1',
         '2017-08-14 13:54:25', '1', '0', '');
 INSERT INTO `t_oauth_resource` VALUES
-  ('2', '/management/test2', '测试2', 'sys:test2:list', 'SYS_BASE_PLATFORM', '1', '2017-08-14 13:56:10', '1',
+  ('2', '/management/atest2', 'A测试2', 'sys:atest2:list', 'SYS_BASE_PLATFORM', '1', '2017-08-14 13:56:10', '1',
         '2017-08-14 13:54:46', '1', '0', '');
 INSERT INTO `t_oauth_resource` VALUES
-  ('3', '/management/test3', '测试3', 'sys:test3:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-14 13:56:20', '1',
+  ('3', '/management/atest3', 'A测试3', 'sys:atest3:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-14 13:56:20', '1',
         '2017-08-14 13:55:13', '1', '0', '');
+INSERT INTO `t_oauth_resource` VALUES
+  ('4', '/management/atest4', 'A测试4', 'sys:atest4:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+        '2017-08-15 13:56:37', '1', '4', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('5', '/management/atest5', 'A测试5', 'sys:atest5:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+        '2017-08-15 13:56:37', '1', '5', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('6', '/management/atest6', 'A测试6', 'sys:atest6:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+        '2017-08-15 13:56:37', '1', '6', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('7', '/management/atest7', 'A测试7', 'sys:atest7:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+        '2017-08-15 13:56:37', '1', '7', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('8', '/management/atest8', 'A测试8', 'sys:atest8:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+        '2017-08-15 13:56:37', '1', '8', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('9', '/management/atest9', 'A测试9', 'sys:atest9:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+        '2017-08-15 13:56:37', '1', '9', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('10', '/management/atest10', 'A测试10', 'sys:atest10:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '10', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('11', '/management/atest11', 'A测试11', 'sys:atest11:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '11', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('12', '/management/atest12', 'A测试12', 'sys:atest12:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '12', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('13', '/management/atest13', 'A测试13', 'sys:atest13:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '13', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('14', '/management/atest14', 'A测试14', 'sys:atest14:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '14', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('15', '/management/atest15', 'A测试15', 'sys:atest15:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '15', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('16', '/management/atest16', 'A测试16', 'sys:atest16:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '16', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('17', '/management/atest17', 'A测试17', 'sys:atest17:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '17', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('18', '/management/atest18', 'A测试18', 'sys:atest18:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '18', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('19', '/management/atest19', 'A测试19', 'sys:atest19:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '19', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('20', '/management/atest20', 'A测试20', 'sys:atest20:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '20', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('21', '/management/atest21', 'A测试21', 'sys:atest21:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '21', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('22', '/management/atest22', 'A测试22', 'sys:atest22:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '22', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('23', '/management/atest23', 'A测试23', 'sys:atest23:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '23', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('24', '/management/atest24', 'A测试24', 'sys:atest24:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '24', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('25', '/management/atest25', 'A测试25', 'sys:atest25:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '25', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('26', '/management/atest26', 'A测试26', 'sys:atest26:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '26', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('27', '/management/atest27', 'A测试27', 'sys:atest27:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '27', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('28', '/management/atest28', 'A测试28', 'sys:atest28:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '28', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('29', '/management/atest29', 'A测试29', 'sys:atest29:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '29', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('30', '/management/atest30', 'A测试30', 'sys:atest30:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '30', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('31', '/management/atest31', 'A测试31', 'sys:atest31:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '31', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('32', '/management/atest32', 'A测试32', 'sys:atest32:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '32', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('33', '/management/atest33', 'A测试33', 'sys:atest33:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '33', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('34', '/management/atest34', 'A测试34', 'sys:atest34:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '34', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('35', '/management/atest35', 'A测试35', 'sys:atest35:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '35', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('36', '/management/atest36', 'A测试36', 'sys:atest36:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '36', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('37', '/management/atest37', 'A测试37', 'sys:atest37:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '37', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('38', '/management/atest38', 'A测试38', 'sys:atest38:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '38', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('39', '/management/atest39', 'A测试39', 'sys:atest39:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '39', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('40', '/management/atest40', 'A测试40', 'sys:atest40:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '40', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('41', '/management/atest41', 'A测试41', 'sys:atest41:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '41', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('42', '/management/atest42', 'A测试42', 'sys:atest42:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '42', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('43', '/management/atest43', 'A测试43', 'sys:atest43:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '43', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('44', '/management/atest44', 'A测试44', 'sys:atest44:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '44', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('45', '/management/atest45', 'A测试45', 'sys:atest45:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '45', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('46', '/management/atest46', 'A测试46', 'sys:atest46:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '46', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('47', '/management/atest47', 'A测试47', 'sys:atest47:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '47', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('48', '/management/atest48', 'A测试48', 'sys:atest48:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '48', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('49', '/management/atest49', 'A测试49', 'sys:atest49:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '49', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('50', '/management/atest50', 'A测试50', 'sys:atest50:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '50', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('51', '/management/atest51', 'A测试51', 'sys:atest51:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '51', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('52', '/management/atest52', 'A测试52', 'sys:atest52:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '52', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('53', '/management/atest53', 'A测试53', 'sys:atest53:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '53', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('54', '/management/atest54', 'A测试54', 'sys:atest54:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '54', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('55', '/management/atest55', 'A测试55', 'sys:atest55:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '55', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('56', '/management/atest56', 'A测试56', 'sys:atest56:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '56', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('57', '/management/atest57', 'A测试57', 'sys:atest57:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '57', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('58', '/management/atest58', 'A测试58', 'sys:atest58:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '58', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('59', '/management/atest59', 'A测试59', 'sys:atest59:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '59', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('60', '/management/atest60', 'A测试60', 'sys:atest60:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '60', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('61', '/management/atest61', 'A测试61', 'sys:atest61:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '61', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('62', '/management/atest62', 'A测试62', 'sys:atest62:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '62', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('63', '/management/atest63', 'A测试63', 'sys:atest63:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '63', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('64', '/management/atest64', 'A测试64', 'sys:atest64:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '64', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('65', '/management/atest65', 'A测试65', 'sys:atest65:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '65', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('66', '/management/atest66', 'A测试66', 'sys:atest66:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '66', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('67', '/management/atest67', 'A测试67', 'sys:atest67:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '67', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('68', '/management/atest68', 'A测试68', 'sys:atest68:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '68', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('69', '/management/atest69', 'A测试69', 'sys:atest69:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '69', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('70', '/management/atest70', 'A测试70', 'sys:atest70:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '70', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('71', '/management/atest71', 'A测试71', 'sys:atest71:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '71', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('72', '/management/atest72', 'A测试72', 'sys:atest72:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '72', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('73', '/management/atest73', 'A测试73', 'sys:atest73:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '73', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('74', '/management/atest74', 'A测试74', 'sys:atest74:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '74', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('75', '/management/atest75', 'A测试75', 'sys:atest75:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '75', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('76', '/management/atest76', 'A测试76', 'sys:atest76:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '76', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('77', '/management/atest77', 'A测试77', 'sys:atest77:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '77', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('78', '/management/atest78', 'A测试78', 'sys:atest78:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '78', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('79', '/management/atest79', 'A测试79', 'sys:atest79:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '79', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('80', '/management/atest80', 'A测试80', 'sys:atest80:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '80', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('81', '/management/atest81', 'A测试81', 'sys:atest81:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '81', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('82', '/management/atest82', 'A测试82', 'sys:atest82:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '82', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('83', '/management/atest83', 'A测试83', 'sys:atest83:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '83', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('84', '/management/atest84', 'A测试84', 'sys:atest84:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '84', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('85', '/management/atest85', 'A测试85', 'sys:atest85:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '85', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('86', '/management/atest86', 'A测试86', 'sys:atest86:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '86', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('87', '/management/atest87', 'A测试87', 'sys:atest87:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '87', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('88', '/management/atest88', 'A测试88', 'sys:atest88:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '88', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('89', '/management/atest89', 'A测试89', 'sys:atest89:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '89', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('90', '/management/atest90', 'A测试90', 'sys:atest90:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '90', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('91', '/management/atest91', 'A测试91', 'sys:atest91:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '91', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('92', '/management/atest92', 'A测试92', 'sys:atest92:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
+         '2017-08-15 13:56:37', '1', '92', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('93', '/management/atest93', 'A测试93', 'sys:atest93:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+         '2017-08-15 13:56:38', '1', '93', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('94', '/management/atest94', 'A测试94', 'sys:atest94:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+         '2017-08-15 13:56:38', '1', '94', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('95', '/management/atest95', 'A测试95', 'sys:atest95:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+         '2017-08-15 13:56:38', '1', '95', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('96', '/management/atest96', 'A测试96', 'sys:atest96:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+         '2017-08-15 13:56:38', '1', '96', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('97', '/management/atest97', 'A测试97', 'sys:atest97:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+         '2017-08-15 13:56:38', '1', '97', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('98', '/management/atest98', 'A测试98', 'sys:atest98:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+         '2017-08-15 13:56:38', '1', '98', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('99', '/management/atest99', 'A测试99', 'sys:atest99:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+         '2017-08-15 13:56:38', '1', '99', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('100', '/management/btest1', 'B测试1', 'sys:btest1:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '1', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('101', '/management/btest2', 'B测试2', 'sys:btest2:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '2', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('102', '/management/btest3', 'B测试3', 'sys:btest3:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '3', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('103', '/management/btest4', 'B测试4', 'sys:btest4:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '4', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('104', '/management/btest5', 'B测试5', 'sys:btest5:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '5', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('105', '/management/btest6', 'B测试6', 'sys:btest6:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '6', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('106', '/management/btest7', 'B测试7', 'sys:btest7:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '7', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('107', '/management/btest8', 'B测试8', 'sys:btest8:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '8', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('108', '/management/btest9', 'B测试9', 'sys:btest9:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '9', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('109', '/management/btest10', 'B测试10', 'sys:btest10:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '10', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('110', '/management/btest11', 'B测试11', 'sys:btest11:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '11', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('111', '/management/btest12', 'B测试12', 'sys:btest12:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '12', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('112', '/management/btest13', 'B测试13', 'sys:btest13:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '13', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('113', '/management/btest14', 'B测试14', 'sys:btest14:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '14', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('114', '/management/btest15', 'B测试15', 'sys:btest15:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '15', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('115', '/management/btest16', 'B测试16', 'sys:btest16:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '16', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('116', '/management/btest17', 'B测试17', 'sys:btest17:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '17', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('117', '/management/btest18', 'B测试18', 'sys:btest18:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '18', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('118', '/management/btest19', 'B测试19', 'sys:btest19:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '19', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('119', '/management/btest20', 'B测试20', 'sys:btest20:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '20', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('120', '/management/btest21', 'B测试21', 'sys:btest21:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '21', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('121', '/management/btest22', 'B测试22', 'sys:btest22:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '22', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('122', '/management/btest23', 'B测试23', 'sys:btest23:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '23', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('123', '/management/btest24', 'B测试24', 'sys:btest24:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '24', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('124', '/management/btest25', 'B测试25', 'sys:btest25:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '25', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('125', '/management/btest26', 'B测试26', 'sys:btest26:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '26', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('126', '/management/btest27', 'B测试27', 'sys:btest27:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '27', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('127', '/management/btest28', 'B测试28', 'sys:btest28:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '28', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('128', '/management/btest29', 'B测试29', 'sys:btest29:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '29', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('129', '/management/btest30', 'B测试30', 'sys:btest30:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '30', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('130', '/management/btest31', 'B测试31', 'sys:btest31:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '31', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('131', '/management/btest32', 'B测试32', 'sys:btest32:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '32', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('132', '/management/btest33', 'B测试33', 'sys:btest33:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '33', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('133', '/management/btest34', 'B测试34', 'sys:btest34:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '34', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('134', '/management/btest35', 'B测试35', 'sys:btest35:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '35', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('135', '/management/btest36', 'B测试36', 'sys:btest36:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '36', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('136', '/management/btest37', 'B测试37', 'sys:btest37:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '37', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('137', '/management/btest38', 'B测试38', 'sys:btest38:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '38', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('138', '/management/btest39', 'B测试39', 'sys:btest39:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '39', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('139', '/management/btest40', 'B测试40', 'sys:btest40:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '40', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('140', '/management/btest41', 'B测试41', 'sys:btest41:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '41', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('141', '/management/btest42', 'B测试42', 'sys:btest42:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '42', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('142', '/management/btest43', 'B测试43', 'sys:btest43:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '43', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('143', '/management/btest44', 'B测试44', 'sys:btest44:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '44', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('144', '/management/btest45', 'B测试45', 'sys:btest45:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '45', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('145', '/management/btest46', 'B测试46', 'sys:btest46:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '46', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('146', '/management/btest47', 'B测试47', 'sys:btest47:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '47', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('147', '/management/btest48', 'B测试48', 'sys:btest48:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '48', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('148', '/management/btest49', 'B测试49', 'sys:btest49:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '49', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('149', '/management/btest50', 'B测试50', 'sys:btest50:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '50', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('150', '/management/btest51', 'B测试51', 'sys:btest51:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '51', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('151', '/management/btest52', 'B测试52', 'sys:btest52:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '52', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('152', '/management/btest53', 'B测试53', 'sys:btest53:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '53', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('153', '/management/btest54', 'B测试54', 'sys:btest54:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '54', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('154', '/management/btest55', 'B测试55', 'sys:btest55:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '55', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('155', '/management/btest56', 'B测试56', 'sys:btest56:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '56', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('156', '/management/btest57', 'B测试57', 'sys:btest57:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '57', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('157', '/management/btest58', 'B测试58', 'sys:btest58:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '58', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('158', '/management/btest59', 'B测试59', 'sys:btest59:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '59', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('159', '/management/btest60', 'B测试60', 'sys:btest60:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '60', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('160', '/management/btest61', 'B测试61', 'sys:btest61:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '61', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('161', '/management/btest62', 'B测试62', 'sys:btest62:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '62', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('162', '/management/btest63', 'B测试63', 'sys:btest63:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '63', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('163', '/management/btest64', 'B测试64', 'sys:btest64:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '64', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('164', '/management/btest65', 'B测试65', 'sys:btest65:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '65', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('165', '/management/btest66', 'B测试66', 'sys:btest66:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '66', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('166', '/management/btest67', 'B测试67', 'sys:btest67:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '67', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('167', '/management/btest68', 'B测试68', 'sys:btest68:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '68', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('168', '/management/btest69', 'B测试69', 'sys:btest69:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '69', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('169', '/management/btest70', 'B测试70', 'sys:btest70:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '70', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('170', '/management/btest71', 'B测试71', 'sys:btest71:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '71', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('171', '/management/btest72', 'B测试72', 'sys:btest72:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '72', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('172', '/management/btest73', 'B测试73', 'sys:btest73:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '73', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('173', '/management/btest74', 'B测试74', 'sys:btest74:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '74', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('174', '/management/btest75', 'B测试75', 'sys:btest75:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '75', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('175', '/management/btest76', 'B测试76', 'sys:btest76:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '76', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('176', '/management/btest77', 'B测试77', 'sys:btest77:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '77', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('177', '/management/btest78', 'B测试78', 'sys:btest78:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '78', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('178', '/management/btest79', 'B测试79', 'sys:btest79:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '79', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('179', '/management/btest80', 'B测试80', 'sys:btest80:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '80', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('180', '/management/btest81', 'B测试81', 'sys:btest81:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '81', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('181', '/management/btest82', 'B测试82', 'sys:btest82:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '82', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('182', '/management/btest83', 'B测试83', 'sys:btest83:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '83', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('183', '/management/btest84', 'B测试84', 'sys:btest84:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '84', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('184', '/management/btest85', 'B测试85', 'sys:btest85:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '85', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('185', '/management/btest86', 'B测试86', 'sys:btest86:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '86', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('186', '/management/btest87', 'B测试87', 'sys:btest87:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '87', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('187', '/management/btest88', 'B测试88', 'sys:btest88:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '88', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('188', '/management/btest89', 'B测试89', 'sys:btest89:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '89', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('189', '/management/btest90', 'B测试90', 'sys:btest90:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '90', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('190', '/management/btest91', 'B测试91', 'sys:btest91:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '91', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('191', '/management/btest92', 'B测试92', 'sys:btest92:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '92', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('192', '/management/btest93', 'B测试93', 'sys:btest93:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '93', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('193', '/management/btest94', 'B测试94', 'sys:btest94:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '94', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('194', '/management/btest95', 'B测试95', 'sys:btest95:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '95', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('195', '/management/btest96', 'B测试96', 'sys:btest96:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '96', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('196', '/management/btest97', 'B测试97', 'sys:btest97:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '97', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('197', '/management/btest98', 'B测试98', 'sys:btest98:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '98', NULL);
+INSERT INTO `t_oauth_resource` VALUES
+  ('198', '/management/btest99', 'B测试99', 'sys:btest99:list', 'SYS_WECHAT_PLATFORM', '1', '2017-08-15 13:56:38', '1',
+          '2017-08-15 13:56:38', '1', '99', NULL);
 
 -- ----------------------------
 -- Table structure for t_oauth_resource_module
@@ -443,6 +1030,8 @@ DROP TABLE IF EXISTS `t_oauth_role_resource`;
 CREATE TABLE `t_oauth_role_resource` (
   `role_id`     INT(11) UNSIGNED NOT NULL,
   `resource_id` INT(11) UNSIGNED NOT NULL,
+  `enabled`     TINYINT(1)       NOT NULL DEFAULT '1'
+  COMMENT '1可用0不可用',
   KEY `role_resource_fk1` (`role_id`),
   KEY `role_resource_fk2` (`resource_id`),
   CONSTRAINT `role_resource_fk1` FOREIGN KEY (`role_id`) REFERENCES `t_oauth_role` (`id`),
@@ -485,12 +1074,18 @@ CREATE TABLE `t_oauth_session` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 324
+  AUTO_INCREMENT = 11
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_session
 -- ----------------------------
+INSERT INTO `t_oauth_session` VALUES ('10', 'sa', 'b18ffc05-4fbc-4f9c-82ac-52090ec33ab7',
+                                            'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJGIxOGZmYzA1LTRmYmMtNGY5Yy04MmFjLTUyMDkwZWMzM2FiN3NyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV3z61FmeHNxAH4AA3cIAAABXfQ1gH94dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAEy9vYXV0aDIvbWVudS1tb2R1bGV0AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AC4vb2F1dGgyL3N5c3RlbS1tb2R1bGUvYXBpL2ZpbmQvbW9kdWxlcy9lbmFibGVkdABNb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LnN1cHBvcnQuRGVmYXVsdFN1YmplY3RDb250ZXh0X1BSSU5DSVBBTFNfU0VTU0lPTl9LRVlzcgAyb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LlNpbXBsZVByaW5jaXBhbENvbGxlY3Rpb26of1glxqMISgMAAUwAD3JlYWxtUHJpbmNpcGFsc3QAD0xqYXZhL3V0aWwvTWFwO3hwc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhxAH4ABj9AAAAAAAAMdwgAAAAQAAAAAXQAQW9yZy50ZW1wbGF0ZXByb2plY3QuaXRlbXMub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8wc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAAQP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgAYeHh4',
+                                            '127.0.0.1', '2017-08-18 13:57:52', '2017-08-18 15:18:53', '1800000',
+                                            'http://127.0.0.1:8082/oauth2/menu-module',
+                                            'http://127.0.0.1:8082/oauth2/system-module/api/find/modules/enabled',
+                                            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
 
 -- ----------------------------
 -- Table structure for t_oauth_system_module
@@ -674,7 +1269,7 @@ CREATE TABLE `t_oauth_user_login_log` (
   CONSTRAINT `user_login_log_fk1` FOREIGN KEY (`user_id`) REFERENCES `t_oauth_user` (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 131
+  AUTO_INCREMENT = 147
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -940,6 +1535,38 @@ INSERT INTO `t_oauth_user_login_log`
 VALUES ('129', '1', '2017-08-14 14:30:07', '127.0.0.1', '1', '2017-08-14 14:30:07', NULL, NULL, NULL, '0', NULL);
 INSERT INTO `t_oauth_user_login_log`
 VALUES ('130', '1', '2017-08-14 14:43:42', '127.0.0.1', '1', '2017-08-14 14:43:42', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('131', '1', '2017-08-14 15:36:02', '127.0.0.1', '1', '2017-08-14 15:36:02', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('132', '1', '2017-08-14 15:48:07', '127.0.0.1', '1', '2017-08-14 15:48:07', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('133', '1', '2017-08-15 10:50:58', '127.0.0.1', '1', '2017-08-15 10:50:58', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('134', '1', '2017-08-15 11:12:48', '127.0.0.1', '1', '2017-08-15 11:12:48', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('135', '1', '2017-08-15 11:30:56', '127.0.0.1', '1', '2017-08-15 11:30:56', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('136', '1', '2017-08-15 13:57:35', '127.0.0.1', '1', '2017-08-15 13:57:35', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('137', '1', '2017-08-16 21:31:02', '127.0.0.1', '1', '2017-08-16 21:31:02', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('138', '1', '2017-08-16 21:41:27', '127.0.0.1', '1', '2017-08-16 21:41:27', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('139', '1', '2017-08-17 11:07:11', '127.0.0.1', '1', '2017-08-17 11:07:11', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('140', '1', '2017-08-17 13:06:55', '127.0.0.1', '1', '2017-08-17 13:06:55', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('141', '1', '2017-08-17 16:30:58', '127.0.0.1', '1', '2017-08-17 16:30:58', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('142', '1', '2017-08-17 18:02:23', '127.0.0.1', '1', '2017-08-17 18:02:23', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('143', '1', '2017-08-18 10:10:10', '127.0.0.1', '1', '2017-08-18 10:10:10', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('144', '1', '2017-08-18 11:31:42', '127.0.0.1', '1', '2017-08-18 11:31:42', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('145', '1', '2017-08-18 13:46:43', '127.0.0.1', '1', '2017-08-18 13:46:43', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('146', '1', '2017-08-18 13:57:55', '127.0.0.1', '1', '2017-08-18 13:57:55', NULL, NULL, NULL, '0', NULL);
 
 -- ----------------------------
 -- Table structure for t_oauth_user_role
@@ -950,6 +1577,8 @@ CREATE TABLE `t_oauth_user_role` (
   COMMENT '用户id',
   `role_id` INT(11) UNSIGNED NOT NULL
   COMMENT '角色id',
+  `enabled` TINYINT(1)       NOT NULL DEFAULT '1'
+  COMMENT '1可用0不可用',
   KEY `user_role_fk1` (`user_id`),
   KEY `user_role_fk2` (`role_id`),
   CONSTRAINT `user_role_fk1` FOREIGN KEY (`user_id`) REFERENCES `t_oauth_user` (`id`),
@@ -961,18 +1590,6 @@ CREATE TABLE `t_oauth_user_role` (
 -- ----------------------------
 -- Records of t_oauth_user_role
 -- ----------------------------
-DROP TRIGGER IF EXISTS `menu_module_tg1`;
-DELIMITER ;;
-CREATE TRIGGER `menu_module_tg1`
-AFTER UPDATE ON `t_oauth_menu_module`
-FOR EACH ROW
-  BEGIN
-    UPDATE t_oauth_menu
-    SET enabled = new.enabled
-    WHERE menu_module_id = old.id;
-  END
-;;
-DELIMITER ;
 DROP TRIGGER IF EXISTS `operation_privilege_type_tg1`;
 DELIMITER ;;
 CREATE TRIGGER `operation_privilege_type_tg1`
@@ -1003,27 +1620,51 @@ FOR EACH ROW
   END
 ;;
 DELIMITER ;
-DROP TRIGGER IF EXISTS `system_module_tg1`;
+DROP TRIGGER IF EXISTS `resource_tg2`;
 DELIMITER ;;
-CREATE TRIGGER `system_module_tg1`
-AFTER UPDATE ON `t_oauth_system_module`
+CREATE TRIGGER `resource_tg2`
+AFTER DELETE ON `t_oauth_resource`
 FOR EACH ROW
   BEGIN
-    UPDATE t_oauth_menu_module
-    SET ENABLED = new.enabled
-    WHERE system_code = old.system_code;
+    DELETE FROM t_oauth_privilege_operation
+    WHERE t_oauth_privilege_operation.resource_id = old.id;
+    DELETE FROM t_oauth_menu
+    WHERE t_oauth_menu.resource_id = old.id;
+    DELETE FROM t_oauth_privilege_page
+    WHERE t_oauth_privilege_page.resource_id = old.id;
+  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `role_tg1`;
+DELIMITER ;;
+CREATE TRIGGER `role_tg1`
+AFTER UPDATE ON `t_oauth_role`
+FOR EACH ROW
+  BEGIN
+    UPDATE t_oauth_role_resource
+    SET enabled = new.enabled
+    WHERE role_id = old.id;
+    UPDATE t_oauth_user_role
+    SET enabled = new.enabled
+    WHERE role_id = old.id;
     UPDATE t_oauth_menu
-    SET ENABLED = new.enabled
-    WHERE system_code = old.system_code;
-    UPDATE t_oauth_resource_module
-    SET ENABLED = new.enabled
-    WHERE system_code = old.system_code;
-    UPDATE t_oauth_resource
-    SET ENABLED = new.enabled
-    WHERE system_code = old.system_code;
-    UPDATE t_oauth_role
-    SET ENABLED = new.enabled
-    WHERE system_code = old.system_code;
+    SET enabled = new.enabled
+    WHERE role_id = old.id;
+  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `role_tg2`;
+DELIMITER ;;
+CREATE TRIGGER `role_tg2`
+AFTER DELETE ON `t_oauth_role`
+FOR EACH ROW
+  BEGIN
+    DELETE FROM t_oauth_role_resource
+    WHERE role_id = old.id;
+    DELETE FROM t_oauth_user_role
+    WHERE role_id = old.id;
+    DELETE FROM t_oauth_menu
+    WHERE role_id = old.id;
   END
 ;;
 DELIMITER ;
@@ -1035,6 +1676,22 @@ FOR EACH ROW
   BEGIN
     UPDATE t_oauth_user_login_log
     SET enabled = new.enabled
+    WHERE user_id = old.id;
+    UPDATE t_oauth_user_role
+    SET enabled = new.enabled
+    WHERE user_id = old.id;
+  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `user_tg2`;
+DELIMITER ;;
+CREATE TRIGGER `user_tg2`
+AFTER DELETE ON `t_oauth_user`
+FOR EACH ROW
+  BEGIN
+    DELETE FROM t_oauth_user_login_log
+    WHERE user_id = old.id;
+    DELETE FROM t_oauth_user_role
     WHERE user_id = old.id;
   END
 ;;

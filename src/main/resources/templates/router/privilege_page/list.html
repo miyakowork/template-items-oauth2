@@ -1,32 +1,27 @@
 <!-- 树的展示-->
-<div class="row" style="margin-left: -5px;margin-right: -5px;">
+<div class="row">
     <!-- 树的展示-->
     <div class="col-md-3" style="margin-top: 10px;">
-        <div class="row">
-            <input type="hidden" name="selectedModulePs">
-            <select class="form-control" title="系统模块选择" id="select-modules-ps">
-            </select>
-        </div>
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-body" style="min-height: 300px;">
-                    <ul id="privilegepageTree" class="ztree">
-                        请选择系统模块
-                    </ul>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <input type="hidden" name="selectedModulePs">
+                <select class="form-control" title="系统模块选择" id="select-modules-ps">
+                </select>
+            </div>
+            <div class="panel-body" style="min-height: 300px;">
+                <p><span class="pull-right" id="refreshResModuleTree" style="cursor: pointer;"><i
+                        class="fa fa-undo"></i> </span></p>
+                <ul id="privilegepageTree" class="ztree">
+                    请选择系统模块
+                </ul>
             </div>
         </div>
     </div>
     <div class="col-md-9">
         <div id="privilegePage-toolbar" class="form-inline">
-            <button id="refreshResModuleTree" class="btn btn-sm btn-primary"><i class="fa fa-times"></i> 取消勾选模块</button>
             <button id="add-privilegepage" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
             <button id="edit-privilegepage" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
-            &nbsp;
-            <label id="privilegePage-search-control" class="checkbox-inline">
-                <input type="checkbox" class="checkbox style-3">
-                <span>显示搜索控件</span>
-            </label>
+            <div th:replace="fragment/control::search(privilegepage)"></div>
         </div>
         <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -96,190 +91,11 @@
 
 <!-- end row -->
 <div id="bigprivilegepage" class="hidden">
+
     <!--添加页面资源-->
-    <div id="addprivilegepage">
-        <form class="form-horizontal" @submit.prevent="handleAddSubmit" method="post">
-            <fieldset>
-                <!--资源id-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.resourceIdError }">
-                    <label class="col-md-3 control-label">权限名称</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="权限名称（可更改，默认为资源名称）"
-                               v-model="PrivilegePage.resourceId">
-                        <a id="getResource" href="javascript:void(0);" style="margin-top: 15px;display: block;">获取资源</a>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.resourceIdError }">
-                            {{error.resourceIdErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-                <!--资源模块id-->
-                <div class="hidden">
-                    <label class="col-md-3 control-label">资源模块id</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="资源模块id"
-                               v-model="PrivilegePage.resourceModuleId">
-                    </div>
-                </div>
-
-                <!--资源模块名称-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">资源模块名称</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="资源模块名称" v-model="PrivilegePage.name"
-                               disabled="true">
-                    </div>
-                </div>
-
-                <!--//排序索引-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                    <label class="col-md-3 control-label">排序索引</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="排序索引"
-                               v-model="PrivilegePage.orderIndex">
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
-                            {{error.orderErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <!--//是否可用-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">是否可用</label>
-                    <div class="col-md-9">
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="PrivilegePage.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="true" checked>
-                            <span>是</span>
-                        </label>
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="PrivilegePage.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="false" checked>
-                            <span>否</span>
-                        </label>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
-                            {{error.enabledErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <!--//备注信息-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">备注信息</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="备注信息（选填）" col-md-9 v-model="PrivilegePage.remark">
-                    </div>
-                </div>
-
-
-            </fieldset>
-            <button id="add" type="submit" class="hidden"></button>
-
-        </form>
-    </div>
+    <div th:replace="router/privilege_page/add"></div>
     <!--编辑menu-->
-    <div id="editprivilegepage">
-        <form class="form-horizontal" @submit.prevent="handleEditSubmit" method="post">
-            <fieldset>
-
-                <!--id-->
-                <div class="hidden">
-                    <label class="col-md-3 control-label">id</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="id" col-md-9 v-model="PrivilegePage.id">
-                    </div>
-                </div>
-                <!--资源id-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.resourceIdError }">
-                    <label class="col-md-3 control-label">资源ID</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="资源ID"
-                               v-model="PrivilegePage.resourceId">
-                        <a id="editid" href="javascript:void(0);" style="margin-top: 15px;display: block;">获取资源ID</a>
-
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.resourceIdError }">
-                            {{error.resourceIdErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-                <!--资源模块id-->
-                <div class="hidden">
-                    <label class="col-md-3 control-label">资源模块id</label>
-                    <div class="col-md-9">
-                        <input id="pIdByTree" class="form-control" placeholder="资源模块id"
-                               v-model="PrivilegePage.resourceModuleId"
-                               readonly>
-                    </div>
-                </div>
-                <!--资源模块名称-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">资源模块名称</label>
-                    <div class="col-md-9">
-                        <input id="pNameByTree" class="form-control" placeholder="上级部门"
-                               v-model="PrivilegePage.name"
-                               readonly>
-                        <a id="editGetPId" href="javascript:void(0);"
-                           style="margin-top: 15px;display: block;">获取资源模块</a>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
-                            {{error.nameErrorMsg}}
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                    <label class="col-md-3 control-label">排序索引</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="排序索引"
-                               v-model="PrivilegePage.orderIndex">
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
-                            {{error.orderErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-3 control-label">是否可用</label>
-                    <div class="col-md-9">
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="PrivilegePage.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="true" checked>
-                            <span>是</span>
-                        </label>
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="PrivilegePage.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="false" checked>
-                            <span>否</span>
-                        </label>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
-                            {{error.enabledErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-3 control-label">备注信息</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="备注信息（选填）" col-md-9 v-model="PrivilegePage.remark">
-                    </div>
-                </div>
-
-
-            </fieldset>
-            <button id="edit" type="submit" class="hidden"></button>
-
-        </form>
-    </div>
+    <div th:replace="router/privilege_page/edit"></div>
 
 </div>
 <script src="/static/oauth2/js/privilege_page.js"></script>

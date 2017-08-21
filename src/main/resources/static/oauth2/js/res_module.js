@@ -4,17 +4,6 @@ var app;
 var page_function = function () {
     var $table = $("#resModule-table");
 
-    //搜索控件显影的监听事件
-    $("#resModule-search-control").on("click", function () {
-        window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.reInitTable($table, {
-            url: "/oauth2/resModule/api/list",
-            toolbar: '#resModule-toolbar',
-            queryParams: query_params,
-            filterControl: true
-        })
-    });
-
     var query_params = function (params) {
         return {
             limit: params.limit,
@@ -75,7 +64,7 @@ var page_function = function () {
                     params.append('systemCode', app.resModule.systemCode.selected)
                     axios.post('/oauth2/resModule/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 setTimeout(function () {
                                     $('#add_res_module_dialog').dialog('close');
@@ -112,7 +101,7 @@ var page_function = function () {
                     params.append("systemCode", app.resModule.systemCode.selected)
                     axios.post('/oauth2/resModule/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 setTimeout(function () {
                                     $('#edit_res_module_dialog').dialog('close');
@@ -154,7 +143,7 @@ var page_function = function () {
     });
 
     // Dialog click
-    $('#add_dialog_link').click(function () {
+    $('#add-resModule').click(function () {
         app.resModule.name = '';
         app.resModule.enabled = true;
         app.resModule.orderIndex = 0;
@@ -189,7 +178,7 @@ var page_function = function () {
         }]
     });
     <!--编辑dialog-->
-    $('#edit_dialog_link').click(function () {
+    $('#edit-resModule').click(function () {
         //判断是否只选中一条信息
         if ($table.bootstrapTable('getSelections').length > 1) {
             TF.show_error_msg("只能选择一条信息进行编辑")
@@ -237,6 +226,16 @@ var page_function = function () {
                 $(this).dialog("close");
             }
         }]
+    });
+
+    //删除
+    $("#delete-resModule").click(function () {
+        var ss = $table.bootstrapTable('getSelections');
+        if (ss.length === 0) {
+            TF.show_error_message("错误选择", "请至少选择一项进行删除")
+        } else {
+            TF.deleteItems($table, "/oauth2/resModule/api/delete", "name");
+        }
     });
 
 

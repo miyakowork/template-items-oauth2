@@ -69,7 +69,7 @@ var page_function = function () {
                         axios.post("/session/api/forcelogout", params)
                             .then(function (response) {
 
-                                if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                                if (response.data.code === TF.status_code.success) {
                                     layer.msg(response.data.message);
                                     $table.bootstrapTable("refresh");
                                 }

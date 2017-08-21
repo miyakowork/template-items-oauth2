@@ -4,17 +4,6 @@ var page_function = function () {
 
     var $table = $("#system-module-table");
 
-    //搜索控件显影的监听事件
-    $("#system-module-search-control").on("click", function () {
-        window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.reInitTable($table, {
-            url: "/oauth2/system-module/api/list",
-            toolbar: '#system-module-toolbar',
-            queryParams: query_params,
-            filterControl: true
-        })
-    });
-
     //设置表格的搜索参数
     var query_params = function (params) {
         return {
@@ -86,9 +75,9 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/system-module/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
-                                $("#dialog_simple").dialog("close");
+                                $("#addSystemModule").dialog("close");
                                 $table.bootstrapTable('refresh');
                             } else {
                                 TF.show_error_msg(response.data.message)
@@ -120,9 +109,9 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/system-module/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
-                                $("#dialog_simple_edit").dialog("close");
+                                $("#editSystemModule").dialog("close");
                                 $table.bootstrapTable('refresh');
                             } else {
                                 TF.show_error_msg(response.data.message)
@@ -158,8 +147,8 @@ var page_function = function () {
     });
 
     //监听添加事件
-    $('#add-systemmodule').click(function () {
-        $('#dialog_simple').dialog('open');
+    $('#add-system-module').click(function () {
+        $('#addSystemModule').dialog('open');
         app.systemmodule.id = "";
         app.systemmodule.name = "";
         app.systemmodule.systemCode = "";
@@ -176,7 +165,7 @@ var page_function = function () {
     })
 
     //添加面板属性设置
-    $('#dialog_simple').dialog({
+    $('#addSystemModule').dialog({
         autoOpen: false,
         width: 600,
         resizable: true,
@@ -198,7 +187,7 @@ var page_function = function () {
     });
 
     //监听编辑按钮事件
-    $('#edit-systemmodule').click(function () {
+    $('#edit-system-module').click(function () {
         if ($table.bootstrapTable('getSelections').length > 1) {
             TF.show_error_msg("只能选择一条信息进行编辑")
         } else if ($table.bootstrapTable('getSelections').length < 1) {
@@ -209,7 +198,7 @@ var page_function = function () {
             var ss = $table.bootstrapTable('getSelections');
             var res = ss[0];
 
-            $('#dialog_simple_edit').dialog('open');
+            $('#editSystemModule').dialog('open');
             app.systemmodule.id = res.id;
             app.systemmodule.name = res.name;
             app.systemmodule.systemCode = res.systemCode;
@@ -227,7 +216,7 @@ var page_function = function () {
         }
     });
     //编辑面板属性设置
-    $('#dialog_simple_edit').dialog({
+    $('#editSystemModule').dialog({
         autoOpen: false,
         width: 600,
         resizable: true,
@@ -248,36 +237,13 @@ var page_function = function () {
         }]
     });
     //监听删除按钮事件
-    $("#delete-systemmodule").click(function () {
+    $("#delete-system-module").click(function () {
         var $selectedEdit = $table.bootstrapTable("getSelections");
         if ($selectedEdit === null || $selectedEdit.length === 0) {
             TF.show_error_msg("请选择删除对象")
         }
         else {
-            $.SmartMessageBox({
-                title: "<i class='fa fa-minus-square-o' style='color:red'></i> 确定要删除吗？",
-                content: "你确定要删除所选择的所有信息吗？",
-                buttons: '[取消][确认]'
-            }, function (ButtonPressed) {
-                if (ButtonPressed === "确认") {
-                    var ids = "";
-                    for (var idRow in $selectedEdit) {
-                        ids += $selectedEdit[idRow].id + ","
-                    }
-                    ids = ids.substr(0, ids.length - 1);
-                    axios.post("/oauth2/system-module/api/delete?ids=" + ids)
-                        .then(function (response) {
-                            if (response.data.code == TF.STATUS_CODE.SUCCESS) {
-                                layer.msg(response.data.message);
-                                $table.bootstrapTable("refresh");
-                            } else {
-                                TF.show_error_msg(response.data.message)
-                            }
-                        })
-                }
-
-            });
-
+            TF.deleteItems($table, "/oauth2/system-module/api/delete", "name");
         }
     });
 

@@ -108,7 +108,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/user/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $('#add_user_dialog').dialog('close');
                                 $table.bootstrapTable('refresh');
@@ -153,7 +153,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/user/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $('#edit_user_dialog ').dialog('close');
                                 $table.bootstrapTable('refresh');
@@ -178,7 +178,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/user/api/editPwd', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $('#edit_password_dialog ').dialog('close');
                             } else {
@@ -375,7 +375,7 @@ var page_function = function () {
                     ids = ids.substr(0, ids.length - 1);//去除最后一个逗号
                     axios.post("/oauth2/user/api/delete?ids=" + ids)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $table.bootstrapTable("refresh");
                             } else {

@@ -35,7 +35,7 @@ public class ResourceRestController extends BaseRestController {
      */
     @RequestMapping("list")
     public BootstrapTable<ResourceVO> resources(Page<ResourceVO> page, ResourceBO resourceBO) {
-        page = resourceService.findResourcePage(resourceBO, queryParam2Page(resourceBO, page));
+        page = resourceService.findResourcePage(resourceBO, page);
         return bootstrapTable(page);
     }
 

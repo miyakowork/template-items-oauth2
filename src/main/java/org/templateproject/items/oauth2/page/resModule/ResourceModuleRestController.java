@@ -53,16 +53,7 @@ public class ResourceModuleRestController extends BaseRestController {
      */
     @RequestMapping("add")
     public R add(IResourceModule iResourceModule) {
-        try {
-            if (resModuleService.save(iResourceModule, IResourceModule.class))
-                return R.ok("添加成功");
-            else {
-                return R.ok();
-            }
-        } catch (Exception e) {
-            return R.error("添加失败" + e.getMessage());
-        }
-
+        return ajaxDoneAdd("资源模块", resModuleService, iResourceModule, IResourceModule.class);
     }
 
     /**
@@ -73,17 +64,19 @@ public class ResourceModuleRestController extends BaseRestController {
      */
     @RequestMapping("edit")
     public R edit(IResourceModule iResourceModule) {
-        try {
-            if (resModuleService.edit(iResourceModule, IResourceModule.class))
-                return R.ok("编辑资源模块成功");
-            else
-                return R.error("编辑资源模块失败");
-
-        } catch (Exception e) {
-            return R.error("编辑资源模块失败" + e.getMessage());
-        }
+        return ajaxDoneEdit("资源模块", resModuleService, iResourceModule, IResourceModule.class);
     }
 
+    /**
+     * 删除资源模块
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("delete")
+    public R delete(String ids) {
+        return ajaxDoneDelete("资源模块", ids.split(","), resModuleService, IResourceModule.class);
+    }
 
     /**
      * 查询出资源模块树
@@ -93,7 +86,7 @@ public class ResourceModuleRestController extends BaseRestController {
     @RequestMapping("resModuleTree")
     public List<ZTreeBO> resourceModulesTree(String systemModuleCode) {
         if (StringUtils.isEmpty(systemModuleCode))
-            return resModuleService.resModuleToZTree(resModuleService.findEnabledResModules());
+            return resModuleService.resModuleToZTree(resModuleService.findEnabledListBean(IResourceModule.class));
         else
             return resModuleService.resModuleToZTree(resModuleService.findEnabledResModulesBySystemModuleCode(systemModuleCode));
     }

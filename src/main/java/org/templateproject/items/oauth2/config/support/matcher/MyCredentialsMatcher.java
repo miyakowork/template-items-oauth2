@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.templateproject.items.oauth2.config.support.password.PasswordHelper;
+import org.templateproject.items.oauth2.constant.CacheConsts;
 import org.templateproject.items.oauth2.constant.ShiroConsts;
 import org.templateproject.items.oauth2.entity.IUser;
 import org.templateproject.items.oauth2.service.LogService;
@@ -40,7 +41,7 @@ public class MyCredentialsMatcher extends SimpleCredentialsMatcher {
 
     @Autowired
     public void setPasswordRetryCache() {
-        this.passwordRetryCache = cacheManager.getCache("passwordRetryCache");
+        this.passwordRetryCache = cacheManager.getCache(CacheConsts.PASSWORD_RETRY_CACHE);
     }
 
     @Autowired

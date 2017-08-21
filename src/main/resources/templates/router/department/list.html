@@ -1,26 +1,22 @@
 <!--list页面-->
-<div class="row">
-    <div class="col-md-4 margin-top-10">
-        <div class="panel panel-blueDark">
+<div class="row" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <div class="col-md-3 margin-top-10">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <span><i class="fa fa-building"></i> 部门树</span>
                 <span class="pull-right" style="cursor: pointer;" id="refreshDepartmentTree" title="重置部门勾选状态"><i
-                        class="fa fa-refresh"></i> </span>
+                        class="fa fa-undo"></i> </span>
             </div>
             <div class="panel-body" style="min-height: 300px;">
                 <ul id="DepartmentTree" class="ztree"></ul>
             </div>
         </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div id="department-toolbar" class="form-inline">
             <button id="add-department" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
             <button id="edit-department" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
-            &nbsp;
-            <label id="department-search-control" class="checkbox-inline">
-                <input type="checkbox" class="checkbox style-3">
-                <span>显示搜索控件</span>
-            </label>
+            <div th:replace="fragment/control(department)"></div>
         </div>
         <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">

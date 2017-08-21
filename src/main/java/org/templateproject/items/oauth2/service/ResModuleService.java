@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.entity.IResourceModule;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.ResModuleBo;
 import org.templateproject.items.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.items.oauth2.support.pojo.vo.ResourceModuleVO;
@@ -20,7 +19,6 @@ import java.util.List;
  */
 @Service
 @Transactional
-@SqlMapper("res_module")
 public class ResModuleService extends SimpleBaseCrudService<IResourceModule, Integer> {
 
 
@@ -32,18 +30,12 @@ public class ResModuleService extends SimpleBaseCrudService<IResourceModule, Int
      * @return page
      */
     public Page<ResourceModuleVO> findResModulePage(Page<ResourceModuleVO> page, ResModuleBo resModuleBo) {
-        return findPagination(page, ResourceModuleVO.class, sql(), resModuleBo);
+        String sql = "SELECT torm.*, tosm.name AS systemModuleName, tou1.username AS create_user_name, tou2.username AS update_user_name" +
+                " FROM t_oauth_resource_module torm, t_oauth_user tou1, t_oauth_user tou2, t_oauth_system_module tosm" +
+                " WHERE torm.CREATE_USER = tou1.id AND torm.update_user = tou2.id AND tosm.system_code = torm.system_code";
+        return findPagination(page, ResourceModuleVO.class, sql, resModuleBo);
     }
 
-
-    /**
-     * 查询所有可用的资源模块
-     *
-     * @return list
-     */
-    public List<IResourceModule> findEnabledResModules() {
-        return mysql.findListBeanByArray(sql(), IResourceModule.class);
-    }
 
     /**
      * 根据系统模块查询所有可用的资源模块
@@ -52,7 +44,10 @@ public class ResModuleService extends SimpleBaseCrudService<IResourceModule, Int
      * @return
      */
     public List<IResourceModule> findEnabledResModulesBySystemModuleCode(String systemModuleCode) {
-        return mysql.findListBeanByArray(sql(), IResourceModule.class, systemModuleCode);
+        String sql = "SELECT *" +
+                " FROM t_oauth_resource_module" +
+                " WHERE enabled = 1 AND system_code = ?";
+        return mysql.findListBeanByArray(sql, IResourceModule.class, systemModuleCode);
     }
 
     /**

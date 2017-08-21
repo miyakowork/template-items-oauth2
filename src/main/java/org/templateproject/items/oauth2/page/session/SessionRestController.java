@@ -8,7 +8,7 @@ import org.templateproject.items.oauth2.config.support.session.MySQLSessionDao;
 import org.templateproject.items.oauth2.constant.ShiroConsts;
 import org.templateproject.items.oauth2.entity.shiro.ShiroSession;
 import org.templateproject.items.oauth2.service.shiro.ShiroSessionService;
-import org.templateproject.items.oauth2.support.TemplateController;
+import org.templateproject.items.oauth2.support.BaseRestController;
 import org.templateproject.items.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.items.oauth2.support.pojo.bo.SessionBO;
 import org.templateproject.pojo.page.Page;
@@ -19,7 +19,7 @@ import org.templateproject.pojo.response.R;
  */
 @RestController
 @RequestMapping("session/api")
-public class SessionRestController extends TemplateController {
+public class SessionRestController extends BaseRestController {
 
     private ShiroSessionService shiroSessionService;
     private MySQLSessionDao sessionDao;
@@ -32,9 +32,8 @@ public class SessionRestController extends TemplateController {
 
     @RequestMapping("list")
     public BootstrapTable<ShiroSession> page(Page<ShiroSession> page, SessionBO sessionBO) {
-        page = queryParam2Page(sessionBO, page);
         page = shiroSessionService.findPage(page, sessionBO);
-        return new BootstrapTable<>(page.getTotalCount(), page.getTResult());
+        return bootstrapTable(page);
     }
 
     /**

@@ -2,34 +2,33 @@
  * 封装此框架对应的相关前端js方法
  * Created By wuwenbin on 2017/5/5
  */
-
 var TF = {
 
-    TEXT: {
-        CHECKBOX_NAME: 'itemChecks'
+    text: {
+        check_box: 'itemChecks'
     },
 
-    COMMON: {
-        SEARCH_TRIGGER_TIME: 1000,
+    common: {
+        search_trigger_time: 1000,
 
     },
     /**
      * ajax常量
      */
-    TEMPLATE: {
-        AJAX_REQUEST_TYPE: 'POST',
-        AJAX_REQUEST_DATA_TYPE: 'json',
-        AJAX_REQUEST_CONTENT_TYPE: 'application/json'
+    template: {
+        ajax_req_type: 'POST',
+        ajax_req_dataType: 'json',
+        ajax_req_contentType: 'application/json'
     },
 
     /**
      * 框架请求状态码
      */
-    STATUS_CODE: {
-        SUCCESS: 200,
-        ERROR: 500,
-        SLEEP: 250,
-        TIMEOUT: 301
+    status_code: {
+        success: 200,
+        error: 500,
+        sleep: 250,
+        timeout: 301
     },
 
     /**
@@ -47,8 +46,8 @@ var TF = {
         }
         $.ajax({
             url: _url,
-            type: this.TEMPLATE.AJAX_REQUEST_TYPE,
-            dataType: this.TEMPLATE.AJAX_REQUEST_DATA_TYPE,
+            type: this.template.ajax_req_type,
+            dataType: this.template.ajax_req_dataType,
             data: _data || {},
             async: true,
             success: function (successJson) {
@@ -101,7 +100,7 @@ var TF = {
      * @param content
      */
     show_error_msg: function (content) {
-        TF.show_error_message("错误信息提示", content, 5000);
+        TF.show_error_message("错误信息提示", content, 3000);
     },
 
     /**
@@ -177,6 +176,7 @@ var TF = {
     },
 
     /**
+     /**
      * 显示日期
      */
     showLoginDT: function () {
@@ -205,6 +205,7 @@ var TF = {
     /**
      * 激活laydate
      * @param element
+     * @param tableId
      * @param otherOptions
      */
     activeLaydatePicker: function (element, tableId, otherOptions) {
@@ -242,7 +243,7 @@ var TF = {
 
                 setTimeout(function () {
                     $table.bootstrapTable('refresh');
-                }, TF.COMMON.SEARCH_TRIGGER_TIME);
+                }, TF.common.search_trigger_time);
             }
         }
 
@@ -261,7 +262,7 @@ var TF = {
 
                 setTimeout(function () {
                     $table.bootstrapTable('refresh');
-                }, TF.COMMON.SEARCH_TRIGGER_TIME);
+                }, TF.common.search_trigger_time);
             };
         }
 
@@ -303,9 +304,9 @@ var TF = {
             paginationLoop: false,
             sidePagination: "server",
             pageList: '[1,5,10,25,50,100,150,200,500,1000]',
-            selectItemName: this.CHECKBOX_NAME,//radio or checkbox 的字段名
+            selectItemName: TF.text.check_box,//radio or checkbox 的字段名
             escape: true,
-            searchTimeOut: TF.COMMON.SEARCH_TRIGGER_TIME,//触发搜索时间，此处为1秒
+            searchTimeOut: TF.common.search_trigger_time,//触发搜索时间，此处为1秒
             // searchTimeout: 0,//触发搜索延迟时间，我们不要延迟所说义设置为0秒
             trimOnSearch: false,//设置为 true 将允许空字符搜索
             showToggle: true,//是否显示 切换试图（table/card）按钮
@@ -340,6 +341,10 @@ var TF = {
         TF.initTable($table, mainOptions);
     },
 
+    /**
+     * 切换表格搜索控件显示/隐藏
+     * @param has2Datepicker
+     */
     toggleTableSearch: function (has2Datepicker) {
         var $header = $("div.bootstrap-table>div.fixed-table-container>div.fixed-table-header");
         if (window.__customControls___) {
@@ -354,6 +359,49 @@ var TF = {
     },
 
     /**
+     * 通用的删除方法
+     * 使用此方法的前提条件是，表格的主键id字段是id，不能是其他字符串
+     * 另外就是传递到后台的参数一定为ids，也不能是其他字符串
+     * @param $table
+     * @param url
+     * @param showName
+     */
+    deleteItems: function ($table, url, showName) {
+        var selectItems = $table.bootstrapTable("getSelections");
+        var ids = "", showNames = "";
+        for (var item in selectItems) {
+            ids += selectItems[item].id + ",";
+            showNames += selectItems[item][showName] + "，"
+        }
+        ids = ids.substr(0, ids.length - 1);
+        showNames = showNames.substr(0, showNames.length - 1);
+        $.SmartMessageBox({
+            title: "<i class='fa fa-minus-square-o' style='color:red'></i> 确定要删除选中的项目吗？",
+            content: "<p>删除将不可恢复，你确定要删除所有选择的吗？</p><p>即将要删除的项目：[" + showNames + "]</p>",
+            buttons: '[取消][确认]'
+        }, function (ButtonPressed) {
+            if (ButtonPressed === "确认") {
+                axios.post(url + "?ids=" + ids)
+                    .then(function (response) {
+                        if (response.data.code === TF.status_code.success) {
+                            layer.msg(response.data.message);
+                            $table.bootstrapTable("refresh");
+                        } else {
+                            TF.show_error_msg(response.data.message)
+                        }
+                    })
+                    .catch(function (error) {
+                        if (error.response)
+                            TF.show_error_msg(error.response.data.message)
+                        else
+                            TF.show_error_msg(error)
+                    });
+            }
+
+        });
+    },
+
+    /**
      * 表格列表页面获取高度
      * @returns {number}
      */
@@ -365,10 +413,7 @@ var TF = {
 
 };
 
-
-/**
- * 页面加载完之后初始化加载脚本
- */
+//页面初始化之后脚本操作
 $(function () {
 
     //bootstrap-table中文化
@@ -380,18 +425,18 @@ $(function () {
     //页脚的时间
     TF.showLoginDT();
 
-    var index;
+    // ==========切换菜单模块的显示风格  start==========
+    var __menuModuleIndex;
     var menuModuleMini = true;
     var $changeModule = $("#change-module");
     $changeModule.hover(function () {
-        index = layer.tips('切换菜单模块展示方式', this, {
+        __menuModuleIndex = layer.tips('切换菜单模块展示方式', this, {
             tips: [2, '#fb3c4a'],
             time: 3000
         });
     }, function () {
-        layer.close(index)
+        layer.close(__menuModuleIndex)
     });
-
     $changeModule.click(function () {
         if (menuModuleMini) {
             $("span.menu-module-text").hide();
@@ -403,9 +448,7 @@ $(function () {
     });
 
 
-    /**
-     * 初始化dialog的html形式的title
-     */
+//初始化dialog的html形式的title
     if ($.ui) {
         $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
             _title: function (title) {
@@ -418,10 +461,9 @@ $(function () {
         }));
     }
 
-    /**
-     * 监听高度resize事件动态改变table的大小
-     * 表格的id一定要为xxxx-table的形式，否则监听事件无效
-     */
+
+//监听高度resize事件动态改变table的大小
+//表格的id一定要为xxxx-table的形式，否则监听事件无效
     $(window).resize(function () {
         var $table = $("table[id$='-table']");
         if ($table.length > 0) {
@@ -431,6 +473,14 @@ $(function () {
         }
 
     });
+
+    //搜索控件的显隐
+    $("body").on("click", "[id$='-search-control']", function () {
+        window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
+        var $toolbar = $(this).parent().parent();
+        var datepickerMulti = $toolbar.attr("mutilpicker") !== undefined ? $toolbar.attr("mutilpicker") === "true" : false;
+        TF.toggleTableSearch(datepickerMulti);
+    })
 
 
 });
@@ -458,11 +508,7 @@ Date.prototype.format = function (format) {
     return format;
 };
 
-/**
- * 所有含有表格页面的如果需要格式化显示日期的可以使用格式化日期显示方式
- *
- * @param date
- */
+//所有含有表格页面的如果需要格式化显示日期的可以使用格式化日期显示方式
 function date_formatter(date) {
     var resD = '';
     if (date instanceof Object) {
@@ -484,10 +530,7 @@ function date_formatter(date) {
     return "不合法的日期";
 }
 
-/**
- * 格式化是否可用一列显示方式
- * @param val
- */
+//格式化是否可用一列显示方式
 function enabledFormatter(val) {
     return val ? "<label class='label label-success'>可用</label>" : "<label class='label label-danger'>不可用</label>";
 }
@@ -528,7 +571,6 @@ $doc.ajaxSuccess(function (event, xhr, options) {
         }
     }
 });
-
 $doc.ajaxError(function (event, xhr, options, exc) {
     if (xhr.responseJSON !== undefined && xhr.responseJSON) {
         var resp = xhr.responseJSON;
@@ -538,3 +580,32 @@ $doc.ajaxError(function (event, xhr, options, exc) {
         TF.show_error_msg("请求发生异常！<br/>状态码：" + status + "<br/>错误信息：" + errorMsg + "<br/>异常信息：" + exceptionMsg);
     }
 });
+
+//重置错误提示
+function resetError(error) {
+    for (var err in error) {
+        if (error[err] === false || error[err] === "")
+            continue;
+        if (err.indexOf("Msg") > -1) {
+            error[err] = '';
+        } else {
+            error[err] = false;
+        }
+    }
+}
+
+//ztree名字过长，使用。。。隐藏
+function addDiyDom(treeId, treeNode) {
+    var switchObj = $("#" + treeNode.tId + "_switch"),
+        icoObj = $("#" + treeNode.tId + "_ico");
+    switchObj.remove();
+    icoObj.parent().before(switchObj);
+    var spantxt = $("#" + treeNode.tId + "_span").html();
+    var $panelBody = $("#" + treeId).parent(".panel-body");
+    var widthStr = $panelBody.css("width").replace("px", "");
+    var width = widthStr - 30;
+    if (spantxt.length > (width / 20)) {
+        spantxt = spantxt.substring(0, (width / 20)) + "...";
+        $("#" + treeNode.tId + "_span").html(spantxt);
+    }
+}

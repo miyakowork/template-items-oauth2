@@ -85,7 +85,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/systemParam/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $('#add_sys_param_dialog').dialog('close');
                                 $table.bootstrapTable('refresh');
@@ -120,7 +120,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/systemParam/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $('#edit_sys_param_dialog').dialog('close');
                                 $table.bootstrapTable('refresh');

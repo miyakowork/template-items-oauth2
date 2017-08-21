@@ -93,7 +93,7 @@ var page_function = function () {
                     params.append("systemCode", app.Resource.systemCode.selected)
                     axios.post('/oauth2/resource/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 app.Resource.id = " ";
                                 app.Resource.name = " ";
@@ -143,7 +143,7 @@ var page_function = function () {
                     params.append("remark", app.Resource.remark)
                     axios.post('/oauth2/resource/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 app.Resource.id = " ";
                                 app.Resource.name = " ";
@@ -259,7 +259,7 @@ var page_function = function () {
                     deleteIds = deleteIds.substr(0, deleteIds.length - 1);
                     axios.post('/oauth2/resource/api/delete?ids=' + deleteIds)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $table.bootstrapTable("refresh");
                             } else {

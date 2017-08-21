@@ -1,9 +1,7 @@
 package org.templateproject.items.oauth2.support;
 
 import org.templateproject.items.oauth2.support.controller.MethodBootController;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
 import org.templateproject.items.oauth2.support.pojo.bo.SelectBO;
-import org.templateproject.pojo.page.Page;
 
 import java.util.*;
 
@@ -24,7 +22,8 @@ public class TemplateController extends MethodBootController {
         HashMap map;
         String key;
         String val;
-        for (map = new HashMap(); iterator.hasNext(); map.put(key, val)) {
+        for (map = new HashMap(); iterator.hasNext(); //noinspection unchecked
+             map.put(key, val)) {
             Map.Entry entry = iterator.next();
             key = entry.getKey().toString();
             Object value = entry.getValue();
@@ -37,22 +36,6 @@ public class TemplateController extends MethodBootController {
         }
         return map;
     }
-
-    /**
-     * 把查询参数传入到page中
-     *
-     * @param queryBO 查询父级对象BO
-     * @param page    页面对象
-     * @return Page对象
-     */
-    protected <T> Page<T> queryParam2Page(PageQueryBO queryBO, Page<T> page) {
-        page.setPageNo(queryBO.pageNo());
-        page.setPageSize(queryBO.getLimit());
-        page.setOrderDirection(queryBO.getOrder());
-        page.setOrderField(queryBO.getSort());
-        return page;
-    }
-
 
     /**
      * 转化为前端的select下拉框选择的对象

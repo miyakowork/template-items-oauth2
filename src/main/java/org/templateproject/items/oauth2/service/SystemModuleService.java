@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.entity.ISystemModule;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.SystemModuleBo;
 import org.templateproject.items.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.items.oauth2.support.pojo.vo.SystemModuleVO;
@@ -19,7 +18,6 @@ import java.util.List;
  */
 @Service
 @Transactional
-@SqlMapper("system_module")
 public class SystemModuleService extends SimpleBaseCrudService<ISystemModule, Integer> {
 
     /**
@@ -30,26 +28,11 @@ public class SystemModuleService extends SimpleBaseCrudService<ISystemModule, In
      * @return page
      */
     public Page<SystemModuleVO> findSystemModulePage(Page<SystemModuleVO> page, SystemModuleBo systemModuleBo) {
-        return findPagination(page, SystemModuleVO.class, sql(), systemModuleBo);
+        String sql = "SELECT tosm.*, tou1.username AS createUserName, tou2.username AS updateUserName" +
+                " FROM t_oauth_system_module tosm, t_oauth_user tou1, t_oauth_user tou2" +
+                " WHERE tosm.create_user = tou1.id AND tosm.update_user = tou2.id";
+        return findPagination(page, SystemModuleVO.class, sql, systemModuleBo);
     }
-
-    /**
-     * 表面上是删除其实是更新一个enabled字段为0
-     *
-     * @param ids ids
-     * @throws Exception e
-     */
-    public void deleteModules(String[] ids) throws Exception {
-        executeBatch(sql(), "id", ids);
-    }
-
-    /**
-     * @return 查找所有可用的系统模块
-     */
-    public List<ISystemModule> findAllEnabledSystemModules() {
-        return mysql.findListBeanByArray(sql(), ISystemModule.class);
-    }
-
 
     /**
      * module转zTree
@@ -77,7 +60,8 @@ public class SystemModuleService extends SimpleBaseCrudService<ISystemModule, In
      * @return 是否存在
      */
     public boolean isExistSystemCode(String systemCode) {
-        long cnt = mysql.queryNumberByArray(sql(), Long.class, systemCode);
+        String sql = "SELECT count(0) FROM t_oauth_system_module WHERE system_code = ?";
+        long cnt = mysql.queryNumberByArray(sql, Long.class, systemCode);
         return cnt > 0;
     }
 

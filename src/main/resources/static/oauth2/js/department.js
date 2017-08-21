@@ -82,7 +82,7 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/department/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addDepartment").dialog("close");
                                 $table.bootstrapTable("refresh");
@@ -125,7 +125,7 @@ var page_function = function () {
                     params.append("remark", app.OauthDepartment.remark)
                     axios.post('/oauth2/department/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.STATUS_CODE.SUCCESS) {
+                            if (response.data.code === TF.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#editDepartment").dialog("close");
 
@@ -152,7 +152,6 @@ var page_function = function () {
                 return this.$vuerify.$errors // 错误信息会在 $vuerify.$errors 内体现
             }
         },
-
         vuerify: {
             name: {
                 test: function () {
@@ -183,13 +182,7 @@ var page_function = function () {
         app.OauthDepartment.name = '';
         app.OauthDepartment.remark = '';
 
-        app.error.nameError = false;
-        app.error.orderError = false;
-        app.error.enabledError = false;
-
-        app.error.nameErrorMsg = '';
-        app.error.orderErrorMsg = '';
-        app.error.enabledErrorMsg = '';
+        resetError(app.error);
 
         if (nodes.length === 0) {
             app.OauthDepartment.parentId = 0;
@@ -205,16 +198,8 @@ var page_function = function () {
 
     //监听编辑按钮点击事件
     $("#edit-department").click(function () {
-        app.OauthDepartment.name = '';
-        app.OauthDepartment.remark = '';
+        resetError(app.error);
 
-        app.error.nameError = false;
-        app.error.orderError = false;
-        app.error.enabledError = false;
-
-        app.error.nameErrorMsg = '';
-        app.error.orderErrorMsg = '';
-        app.error.enabledErrorMsg = '';
         var editUsers = $table.bootstrapTable('getSelections');
         if (editUsers.length !== 1) {
             TF.show_error_message("错误选择提示", "请选择一个部门来予以修改")
@@ -298,9 +283,7 @@ var page_function = function () {
     var tipsIndex;
     $refreshDepartmentTree.hover(function () {
         tipsIndex = layer.tips($(this).attr("title"), '#refreshDepartmentTree');
-        $(this).addClass("fa-spin");
     }, function () {
-        $(this).removeClass("fa-spin");
         layer.close(tipsIndex);
     });
 
@@ -341,6 +324,7 @@ var load_departmentTree = function () {
         },
         view: {
             selectedMulti: false,
+            addDiyDom: addDiyDom
         },
         callback: {
             onClick: function (event, treeId, treeNode) {
@@ -366,10 +350,7 @@ var load_departmentTree = function () {
 };
 
 
-/**
- * 格式化上级部门显示方式
- * @param val
- */
+//格式化上级部门显示方式
 function parentNameFormatter(val) {
     return val === null || val === "-" ? "根节点" : val;
 }

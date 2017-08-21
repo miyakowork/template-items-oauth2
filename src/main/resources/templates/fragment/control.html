@@ -1,0 +1,13 @@
+<!--suppress XmlDuplicatedId, HtmlUnknownAttribute, XmlUnboundNsPrefix -->
+<div th:fragment="operation(module,isDel)">
+    <button th:id="'add-'+${module}" class="btn btn-primary btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
+    <button th:id="'edit-'+${module}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
+    <button th:if="${isDel}" th:id="'delete-'+${module}" class="btn btn-danger btn-sm"><i
+            class="fa fa-minus-square-o"></i> 删除
+    </button>
+    &nbsp;
+    <label th:id="${module}+'-search-control'" class="checkbox-inline">
+        <input type="checkbox" class="checkbox style-3">
+        <span>显示搜索控件</span>
+    </label>
+</div>

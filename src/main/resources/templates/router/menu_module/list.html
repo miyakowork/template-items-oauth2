@@ -1,18 +1,8 @@
 <!-- row -->
-<div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
-     xmlns:v-bind="http://www.w3.org/1999/xhtml">
-
+<div class="row">
     <div id="menu-module-toolbar" class="form-inline">
-        <a id="add-menumodule" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</a>
-        <button id="edit-menumodule" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
-        <button id="delete-menumodule" class="btn btn-danger btn-sm"><i class="fa fa-minus-square-o"></i> 禁用</button>
-        &nbsp;
-        <label id="menu-module-search-control" class="checkbox-inline">
-            <input type="checkbox" class="checkbox style-3">
-            <span>显示搜索控件</span>
-        </label>
+        <div th:include="fragment/control::operation(menu-module,true)"></div>
     </div>
-    <!-- NEW WIDGET START -->
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table id="menu-module-table">
             <thead>
@@ -38,7 +28,7 @@
                     data-sort-name="system_code"
                     data-sortable="true"
                     data-search-formatter="false"
-                    data-title="系统编码"
+                    data-title="所属系统模块编码"
                     data-filter-control="select"
                     data-filter-data="url:/oauth2/systemModule/select"
                     data-align="center"></th>
@@ -95,195 +85,13 @@
             </thead>
         </table>
     </article>
-    <!-- WIDGET END -->
-
 </div>
-
 
 <div id="menu-module-operation" class="hidden">
     <!--添加弹出的窗口-->
-    <div id="add_menumodule_dialog">
-        <section id="add-menumodule-app" class="row">
-            <form id="add-menumodule-form" class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
-                <fieldset>
-                    <!--名称-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                        <label class="col-md-3 control-label">名称</label>
-                        <div class="col-md-9">
-                            <input class="form-control" placeholder="菜单模块名称"
-                                   v-model="menumodule.name">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
-                                {{error.nameErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--系统编码-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label" for="menumodule-selector-add">系统编码</label>
-                        <div class="col-md-9">
-                            <select class="form-control" v-model="menumodule.systemCode.selected"
-                                    id="menumodule-selector-add">
-                            </select>
-                        </div>
-                    </div>
-
-                    <!--菜单模块大图标-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">菜单模块大图标</label>
-                        <div class="col-md-9">
-                            <input class="form-control" v-model="menumodule.iconLarger" title="菜单模块大图标"/>
-                        </div>
-                    </div>
-
-                    <!--菜单模块小图标-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">菜单模块小图标</label>
-                        <div class="col-md-9">
-                            <input class="form-control" v-model="menumodule.iconMini" title="菜单模块小图标"/>
-                        </div>
-                    </div>
-
-                    <!--是否可用-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.enabledError }">
-                        <label class="col-md-3 control-label">是否可用</label>
-                        <div class="col-md-9">
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="menumodule.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="true">
-                                <span>是</span>
-                            </label>
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="menumodule.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="false">
-                                <span>否</span>
-                            </label>
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
-                                {{error.enabledErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--排序-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                        <label class="col-md-3 control-label">排序</label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="number"
-                                   v-model="menumodule.orderIndex">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
-                                {{error.orderErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--备注-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">备注</label>
-                        <div class="col-md-9">
-                            <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="menumodule.remark">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <button id="menuModuleAdd" type="submit" class="hidden"></button>
-            </form>
-        </section>
-    </div>
-
+    <div th:replace="router/menu_module/add::addMenuModule"></div>
     <!--编辑弹出窗口-->
-    <div id="edit_menumodule_dialog">
-        <section id="edit-menumodule-app" class="row">
-            <form id="edit-menumodule-form" class="form-horizontal" @submit.prevent="handleSubmit_edit" method="post">
-                <fieldset>
-                    <!--名称-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                        <label class="col-md-3 control-label">名称</label>
-                        <div class="col-md-9">
-                            <input class="form-control"
-                                   v-model="menumodule.name">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
-                                {{error.nameErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--系统编码-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label" for="menumodule-selector-edit">系统编码</label>
-                        <div class="col-md-9">
-                            <input class="form-control" v-model="menumodule.systemCode.selected" readonly
-                                   id="menumodule-selector-edit"/>
-                        </div>
-                    </div>
-
-                    <!--菜单模块大图标-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">菜单模块大图标</label>
-                        <div class="col-md-9">
-                            <input class="form-control" v-model="menumodule.iconLarger" title="菜单模块大图标"/>
-                        </div>
-                    </div>
-
-                    <!--菜单模块小图标-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">菜单模块小图标</label>
-                        <div class="col-md-9">
-                            <input class="form-control" v-model="menumodule.iconMini" title="菜单模块小图标"/>
-                        </div>
-                    </div>
-
-                    <!--是否可用-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.enabledError }">
-                        <label class="col-md-3 control-label">是否可用</label>
-                        <div class="col-md-9">
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="menumodule.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="true">
-                                <span>是</span>
-                            </label>
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="menumodule.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="false" checked>
-                                <span>否</span>
-                            </label>
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
-                                {{error.enabledErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--排序-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                        <label class="col-md-3 control-label">排序</label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="number"
-                                   v-model="menumodule.orderIndex">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
-                                {{error.orderErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--备注-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">备注</label>
-                        <div class="col-md-9">
-                            <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="menumodule.remark">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <button id="menuModuleEdit" type="submit" class="hidden"></button>
-            </form>
-        </section>
-    </div>
+    <div th:replace="router/menu_module/edit::editMenuModule"></div>
 </div>
-
 
 <script src="/static/oauth2/js/menu_module.js"></script>
