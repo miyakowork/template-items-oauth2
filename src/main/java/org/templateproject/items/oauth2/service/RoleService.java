@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.entity.IRole;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.RoleBo;
 import org.templateproject.items.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.items.oauth2.support.pojo.vo.RoleVO;
@@ -20,7 +19,6 @@ import java.util.List;
  */
 @Service
 @Transactional
-@SqlMapper("role")
 public class RoleService extends SimpleBaseCrudService<IRole, Integer> {
 
     /**
@@ -31,7 +29,11 @@ public class RoleService extends SimpleBaseCrudService<IRole, Integer> {
      * @return Page
      */
     public Page<RoleVO> findRolePage(Page<RoleVO> page, RoleBo roleBo) {
-        return findPagination(page, RoleVO.class, sql(), roleBo);
+        String sql = "SELECT tor.*, tor1.CN_NAME  AS parent_name, tou1.username AS create_name, tou2.username AS update_name, tosm.NAME  AS system_module_name" +
+                " FROM t_oauth_user tou1, t_oauth_user tou2, t_oauth_role tor LEFT JOIN t_oauth_role tor1 ON tor1.id = tor.parent_id" +
+                " LEFT JOIN T_OAUTH_SYSTEM_MODULE tosm ON tor.SYSTEM_CODE = tosm.SYSTEM_CODE" +
+                " WHERE tor.create_user = tou1.id AND tor.update_user = tou2.id AND tosm.SYSTEM_CODE = tor.SYSTEM_CODE";
+        return findPagination(page, RoleVO.class, sql, roleBo);
     }
 
 
@@ -42,7 +44,8 @@ public class RoleService extends SimpleBaseCrudService<IRole, Integer> {
      * @return role tree
      */
     public List<ZTreeBO> findRoleTree(String roleId, String systemModuleCode) {
-        List<IRole> iRoles = mysql.findListBeanByArray(sql(), IRole.class, systemModuleCode);
+        String sql = "SELECT * FROM T_OAUTH_ROLE tor WHERE tor.ENABLED = 1 AND tor.SYSTEM_CODE = ?";
+        List<IRole> iRoles = mysql.findListBeanByArray(sql, IRole.class, systemModuleCode);
         if ("0".equalsIgnoreCase(roleId))
             iRoles.add(IRole.root());
         return roleToZTree(iRoles);
@@ -77,7 +80,8 @@ public class RoleService extends SimpleBaseCrudService<IRole, Integer> {
      */
 
     private boolean checkIsParent(int roleId) {
-        long count = mysql.queryNumberByArray(sql(), Long.class, roleId);
+        String sql = " SELECT count(0) FROM T_OAUTH_ROLE tor WHERE tor.ENABLED = 1 AND tor.PARENT_ID = ?";
+        long count = mysql.queryNumberByArray(sql, Long.class, roleId);
         return count != 0;
     }
 

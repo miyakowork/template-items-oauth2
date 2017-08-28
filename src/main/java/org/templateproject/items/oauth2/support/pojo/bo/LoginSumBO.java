@@ -1,11 +1,9 @@
 package org.templateproject.items.oauth2.support.pojo.bo;
 
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
-
 /**
  * Created by Liurongqi on 2017/7/19.
  */
-public class LoginSumBO extends PageQueryBO {
+public class LoginSumBO {
     private String endTime; //截止时间
     private Integer num;  //查询周期时长
     private Integer deptId; //部门id

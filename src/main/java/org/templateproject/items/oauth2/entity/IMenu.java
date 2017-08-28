@@ -1,6 +1,7 @@
 package org.templateproject.items.oauth2.entity;
 
 import org.templateproject.items.oauth2.entity.base.DataEntity;
+import org.templateproject.tools.sqlgen.annotation.SQLColumn;
 import org.templateproject.tools.sqlgen.annotation.SQLTable;
 
 /**
@@ -10,16 +11,30 @@ import org.templateproject.tools.sqlgen.annotation.SQLTable;
 
 @SQLTable("t_oauth_menu")
 public class IMenu extends DataEntity {
+
+    @SQLColumn
     private String name;    //名称
+    @SQLColumn
     private Integer resourceId;     //资源id
+    @SQLColumn
+    private String systemCode;//系统模块代码
+    @SQLColumn
     private String icon;    //菜单图标
+    @SQLColumn
     private String iconLarger;//菜单大图标
+    @SQLColumn
     private String menuType;       //菜单类型
+    @SQLColumn
     private String href;            //外部链接地址
+    @SQLColumn
     private String onclick;         //onclick事件
+    @SQLColumn
     private String target;          //target属性
+    @SQLColumn
     private Integer roleId;         //角色id
+    @SQLColumn
     private Integer menuModuleId;   //菜单模块id
+    @SQLColumn
     private Integer parentId;            //父级角色id
 
     public String getName() {
@@ -36,6 +51,14 @@ public class IMenu extends DataEntity {
 
     public void setResourceId(Integer resourceId) {
         this.resourceId = resourceId;
+    }
+
+    public String getSystemCode() {
+        return systemCode;
+    }
+
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
     }
 
     public String getIcon() {

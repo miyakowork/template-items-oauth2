@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.entity.IOperationPrivilegeType;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.OperationPrivilegeTypeBo;
 import org.templateproject.items.oauth2.support.pojo.vo.OperationPrivilegeTypeVO;
 import org.templateproject.pojo.page.Page;
@@ -15,7 +14,6 @@ import org.templateproject.pojo.page.Page;
  */
 @Service
 @Transactional
-@SqlMapper("operation_privilege_type")
 public class OperationPrivilegeTypeService extends SimpleBaseCrudService<IOperationPrivilegeType, Integer> {
 
 
@@ -24,7 +22,10 @@ public class OperationPrivilegeTypeService extends SimpleBaseCrudService<IOperat
     * name为空 则返回所有记录
     * */
     public Page<OperationPrivilegeTypeVO> findOperationPrivilegeTypePage(Page<OperationPrivilegeTypeVO> page, OperationPrivilegeTypeBo operationPrivilegeTypeBo) {
-        return findPagination(page, OperationPrivilegeTypeVO.class, sql(), operationPrivilegeTypeBo);
+        String sql = "SELECT toyopt.*, tou1.username AS createUserName, tou2.username AS updateUserName" +
+                " FROM T_OAUTH_OPERATION_PRIVILEGE_TYPE toyopt, t_oauth_user tou1, t_oauth_user tou2" +
+                " WHERE toyopt.create_user = tou1.id AND toyopt.update_user = tou2.id\n";
+        return findPagination(page, OperationPrivilegeTypeVO.class, sql, operationPrivilegeTypeBo);
     }
 
 

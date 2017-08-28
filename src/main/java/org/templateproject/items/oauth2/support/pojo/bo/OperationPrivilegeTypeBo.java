@@ -1,7 +1,7 @@
 package org.templateproject.items.oauth2.support.pojo.bo;
 
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * Created by zhangteng on 2017/7/12.
@@ -9,7 +9,7 @@ import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
  * 操作级权限类型查询BO对象
  */
 @QueryTable("toyopt")
-public class OperationPrivilegeTypeBo extends PageQueryBO {
+public class OperationPrivilegeTypeBo extends BootstrapTableQuery {
 
     private String name;
 

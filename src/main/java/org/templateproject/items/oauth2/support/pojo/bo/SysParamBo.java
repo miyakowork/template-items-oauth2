@@ -3,13 +3,13 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * 系统参数查询BO对象
  * Created by tuchen on 2017/7/8.
  */
-public class SysParamBo extends PageQueryBO {
+public class SysParamBo extends BootstrapTableQuery {
 
     private String name;
 

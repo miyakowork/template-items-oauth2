@@ -34,4 +34,5 @@ public class ZTreeBO<T> extends Ztree {
     public void setisHidden(boolean isHidden) {
         super.isHidden = isHidden;
     }
+
 }

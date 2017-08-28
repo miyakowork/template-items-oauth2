@@ -1,0 +1,233 @@
+<!--suppress HtmlUnknownAttribute -->
+<div th:fragment="addMenu" id="addMenu">
+    <form class="form-horizontal" @submit.prevent="handleAddMenuSubmit" method="post">
+        <fieldset>
+            <!--菜单名称-->
+            <div class="col-md-6">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.name)}">
+                    <label class="col-md-3 control-label">菜单名称</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="菜单名称"
+                               v-model="menu.name">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10':isHasError(error.name)}">
+                            {{error.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--菜单类型-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="menuType">菜单类型</label>
+                    <div class="col-md-9">
+                        <select class="form-control" @change="chooseMenuType(menu.menuType.selected)"
+                                v-model="menu.menuType.selected" id="menuType">
+                            <option v-for="option in menu.menuType.options" v-bind:value="option.value">
+                                {{ option.text }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!--资源ID-->
+            <div class="col-md-6" v-bind:class="{'hidden':hide.isResourceIdHidden}">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.resourceId) }">
+                    <label class="col-md-3 control-label">资源ID</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="选择对应资源ID" v-model="menu.resourceId" readonly>
+                            <div class="input-group-btn">
+                                <a class="btn btn-default" onclick="checkResource()"><i
+                                        class="fa fa-check-square-o"></i> 选择</a>
+                            </div>
+                        </div>
+
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.resourceId)  }">
+                            {{error.resourceId}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--系统模块代码-->
+            <div class="col-md-6">
+                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(error.systemCode)  }">
+                    <label class="col-md-3 control-label">系统代码</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="系统模块代码"
+                               v-model="menu.systemModuleName"
+                               readonly>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.systemCode) }">
+                            {{error.systemCode}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--菜单字体图标（小图标）-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">菜单小图标</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="字体图标（如：fa fa-ul  填写ul即可）" v-model="menu.icon">
+                    </div>
+                </div>
+            </div>
+
+            <!--菜单图标（大图标）-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">菜单大图标</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="图标的图片地址" v-model="menu.iconLarge">
+                    </div>
+                </div>
+            </div>
+
+            <!--菜单URL-->
+            <div class="col-md-6" v-bind:class="{'hidden':hide.isUrlHidden}">
+                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(error.href) }">
+                    <label class="col-md-3 control-label">菜单URL</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="菜单的链接"
+                               v-model="menu.href">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10':  isHasError(error.href) }">
+                            {{error.href}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--菜单点击事件-->
+            <div class="col-md-6" v-bind:class="{'hidden':hide.isOnclickHidden}">
+                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(error.onclick) }">
+                    <label class="col-md-3 control-label">点击事件</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="菜单的js的onclick事件"
+                               v-model="menu.onclick">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.onclick) }">
+                            {{error.onclick}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--菜单跳转的目标-->
+            <div class="col-md-6" v-bind:class="{'hidden':hide.isTargetHidden}">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">跳转目标</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="如：_blank等属性"
+                               v-model="menu.target">
+                    </div>
+                </div>
+            </div>
+
+            <!--角色ID -->
+            <div class="col-md-6">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.roleId)}">
+                    <label class="col-md-3 control-label">所属角色</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="角色名称"
+                               v-model="menu.roleName"
+                               readonly>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10':isHasError(error.roleId) }">
+                            {{error.roleId}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--菜单模块 -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">菜单模块</label>
+                    <div class="col-md-9">
+                        <select class="form-control" v-model="menu.menuModule.selected" id="menu-selector-add">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!--上级菜单 -->
+            <div class="col-md-6">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.parentId) }">
+                    <label class="col-md-3 control-label">上级菜单</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="选择上级菜单" v-model="menu.parentName" readonly>
+                            <div class="input-group-btn">
+                                <a class="btn btn-default" onclick="checkParentMenu();"><i
+                                        class="fa fa-check-square-o"></i> 选择</a>
+                            </div>
+                        </div>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.parentId) }">
+                            {{error.parentId}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--排序-->
+            <div class="col-md-6">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.orderIndex) }">
+                    <label class="col-md-3 control-label">排序</label>
+                    <div class="col-md-9">
+                        <input class="form-control" type="number" v-model="menu.orderIndex" placeholder="排序顺序大小">
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.orderIndex)  }">
+                            {{error.orderIndex}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--//是否可用-->
+            <div class="col-md-6">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.enabled) }">
+                    <label class="col-md-3 control-label">是否可用</label>
+                    <div class="col-md-9">
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="menu.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="true">
+                            <span>是</span>
+                        </label>
+                        <label class="radio radio-inline">
+                            <input type="radio" v-model="menu.enabled"
+                                   class="radiobox style-0"
+                                   v-bind:value="false">
+                            <span>否</span>
+                        </label>
+                        <div class="note-error margin-bottom-0"
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.enabled)}">
+                            {{error.enabled}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--//备注信息-->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注信息</label>
+                    <div class="col-md-9">
+                        <input class="form-control" placeholder="备注信息（选填）" v-model="menu.remark">
+                    </div>
+                </div>
+            </div>
+
+
+        </fieldset>
+        <button id="doAddMenu" type="submit" class="hidden"></button>
+    </form>
+</div>

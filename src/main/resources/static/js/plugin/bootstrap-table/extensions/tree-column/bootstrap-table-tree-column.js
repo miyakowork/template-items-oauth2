@@ -68,7 +68,7 @@
         _initHeader.apply(that, Array.prototype.slice.apply(arguments));
         var treeShowField = that.options.treeShowField;
         if (treeShowField) {
-            $.each(this.header.fields, function (i, field) {
+            $.each(that.header.fields, function (i, field) {
                 if (treeShowField === field) {
                     that.treeEnable = true;
                     var _formatter = that.header.formatters[i];
@@ -81,7 +81,7 @@
                         var colTree = [that.options.onTreeFormatter.apply(that, [row])];
                         colTree.push('<span class="' + that.options.treeTextcls + '">');
                         if (_formatter) {
-                            colTree.push(_formatter.apply(this, Array.prototype.slice.apply(arguments)));
+                            colTree.push(_formatter.apply(that, Array.prototype.slice.apply(arguments)));
                         } else {
                             colTree.push(value);
                         }

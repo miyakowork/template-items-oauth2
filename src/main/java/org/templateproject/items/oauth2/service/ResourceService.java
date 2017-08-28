@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.entity.IResource;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.ResourceBO;
 import org.templateproject.items.oauth2.support.pojo.vo.ResourceVO;
 import org.templateproject.pojo.page.Page;
@@ -14,7 +13,6 @@ import org.templateproject.pojo.page.Page;
  */
 @Service
 @Transactional
-@SqlMapper("resource")
 public class ResourceService extends SimpleBaseCrudService<IResource, Integer> {
 
     /**
@@ -25,30 +23,11 @@ public class ResourceService extends SimpleBaseCrudService<IResource, Integer> {
      * @return page<IResource>
      */
     public Page<ResourceVO> findResourcePage(ResourceBO resourceBO, Page<ResourceVO> page) {
-        return findPagination(page, ResourceVO.class, sql(), resourceBO);
-    }
-
-    /**
-     * 隐藏资源，也就相当于是逻辑删除
-     *
-     * @param hideIds
-     * @throws Exception
-     */
-    public void hideResourceByIds(String hideIds) throws Exception {
-        String[] ids = hideIds.split(",");
-        executeBatch(sql(), "id", ids);
+        String sql = "SELECT tor.*, tou1.username AS create_name, tou2.username AS update_name, tosm.name AS systemModuleName" +
+                " FROM t_oauth_resource tor, t_oauth_user tou1, t_oauth_user tou2, t_oauth_system_module tosm" +
+                " WHERE tor.create_user = tou1.id AND tor.update_user = tou2.id AND tosm.system_code = tor.system_code";
+        return findPagination(page, ResourceVO.class, sql, resourceBO);
     }
 
 
-    /**
-     * 删除指定资源,永久删除，即物理删除
-     *
-     * @param deleteIds
-     * @return
-     * @throws Exception
-     */
-    public void delete(String deleteIds) throws Exception {
-        String[] ids = deleteIds.split(",");
-        deleteBatch(IResource.class, ids);
-    }
 }

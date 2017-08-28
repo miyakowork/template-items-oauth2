@@ -48,13 +48,7 @@ public class SystemParamRestController extends BaseRestController {
      */
     @RequestMapping("add")
     public R add(ISystemParam iSystemParam) {
-        try {
-            if (systemParamService.save(iSystemParam, ISystemParam.class))
-                return R.ok("添加系统参数成功");
-            else return R.error("添加失败");
-        } catch (Exception e) {
-            return R.error("添加系统参数失败，原因：" + e.getMessage());
-        }
+        return ajaxDoneAdd("系统参数", systemParamService, iSystemParam, ISystemParam.class);
     }
 
     /**
@@ -65,14 +59,7 @@ public class SystemParamRestController extends BaseRestController {
      */
     @RequestMapping("edit")
     public R edit(ISystemParam iSystemParam) {
-        try {
-            if (systemParamService.edit(iSystemParam, ISystemParam.class))
-                return R.ok("编辑系统参数成功");
-            else return R.error("编辑系统参数失败");
-        } catch (Exception e) {
-            return R.error("编辑系统参数失败，原因：" + e.getMessage());
-        }
-
+        return ajaxDoneEdit("系统参数", systemParamService, iSystemParam, ISystemParam.class);
     }
 
 }

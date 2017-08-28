@@ -1,6 +1,6 @@
 package org.templateproject.items.oauth2;
 
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 import org.templateproject.lang.TP;
 import org.templateproject.pojo.page.Page;
 
@@ -49,7 +49,7 @@ public class OauthTest {
 //        return key.substring(0, key.length() - 1);
 //    }
 
-    private <S extends PageQueryBO, T> void ss(Page<T> page, S queryBO) throws IllegalAccessException {
+    private <S extends BootstrapTableQuery, T> void ss(Page<T> page, S queryBO) throws IllegalAccessException {
         Map<String, Object> params = new LinkedHashMap<>();
         Field[] fields = queryBO.getClass().getDeclaredFields();
 //        System.out.println("limit:" + queryBO.getLimit());

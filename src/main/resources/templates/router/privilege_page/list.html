@@ -1,4 +1,5 @@
 <!-- 树的展示-->
+<!--suppress HtmlUnknownAttribute -->
 <div class="row">
     <!-- 树的展示-->
     <div class="col-md-3" style="margin-top: 10px;">
@@ -9,7 +10,7 @@
                 </select>
             </div>
             <div class="panel-body" style="min-height: 300px;">
-                <p><span class="pull-right" id="refreshResModuleTree" style="cursor: pointer;"><i
+                <p><span class="pull-right" id="refreshResModuleTree" title="重置资源模块勾选状态" style="cursor: pointer;"><i
                         class="fa fa-undo"></i> </span></p>
                 <ul id="privilegepageTree" class="ztree">
                     请选择系统模块
@@ -19,9 +20,7 @@
     </div>
     <div class="col-md-9">
         <div id="privilegePage-toolbar" class="form-inline">
-            <button id="add-privilegepage" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
-            <button id="edit-privilegepage" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
-            <div th:replace="fragment/control::search(privilegepage)"></div>
+            <div th:replace="fragment/control::operation(privilegepage,true)"></div>
         </div>
         <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -36,6 +35,7 @@
                         data-align="center"></th>
 
                     <th data-field="name"
+                        data-sortable="true"
                         data-title="页面权限名称"
                         data-filter-control="input"
                         data-filter-control-placeholder="输入名称"
@@ -43,11 +43,12 @@
 
                     <th data-field="resourceId"
                         data-sort-name="resource_id"
+                        data-sortable="true"
                         data-title="页面资源ID"
                         data-align="center"></th>
 
                     <th data-field="resourceName"
-                        data-sort-name="tor.name"
+                        data-sort-name="resourceName"
                         data-sortable="true"
                         data-title="资源名称"
                         data-filter-control="input"
@@ -61,26 +62,33 @@
 
                     <th data-field="resourceModuleName"
                         data-sort-name="resource_module_id"
-                        data-title="资源模块名称"
+                        data-title="所属资源模块"
                         data-align="center"></th>
 
                     <th data-field="enabled"
                         data-formatter="enabledFormatter"
                         data-title="是否使用"
+                        data-width="100"
                         data-filter-control="select"
                         data-filter-data="url:/oauth2/common/select"
                         data-align="center"></th>
 
                     <th data-field="remark"
                         data-title="备注信息"
+                        data-visible="false"
                         data-align="center"></th>
 
                     <th data-field="orderIndex"
                         data-sort-name="order_index"
                         data-sortable="true"
                         data-title="排序索引"
-                        data-width="20"
+                        data-visible="false"
                         data-align="center"></th>
+
+                    <th data-formatter="operation_formatter"
+                        data-align="center"
+                        data-width="120"
+                        data-title="页面内权限资源"></th>
                 </tr>
                 </thead>
             </table>
@@ -90,12 +98,14 @@
 </div>
 
 <!-- end row -->
-<div id="bigprivilegepage" class="hidden">
+<div id="bigPrivilegepage" class="hidden">
 
     <!--添加页面资源-->
     <div th:replace="router/privilege_page/add"></div>
     <!--编辑menu-->
     <div th:replace="router/privilege_page/edit"></div>
+    <!--添加操作权限级资源-->
+    <div th:replace="router/privilege_page/addOperation"></div>
 
 </div>
-<script src="/static/oauth2/js/privilege_page.js"></script>
+<script src="/static/js/oauth2/privilege_page.js"></script>

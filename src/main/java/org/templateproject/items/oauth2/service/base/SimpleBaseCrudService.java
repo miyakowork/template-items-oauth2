@@ -2,7 +2,6 @@ package org.templateproject.items.oauth2.service.base;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -12,9 +11,8 @@ import org.templateproject.items.oauth2.entity.base.BaseEntity;
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 import org.templateproject.items.oauth2.support.pojo.MultiSort;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
-import org.templateproject.items.oauth2.support.pojo.SqlMap;
 import org.templateproject.lang.TP;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.tools.sqlgen.entrance.SQLFactory;
@@ -36,30 +34,6 @@ import java.util.*;
 public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends AbstractBaseCrudService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleBaseCrudService.class);
-    private SqlMap sqlMap;
-
-    @Autowired
-    public void setSqlMap(SqlMap sqlMap) {
-        this.sqlMap = sqlMap;
-    }
-
-    /**
-     * 根据当前运行环境获取xml中对应的sql
-     *
-     * @return sql
-     */
-    protected <ServiceImpl extends SimpleBaseCrudService<Model, ID>> String sql() {
-        StackTraceElement element = Thread.currentThread().getStackTrace()[2];
-        Class<ServiceImpl> serviceClass = null;
-        try {
-            //noinspection unchecked
-            serviceClass = (Class<ServiceImpl>) Class.forName(element.getClassName());
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("获取SQL时，反射类名失败，原因：{}", e);
-        }
-        String sqlId = Thread.currentThread().getStackTrace()[2].getMethodName();
-        return sqlMap.findSqlById(sqlId, serviceClass);
-    }
 
     /**
      * 保存一条记录，id自动数据库生成
@@ -182,10 +156,12 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
      * @param sql          执行查询的sql语句不带where部分
      * @param queryParam   搜索对象，包含多个搜索字段
      * @param <PageModel>  当前页面中数据集合的泛型类型
-     * @param <QueryParam> 页面搜索的所有字段的对象，继承于{@link PageQueryBO}
+     * @param <QueryParam> 页面搜索的所有字段的对象，继承于{@link BootstrapTableQuery}
      * @return 包含当前查询对象类型的的List的当前页面内容的Page
      */
-    public <PageModel extends BaseEntity, QueryParam extends PageQueryBO> Page<PageModel> findPagination(Page<PageModel> page, Class<PageModel> pageModelClass, String sql, QueryParam queryParam) {
+    public <PageModel extends BaseEntity, QueryParam extends BootstrapTableQuery> Page<PageModel> findPagination(Page<PageModel> page, Class<PageModel> pageModelClass, String sql, QueryParam queryParam) {
+
+        final String datePickerSplit = "~";
 
         //默认SQL运算比较对象符为LIKE,如果需要指定其他(如=、!=、>等)则需要使用@QueryColumn中的Operation字段来指定
         final Operator DEFAULT_OPERATE_TYPE = Operator.LIKE;
@@ -223,7 +199,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
                     String columnName = fieldName;
                     Operator operator = DEFAULT_OPERATE_TYPE;
 
-                    //放入搜索的这个字段在数据库中对应的列名称以及比较级别(默认LIKE)，如果和类中属性名一直，则可以不写@QueryColumn
+                    //放入搜索的这个字段在数据库中对应的列名称以及比较级别(默认LIKE)，如果和类中属性名一致，则可以不写@QueryColumn
                     if (field.isAnnotationPresent(QueryColumn.class)) {
                         columnName = SQLDefineUtils.java2SQL(field.getAnnotation(QueryColumn.class).value(), field.getName());
                         operator = field.getAnnotation(QueryColumn.class).operation();
@@ -277,8 +253,8 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
 
                 //分别算出对应的值，添加到值Map中
                 String valueStartEnd = params2Value.get(key).toString();
-                String valueStart = valueStartEnd.split(",")[0];
-                String valueEnd = valueStartEnd.split(",")[1];
+                String valueStart = TP.stringhelper.trimEnd(valueStartEnd.split(datePickerSplit)[0]);
+                String valueEnd = TP.stringhelper.trimStart(valueStartEnd.split(datePickerSplit)[1]);
                 dateMap.put(keyStart, valueStart);
                 dateMap.put(keyEnd, valueEnd);
 
@@ -312,4 +288,5 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
 
         return mysql.findPageListBeanByMap(finalSQL, pageModelClass, page, params2Value);
     }
+
 }

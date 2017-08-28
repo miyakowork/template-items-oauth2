@@ -3,14 +3,14 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * 部门管理页搜素面查询对象
  * Created by wuwenbin on 2017/08/04.
  */
 @QueryTable("tod")
-public class DepartmentBO extends PageQueryBO {
+public class DepartmentBO extends BootstrapTableQuery {
 
     private String name;  //部门名称
 

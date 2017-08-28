@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownAttribute -->
 <div id="sys_param_dialog" class="hidden" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <!--添加弹出的窗口-->
     <div id="add_sys_param_dialog">
@@ -153,17 +154,7 @@
 <!-- row -->
 <div class="row">
     <div id="system-param-toolbar" class="form-inline">
-        <a href="javascript:void(0);" id="add_dialog_link" class="btn btn-info btn-sm"> <i
-                class="fa fa-plus-square-o"></i> 添加
-        </a>
-        <a href="javascript:void(0);" id="edit_dialog_link" class="btn btn-warning btn-sm"><i
-                class="fa fa-pencil-square "></i>
-            编辑</a>
-        &nbsp;
-        <label id="system-param-search-control" class="checkbox-inline">
-            <input type="checkbox" class="checkbox style-3">
-            <span>显示搜索控件</span>
-        </label>
+        <div th:replace="fragment/control::operation(system-param,true)"></div>
     </div>
     <!-- NEW WIDGET START -->
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -248,4 +239,4 @@
 
 </div>
 
-<script src="/static/oauth2/js/system_param.js"></script>
+<script src="/static/js/oauth2/system_param.js"></script>

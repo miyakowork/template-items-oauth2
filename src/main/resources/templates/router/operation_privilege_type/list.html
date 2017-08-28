@@ -1,15 +1,8 @@
 <!-- row -->
-<div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<div class="row">
 
     <div id="opt-toolbar" class="form-inline">
-        <button id="add-operationprivilegetype" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加
-        </button>
-        <button id="edit-operationprivilegetype" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
-        &nbsp;
-        <label id="opt-search-control" class="checkbox-inline">
-            <input type="checkbox" class="checkbox style-3">
-            <span>显示搜索控件</span>
-        </label>
+        <div th:replace="fragment/control::operation(operationprivilegetype,false)"></div>
     </div>
     <!-- NEW WIDGET START -->
     <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -214,5 +207,5 @@
     </div>
 </div>
 
-<script src="/static/oauth2/js/operation_privilege_type.js"></script>
+<script src="/static/js/oauth2/operation_privilege_type.js"></script>
 

@@ -5,7 +5,7 @@
 
     <groupId>me.wuwenbin</groupId>
     <artifactId>template-items-oauth2</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0.RELEASE</version>
     <packaging>jar</packaging>
 
     <name>template-items-oauth2</name>

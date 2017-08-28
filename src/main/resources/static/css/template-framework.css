@@ -82,6 +82,10 @@ body.smart-style-1 {
     min-width: 220px !important;
 }
 
-div[id$='-toolbar']{
+div[id$='-toolbar'] {
     float: left !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
 }

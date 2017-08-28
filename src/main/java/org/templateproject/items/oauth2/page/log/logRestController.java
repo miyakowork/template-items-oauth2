@@ -14,7 +14,7 @@ import org.templateproject.pojo.page.Page;
  * Created by Administrator on 2017/7/13/013.
  */
 @RestController
-@RequestMapping("log/api")
+@RequestMapping("oauth2/log/api")
 public class logRestController extends BaseRestController {
 
     private LogService logService;

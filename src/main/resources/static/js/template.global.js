@@ -2,6 +2,10 @@
  * 封装此框架对应的相关前端js方法
  * Created By wuwenbin on 2017/5/5
  */
+var layer = layui.layer;
+var laydate = layui.laydate;
+var layform = layui.form;
+
 var TF = {
 
     text: {
@@ -206,67 +210,39 @@ var TF = {
      * 激活laydate
      * @param element
      * @param tableId
-     * @param otherOptions
+     * @param layDateOptions
      */
-    activeLaydatePicker: function (element, tableId, otherOptions) {
-        var options = {
-            elem: element
-        };
-
-        //组装laydate的options参数
-        options.extend = function (obj) {
-            for (var o in obj) {
-                this[o] = obj[o]
+    activeLaydatePicker: function (element, tableId, layDateOptions) {
+        layDateOptions.show = true;
+        layDateOptions.trigger = "click";
+        layDateOptions.calendar = true;
+        if (layDateOptions.range !== undefined) {
+            if (layDateOptions.range) {
+                layDateOptions.range = "~";
             }
-        };
-
-        options.extend(otherOptions);
-
+        }
+        if (layDateOptions.elem === undefined) {
+            layDateOptions.elem = element;
+        }
+        if (layDateOptions.theme === undefined) {
+            layDateOptions.theme = "#a90329";
+        }
+        if (layDateOptions.value === undefined) {
+            layDateOptions.value = new Date();
+        }
         //如果日期搜索between匹配模式，即有2个，则查询做如下的操作
         var key = $(element).closest("th[data-field]").data("field");
         var $table = $("table#" + tableId);
-        var $bodyStart = $(".fixed-table-body .bootstrap-table-filter-control-" + key + "-start");
-        var $bodyEnd = $(".fixed-table-body .bootstrap-table-filter-control-" + key + "-end");
         var $dateControl = $(".fixed-table-body .bootstrap-table-filter-control-" + key);
+        layDateOptions.done = function (value, date) {
+            $dateControl.val(value);
+            window.__searchValues[key] = value;
+            setTimeout(function () {
+                $table.bootstrapTable('refresh');
+            }, TF.common.search_trigger_time);
+        };
 
-        if ($(element).hasClass("date-filter-control-end")) {
-            options.choose = function (dates) {
-                if ($bodyStart.val() === "") {
-                    layer.msg("请先选择开始日期，再选择结束日期，否则不会触发搜索");
-                    $bodyEnd.val("");
-                    return;
-                }
-                $bodyEnd.val(dates);
-
-                window.__searchValues.start = $bodyStart.val();
-                window.__searchValues.end = $bodyEnd.val();
-
-                setTimeout(function () {
-                    $table.bootstrapTable('refresh');
-                }, TF.common.search_trigger_time);
-            }
-        }
-
-        else if ($(element).hasClass("date-filter-control-start")) {
-            options.choose = function (dates) {
-                $bodyStart.val(dates);
-                layer.msg("请继续选择结束日期以触发搜索")
-            }
-        }
-
-        else if ($(element).hasClass("date-filter-control-single")) {
-            options.choose = function (dates) {
-                $dateControl.val(dates);
-
-                window.__searchValues.single = $dateControl.val();
-
-                setTimeout(function () {
-                    $table.bootstrapTable('refresh');
-                }, TF.common.search_trigger_time);
-            };
-        }
-
-        laydate(options)
+        laydate.render(layDateOptions)
     },
 
     /**
@@ -274,6 +250,7 @@ var TF = {
      * @param field data-field的属性
      * @returns {string}
      */
+    //TODO
     datepickerSearch: function (field) {
         var $th = $("div.fixed-table-header").find("th[data-field=" + field + "]");
         if ($th.find(".date-filter-control-start").length > 0 || $th.find(".date-filter-control-end").length > 0) {
@@ -312,14 +289,20 @@ var TF = {
             showToggle: true,//是否显示 切换试图（table/card）按钮
             idField: "id",
             uniqueId: "id",
-            clickToSelect: true,//	设置true 将在点击行时，自动选择rediobox 和 checkbox
             maintainSelected: true,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
             showColumns: true,//是否显示 内容列下拉框
             showRefresh: true,
             showMultiSort: true,//多列排序
             filterShowClear: true,//Set true to add a button to clear all the controls added by this plugin.
         };
-        //组装laydate的options参数
+
+        if (mainOptions.clickToSelect === undefined) {
+            mainOptions.clickToSelect = true;//	设置true 将在点击行时，自动选择rediobox 和 checkbox
+        }
+        if (mainOptions.singleSelect === undefined) {
+            mainOptions.singleSelect = false;
+        }
+        //组装options参数
         opt.extend = function (obj) {
             for (var o in obj) {
                 this[o] = obj[o]
@@ -345,16 +328,16 @@ var TF = {
      * 切换表格搜索控件显示/隐藏
      * @param has2Datepicker
      */
-    toggleTableSearch: function (has2Datepicker) {
+    //TODO
+    toggleTableSearch: function () {
         var $header = $("div.bootstrap-table>div.fixed-table-container>div.fixed-table-header");
+        var $pagination = $("div.bootstrap-table>div.fixed-table-container>div.fixed-table-pagination");
         if (window.__customControls___) {
-            if (has2Datepicker) {
-                $header.css("height", "108px");
-            } else {
-                $header.css("height", "74px");
-            }
+            $header.css("height", "75px");
+            $pagination.css("margin-top", "-35px");
         } else {
             $header.css('height', '37px');
+            $pagination.css("margin-top", "0");
         }
     },
 
@@ -416,6 +399,8 @@ var TF = {
 //页面初始化之后脚本操作
 $(function () {
 
+    var $body = $("body");
+
     //bootstrap-table中文化
     $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
 
@@ -462,7 +447,7 @@ $(function () {
     }
 
 
-//监听高度resize事件动态改变table的大小
+//监听高度resize事件动态改变table的大小以及重载zTree树，以配合显示
 //表格的id一定要为xxxx-table的形式，否则监听事件无效
     $(window).resize(function () {
         var $table = $("table[id$='-table']");
@@ -475,15 +460,13 @@ $(function () {
     });
 
     //搜索控件的显隐
-    $("body").on("click", "[id$='-search-control']", function () {
+    $body.on("click", "[id$='-search-control']", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        var $toolbar = $(this).parent().parent();
-        var datepickerMulti = $toolbar.attr("mutilpicker") !== undefined ? $toolbar.attr("mutilpicker") === "true" : false;
-        TF.toggleTableSearch(datepickerMulti);
+        TF.toggleTableSearch();
     })
 
-
 });
+
 
 //日期格式化显示
 Date.prototype.format = function (format) {
@@ -536,11 +519,7 @@ function enabledFormatter(val) {
 }
 
 //预先给window增加属性
-window.__searchValues = {
-    start: '',
-    end: '',
-    single: ''
-};
+window.__searchValues = {};
 
 //全局设置axios请求头
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -594,18 +573,83 @@ function resetError(error) {
     }
 }
 
-//ztree名字过长，使用。。。隐藏
-function addDiyDom(treeId, treeNode) {
-    var switchObj = $("#" + treeNode.tId + "_switch"),
-        icoObj = $("#" + treeNode.tId + "_ico");
-    switchObj.remove();
-    icoObj.parent().before(switchObj);
-    var spantxt = $("#" + treeNode.tId + "_span").html();
-    var $panelBody = $("#" + treeId).parent(".panel-body");
-    var widthStr = $panelBody.css("width").replace("px", "");
-    var width = widthStr - 30;
-    if (spantxt.length > (width / 20)) {
-        spantxt = spantxt.substring(0, (width / 20)) + "...";
-        $("#" + treeNode.tId + "_span").html(spantxt);
+//zTree保持展开单一路径
+var curExpandNode = null;
+
+function beforeExpand(treeId, treeNode) {
+    var pNode = curExpandNode ? curExpandNode.getParentNode() : null;
+    var treeNodeP = treeNode.parentTId ? treeNode.getParentNode() : null;
+    var zTree = $.fn.zTree.getZTreeObj(treeId);
+    for (var i = 0, l = !treeNodeP ? 0 : treeNodeP.children.length; i < l; i++) {
+        if (treeNode !== treeNodeP.children[i]) {
+            zTree.expandNode(treeNodeP.children[i], false);
+        }
     }
+    while (pNode) {
+        if (pNode === treeNode) {
+            break;
+        }
+        pNode = pNode.getParentNode();
+    }
+    if (!pNode) {
+        singlePath(treeId, treeNode);
+    }
+
+}
+
+function singlePath(treeId, newNode) {
+    if (newNode === curExpandNode) return;
+
+    var zTree = $.fn.zTree.getZTreeObj(treeId),
+        rootNodes, tmpRoot, tmpTId, i, j, n;
+
+    if (!curExpandNode) {
+        tmpRoot = newNode;
+        while (tmpRoot) {
+            tmpTId = tmpRoot.tId;
+            tmpRoot = tmpRoot.getParentNode();
+        }
+        rootNodes = zTree.getNodes();
+        for (i = 0, j = rootNodes.length; i < j; i++) {
+            n = rootNodes[i];
+            if (n.tId !== tmpTId) {
+                zTree.expandNode(n, false);
+            }
+        }
+    } else if (curExpandNode && curExpandNode.open) {
+        if (newNode.parentTId === curExpandNode.parentTId) {
+            zTree.expandNode(curExpandNode, false);
+        } else {
+            var newParents = [];
+            while (newNode) {
+                newNode = newNode.getParentNode();
+                if (newNode === curExpandNode) {
+                    newParents = null;
+                    break;
+                } else if (newNode) {
+                    newParents.push(newNode);
+                }
+            }
+            if (newParents !== null) {
+                var oldNode = curExpandNode;
+                var oldParents = [];
+                while (oldNode) {
+                    oldNode = oldNode.getParentNode();
+                    if (oldNode) {
+                        oldParents.push(oldNode);
+                    }
+                }
+                if (newParents.length > 0) {
+                    zTree.expandNode(oldParents[Math.abs(oldParents.length - newParents.length) - 1], false);
+                } else {
+                    zTree.expandNode(oldParents[oldParents.length - 1], false);
+                }
+            }
+        }
+    }
+    curExpandNode = newNode;
+}
+
+function onExpand(event, treeId, treeNode) {
+    curExpandNode = treeNode;
 }

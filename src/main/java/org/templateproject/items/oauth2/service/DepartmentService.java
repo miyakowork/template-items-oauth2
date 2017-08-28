@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.entity.IDepartment;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.DepartmentBO;
 import org.templateproject.items.oauth2.support.pojo.bo.ZTreeBO;
 import org.templateproject.items.oauth2.support.pojo.vo.DepartmentVO;
@@ -20,7 +19,6 @@ import java.util.List;
  */
 @Service
 @Transactional
-@SqlMapper("department")
 public class DepartmentService extends SimpleBaseCrudService<IDepartment, Integer> {
 
     /**
@@ -30,7 +28,11 @@ public class DepartmentService extends SimpleBaseCrudService<IDepartment, Intege
      * @return 当前Page页
      */
     public Page<DepartmentVO> findDepartmentPage(DepartmentBO departmentBO, Page<DepartmentVO> page) {
-        return findPagination(page, DepartmentVO.class, sql(), departmentBO);
+        String sql = " SELECT  tod.*, tod1.name AS parent_name, tou1.username AS create_name, tou2.username AS update_name" +
+                " FROM t_oauth_user tou1, t_oauth_user tou2, t_oauth_department tod" +
+                " LEFT JOIN t_oauth_department tod1 ON tod1.id = tod.parent_id" +
+                " WHERE tod.create_user = tou1.id AND tod.update_user = tou2.id";
+        return findPagination(page, DepartmentVO.class, sql, departmentBO);
     }
 
     /**
@@ -61,7 +63,8 @@ public class DepartmentService extends SimpleBaseCrudService<IDepartment, Intege
      * @return zTree树
      */
     public List<IDepartment> findEnabledDepartments(String depId) {
-        List<IDepartment> departments = mysql.findListBeanByArray(sql(), IDepartment.class);
+        String sql = " SELECT * FROM t_oauth_department tod WHERE tod.ENABLED = 1";
+        List<IDepartment> departments = mysql.findListBeanByArray(sql, IDepartment.class);
         if ("0".equalsIgnoreCase(depId))//如果需要显示部门根节点，则传递参数id=0即可
             departments.add(IDepartment.root());
         return departments;
@@ -74,8 +77,9 @@ public class DepartmentService extends SimpleBaseCrudService<IDepartment, Intege
      * @param id 部门id
      * @return 是否有子节点
      */
-    public boolean checkIsParent(int id) {
-        long count = mysql.queryNumberByArray(sql(), Long.class, id);
+    private boolean checkIsParent(int id) {
+        String sql = "SELECT COUNT(0) FROM t_oauth_department tod WHERE 1 = 1 AND tod.parent_id = ?";
+        long count = mysql.queryNumberByArray(sql, Long.class, id);
         return count != 0;
     }
 

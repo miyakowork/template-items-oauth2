@@ -1,6 +1,7 @@
 package org.templateproject.items.oauth2.entity;
 
 import org.templateproject.items.oauth2.entity.base.DataEntity;
+import org.templateproject.tools.sqlgen.annotation.SQLColumn;
 import org.templateproject.tools.sqlgen.annotation.SQLTable;
 
 /**
@@ -10,13 +11,16 @@ import org.templateproject.tools.sqlgen.annotation.SQLTable;
 @SQLTable("t_oauth_privilege_operation")
 public class IPrivilegeOperation extends DataEntity {
 
-
+    @SQLColumn
     private String operationName; //操作名称
 
+    @SQLColumn
     private Integer resourceId;   //资源id
 
+    @SQLColumn
     private Integer pagePrivilegeId;  //页面级权限id
 
+    @SQLColumn
     private Integer operationTypeId;  //操作类型id
 
 

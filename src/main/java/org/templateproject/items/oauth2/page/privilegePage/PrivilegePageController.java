@@ -9,7 +9,7 @@ import org.templateproject.items.oauth2.support.BaseController;
  * Created by zhangteng on 2017/7/19.
  */
 @Controller
-@RequestMapping("oauth2/privilege-page")
+@RequestMapping("oauth2/privilegePage")
 public class PrivilegePageController extends BaseController {
 
     /**

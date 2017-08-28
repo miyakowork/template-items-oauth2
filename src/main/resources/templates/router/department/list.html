@@ -4,7 +4,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span><i class="fa fa-building"></i> 部门树</span>
-                <span class="pull-right" style="cursor: pointer;" id="refreshDepartmentTree" title="重置部门勾选状态"><i
+                <span class="pull-right resetTree" style="cursor: pointer;" id="refreshDepartmentTree" title="重置部门勾选状态"><i
                         class="fa fa-undo"></i> </span>
             </div>
             <div class="panel-body" style="min-height: 300px;">
@@ -14,8 +14,6 @@
     </div>
     <div class="col-md-9">
         <div id="department-toolbar" class="form-inline">
-            <button id="add-department" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
-            <button id="edit-department" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
             <div th:replace="fragment/control(department)"></div>
         </div>
         <!-- NEW WIDGET START -->
@@ -275,4 +273,4 @@
 </div>
 
 
-<script src="/static/oauth2/js/department.js"></script>
+<script src="/static/js/oauth2/department.js"></script>

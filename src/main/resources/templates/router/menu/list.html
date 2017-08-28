@@ -1,158 +1,36 @@
-<link rel="stylesheet" href="/static/js/plugin/bootstrap-table/bootstrap-table.min.css"/>
-<style type="text/css">
-    .dl {
-        display: inline-block;
-    }
-
-    .dl > .checkbox > input[type=checkbox] {
-        margin-left: 10px;
-    }
-</style>
-
-<div class="row">
+<!--suppress HtmlUnknownAttribute -->
+<link type="text/css" rel="stylesheet" media="screen" href="/static/js/plugin/jquery-grid/css/jquery.treegrid.css"/>
+<!--suppress HtmlUnknownAttribute -->
+<div class="row router-container">
     <div class="col-md-3" style="margin-top: 10px;">
-        <div class="panel panel-default">
-            <div class="panel-body" style="min-height: 300px;">
-                <legend>角色树</legend>
-                <ul id="roleTree" class="ztree"></ul>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <input type="hidden" name="selectedModuleMenu">
+                    <select class="form-control" title="系统模块选择" id="select-modules-menu">
+                    </select>
+                </div>
+                <div class="panel-body" style="min-height: 300px;">
+                     <span class="pull-right resetTree" style="cursor: pointer;" id="refreshRoleTreeMenu"
+                           title="重置角色勾选状态"><i
+                             class="fa fa-undo"></i> </span>
+                    <ul id="roleTreeMenu" class="ztree"></ul>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-5" style="margin-top: 10px;">
-        <div class="panel panel-default">
-            <div class="panel-body" style="min-height: 300px;">
-                <legend>菜单树</legend>
-                <ul id="menuTree" class="ztree"></ul>
-            </div>
+    <div class="col-md-9">
+        <div id="menu-toolbar" class="form-inline">
+            <div th:replace="fragment/control::operation(menu,true)"></div>
         </div>
-    </div>
-    <div class="col-md-4" style="margin-top: 10px;">
-        <div class="panel panel-default">
-            <div class="panel-body" style="min-height: 300px;">
-                <legend>权限树</legend>
-                <ul id="permissionTree" class="ztree"></ul>
-            </div>
-        </div>
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <table id="menu-table"></table>
+        </article>
     </div>
 </div>
-<script type="text/javascript">
 
-    pageSetUp();
-
-
-    var page_function = function () {
-
-        load_roleTree();
-    };
-
-    //加载左侧角色树结构
-    var load_roleTree = function () {
-        var settings = {
-            data: {
-                simpleData: {
-                    enable: true,
-                    rootPId: 0
-                }
-            },
-            check: {
-                enable: true,
-                chkStyle: "radio",
-                radioType: "all"
-            },
-            async: {
-                enable: true,
-                url: "/oauth2/role/api/selectRole",
-                autoParam: ["id"]
-            },
-            view: {
-                selectedMulti: false,
-            },
-            callback: {
-                onClick: function (event, treeId, treeNode) {
-                    load_menuTree(treeNode.id);
-//根据点击的treeNode id加载对应角色的权限树
-                    load_moduleTree(treeNode.id);
-
-                }
-            }
-        };
-
-        $.get("/oauth2/role/api/selectRole?id=0", function (json) {
-            $.fn.zTree.init($("#roleTree"), settings, json.data)
-        })
-
-    };
-
-    //根据角色id加载右侧菜单模块树结构
-    var load_moduleTree = function (roleId) {
-//        一会抄别人的，先用roleTree替代一下
-        var settings = {
-            data: {
-                simpleData: {
-                    enable: true,
-                    rootPId: 0
-                }
-            },
-            check: {
-                enable: true,
-                chkStyle: "radio",
-                radioType: "all"
-            },
-            async: {
-                enable: true,
-                url: "/oauth2/role/api/selectRole",
-                autoParam: ["id"],
-            },
-            view: {
-                selectedMulti: false,
-            },
-        };
-
-        $.get("/oauth2/role/api/selectRole?id=0", function (json) {
-            $.fn.zTree.init($("#permissionTree"), settings, json.data)
-        })
-    }
-
-
-    var load_menuTree = function (roleId) {
-        var settings = {
-            data: {
-                simpleData: {
-                    enable: true,
-                    rootPId: 0
-                }
-            },
-            check: {
-                enable: true,
-                chkStyle: "radio",
-                radioType: "all"
-            },
-            async: {
-                enable: true,
-                url: "/menu/api/selectPartMenu",
-                autoParam: ["id=pId"],
-                otherParam: {"roleId": roleId}
-            },
-            view: {
-                selectedMulti: false,
-            },
-        };
-
-        $.get("/menu/api/selectMenu", {roleId: roleId, pId: 0}, function (json) {
-            $.fn.zTree.init($("#menuTree"), settings, json.data)
-        })
-    }
-
-    // load related plugins
-
-
-    loadScript("/static/js/libs/vue/axios.min.js", function () {
-        loadScript("/static/js/libs/vue/vuerify.min.js", function () {
-            loadScript("/static/js/libs/vue/url-search-params.min.js", function () {
-                loadScript("/static/js/plugin/bootstrap-ztree/js/jquery.ztree.all.min.js", function () {
-                    loadScript("/static/js/plugin/bootstrap-ztree/js/jquery.ztree.exhide.min.js", page_function())
-                })
-            })
-        })
-    })
-</script>
+<div id="menu_dialog">
+    <div th:replace="router/menu/add::addMenu"></div>
+    <div th:replace="router/menu/edit::editMenu"></div>
+</div>
+<script type="text/javascript" src="/static/js/oauth2/menu.js"></script>

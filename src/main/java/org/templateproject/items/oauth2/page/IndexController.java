@@ -47,7 +47,7 @@ public class IndexController extends TemplateController {
      *
      * @return
      */
-    @RequestMapping({"dashboard", "index"})
+    @RequestMapping({"oauth2/dashboard", "oauth2/index"})
     public String dashboard() {
         return "router/dashboard";
     }

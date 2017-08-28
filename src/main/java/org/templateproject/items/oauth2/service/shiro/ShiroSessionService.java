@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.constant.ServiceConsts;
 import org.templateproject.items.oauth2.entity.shiro.ShiroSession;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.SessionBO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.tools.sqlgen.entrance.SQLFactory;
@@ -19,7 +18,6 @@ import org.templateproject.tools.sqlgen.factory.SQLStrBuilder;
  */
 @Service
 @Transactional
-@SqlMapper("shiro_session")
 public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Integer> {
 
     /**
@@ -55,7 +53,11 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @throws Exception 更新时出现的异常
      */
     public int updateShiroSession(ShiroSession shiroSession) throws Exception {
-        return mysql.executeBean(sql(), shiroSession);
+        String sql = "UPDATE t_oauth_session" +
+                " SET session_base64 = :sessionBase64, last_visit_date = :lastVisitDate, ip = :ip, update_url = :updateUrl," +
+                " username= :username" +
+                "  WHERE session_id = :sessionId";
+        return mysql.executeBean(sql, shiroSession);
     }
 
     /**

@@ -2,16 +2,16 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * Created by Administrator on 2017/7/13/013.
  */
-public class LogBO extends PageQueryBO {
+public class LogBO extends BootstrapTableQuery {
 
     private String username;
 
-    @QueryColumn(value = "last_login_date", operation = Operator.BETWEEN)
+    @QueryColumn(value = "last_login_date", operation = Operator.GTE)
     private String lastLoginDate;
 
     public String getUsername() {

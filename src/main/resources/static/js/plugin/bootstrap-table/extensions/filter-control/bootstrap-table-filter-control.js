@@ -75,33 +75,16 @@
     };
 
     var fixHeaderCSS = function (that) {
-        var filterDatepickerBetween = hasBetweenDatepicker(that);
+        // var filterDatepickerBetween = hasBetweenDatepicker(that);
         if (window.__customControls___) {
-            if (filterDatepickerBetween) {
-                that.$tableHeader.css("height", "108px");
-            } else {
-                that.$tableHeader.css("height", "74px");
-            }
+            // if (filterDatepickerBetween) {
+            //     that.$tableHeader.css("height", "108px");
+            // } else {
+            that.$tableHeader.css("height", "75px");
+            // }
         } else {
             that.$tableHeader.css('height', '37px');
         }
-    };
-
-    /**
-     * 判断table是否有between查询日期的
-     * @param that
-     * @returns {boolean}
-     */
-    var hasBetweenDatepicker = function (that) {
-        var filterDatepickerBetween = false;//默认false的
-        var cols = that.options.datepickerBetween;
-        for (var f in cols) {
-            if (cols[f].between) {
-                filterDatepickerBetween = true;
-                break;
-            }
-        }
-        return filterDatepickerBetween;
     };
 
     /**
@@ -122,24 +105,6 @@
         return false;
     }
 
-    /**
-     * 判断当前列的数据搜索控件是不是两个日期之间的查询
-     * @param colField
-     * @param that
-     * @returns {boolean}
-     */
-    var isFieldIsBetweenSearch = function (colField, that) {
-        if (isFieldDatepicker(colField, that)) {
-            var colBetweens = that.options.datepickerBetween;
-            for (var cb in colBetweens) {
-                var cB = colBetweens[cb];
-                if (colField.field === cB.field) {
-                    return cB.between;
-                }
-            }
-        }
-        return false;
-    }
 
     var getCurrentHeader = function (that) {
         var header = that.$header;
@@ -241,18 +206,7 @@
             //如果循环到当前的列为datepicker
             if (isFieldDatepicker(vfc, that)) {
                 if (window.__searchValues) {
-                    var between = (that.options.valuesFilterControl)[index].between;
-                    switch (between) {
-                        case 'start':
-                            (that.options.valuesFilterControl)[index].value = window.__searchValues.start
-                            break;
-                        case 'end':
-                            (that.options.valuesFilterControl)[index].value = window.__searchValues.end
-                            break;
-                        case 'singleOrNone':
-                            (that.options.valuesFilterControl)[index].value = window.__searchValues.single
-                            break;
-                    }
+                    (that.options.valuesFilterControl)[index].value = window.__searchValues[vfc.field]
                 }
             } else {
                 return true;
@@ -273,15 +227,6 @@
                         $(this).val(result[0].value);
                     }
                     setCursorPosition($(this).get(0), result[0].position);
-                } else {//如果为日期条件搜索且有2个条件约束，则为以下的赋值方式
-                    if ($(this).hasClass("bootstrap-laydate")) {
-                        if ($(this).hasClass("date-filter-control-start")) {
-                            $(this).val(result[0].value);
-                        }
-                        if ($(this).hasClass("date-filter-control-end")) {
-                            $(this).val(result[1].value);
-                        }
-                    }
                 }
             });
         }
@@ -460,53 +405,6 @@
                     that.onColumnSearch(event);
                 }, that.options.searchTimeOut);
             });
-
-            // header.off('mouseup', 'input').on('mouseup', 'input', function (event) {
-            //     if (!$(this).hasClass("date-filter-control-start")) {
-            //         var $input = $(this),
-            //             oldValue = $input.val();
-            //
-            //         if (oldValue === "") {
-            //             return;
-            //         }
-            //
-            //         setTimeout(function () {
-            //             var newValue = $input.val();
-            //
-            //             if (newValue === "") {
-            //                 clearTimeout(timeoutId);
-            //                 timeoutId = setTimeout(function () {
-            //                     that.onColumnSearch(event);
-            //                 }, that.options.searchTimeOut);
-            //             }
-            //         }, 1);
-            //     }
-            // });
-
-            // if (header.find('.date-filter-control').length > 0) {
-            //     $.each(that.columns, function (i, column) {
-            //         if (column.filterControl !== undefined && column.filterControl.toLowerCase() === 'datepicker') {
-            //             if (header.find('.date-filter-control.bootstrap-table-filter-control-' + column.field + "-end").length > 0) {
-            //                 header.find('.date-filter-control.bootstrap-table-filter-control-' + column.field + "-end")/*.datetimepicker(column.filterDatepickerOptions)*/
-            //                     .on('changeDate', function (e) {
-            //                         $(sprintf(".%s", e.currentTarget.classList.toString().split(" ").join("."))).val(e.currentTarget.value);
-            //                         //Fired the keyup event
-            //                         $(e.currentTarget).keyup();
-            //                     });
-            //             }
-            //
-            //             if (header.find('.date-filter-control.bootstrap-table-filter-control-' + column.field).length > 0) {
-            //                 header.find('.date-filter-control.bootstrap-table-filter-control-' + column.field)/*.datetimepicker(column.filterDatepickerOptions)*/
-            //                     .on('changeDate', function (e) {
-            //                         $(sprintf(".%s", e.currentTarget.classList.toString().split(" ").join("."))).val(e.currentTarget.value);
-            //                         //Fired the keyup event
-            //                         $(e.currentTarget).keyup();
-            //                     });
-            //             }
-            //
-            //         }
-            //     });
-            // }
         } else {
             header.find('.filterControl').hide();
         }
@@ -583,14 +481,6 @@
                     field, isVisible, getDirectionOfSelectOptions(that.options.alignmentSelectControlOptions));
             },
             datepicker: function (that, field, isVisible) {
-                var filterDatepickerBetween = false;//日期选择的匹配条件是两个日期之间的（即是between），默认false，即只有一个条件>/</=等
-                var cols = that.options.datepickerBetween;
-                for (var f in cols) {
-                    if (cols[f].field === field) {
-                        filterDatepickerBetween = cols[f].between;
-                    }
-                }
-
                 var laydateOptions = {};
                 var cols = that.columns;
                 for (var col in cols) {
@@ -598,11 +488,10 @@
                         laydateOptions = cols[col].laydateOptions
                     }
                 }
+                var layOpt = eval("(" + laydateOptions + ")");
                 var table_id = $(that.$el[0]).attr("id");
-                var single = sprintf('<input readonly  onclick="TF.activeLaydatePicker(this,\'' + table_id + '\',' + laydateOptions + ')" class="bootstrap-laydate form-control date-filter-control date-filter-control-single bootstrap-table-filter-control-%s" style="width: 100%; visibility: %s"/>', field, isVisible);
-                var start = sprintf('<input readonly  onclick="TF.activeLaydatePicker(this,\'' + table_id + '\',' + laydateOptions + ')" class="bootstrap-laydate form-control date-filter-control date-filter-control-start bootstrap-table-filter-control-%s-start" style="width: 100%; visibility: %s"/>', field, isVisible);
-                var end = sprintf('<input readonly  onclick="TF.activeLaydatePicker(this,\'' + table_id + '\',' + laydateOptions + ')" class="bootstrap-laydate form-control date-filter-control date-filter-control-end bootstrap-table-filter-control-%s-end" style="width: 100%; margin-top: 2px; visibility: %s"/>', field, isVisible);
-                return filterDatepickerBetween ? start + end : single;
+                return sprintf('<input placeholder="' + layOpt.placeholder + '" readonly onclick="TF.activeLaydatePicker(this,\'' + table_id + '\',' + laydateOptions + ')" class="bootstrap-laydate form-control date-filter-control date-filter-control-single bootstrap-table-filter-control-%s" style="width: 100%; visibility: %s"/>', field, isVisible);
+
             }
         },
         //internal variables
@@ -615,8 +504,8 @@
         filterDatepickerOptions: undefined,
         filterStrictSearch: false,
         filterStartsWithSearch: false,
-        filterControlPlaceholder: "",
-        filterDatepickerBetween: false
+        filterControlPlaceholder: ""
+        // filterDatepickerBetween: false
     });
 
     $.extend($.fn.bootstrapTable.Constructor.EVENTS, {
@@ -823,11 +712,7 @@
 
             //清除搜索的日期
             $(".bootstrap-laydate").val("");
-            window.__searchValues = {
-                start: '',
-                end: '',
-                single: ''
-            }
+            window.__searchValues = {};
             setValues(that);
 
             // Clear each type of filter if it exists.

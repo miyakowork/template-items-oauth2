@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.items.oauth2.entity.IUser;
 import org.templateproject.items.oauth2.service.base.SimpleBaseCrudService;
-import org.templateproject.items.oauth2.support.annotation.sql.SqlMapper;
 import org.templateproject.items.oauth2.support.pojo.bo.UserBO;
 import org.templateproject.items.oauth2.support.pojo.vo.UserVO;
 import org.templateproject.pojo.page.Page;
@@ -15,7 +14,6 @@ import org.templateproject.pojo.page.Page;
 
 @Service
 @Transactional
-@SqlMapper("user")
 public class UserService extends SimpleBaseCrudService<IUser, Integer> {
 
     /**
@@ -26,7 +24,10 @@ public class UserService extends SimpleBaseCrudService<IUser, Integer> {
      * @return
      */
     public Page<UserVO> findUserPage(Page<UserVO> page, UserBO userBO) {
-        return findPagination(page, UserVO.class, sql(), userBO);
+        String sql = "SELECT tou.*, tod.name AS departmentName, tor.cn_name AS roleName" +
+                " FROM T_OAUTH_USER tou LEFT JOIN T_OAUTH_DEPARTMENT tod ON tou.dept_id = tod.id" +
+                " LEFT JOIN T_OAUTH_ROLE tor ON tou.default_role_id = tor.id";
+        return findPagination(page, UserVO.class, sql, userBO);
     }
 
 
@@ -38,7 +39,11 @@ public class UserService extends SimpleBaseCrudService<IUser, Integer> {
      * @throws Exception
      */
     public boolean edit(IUser iUser) throws Exception {
-        return mysql.executeBean(sql(), iUser) == 1;
+        String sql = "UPDATE t_oauth_user" +
+                " SET cname = :cname, email = :email, mobile = :mobile, order_index = :orderIndex, dept_id = :deptId," +
+                " default_role_id = :defaultRoleId, enabled = :enabled, remark = :remark" +
+                " WHERE id = :id";
+        return mysql.executeBean(sql, iUser) == 1;
     }
 
 
@@ -50,6 +55,7 @@ public class UserService extends SimpleBaseCrudService<IUser, Integer> {
      */
     public void disabledUser(String ids) throws Exception {
         String[] userIds = ids.split(",");
-        executeBatch(sql(), "id", userIds);
+        String sql = "UPDATE T_OAUTH_USER SET ENABLED = 0 WHERE id = :id";
+        executeBatch(sql, "id", userIds);
     }
 }

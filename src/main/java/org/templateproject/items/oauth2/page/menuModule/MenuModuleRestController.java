@@ -9,14 +9,17 @@ import org.templateproject.items.oauth2.support.BaseRestController;
 import org.templateproject.items.oauth2.support.pojo.BootstrapTable;
 import org.templateproject.items.oauth2.support.pojo.bo.MenuModuleBO;
 import org.templateproject.items.oauth2.support.pojo.vo.MenuModuleVO;
+import org.templateproject.lang.TP;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
+
+import java.util.List;
 
 /**
  * Created by Wuwenbin on 2017/08/01.
  */
 @RestController
-@RequestMapping("oauth2/menuModule/api")
+@RequestMapping("oauth2/menu-module/api")
 public class MenuModuleRestController extends BaseRestController {
 
     private MenuModuleService menuModuleService;
@@ -74,4 +77,17 @@ public class MenuModuleRestController extends BaseRestController {
         return ajaxDoneDelete("菜单模块", ids.split(","), menuModuleService, IMenuModule.class);
     }
 
+
+    /**
+     * 查找可用的菜单模块集合
+     *
+     * @return
+     */
+    @RequestMapping("find/enables")
+    public List<IMenuModule> findEnabledMenuModules(String systemModuleCode) {
+        if (TP.stringhelper.isNotEmpty(systemModuleCode))
+            return menuModuleService.findEnabledMenuModuleBySystemModuleCode(systemModuleCode);
+        else
+            return menuModuleService.findEnabledListBean(IMenuModule.class);
+    }
 }

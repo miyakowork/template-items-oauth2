@@ -8,6 +8,8 @@ import org.templateproject.items.oauth2.support.pojo.bo.MenuModuleBO;
 import org.templateproject.items.oauth2.support.pojo.vo.MenuModuleVO;
 import org.templateproject.pojo.page.Page;
 
+import java.util.List;
+
 /**
  * Created by Wuwenbin on 2017/8/102/.
  */
@@ -23,15 +25,21 @@ public class MenuModuleService extends SimpleBaseCrudService<IMenuModule, Intege
      * @return page
      */
     public Page<MenuModuleVO> findMenuModulePage(Page<MenuModuleVO> page, MenuModuleBO menuModuleBO) {
-        String sql = "SELECT" +
-                "  tomm.*," +
-                "  tou1.username AS createUsername," +
-                "  tou2.username AS updateUsername" +
-                " FROM t_oauth_menu_module tomm," +
-                "  t_oauth_user tou1," +
-                "  t_oauth_user tou2" +
+        String sql = "SELECT tomm.*, tou1.username AS createUsername, tou2.username AS updateUsername" +
+                " FROM t_oauth_menu_module tomm, t_oauth_user tou1, t_oauth_user tou2" +
                 " WHERE tomm.create_user = tou1.id AND tomm.update_user = tou2.id";
         return findPagination(page, MenuModuleVO.class, sql, menuModuleBO);
+    }
+
+    /**
+     * 根据系统模块代码查找可用的菜单模块集合
+     *
+     * @param systemModuleCode
+     * @return
+     */
+    public List<IMenuModule> findEnabledMenuModuleBySystemModuleCode(String systemModuleCode) {
+        String sql = "SELECT * FROM t_oauth_menu_module WHERE enabled = 1 AND system_code = ?";
+        return mysql.findListBeanByArray(sql, IMenuModule.class, systemModuleCode);
     }
 
 

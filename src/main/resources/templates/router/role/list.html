@@ -1,13 +1,17 @@
-<section class="row router-container">
+<!--suppress HtmlUnknownAttribute -->
+<div class="row router-container">
     <div class="col-md-3" style="margin-top: 10px;">
         <div class="row">
-            <input type="hidden" name="selectedModule">
-            <select class="form-control" title="系统模块选择" id="select-modules">
-            </select>
-        </div>
-        <div class="row">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <input type="hidden" name="selectedModule">
+                    <select class="form-control" title="系统模块选择" id="select-modules">
+                    </select>
+                </div>
                 <div class="panel-body" style="min-height: 300px;">
+                     <span class="pull-right resetTree" style="cursor: pointer;" id="refreshRoleTree"
+                           title="重置角色勾选状态"><i
+                             class="fa fa-undo"></i> </span>
                     <ul id="roleTree" class="ztree"></ul>
                 </div>
             </div>
@@ -15,16 +19,8 @@
     </div>
     <div class="col-md-9">
         <div id="role-toolbar" class="form-inline">
-            <button id="refreshRoleTree" class="btn btn-sm btn-primary"><i class="fa fa-times"></i> 取消勾选角色</button>
-            <button id="add-role" class="btn btn-info btn-sm"><i class="fa fa-plus-square-o"></i> 添加</button>
-            <button id="edit-role" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> 编辑</button>
-            &nbsp;
-            <label id="role-search-control" class="checkbox-inline">
-                <input type="checkbox" class="checkbox style-3">
-                <span>显示搜索控件</span>
-            </label>
+            <div th:replace="fragment/control::operation(role,false)"></div>
         </div>
-        <!-- NEW WIDGET START -->
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <table id="role-table">
                 <thead>
@@ -128,209 +124,11 @@
                 </thead>
             </table>
         </article>
-        <!-- WIDGET END -->
     </div>
-</section>
+</div>
 
 <div id="role_dialog">
-    <!--添加menu-->
-    <div id="addRole">
-        <form class="form-horizontal" @submit.prevent="handleAddSubmit" method="post">
-            <fieldset>
-                <!--角色名称-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                    <label class="col-md-3 control-label">角色标识</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="角色名称（英文大写/下划线）"
-                               v-model="role.name">
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
-                            {{error.nameErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-                <!--角色名称-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.cnNameError }">
-                    <label class="col-md-3 control-label">角色名</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="角色名（中文）"
-                               v-model="role.cnName">
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.cnNameError }">
-                            {{error.cnNameErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-                <!--//上级角色-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">上级ID</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="上级ID"
-                               v-model="role.parentId"
-                               readonly>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.parentIdErrorMsg }">
-                            {{error.parentIdErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-3 control-label">系统模块名称</label>
-                    <div class="col-md-9">
-                        <input class="form-control" id="sca" readonly>
-                    </div>
-                </div>
-
-
-                <!--排序-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.orderIndexError }">
-                    <label class="col-md-3 control-label">排序</label>
-                    <div class="col-md-9">
-                        <input class="form-control" type="number" v-model="role.orderIndex">
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderIndexError }">
-                            {{error.orderIndexErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <!--//是否可用-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">是否可用</label>
-                    <div class="col-md-9">
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="role.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="true" checked>
-                            <span>是</span>
-                        </label>
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="role.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="false" checked>
-                            <span>否</span>
-                        </label>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
-                            {{error.enabledErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <!--//备注信息-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">备注信息</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="备注信息（选填）" type="text" v-model="role.remark">
-                    </div>
-                </div>
-
-
-            </fieldset>
-            <button id="doAddRole" type="submit" class="hidden"></button>
-        </form>
-    </div>
-    <!--编辑menu-->
-    <div id="editRole">
-        <form class="form-horizontal" @submit.prevent="handleEditSubmit" method="post">
-            <fieldset>
-                <!--角色名称-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                    <label class="col-md-3 control-label">角色标识</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="角色标识（大写英文/下划线）"
-                               v-model="role.name" readonly>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
-                            {{error.nameErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-                <!--角色名称-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.cnNameError }">
-                    <label class="col-md-3 control-label">角色名称</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="角色名称（中文）"
-                               v-model="role.cnName">
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.cnNameError }">
-                            {{error.cnNameErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-3 control-label">上级角色ID</label>
-                    <div class="col-md-9">
-                        <input id="pIdByTree" class="form-control" placeholder="上级角色" type="text"
-                               v-model="role.parentId"
-                               readonly>
-                        <a id="editGetPId" href="javascript:void(0);"
-                           style="margin-top: 15px;display: block;">获取上级角色</a>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.parentError }">
-                            {{error.parentErrorMsg}}
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-3 control-label">系统模块名称</label>
-                    <div class="col-md-9">
-                        <input class="form-control" id="scb" readonly>
-                    </div>
-                </div>
-
-
-                <!--排序-->
-                <div class="form-group" v-bind:class="{ 'has-error': error.orderIndexError }">
-                    <label class="col-md-3 control-label">排序</label>
-                    <div class="col-md-9">
-                        <input class="form-control" type="number" v-model="role.orderIndex">
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.orderIndexError }">
-                            {{error.orderIndexErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <!--//是否可用-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">是否可用</label>
-                    <div class="col-md-9">
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="role.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="true" checked>
-                            <span>是</span>
-                        </label>
-                        <label class="radio radio-inline">
-                            <input type="radio" v-model="role.enabled"
-                                   class="radiobox style-0"
-                                   v-bind:value="false" checked>
-                            <span>否</span>
-                        </label>
-                        <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': error.enabledError }">
-                            {{error.enabledErrorMsg}}
-                        </div>
-                    </div>
-                </div>
-
-                <!--//备注信息-->
-                <div class="form-group">
-                    <label class="col-md-3 control-label">备注信息</label>
-                    <div class="col-md-9">
-                        <input class="form-control" placeholder="备注信息（选填）" v-model="role.remark">
-                    </div>
-                </div>
-
-
-            </fieldset>
-            <button id="edit" type="submit" class="hidden"></button>
-        </form>
-    </div>
-
+    <div th:replace="router/role/add::addRole"></div>
+    <div th:replace="router/role/edit::editRole"></div>
 </div>
-<script src="/static/oauth2/js/role.js"></script>
+<script src="/static/js/oauth2/role.js"></script>

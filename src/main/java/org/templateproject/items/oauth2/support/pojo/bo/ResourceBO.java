@@ -3,13 +3,13 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * Created by Liurongqi on 2017/7/13.
  */
 @QueryTable("tor")
-public class ResourceBO extends PageQueryBO {
+public class ResourceBO extends BootstrapTableQuery {
     private String url; //资源路径
     @QueryColumn("permission_mark")
     private String permissionMark;   //资源标识

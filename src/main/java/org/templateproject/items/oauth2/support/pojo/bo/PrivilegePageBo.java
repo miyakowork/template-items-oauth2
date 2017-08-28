@@ -3,14 +3,14 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * Created by zhangteng on 2017/7/19.
  * 页面资源表BO
  */
 @QueryTable("topp")
-public class PrivilegePageBo extends PageQueryBO {
+public class PrivilegePageBo extends BootstrapTableQuery {
 
     private String name;  //资源模块名称
 

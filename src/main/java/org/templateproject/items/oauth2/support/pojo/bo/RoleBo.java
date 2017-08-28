@@ -4,7 +4,7 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * 角色管理查询BO对象
@@ -12,7 +12,7 @@ import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
  * Modify by Wuwenbin on 2017/8/5
  */
 @QueryTable("tor")
-public class RoleBo extends PageQueryBO {
+public class RoleBo extends BootstrapTableQuery {
 
     @QueryColumn(value = "parent_id", operation = Operator.EQ)
     private String parentId;

@@ -56,7 +56,7 @@
                     data-sortable="true"
                     data-visible="true"
                     data-filter-control="datepicker"
-                    data-laydate-options="{format: 'YYYY-MM-DD hh:mm:ss', istime: true}"
+                    data-laydate-options="{type: 'datetime',placeholder:'搜索在此时间之后的会话'}"
                     data-title="会话创建时间"
                     data-align="center"></th>
 
@@ -66,8 +66,8 @@
                     data-formatter="date_formatter"
                     data-sortable="true"
                     data-filter-control="datepicker"
-                    data-laydate-options="{format: 'YYYY-MM-DD hh:mm:ss', istime: true}"
-                    data-title="会话最后访问时间"
+                    data-title="会话最后访问日期"
+                    data-laydate-options="{type: 'datetime', range: true,placeholder:'搜索一段时间内的会话'}"
                     data-align="center"></th>
 
                 <th data-field="createUrl"
@@ -89,4 +89,4 @@
     </article>
 
 </div>
-<script src="/static/oauth2/js/session.js"></script>
+<script src="/static/js/oauth2/session.js"></script>

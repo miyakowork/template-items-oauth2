@@ -4,14 +4,14 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * 资源模块管理查询BO对象
  * Created by wuwenbin on 2017/8/8.
  */
 @QueryTable("torm")
-public class ResModuleBo extends PageQueryBO {
+public class ResModuleBo extends BootstrapTableQuery {
     private String name;
 
     @QueryColumn(value = "enabled", operation = Operator.EQ)

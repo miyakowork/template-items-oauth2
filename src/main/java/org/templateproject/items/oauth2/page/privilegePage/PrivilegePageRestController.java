@@ -13,7 +13,7 @@ import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
 
 /**
- * Created by zhangteng on 2017/7/19.
+ * Created by wuwenbin on 2017/8/19.
  */
 @RestController
 @RequestMapping("oauth2/privilegePage/api")
@@ -33,30 +33,18 @@ public class PrivilegePageRestController extends BaseRestController {
         return bootstrapTable(page);
     }
 
-
     @RequestMapping("add")
-    public R add(IPrivilegePage resource) {
-        try {
-            if (privilegePageService.save(resource, IPrivilegePage.class))
-                return R.ok("添加成功");
-            else
-                return R.error("添加失败");
-        } catch (Exception e) {
-            LOGGER.error("添加出现异常，异常信息：{}", e);
-            return R.error("添加出现异常，异常信息：" + e.getMessage());
-        }
+    public R add(IPrivilegePage privilegePage) {
+        return ajaxDoneAdd("页面资源权限", privilegePageService, privilegePage, IPrivilegePage.class);
     }
 
     @RequestMapping("edit")
-    public R doEdit(IPrivilegePage resource) {
-        try {
-            if (privilegePageService.edit(resource, IPrivilegePage.class))
-                return R.ok("修改成功");
-            else
-                return R.error("修改失败");
-        } catch (Exception e) {
-            LOGGER.error("修改出现异常，异常信息：{}", e);
-            return R.error("修改出现异常，异常信息：" + e.getMessage());
-        }
+    public R doEdit(IPrivilegePage privilegePage) {
+        return ajaxDoneEdit("页面资源权限", privilegePageService, privilegePage, IPrivilegePage.class);
+    }
+
+    @RequestMapping("delete")
+    public R delete(String ids) {
+        return ajaxDoneDelete("页面资源权限", ids.split(","), privilegePageService, IPrivilegePage.class);
     }
 }

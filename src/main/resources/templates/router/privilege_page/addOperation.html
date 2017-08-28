@@ -1,0 +1,100 @@
+<!--suppress HtmlUnknownAttribute -->
+<div th:fragment="addprivilegeoperation" id="addprivilegeoperation">
+    <input type="hidden" id="poInPageId" value="">
+    <form class="form-horizontal" @submit.prevent="handleAddOperationSubmit" method="post">
+        <fieldset>
+            <!--资源id-->
+            <div class="form-group" v-bind:class="{ 'has-error': poError.operationNameError }">
+                <label class="col-md-3 control-label">操作权限名称</label>
+                <div class="col-md-9">
+                    <input class="form-control" placeholder="操作权限名称（默认为勾选的资源名称，可更改）"
+                           v-model="privilegeOperation.operationName">
+                    <div class="note-error margin-bottom-0"
+                         v-bind:class="{ 'has-error text-danger margin-top-10': poError.operationNameError }">
+                        {{poError.operationNameErrorMsg}}
+                    </div>
+                </div>
+            </div>
+            <!--资源id-->
+            <div class="form-group" v-bind:class="{ 'has-error': poError.resourceIdError }">
+                <label class="col-md-3 control-label">资源ID</label>
+                <div class="col-md-9">
+                    <input class="form-control" placeholder="资源ID" readonly
+                           v-model="privilegeOperation.resourceId">
+                    <a id="getResourceInOp" href="javascript:void(0);" style="margin-top: 15px;display: block;">获取资源</a>
+                    <div class="note-error margin-bottom-0"
+                         v-bind:class="{ 'has-error text-danger margin-top-10': poError.resourceIdError }">
+                        {{poError.resourceIdErrorMsg}}
+                    </div>
+                </div>
+            </div>
+
+            <!--页面id-->
+            <div class="form-group" v-bind:class="{ 'has-error': poError.pagePrivilegeIdError }">
+                <label class="col-md-3 control-label">所在页面ID</label>
+                <div class="col-md-9">
+                    <input class="form-control" placeholder="所在页面ID" readonly
+                           v-model="privilegeOperation.pagePrivilegeId">
+                    <div class="note-error margin-bottom-0"
+                         v-bind:class="{ 'has-error text-danger margin-top-10': poError.pagePrivilegeIdError }">
+                        {{poError.pagePrivilegeIdErrorMsg}}
+                    </div>
+                </div>
+            </div>
+
+            <!--操作权限类型-->
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="privilegeOperation-typeId-add">操作权限类型</label>
+                <div class="col-md-9">
+                    <select class="form-control" v-model="privilegeOperation.operationType.selected"
+                            id="privilegeOperation-typeId-add">
+                    </select>
+                </div>
+            </div>
+
+            <!--//排序索引-->
+            <div class="form-group" v-bind:class="{ 'has-error': poError.orderError }">
+                <label class="col-md-3 control-label">排序索引</label>
+                <div class="col-md-9">
+                    <input class="form-control" placeholder="排序索引" type="number"
+                           v-model="privilegeOperation.orderIndex">
+                    <div class="note-error margin-bottom-0"
+                         v-bind:class="{ 'has-error text-danger margin-top-10': poError.orderError }">
+                        {{poError.orderErrorMsg}}
+                    </div>
+                </div>
+            </div>
+
+            <!--//是否可用-->
+            <div class="form-group">
+                <label class="col-md-3 control-label">是否可用</label>
+                <div class="col-md-9">
+                    <label class="radio radio-inline">
+                        <input type="radio" v-model="privilegeOperation.enabled"
+                               class="radiobox style-0"
+                               v-bind:value="true" checked>
+                        <span>是</span>
+                    </label>
+                    <label class="radio radio-inline">
+                        <input type="radio" v-model="privilegeOperation.enabled"
+                               class="radiobox style-0"
+                               v-bind:value="false" checked>
+                        <span>否</span>
+                    </label>
+                </div>
+            </div>
+
+            <!--//备注信息-->
+            <div class="form-group">
+                <label class="col-md-3 control-label">备注信息</label>
+                <div class="col-md-9">
+                    <input class="form-control" placeholder="备注信息（选填）" col-md-9 v-model="privilegeOperation.remark">
+                </div>
+            </div>
+
+
+        </fieldset>
+        <button id="doAddPrivilegeOperation" type="submit" class="hidden"></button>
+
+    </form>
+</div>

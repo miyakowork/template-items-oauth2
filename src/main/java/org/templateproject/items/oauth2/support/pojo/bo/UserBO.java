@@ -3,13 +3,13 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.annotation.query.QueryTable;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * Created by Administrator on 2017/7/19/019.
  */
 @QueryTable("tou")
-public class UserBO extends PageQueryBO {
+public class UserBO extends BootstrapTableQuery {
 
     private String username;//用户名
 

@@ -7,7 +7,9 @@ import org.templateproject.items.oauth2.entity.IResource;
 import org.templateproject.items.oauth2.service.ResourceService;
 import org.templateproject.items.oauth2.support.BaseRestController;
 import org.templateproject.items.oauth2.support.pojo.BootstrapTable;
+import org.templateproject.items.oauth2.support.pojo.LayTable;
 import org.templateproject.items.oauth2.support.pojo.bo.ResourceBO;
+import org.templateproject.items.oauth2.support.pojo.bo.ResourceLayBO;
 import org.templateproject.items.oauth2.support.pojo.vo.ResourceVO;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
@@ -39,6 +41,17 @@ public class ResourceRestController extends BaseRestController {
         return bootstrapTable(page);
     }
 
+    @RequestMapping("selectResources")
+    public LayTable<ResourceVO> selectResources(Page<ResourceVO> page, ResourceLayBO resourceBO) {
+        ResourceBO resBO = new ResourceBO();
+        resBO.setName(resourceBO.getName());
+        resBO.setPageNo(resourceBO.getPage());
+        resBO.setLimit(resourceBO.getLimit());
+        resBO.setSystemCode(resourceBO.getSystemModuleCode());
+        page = resourceService.findResourcePage(resBO, page);
+        return new LayTable<>(0, "", page.getTotalCount(), page.getTResult());
+    }
+
     /**
      * 添加新资源
      *
@@ -47,13 +60,7 @@ public class ResourceRestController extends BaseRestController {
      */
     @RequestMapping("add")
     public R add(IResource iResource) {
-        try {
-            if (resourceService.save(iResource, IResource.class))
-                return R.ok("添加成功");
-            else return R.error("添加失败");
-        } catch (Exception e) {
-            return R.error("添加异常，异常信息：" + e.getMessage());
-        }
+        return ajaxDoneAdd("资源", resourceService, iResource, IResource.class);
     }
 
     /**
@@ -64,30 +71,21 @@ public class ResourceRestController extends BaseRestController {
      */
     @RequestMapping("edit")
     public R edit(IResource iResource) {
-        try {
-            if (resourceService.edit(iResource, IResource.class))
-                return R.ok("编辑成功");
-            else return R.error("编辑失败");
-        } catch (Exception e) {
-            return R.error("编辑异常，异常信息：" + e.getMessage());
-        }
+        return ajaxDoneEdit("资源", resourceService, iResource, IResource.class);
     }
 
-    @RequestMapping("hide")
-    public R hide(String ids) {
-        try {
-            resourceService.hideResourceByIds(ids);
-            return R.ok("删除成功");
-        } catch (Exception e) {
-            LOGGER.error("删除过程出现异常，异常信息：{}", e);
-            return R.error("删除过程中出现异常，异常信息：", e.getMessage());
-        }
-    }
 
+    /**
+     * 删除资源
+     *
+     * @param ids
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("delete")
     public R delete(String ids) throws Exception {
-        resourceService.delete(ids);
-        return R.ok("删除成功");
+        return ajaxDoneDelete("资源", ids.split(","), resourceService, IResource.class);
     }
+
 
 }

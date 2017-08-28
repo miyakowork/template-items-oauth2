@@ -45,14 +45,16 @@ public class BaseRestController extends TemplateController {
         try {
             if (service.save(entity, clazz)) {
                 moduleMessage = TP.placeholder.format("添加{}成功！", moduleMessage);
+                return R.ok(moduleMessage);
             } else {
                 moduleMessage = TP.placeholder.format("添加{}失败！", moduleMessage);
+                return R.error(moduleMessage);
             }
         } catch (Exception e) {
             moduleMessage = TP.placeholder.format("添加{}异常，异常信息：" + e.getMessage(), moduleMessage);
             LOGGER.error("添加{}异常，异常原因：{}", e);
+            return R.error(moduleMessage);
         }
-        return R.ok(moduleMessage);
     }
 
     /**
@@ -71,14 +73,16 @@ public class BaseRestController extends TemplateController {
         try {
             if (service.edit(entity, clazz)) {
                 moduleMessage = TP.placeholder.format("修改{}成功！", moduleMessage);
+                return R.ok(moduleMessage);
             } else {
                 moduleMessage = TP.placeholder.format("修改{}失败！", moduleMessage);
+                return R.error(moduleMessage);
             }
         } catch (Exception e) {
             moduleMessage = TP.placeholder.format("修改{}异常，异常信息：" + e.getMessage(), moduleMessage);
             LOGGER.error("修改{}异常，异常原因：{}", e);
+            return R.error(moduleMessage);
         }
-        return R.ok(moduleMessage);
     }
 
     /**
@@ -97,11 +101,12 @@ public class BaseRestController extends TemplateController {
         try {
             service.disabledBatch(ids, clazz);
             moduleMessage = TP.placeholder.format("禁用{}成功！", moduleMessage);
+            return R.ok(moduleMessage);
         } catch (Exception e) {
             moduleMessage = TP.placeholder.format("禁用{}异常，异常信息：" + e.getMessage(), moduleMessage);
             LOGGER.error("禁用{}异常，异常原因：{}", e);
+            return R.ok(moduleMessage);
         }
-        return R.ok(moduleMessage);
     }
 
     /**
@@ -120,11 +125,12 @@ public class BaseRestController extends TemplateController {
         try {
             service.deleteBatch(clazz, ids);
             moduleMessage = TP.placeholder.format("删除{}成功！", moduleMessage);
+            return R.ok(moduleMessage);
         } catch (Exception e) {
             moduleMessage = TP.placeholder.format("删除{}异常，异常信息：" + e.getMessage(), moduleMessage);
             LOGGER.error("删除{}异常，异常原因：{}", e);
+            return R.error(moduleMessage);
         }
-        return R.ok(moduleMessage);
     }
 
 

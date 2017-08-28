@@ -3,12 +3,12 @@ package org.templateproject.items.oauth2.support.pojo.bo;
 
 import org.templateproject.items.oauth2.support.annotation.query.QueryColumn;
 import org.templateproject.items.oauth2.support.enumerate.Operator;
-import org.templateproject.items.oauth2.support.pojo.PageQueryBO;
+import org.templateproject.items.oauth2.support.pojo.BootstrapTableQuery;
 
 /**
  * Created by Wuwenbin on 2017/7/20.
  */
-public class SessionBO extends PageQueryBO {
+public class SessionBO extends BootstrapTableQuery {
 
     private String username;
     private String ip;

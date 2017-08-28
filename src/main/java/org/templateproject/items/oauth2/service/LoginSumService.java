@@ -11,7 +11,6 @@ import org.templateproject.items.oauth2.support.pojo.vo.LoginSumVO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -29,12 +28,12 @@ public class LoginSumService extends SimpleBaseCrudService<IUserLoginLog, Intege
      * @param loginSumBO
      * @return
      */
-    public List<String> dateToTimeSpan(LoginSumBO loginSumBO) {
+    private List<String> dateToTimeSpan(LoginSumBO loginSumBO) {
         List<String> timeSpanList = new ArrayList<>();
         LocalDate endDate = LocalDate.parse(loginSumBO.getEndTime());
         for (int i = 0; i < loginSumBO.getNum(); i++) {
             LocalDate date = endDate.minusDays(i);
-            timeSpanList.add(date.getYear() + "-" + date.getMonthValue() + "-" + date.getDayOfMonth());
+            timeSpanList.add(date.toString());
         }
         Collections.reverse(timeSpanList);
         return timeSpanList;
@@ -46,7 +45,7 @@ public class LoginSumService extends SimpleBaseCrudService<IUserLoginLog, Intege
      * @param date
      * @return
      */
-    public String dateFormatter(String date) {
+    private String dateFormatter(String date) {
         return date.substring(5, date.length()).replace('-', '.');
     }
 
@@ -58,13 +57,12 @@ public class LoginSumService extends SimpleBaseCrudService<IUserLoginLog, Intege
      * @param id
      * @return
      */
-    public List<IDepartment> getDeptId(List<IDepartment> list, Integer id) {
-        String sql = "SELECT * FROM t_oauth_department tod WHERE 1=1 AND tod.parent_id  = ?";
+    private List<IDepartment> getDeptId(List<IDepartment> list, Integer id) {
+        String sql = "SELECT * FROM t_oauth_department tod WHERE  tod.parent_id  = ?";
         List<IDepartment> departments = mysql.findListBeanByArray(sql, IDepartment.class, id);
         list.addAll(departments);
-        Iterator<IDepartment> iterator = departments.iterator();
-        while (iterator.hasNext()) {
-            getDeptId(list, iterator.next().getId());
+        for (IDepartment department : departments) {
+            getDeptId(list, department.getId());
         }
         return list;
     }
@@ -75,14 +73,13 @@ public class LoginSumService extends SimpleBaseCrudService<IUserLoginLog, Intege
      * @param id
      * @return
      */
-    public String deptIdFormatter(Integer id) {
-        String deptIds = " " + id;
+    private String deptIdFormatter(Integer id) {
+        StringBuilder deptIds = new StringBuilder(" " + id);
         List<IDepartment> list = new ArrayList<>();
-        Iterator<IDepartment> oauthDepartmentIterator = getDeptId(list, id).iterator();
-        while (oauthDepartmentIterator.hasNext()) {
-            deptIds = deptIds + "," + oauthDepartmentIterator.next().getId();
+        for (IDepartment iDepartment : getDeptId(list, id)) {
+            deptIds.append(",").append(iDepartment.getId());
         }
-        return deptIds;
+        return deptIds.toString();
     }
 
 
@@ -93,23 +90,32 @@ public class LoginSumService extends SimpleBaseCrudService<IUserLoginLog, Intege
      * @return
      */
     public LoginSumVO getData(LoginSumBO loginSumBO) {
-        List<String> TimeSpan = dateToTimeSpan(loginSumBO);
-        Integer[] sumList = new Integer[loginSumBO.getNum()];
-        String[] dateList = new String[loginSumBO.getNum()];
-        LoginSumVO loginSumVO = new LoginSumVO();
+        List<String> date = dateToTimeSpan(loginSumBO);
+        String[] sums = new String[loginSumBO.getNum()];
+        String[] dates = new String[loginSumBO.getNum()];
+        int[] mounts = new int[loginSumBO.getNum()];
+        LoginSumVO loginChart = new LoginSumVO();
         String deptIds = deptIdFormatter(loginSumBO.getDeptId());
         for (int i = 0; i < loginSumBO.getNum(); i++) {
-            String sql = "SELECT COUNT(*) FROM T_OAUTH_USER_LOGIN_LOG WHERE 1=1 AND T_OAUTH_USER_LOGIN_LOG.USER_ID IN (" +
-                    "SELECT T_OAUTH_USER.ID FROM T_OAUTH_USER WHERE T_OAUTH_USER.DEPT_ID IN (" + deptIds + ")" +
-                    ") AND T_OAUTH_USER_LOGIN_LOG.LAST_LOGIN_DATE = ?";
+            String sumSql = "SELECT COUNT(1) AS cnt FROM t_oauth_user_login_log " +
+                    "WHERE t_oauth_user_login_log.user_id " +
+                    "IN (SELECT t_oauth_user.id FROM t_oauth_user WHERE t_oauth_user.dept_id IN (" + deptIds + ")) " +
+                    "AND date_format(t_oauth_user_login_log.last_login_date,'%Y-%m-%d') = ?";
 
-            sumList[i] = (mysql.queryNumberByArray(sql, Integer.class, TimeSpan.get(i)));
-            dateList[i] = (dateFormatter(TimeSpan.get(i)));
+            sums[i] = mysql.findMapByArray(sumSql, date.get(i)).get("cnt").toString();
+
+            String mountSql = "SELECT user_id,count(1) as cnt FROM t_oauth_user_login_log " +
+                    "WHERE t_oauth_user_login_log.user_id " +
+                    "IN (SELECT t_oauth_user.id FROM t_oauth_user WHERE t_oauth_user.dept_id IN (" + deptIds + ")) " +
+                    "AND date_format(t_oauth_user_login_log.last_login_date,'%Y-%m-%d') = ? GROUP BY t_oauth_user_login_log.user_id";
+            mounts[i] = mysql.findListMapByArray(mountSql, date.get(i)).size();
+            dates[i] = date.get(i);
         }
 
-        loginSumVO.setLoginSum(sumList);
-        loginSumVO.setLoginDate(dateList);
-        return loginSumVO;
+        loginChart.setLoginSum(sums);
+        loginChart.setLoginMount(mounts);
+        loginChart.setLoginDate(dates);
+        return loginChart;
     }
 
 }

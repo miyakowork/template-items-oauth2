@@ -12,6 +12,8 @@ import org.templateproject.items.oauth2.support.pojo.vo.OperationPrivilegeTypeVO
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
 
+import java.util.List;
+
 /**
  * Created by zhangteng on 2017/7/12.
  */
@@ -49,15 +51,7 @@ public class OperationPrivilegeTypeRestController extends BaseRestController {
      */
     @RequestMapping("add")
     public R add(IOperationPrivilegeType resource) {
-        try {
-            if (operationPrivilegeTypeService.save(resource, IOperationPrivilegeType.class))
-                return R.ok("添加操作级权限类型成功");
-            else
-                return R.error("添加操作级权限类型失败");
-        } catch (Exception e) {
-            LOGGER.error("添加操作级权限类型异常，异常信息：{}", e);
-            return R.error("添加操作级权限类型异常，异常信息：" + e.getMessage());
-        }
+        return ajaxDoneAdd("操作级权限类型", operationPrivilegeTypeService, resource, IOperationPrivilegeType.class);
     }
 
     /**
@@ -68,16 +62,12 @@ public class OperationPrivilegeTypeRestController extends BaseRestController {
      */
     @RequestMapping("edit")
     public R edit(IOperationPrivilegeType resource) {
-        try {
-            if (operationPrivilegeTypeService.edit(resource, IOperationPrivilegeType.class))
-                return R.ok("修改操作级权限类型成功");
-            else
-                return R.error("修改操作级权限类型失败");
-        } catch (Exception e) {
-            LOGGER.error("修改操作级权限类型异常，异常信息：{}", e);
-            return R.error("修改操作级权限类型异常，异常信息：" + e.getMessage());
-        }
+        return ajaxDoneEdit("操作级权限类型", operationPrivilegeTypeService, resource, IOperationPrivilegeType.class);
     }
 
 
+    @RequestMapping("find/operationType/enabled")
+    public List<IOperationPrivilegeType> findEnabledOperationTypes() {
+        return operationPrivilegeTypeService.findEnabledListBean(IOperationPrivilegeType.class);
+    }
 }

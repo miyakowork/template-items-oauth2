@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-08-18 15:20:03
+Date: 2017-08-28 17:16:22
 */
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -59,8 +59,8 @@ INSERT INTO `t_oauth_department`
 VALUES ('4', '江西师范大学', '0', '1', '2017-08-08 20:21:52', '1', '2017-08-08 20:21:52', '1', '0', '大学');
 INSERT INTO `t_oauth_department`
 VALUES ('5', '古汉语文学', '3', '1', '2017-08-09 20:06:35', '1', '2017-08-08 20:22:02', '1', '0', '专业');
-INSERT INTO `t_oauth_department` VALUES
-  ('6', '中国中国中国中国中国中国中国中国中国中国中国中国中国中国中国中国', '0', '1', '2017-08-18 11:04:57', '1', '2017-08-18 11:04:57', '1', '0', '');
+INSERT INTO `t_oauth_department`
+VALUES ('6', '中国中国中国中国中国中', '0', '1', '2017-08-28 13:24:05', '1', '2017-08-18 11:04:57', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_menu
@@ -69,9 +69,11 @@ DROP TABLE IF EXISTS `t_oauth_menu`;
 CREATE TABLE `t_oauth_menu` (
   `id`             INT(11) UNSIGNED NOT NULL AUTO_INCREMENT
   COMMENT '菜单id',
+  `parent_id`      INT(11)          NOT NULL DEFAULT '0'
+  COMMENT '父级id',
   `name`           VARCHAR(50)      NOT NULL
   COMMENT '名称',
-  `resource_id`    INT(11) UNSIGNED NOT NULL
+  `resource_id`    INT(11) UNSIGNED          DEFAULT NULL
   COMMENT '资源id',
   `system_code`    VARCHAR(20)      NOT NULL
   COMMENT '系统模块代码',
@@ -80,7 +82,7 @@ CREATE TABLE `t_oauth_menu` (
   `icon_larger`    VARCHAR(50)               DEFAULT NULL
   COMMENT '菜单大图标',
   `menu_type`      VARCHAR(10)      NOT NULL
-  COMMENT '菜单类型(1:：权限菜单，2：外部url菜单，3：js事件)',
+  COMMENT '菜单类型(1:权限菜单，2：外部url菜单，3：js事件，4：目录（即为3的JavaScript:void(0)事件或者#）)',
   `href`           VARCHAR(500)              DEFAULT NULL
   COMMENT '外部链接地址',
   `onclick`        TEXT COMMENT 'onclick事件',
@@ -90,8 +92,6 @@ CREATE TABLE `t_oauth_menu` (
   COMMENT '角色id',
   `menu_module_id` INT(11) UNSIGNED NOT NULL
   COMMENT '菜单模块id',
-  `parent_id`      INT(11)          NOT NULL
-  COMMENT '父级id',
   `enabled`        TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
   `update_date`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -117,11 +117,15 @@ CREATE TABLE `t_oauth_menu` (
   CONSTRAINT `menu_fk4` FOREIGN KEY (`menu_module_id`) REFERENCES `t_oauth_menu_module` (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 13
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_menu
 -- ----------------------------
+INSERT INTO `t_oauth_menu` VALUES
+  ('4', '0', '大傻大傻大傻', '5', 'SYS_BASE_PLATFORM', 'list', NULL, '1', '', '', '', '1', '2', '1', '2017-08-27 15:27:33',
+   '1', '2017-08-27 15:27:33', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_menu_module
@@ -157,14 +161,19 @@ CREATE TABLE `t_oauth_menu_module` (
   CONSTRAINT `menu_module_fk` FOREIGN KEY (`system_code`) REFERENCES `t_oauth_system_module` (`system_code`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 9
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_menu_module
 -- ----------------------------
 INSERT INTO `t_oauth_menu_module` VALUES
-  ('1', '系统设置', NULL, NULL, 'SYS_BASE_PLATFORM', '1', '2017-08-10 23:04:34', '1', '2017-08-09 19:39:18', '1', '0', '');
+  ('2', '测试菜单模块A1', '', '', 'SYS_BASE_PLATFORM', '1', '2017-08-18 18:56:28', '1', '2017-08-18 17:25:36', '1', '0', '');
+INSERT INTO `t_oauth_menu_module` VALUES
+  ('4', '测试菜单模块B1', '', '', 'SYS_WECHAT_PLATFORM', '1', '2017-08-18 18:56:43', '1', '2017-08-18 18:56:43', '1', '0',
+   '');
+INSERT INTO `t_oauth_menu_module` VALUES
+  ('8', '测试菜单模块A2', '', '', 'SYS_BASE_PLATFORM', '1', '2017-08-26 13:17:51', '1', '2017-08-26 13:17:51', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_operation_privilege_type
@@ -241,11 +250,24 @@ CREATE TABLE `t_oauth_privilege_operation` (
   CONSTRAINT `privilege_operation_fk3` FOREIGN KEY (`operation_type_id`) REFERENCES `t_oauth_operation_privilege_type` (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 22
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_privilege_operation
 -- ----------------------------
+INSERT INTO `t_oauth_privilege_operation`
+VALUES ('2', '测试权限资源1', '19', '8', '1', '1', '2017-08-23 13:53:14', '1', '2017-08-23 13:53:14', '1', '0', '');
+INSERT INTO `t_oauth_privilege_operation`
+VALUES ('17', 'A测试2', '2', '7', '1', '1', '2017-08-23 19:55:50', '1', '2017-08-23 19:55:50', '1', '0', '');
+INSERT INTO `t_oauth_privilege_operation`
+VALUES ('18', 'A测试5', '5', '10', '1', '1', '2017-08-24 10:22:08', '1', '2017-08-24 10:22:08', '1', '0', '');
+INSERT INTO `t_oauth_privilege_operation`
+VALUES ('19', 'A测试7', '7', '7', '1', '1', '2017-08-24 10:39:58', '1', '2017-08-24 10:39:58', '1', '0', '');
+INSERT INTO `t_oauth_privilege_operation`
+VALUES ('20', 'A测试12', '12', '8', '1', '1', '2017-08-24 17:25:01', '1', '2017-08-24 17:25:01', '1', '0', '');
+INSERT INTO `t_oauth_privilege_operation`
+VALUES ('21', 'A测试9', '9', '7', '1', '1', '2017-08-25 11:45:00', '1', '2017-08-25 11:45:00', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_privilege_page
@@ -281,11 +303,26 @@ CREATE TABLE `t_oauth_privilege_page` (
   CONSTRAINT `privilege_page_fk2` FOREIGN KEY (`resource_module_id`) REFERENCES `t_oauth_resource_module` (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 14
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_privilege_page
 -- ----------------------------
+INSERT INTO `t_oauth_privilege_page`
+VALUES ('7', '测试页面资源1', '6', '1', '1', '2017-08-23 19:42:44', '1', '2017-08-22 11:37:58', '1', '0', '');
+INSERT INTO `t_oauth_privilege_page`
+VALUES ('8', '测试页面资源2', '10', '1', '1', '2017-08-23 19:42:51', '1', '2017-08-22 11:38:08', '1', '0', '');
+INSERT INTO `t_oauth_privilege_page`
+VALUES ('9', '测试页面资源3', '114', '4', '1', '2017-08-23 19:43:02', '1', '2017-08-22 11:38:17', '1', '0', '');
+INSERT INTO `t_oauth_privilege_page`
+VALUES ('10', '测试页面资源4', '9', '3', '1', '2017-08-23 19:43:15', '1', '2017-08-22 11:38:31', '1', '0', '');
+INSERT INTO `t_oauth_privilege_page`
+VALUES ('11', '测试页面资源5', '15', '3', '1', '2017-08-23 19:43:19', '1', '2017-08-22 11:48:57', '1', '0', '');
+INSERT INTO `t_oauth_privilege_page`
+VALUES ('12', '测试页面资源6', '85', '2', '1', '2017-08-23 19:43:23', '1', '2017-08-22 11:50:03', '1', '0', '');
+INSERT INTO `t_oauth_privilege_page`
+VALUES ('13', '测试页面资源7', '5', '1', '1', '2017-08-23 19:43:28', '1', '2017-08-23 19:42:25', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_resource
@@ -343,8 +380,8 @@ INSERT INTO `t_oauth_resource` VALUES
   ('5', '/management/atest5', 'A测试5', 'sys:atest5:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
         '2017-08-15 13:56:37', '1', '5', NULL);
 INSERT INTO `t_oauth_resource` VALUES
-  ('6', '/management/atest6', 'A测试6', 'sys:atest6:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
-        '2017-08-15 13:56:37', '1', '6', NULL);
+  ('6', '/management/atest6', 'A测试6', 'sys:atest6:list', 'SYS_BASE_PLATFORM', '1', '2017-08-24 17:00:46', '1',
+        '2017-08-15 13:56:37', '1', '6', '');
 INSERT INTO `t_oauth_resource` VALUES
   ('7', '/management/atest7', 'A测试7', 'sys:atest7:list', 'SYS_BASE_PLATFORM', '1', '2017-08-15 13:56:37', '1',
         '2017-08-15 13:56:37', '1', '7', NULL);
@@ -952,20 +989,20 @@ CREATE TABLE `t_oauth_resource_module` (
   CONSTRAINT `resource_module_fk1` FOREIGN KEY (`system_code`) REFERENCES `t_oauth_system_module` (`system_code`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 5
+  AUTO_INCREMENT = 9
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_resource_module
 -- ----------------------------
 INSERT INTO `t_oauth_resource_module`
-VALUES ('1', '系统管理', 'SYS_BASE_PLATFORM', '1', '2017-08-11 00:18:22', '1', '2017-08-09 19:41:26', '1', '0', '');
+VALUES ('1', 'A系统管理', 'SYS_BASE_PLATFORM', '1', '2017-08-19 11:15:46', '1', '2017-08-09 19:41:26', '1', '0', '');
 INSERT INTO `t_oauth_resource_module`
-VALUES ('2', '个人信息管理', 'SYS_BASE_PLATFORM', '1', '2017-08-14 11:59:02', '1', '2017-08-14 11:59:02', '1', '0', '');
+VALUES ('2', 'A个人信息管理', 'SYS_BASE_PLATFORM', '1', '2017-08-19 11:15:49', '1', '2017-08-14 11:59:02', '1', '0', '');
 INSERT INTO `t_oauth_resource_module`
-VALUES ('3', '系统日志及监控', 'SYS_BASE_PLATFORM', '1', '2017-08-14 11:59:13', '1', '2017-08-14 11:59:13', '1', '0', '');
+VALUES ('3', 'A系统日志及监控', 'SYS_BASE_PLATFORM', '1', '2017-08-19 11:15:52', '1', '2017-08-14 11:59:13', '1', '0', '');
 INSERT INTO `t_oauth_resource_module`
-VALUES ('4', '系统管理', 'SYS_WECHAT_PLATFORM', '1', '2017-08-14 12:02:23', '1', '2017-08-14 12:02:23', '1', '0', '');
+VALUES ('4', 'B系统管理', 'SYS_WECHAT_PLATFORM', '1', '2017-08-19 11:16:11', '1', '2017-08-14 12:02:23', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_role
@@ -1001,7 +1038,7 @@ CREATE TABLE `t_oauth_role` (
   CONSTRAINT `role_fk1` FOREIGN KEY (`system_code`) REFERENCES `t_oauth_system_module` (`system_code`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 6
+  AUTO_INCREMENT = 14
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -1017,11 +1054,35 @@ INSERT INTO `t_oauth_role` VALUES
   ('3', 'ROLE_WECHAT_SUPER_ADMIN', 'B角色1', '0', 'SYS_WECHAT_PLATFORM', '2017-08-08 20:22:59', '1',
         '2017-08-14 15:19:24', '1', '0', '微信通用管理平台超级管理员', '1');
 INSERT INTO `t_oauth_role` VALUES
-  ('4', 'ROLE_WECHAT_ADMIN', 'B角色1.1', '3', 'SYS_WECHAT_PLATFORM', '2017-08-08 20:23:22', '1', '2017-08-14 15:19:42',
+  ('4', 'ROLE_WECHAT_ADMIN', 'B角色1.1', '3', 'SYS_WECHAT_PLATFORM', '2017-08-08 20:23:22', '1', '2017-08-24 11:46:28',
         '1', '0', '微信管理平台管理员', '1');
 INSERT INTO `t_oauth_role` VALUES
   ('5', 'ROLE_WECHAT_DEVELOPER', 'B角色2', '0', 'SYS_WECHAT_PLATFORM', '2017-08-08 20:23:58', '1', '2017-08-14 15:19:32',
         '1', '0', '微信通用管理平台开发人员', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('6', 'ROLE_TEST_1_2', 'B角色1.2', '3', 'SYS_WECHAT_PLATFORM', '2017-08-25 11:02:02', '1', '2017-08-25 11:02:02', '1',
+        '0', '', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('7', 'ROLE_TEST_2_1', 'B角色2.1', '5', 'SYS_WECHAT_PLATFORM', '2017-08-25 11:02:24', '1', '2017-08-25 11:02:24', '1',
+        '0', '', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('8', 'ROLE_TEST_3', 'B角色3', '0', 'SYS_WECHAT_PLATFORM', '2017-08-25 11:50:17', '1', '2017-08-25 11:50:17', '1', '0',
+        '', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('9', 'ROLE_TEST_4', 'B角色4', '0', 'SYS_WECHAT_PLATFORM', '2017-08-25 11:50:35', '1', '2017-08-25 11:50:35', '1', '0',
+        '', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('10', 'ROLE_TEST_5', 'B角色5', '0', 'SYS_WECHAT_PLATFORM', '2017-08-25 11:50:41', '1', '2017-08-25 11:50:41', '1', '0',
+         '', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('11', 'ROLE_TEST_6', 'B角色6', '0', 'SYS_WECHAT_PLATFORM', '2017-08-25 11:50:47', '1', '2017-08-25 11:50:47', '1', '0',
+         '', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('12', 'ROLE_TEST_3_1', 'B角色3.1', '8', 'SYS_WECHAT_PLATFORM', '2017-08-25 11:50:57', '1', '2017-08-25 11:50:57', '1',
+         '0', '', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('13', 'ROLE_TEST_1_1', 'A角色1.1', '1', 'SYS_BASE_PLATFORM', '2017-08-25 13:56:41', '1', '2017-08-25 13:56:41', '1',
+         '0', '', '1');
 
 -- ----------------------------
 -- Table structure for t_oauth_role_resource
@@ -1043,6 +1104,30 @@ CREATE TABLE `t_oauth_role_resource` (
 -- ----------------------------
 -- Records of t_oauth_role_resource
 -- ----------------------------
+INSERT INTO `t_oauth_role_resource` VALUES ('2', '85', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('4', '114', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('2', '6', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('2', '2', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('2', '7', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('2', '15', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '15', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '85', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '6', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '7', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '9', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '10', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '19', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '12', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '85', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '10', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '19', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '12', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '6', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '9', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('6', '114', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('1', '2', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('13', '2', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('8', '114', '1');
 
 -- ----------------------------
 -- Table structure for t_oauth_session
@@ -1074,18 +1159,18 @@ CREATE TABLE `t_oauth_session` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 11
+  AUTO_INCREMENT = 154
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
 -- Records of t_oauth_session
 -- ----------------------------
-INSERT INTO `t_oauth_session` VALUES ('10', 'sa', 'b18ffc05-4fbc-4f9c-82ac-52090ec33ab7',
-                                            'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJGIxOGZmYzA1LTRmYmMtNGY5Yy04MmFjLTUyMDkwZWMzM2FiN3NyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV3z61FmeHNxAH4AA3cIAAABXfQ1gH94dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAEy9vYXV0aDIvbWVudS1tb2R1bGV0AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AC4vb2F1dGgyL3N5c3RlbS1tb2R1bGUvYXBpL2ZpbmQvbW9kdWxlcy9lbmFibGVkdABNb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LnN1cHBvcnQuRGVmYXVsdFN1YmplY3RDb250ZXh0X1BSSU5DSVBBTFNfU0VTU0lPTl9LRVlzcgAyb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LlNpbXBsZVByaW5jaXBhbENvbGxlY3Rpb26of1glxqMISgMAAUwAD3JlYWxtUHJpbmNpcGFsc3QAD0xqYXZhL3V0aWwvTWFwO3hwc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhxAH4ABj9AAAAAAAAMdwgAAAAQAAAAAXQAQW9yZy50ZW1wbGF0ZXByb2plY3QuaXRlbXMub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8wc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAAQP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgAYeHh4',
-                                            '127.0.0.1', '2017-08-18 13:57:52', '2017-08-18 15:18:53', '1800000',
-                                            'http://127.0.0.1:8082/oauth2/menu-module',
-                                            'http://127.0.0.1:8082/oauth2/system-module/api/find/modules/enabled',
-                                            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('153', 'sa', '1c9254ac-9b8e-471f-b0a6-421361aa2155',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDFjOTI1NGFjLTliOGUtNDcxZi1iMGE2LTQyMTM2MWFhMjE1NXNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV4oHUTseHNxAH4AA3cIAAABXiggcLR4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAFi9vYXV0aDIvcHJpdmlsZWdlLXBhZ2V0AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0ADkvb2F1dGgyL3N5c3RlbS1tb2R1bGUvYXBpL2ZpbmQvbW9kdWxlcy9lbmFibGVkL21vZHVsZVRyZWV0AE1vcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfUFJJTkNJUEFMU19TRVNTSU9OX0tFWXNyADJvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3QuU2ltcGxlUHJpbmNpcGFsQ29sbGVjdGlvbqh/WCXGowhKAwABTAAPcmVhbG1QcmluY2lwYWxzdAAPTGphdmEvdXRpbC9NYXA7eHBzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hNYXA0wE5cEGzA+wIAAVoAC2FjY2Vzc09yZGVyeHEAfgAGP0AAAAAAAAx3CAAAABAAAAABdABBb3JnLnRlbXBsYXRlcHJvamVjdC5pdGVtcy5vYXV0aDIuY29uZmlnLnN1cHBvcnQucmVhbG0uVXNlclJlYWxtXzNzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hTZXTYbNdald0qHgIAAHhyABFqYXZhLnV0aWwuSGFzaFNldLpEhZWWuLc0AwAAeHB3DAAAABA/QAAAAAAAAXQAAnNheHgAdwEBcQB+ABh4eHg=',
+                                             '127.0.0.1', '2017-08-28 17:12:40', '2017-08-28 17:16:08', '1800000',
+                                             'http://127.0.0.1:8082/oauth2/privilege-page',
+                                             'http://127.0.0.1:8082/oauth2/system-module/api/find/modules/enabled/moduleTree',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
 
 -- ----------------------------
 -- Table structure for t_oauth_system_module
@@ -1116,7 +1201,7 @@ CREATE TABLE `t_oauth_system_module` (
   KEY `system_code` (`system_code`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 3
+  AUTO_INCREMENT = 11
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -1269,7 +1354,7 @@ CREATE TABLE `t_oauth_user_login_log` (
   CONSTRAINT `user_login_log_fk1` FOREIGN KEY (`user_id`) REFERENCES `t_oauth_user` (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 147
+  AUTO_INCREMENT = 284
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -1567,6 +1652,280 @@ INSERT INTO `t_oauth_user_login_log`
 VALUES ('145', '1', '2017-08-18 13:46:43', '127.0.0.1', '1', '2017-08-18 13:46:43', NULL, NULL, NULL, '0', NULL);
 INSERT INTO `t_oauth_user_login_log`
 VALUES ('146', '1', '2017-08-18 13:57:55', '127.0.0.1', '1', '2017-08-18 13:57:55', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('147', '1', '2017-08-18 17:20:32', '127.0.0.1', '1', '2017-08-18 17:20:32', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('148', '1', '2017-08-18 17:25:15', '127.0.0.1', '1', '2017-08-18 17:25:15', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('149', '1', '2017-08-18 18:49:36', '127.0.0.1', '1', '2017-08-18 18:49:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('150', '1', '2017-08-19 10:23:18', '127.0.0.1', '1', '2017-08-19 10:23:18', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('151', '1', '2017-08-19 10:33:25', '127.0.0.1', '1', '2017-08-19 10:33:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('152', '1', '2017-08-19 11:14:00', '127.0.0.1', '1', '2017-08-19 11:14:00', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('153', '1', '2017-08-19 11:15:08', '127.0.0.1', '1', '2017-08-19 11:15:08', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('154', '1', '2017-08-19 11:47:12', '127.0.0.1', '1', '2017-08-19 11:47:12', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('155', '1', '2017-08-19 11:50:43', '127.0.0.1', '1', '2017-08-19 11:50:43', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('156', '1', '2017-08-19 11:52:19', '127.0.0.1', '1', '2017-08-19 11:52:19', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('157', '1', '2017-08-19 12:09:36', '127.0.0.1', '1', '2017-08-19 12:09:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('158', '1', '2017-08-19 12:32:02', '127.0.0.1', '1', '2017-08-19 12:32:02', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('159', '1', '2017-08-19 17:45:57', '127.0.0.1', '1', '2017-08-19 17:45:57', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('160', '1', '2017-08-19 18:43:37', '127.0.0.1', '1', '2017-08-19 18:43:37', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('161', '1', '2017-08-21 10:38:09', '127.0.0.1', '1', '2017-08-21 10:38:09', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('162', '1', '2017-08-21 10:53:03', '127.0.0.1', '1', '2017-08-21 10:53:03', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('163', '1', '2017-08-21 15:14:41', '127.0.0.1', '1', '2017-08-21 15:14:41', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('164', '1', '2017-08-21 15:18:00', '127.0.0.1', '1', '2017-08-21 15:18:00', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('165', '1', '2017-08-21 15:23:17', '127.0.0.1', '1', '2017-08-21 15:23:17', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('166', '1', '2017-08-21 15:23:47', '127.0.0.1', '1', '2017-08-21 15:23:47', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('167', '1', '2017-08-21 15:41:25', '127.0.0.1', '1', '2017-08-21 15:41:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('168', '1', '2017-08-21 16:23:20', '127.0.0.1', '1', '2017-08-21 16:23:20', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('169', '1', '2017-08-21 16:45:50', '127.0.0.1', '1', '2017-08-21 16:45:50', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('170', '1', '2017-08-21 17:19:04', '127.0.0.1', '1', '2017-08-21 17:19:04', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('171', '1', '2017-08-21 17:26:09', '127.0.0.1', '1', '2017-08-21 17:26:09', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('172', '1', '2017-08-21 19:21:24', '127.0.0.1', '1', '2017-08-21 19:21:24', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('173', '1', '2017-08-21 22:13:36', '127.0.0.1', '1', '2017-08-21 22:13:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('174', '1', '2017-08-22 10:04:17', '127.0.0.1', '1', '2017-08-22 10:04:17', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('175', '1', '2017-08-22 10:39:57', '127.0.0.1', '1', '2017-08-22 10:39:57', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('176', '1', '2017-08-22 10:43:49', '127.0.0.1', '1', '2017-08-22 10:43:49', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('177', '1', '2017-08-22 10:51:33', '127.0.0.1', '1', '2017-08-22 10:51:33', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('178', '1', '2017-08-22 10:54:47', '127.0.0.1', '1', '2017-08-22 10:54:47', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('179', '1', '2017-08-22 10:57:27', '127.0.0.1', '1', '2017-08-22 10:57:27', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('180', '1', '2017-08-22 11:23:00', '127.0.0.1', '1', '2017-08-22 11:23:00', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('181', '1', '2017-08-22 13:37:25', '127.0.0.1', '1', '2017-08-22 13:37:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('182', '1', '2017-08-22 13:43:58', '127.0.0.1', '1', '2017-08-22 13:43:58', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('183', '1', '2017-08-22 14:20:56', '127.0.0.1', '1', '2017-08-22 14:20:56', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('184', '1', '2017-08-22 15:03:48', '127.0.0.1', '1', '2017-08-22 15:03:48', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('185', '1', '2017-08-22 15:07:08', '127.0.0.1', '1', '2017-08-22 15:07:08', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('186', '1', '2017-08-22 15:08:55', '127.0.0.1', '1', '2017-08-22 15:08:55', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('187', '1', '2017-08-22 16:35:38', '127.0.0.1', '1', '2017-08-22 16:35:38', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('188', '1', '2017-08-22 17:35:05', '127.0.0.1', '1', '2017-08-22 17:35:05', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('189', '1', '2017-08-22 19:08:04', '127.0.0.1', '1', '2017-08-22 19:08:04', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('190', '1', '2017-08-22 20:31:34', '127.0.0.1', '1', '2017-08-22 20:31:34', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('191', '1', '2017-08-23 10:41:50', '127.0.0.1', '1', '2017-08-23 10:41:50', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('192', '1', '2017-08-23 11:19:38', '127.0.0.1', '1', '2017-08-23 11:19:38', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('193', '1', '2017-08-23 12:47:19', '127.0.0.1', '1', '2017-08-23 12:47:19', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('194', '1', '2017-08-23 12:53:47', '127.0.0.1', '1', '2017-08-23 12:53:47', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('195', '1', '2017-08-23 13:01:16', '127.0.0.1', '1', '2017-08-23 13:01:16', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('196', '1', '2017-08-23 13:09:47', '127.0.0.1', '1', '2017-08-23 13:09:47', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('197', '1', '2017-08-23 13:11:23', '127.0.0.1', '1', '2017-08-23 13:11:23', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('198', '1', '2017-08-23 13:12:26', '127.0.0.1', '1', '2017-08-23 13:12:26', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('199', '1', '2017-08-23 13:16:59', '127.0.0.1', '1', '2017-08-23 13:16:59', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('200', '1', '2017-08-23 13:29:38', '127.0.0.1', '1', '2017-08-23 13:29:38', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('201', '1', '2017-08-23 13:33:13', '127.0.0.1', '1', '2017-08-23 13:33:13', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('202', '1', '2017-08-23 13:35:36', '127.0.0.1', '1', '2017-08-23 13:35:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('203', '1', '2017-08-23 13:39:37', '127.0.0.1', '1', '2017-08-23 13:39:37', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('204', '1', '2017-08-23 13:40:36', '127.0.0.1', '1', '2017-08-23 13:40:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('205', '1', '2017-08-23 14:46:05', '127.0.0.1', '1', '2017-08-23 14:46:05', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('206', '1', '2017-08-23 14:50:28', '127.0.0.1', '1', '2017-08-23 14:50:28', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('207', '1', '2017-08-23 15:23:36', '127.0.0.1', '1', '2017-08-23 15:23:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('208', '1', '2017-08-23 16:34:44', '127.0.0.1', '1', '2017-08-23 16:34:44', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('209', '1', '2017-08-23 16:53:26', '127.0.0.1', '1', '2017-08-23 16:53:26', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('210', '1', '2017-08-23 19:41:25', '127.0.0.1', '1', '2017-08-23 19:41:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('211', '1', '2017-08-24 10:20:41', '127.0.0.1', '1', '2017-08-24 10:20:41', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('212', '1', '2017-08-24 10:38:46', '127.0.0.1', '1', '2017-08-24 10:38:46', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('213', '1', '2017-08-24 11:38:35', '127.0.0.1', '1', '2017-08-24 11:38:35', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('214', '1', '2017-08-24 12:18:14', '127.0.0.1', '1', '2017-08-24 12:18:14', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('215', '1', '2017-08-24 12:19:25', '127.0.0.1', '1', '2017-08-24 12:19:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('216', '1', '2017-08-24 12:23:25', '127.0.0.1', '1', '2017-08-24 12:23:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('217', '1', '2017-08-24 12:44:12', '127.0.0.1', '1', '2017-08-24 12:44:12', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('218', '1', '2017-08-24 12:45:41', '127.0.0.1', '1', '2017-08-24 12:45:41', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('219', '1', '2017-08-24 12:48:54', '127.0.0.1', '1', '2017-08-24 12:48:54', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('220', '1', '2017-08-24 12:49:55', '127.0.0.1', '1', '2017-08-24 12:49:55', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('221', '1', '2017-08-24 12:50:25', '127.0.0.1', '1', '2017-08-24 12:50:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('222', '1', '2017-08-24 13:19:37', '127.0.0.1', '1', '2017-08-24 13:19:37', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('223', '1', '2017-08-24 13:20:37', '127.0.0.1', '1', '2017-08-24 13:20:37', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('224', '1', '2017-08-24 13:25:10', '127.0.0.1', '1', '2017-08-24 13:25:10', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('225', '1', '2017-08-24 13:47:32', '127.0.0.1', '1', '2017-08-24 13:47:32', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('226', '1', '2017-08-24 17:00:26', '127.0.0.1', '1', '2017-08-24 17:00:26', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('227', '1', '2017-08-24 20:26:43', '127.0.0.1', '1', '2017-08-24 20:26:43', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('228', '1', '2017-08-25 10:53:07', '127.0.0.1', '1', '2017-08-25 10:53:07', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('229', '1', '2017-08-25 11:07:40', '127.0.0.1', '1', '2017-08-25 11:07:40', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('230', '1', '2017-08-25 11:13:16', '127.0.0.1', '1', '2017-08-25 11:13:16', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('231', '1', '2017-08-25 12:51:27', '127.0.0.1', '1', '2017-08-25 12:51:27', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('232', '1', '2017-08-25 13:54:56', '127.0.0.1', '1', '2017-08-25 13:54:56', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('233', '1', '2017-08-25 15:05:21', '127.0.0.1', '1', '2017-08-25 15:05:21', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('234', '1', '2017-08-25 17:09:53', '127.0.0.1', '1', '2017-08-25 17:09:53', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('235', '1', '2017-08-25 18:15:01', '127.0.0.1', '1', '2017-08-25 18:15:01', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('236', '1', '2017-08-26 11:32:34', '127.0.0.1', '1', '2017-08-26 11:32:34', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('237', '1', '2017-08-26 13:30:36', '127.0.0.1', '1', '2017-08-26 13:30:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('238', '1', '2017-08-26 13:34:41', '127.0.0.1', '1', '2017-08-26 13:34:41', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('239', '1', '2017-08-27 10:24:12', '127.0.0.1', '1', '2017-08-27 10:24:12', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('240', '1', '2017-08-27 11:06:38', '127.0.0.1', '1', '2017-08-27 11:06:38', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('241', '1', '2017-08-27 11:09:54', '127.0.0.1', '1', '2017-08-27 11:09:54', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('242', '1', '2017-08-27 11:12:56', '127.0.0.1', '1', '2017-08-27 11:12:56', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('243', '1', '2017-08-27 11:19:45', '127.0.0.1', '1', '2017-08-27 11:19:45', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('244', '1', '2017-08-27 11:37:41', '127.0.0.1', '1', '2017-08-27 11:37:41', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('245', '1', '2017-08-27 11:51:46', '127.0.0.1', '1', '2017-08-27 11:51:46', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('246', '1', '2017-08-27 12:41:06', '127.0.0.1', '1', '2017-08-27 12:41:06', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('247', '1', '2017-08-27 16:59:47', '127.0.0.1', '1', '2017-08-27 16:59:47', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('248', '1', '2017-08-27 19:04:27', '127.0.0.1', '1', '2017-08-27 19:04:27', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('249', '1', '2017-08-27 19:04:46', '127.0.0.1', '1', '2017-08-27 19:04:46', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('250', '1', '2017-08-27 19:10:23', '127.0.0.1', '1', '2017-08-27 19:10:23', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('251', '1', '2017-08-27 19:10:45', '127.0.0.1', '1', '2017-08-27 19:10:45', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('252', '1', '2017-08-27 20:43:47', '127.0.0.1', '1', '2017-08-27 20:43:47', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('253', '1', '2017-08-27 22:05:00', '127.0.0.1', '1', '2017-08-27 22:05:00', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('254', '1', '2017-08-27 23:25:25', '127.0.0.1', '1', '2017-08-27 23:25:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('255', '1', '2017-08-28 10:09:24', '127.0.0.1', '1', '2017-08-28 10:09:24', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('256', '1', '2017-08-28 10:23:38', '0:0:0:0:0:0:0:1', '1', '2017-08-28 10:23:38', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('257', '1', '2017-08-28 11:42:44', '127.0.0.1', '1', '2017-08-28 11:42:44', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('258', '1', '2017-08-28 11:44:36', '127.0.0.1', '1', '2017-08-28 11:44:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('259', '1', '2017-08-28 12:42:54', '127.0.0.1', '1', '2017-08-28 12:42:54', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('260', '1', '2017-08-28 12:46:14', '127.0.0.1', '1', '2017-08-28 12:46:14', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('261', '1', '2017-08-28 12:52:41', '127.0.0.1', '1', '2017-08-28 12:52:41', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('262', '1', '2017-08-28 12:59:14', '127.0.0.1', '1', '2017-08-28 12:59:14', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('263', '1', '2017-08-28 13:53:19', '127.0.0.1', '1', '2017-08-28 13:53:19', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('264', '1', '2017-08-28 14:14:19', '127.0.0.1', '1', '2017-08-28 14:14:19', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('265', '1', '2017-08-28 14:29:36', '127.0.0.1', '1', '2017-08-28 14:29:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('266', '1', '2017-08-28 14:58:04', '127.0.0.1', '1', '2017-08-28 14:58:04', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('267', '1', '2017-08-28 15:04:53', '127.0.0.1', '1', '2017-08-28 15:04:53', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('268', '1', '2017-08-28 15:07:35', '127.0.0.1', '1', '2017-08-28 15:07:35', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('269', '1', '2017-08-28 15:16:18', '127.0.0.1', '1', '2017-08-28 15:16:18', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('270', '1', '2017-08-28 15:17:19', '127.0.0.1', '1', '2017-08-28 15:17:19', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('271', '1', '2017-08-28 15:22:30', '127.0.0.1', '1', '2017-08-28 15:22:30', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('272', '1', '2017-08-28 15:23:51', '127.0.0.1', '1', '2017-08-28 15:23:51', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('273', '1', '2017-08-28 15:27:25', '127.0.0.1', '1', '2017-08-28 15:27:25', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('274', '1', '2017-08-28 16:01:54', '127.0.0.1', '1', '2017-08-28 16:01:54', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('275', '1', '2017-08-28 16:05:31', '127.0.0.1', '1', '2017-08-28 16:05:31', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('276', '1', '2017-08-28 16:07:39', '127.0.0.1', '1', '2017-08-28 16:07:39', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('277', '1', '2017-08-28 16:08:13', '127.0.0.1', '1', '2017-08-28 16:08:13', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('278', '1', '2017-08-28 16:10:01', '127.0.0.1', '1', '2017-08-28 16:10:01', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('279', '1', '2017-08-28 16:23:55', '127.0.0.1', '1', '2017-08-28 16:23:55', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('280', '1', '2017-08-28 16:29:16', '127.0.0.1', '1', '2017-08-28 16:29:16', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('281', '1', '2017-08-28 17:03:26', '127.0.0.1', '1', '2017-08-28 17:03:26', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('282', '1', '2017-08-28 17:05:15', '127.0.0.1', '1', '2017-08-28 17:05:15', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('283', '1', '2017-08-28 17:12:44', '127.0.0.1', '1', '2017-08-28 17:12:44', NULL, NULL, NULL, '0', NULL);
 
 -- ----------------------------
 -- Table structure for t_oauth_user_role
@@ -1590,18 +1949,6 @@ CREATE TABLE `t_oauth_user_role` (
 -- ----------------------------
 -- Records of t_oauth_user_role
 -- ----------------------------
-DROP TRIGGER IF EXISTS `operation_privilege_type_tg1`;
-DELIMITER ;;
-CREATE TRIGGER `operation_privilege_type_tg1`
-AFTER UPDATE ON `t_oauth_operation_privilege_type`
-FOR EACH ROW
-  BEGIN
-    UPDATE t_oauth_privilege_operation
-    SET enabled = new.enabled
-    WHERE operation_type_id = old.id;
-  END
-;;
-DELIMITER ;
 DROP TRIGGER IF EXISTS `resource_tg1`;
 DELIMITER ;;
 CREATE TRIGGER `resource_tg1`
@@ -1615,6 +1962,9 @@ FOR EACH ROW
     SET enabled = new.enabled
     WHERE resource_id = old.id;
     UPDATE t_oauth_privilege_operation
+    SET enabled = new.enabled
+    WHERE resource_id = old.id;
+    UPDATE t_oauth_role_resource
     SET enabled = new.enabled
     WHERE resource_id = old.id;
   END
@@ -1632,6 +1982,8 @@ FOR EACH ROW
     WHERE t_oauth_menu.resource_id = old.id;
     DELETE FROM t_oauth_privilege_page
     WHERE t_oauth_privilege_page.resource_id = old.id;
+    DELETE FROM t_oauth_role_resource
+    WHERE t_oauth_role_resource.resource_id = old.id;
   END
 ;;
 DELIMITER ;
@@ -1665,6 +2017,29 @@ FOR EACH ROW
     WHERE role_id = old.id;
     DELETE FROM t_oauth_menu
     WHERE role_id = old.id;
+  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `role_resource_tg1`;
+DELIMITER ;;
+CREATE TRIGGER `role_resource_tg1`
+AFTER UPDATE ON `t_oauth_role_resource`
+FOR EACH ROW
+  BEGIN
+    UPDATE t_oauth_menu
+    SET enabled = new.enabled
+    WHERE role_id = old.role_id AND resource_id = old.resource_id;
+  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `role_resource_tg2`;
+DELIMITER ;;
+CREATE TRIGGER `role_resource_tg2`
+AFTER DELETE ON `t_oauth_role_resource`
+FOR EACH ROW
+  BEGIN
+    DELETE FROM t_oauth_menu
+    WHERE role_id = old.role_id AND resource_id = old.resource_id;
   END
 ;;
 DELIMITER ;

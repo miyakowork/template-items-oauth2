@@ -1303,6 +1303,11 @@
             return;
         } else {
             this.$pagination.show();
+            if (window.__customControls___) {
+                this.$pagination.css("margin-top", "-35px");
+            } else {
+                this.$pagination.css("margin-top", "0");
+            }
         }
 
         var that = this,

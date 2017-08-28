@@ -51,14 +51,7 @@ public class RoleRestController extends BaseRestController {
      */
     @RequestMapping("/add")
     public R add(IRole iRole) {
-        try {
-            if (roleService.save(iRole, IRole.class))
-                return R.ok("添加角色成功");
-            else return R.error("添加失败");
-        } catch (Exception e) {
-            return R.error("添加失败" + e.getMessage());
-        }
-
+        return ajaxDoneAdd("角色", roleService, iRole, IRole.class);
     }
 
     /**
@@ -69,14 +62,7 @@ public class RoleRestController extends BaseRestController {
      */
     @RequestMapping("/edit")
     public R edit(IRole iRole) {
-        try {
-            if (roleService.edit(iRole, IRole.class))
-                return R.ok("编辑角色成功");
-            else return R.error("编辑失败");
-        } catch (Exception e) {
-            return R.error("编辑失败" + e.getMessage());
-        }
-
+        return ajaxDoneEdit("角色", roleService, iRole, IRole.class);
     }
 
     /**

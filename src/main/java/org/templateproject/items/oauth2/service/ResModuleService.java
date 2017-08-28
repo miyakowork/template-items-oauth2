@@ -44,8 +44,7 @@ public class ResModuleService extends SimpleBaseCrudService<IResourceModule, Int
      * @return
      */
     public List<IResourceModule> findEnabledResModulesBySystemModuleCode(String systemModuleCode) {
-        String sql = "SELECT *" +
-                " FROM t_oauth_resource_module" +
+        String sql = "SELECT * FROM t_oauth_resource_module" +
                 " WHERE enabled = 1 AND system_code = ?";
         return mysql.findListBeanByArray(sql, IResourceModule.class, systemModuleCode);
     }
@@ -63,6 +62,8 @@ public class ResModuleService extends SimpleBaseCrudService<IResourceModule, Int
             zTreeBO.setId(resModule.getId().toString());
             zTreeBO.setpId("0");
             zTreeBO.setName(resModule.getName());
+            //noinspection unchecked
+            zTreeBO.setOther(resModule.getSystemCode());
             zTreeList.add(zTreeBO);
         }
         return zTreeList;
