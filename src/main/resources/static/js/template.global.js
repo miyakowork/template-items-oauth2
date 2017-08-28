@@ -331,13 +331,10 @@ var TF = {
     //TODO
     toggleTableSearch: function () {
         var $header = $("div.bootstrap-table>div.fixed-table-container>div.fixed-table-header");
-        var $pagination = $("div.bootstrap-table>div.fixed-table-container>div.fixed-table-pagination");
         if (window.__customControls___) {
             $header.css("height", "75px");
-            $pagination.css("margin-top", "-35px");
         } else {
             $header.css('height', '37px');
-            $pagination.css("margin-top", "0");
         }
     },
 

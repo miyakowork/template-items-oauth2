@@ -41,6 +41,9 @@
         };
 
         $.get("/oauth2/department/api/selectDepartment?id=0", function (json) {
+            for (var node in json) {
+                json[node].open = true;
+            }
             $.fn.zTree.init($("#DepartmentTreeP"), settings, json);
             var hiddenId = parent.app.OauthDepartment.id;
             var treeObj = $.fn.zTree.getZTreeObj("DepartmentTreeP");

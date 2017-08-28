@@ -24,7 +24,7 @@ public class OperationPrivilegeTypeService extends SimpleBaseCrudService<IOperat
     public Page<OperationPrivilegeTypeVO> findOperationPrivilegeTypePage(Page<OperationPrivilegeTypeVO> page, OperationPrivilegeTypeBo operationPrivilegeTypeBo) {
         String sql = "SELECT toyopt.*, tou1.username AS createUserName, tou2.username AS updateUserName" +
                 " FROM T_OAUTH_OPERATION_PRIVILEGE_TYPE toyopt, t_oauth_user tou1, t_oauth_user tou2" +
-                " WHERE toyopt.create_user = tou1.id AND toyopt.update_user = tou2.id\n";
+                " WHERE toyopt.create_user = tou1.id AND toyopt.update_user = tou2.id";
         return findPagination(page, OperationPrivilegeTypeVO.class, sql, operationPrivilegeTypeBo);
     }
 
