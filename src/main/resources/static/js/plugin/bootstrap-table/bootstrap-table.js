@@ -1552,6 +1552,7 @@
         this.trigger('page-change', this.options.pageNumber, this.options.pageSize);
     };
 
+    //此处做些修改，把页面大小PageSize信息存入cookie，以便下次用户访问不是重新再选择
     BootstrapTable.prototype.onPageListChange = function (event) {
         var $this = $(event.currentTarget);
 

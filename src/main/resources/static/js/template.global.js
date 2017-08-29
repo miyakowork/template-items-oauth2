@@ -35,43 +35,6 @@ var TF = {
         timeout: 301
     },
 
-    /**
-     *本框架通用ajax请求
-     * @param _url
-     * @param _data
-     * @returns {{}}
-     */
-    temp_ajax: function (_url, _data) {
-        var _obj = {};
-        if (!_url) {
-            _obj.code = 406;
-            _obj.message = "the request URL must not be null!";
-            return _obj;
-        }
-        $.ajax({
-            url: _url,
-            type: this.template.ajax_req_type,
-            dataType: this.template.ajax_req_dataType,
-            data: _data || {},
-            async: true,
-            success: function (successJson) {
-                _obj = successJson;
-            },
-            error: function (errorJson) {
-                _obj = errorJson.responseJSON
-            }
-        })
-        return _obj;
-    },
-
-    /**
-     * 路由上通过js跳转另一个路由
-     * @param _url
-     * @param _$container
-     */
-    jump_func_router: function (_url) {
-        loadURL(_url, $("#content"));
-    },
 
     /**
      * 加载路由页面
@@ -649,4 +612,53 @@ function singlePath(treeId, newNode) {
 
 function onExpand(event, treeId, treeNode) {
     curExpandNode = treeNode;
+}
+
+var CookieUtils = {
+    getMsec: function (DateStr) {
+        var timeNum = DateStr.substring(0, DateStr.length - 1) * 1; //时间数量
+        var timeStr = DateStr.substring(DateStr.length - 1, DateStr.length); //时间单位前缀，如h表示小时
+
+        if (timeStr === "s") //20s表示20秒
+        {
+            return timeNum * 1000;
+        }
+        else if (timeStr === "h") //12h表示12小时
+        {
+            return timeNum * 60 * 60 * 1000;
+        }
+        else if (timeStr === "d") {
+            return timeNum * 24 * 60 * 60 * 1000; //30d表示30天
+        }
+    },
+    /**
+     * 调用示例：CookieUtils.set("xx","xx",30d);
+     * 上述表示存储时间为30day
+     * @param name
+     * @param value
+     * @param time
+     */
+    set: function (name, value, time) {
+        var msec = getMsec(time); //获取毫秒
+        var exp = new Date();
+        exp.setTime(exp.getTime() + msec * 1);
+        document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+    },
+    get: function (name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); //正则匹配
+        if (arr = document.cookie.match(reg)) {
+            return unescape(arr[2]);
+        }
+        else {
+            return null;
+        }
+    },
+    del: function (name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = getCookie(name);
+        if (cval != null) {
+            document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+        }
+    }
 }
