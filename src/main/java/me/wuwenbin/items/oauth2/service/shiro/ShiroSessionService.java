@@ -68,7 +68,8 @@ public class ShiroSessionService extends SimpleBaseCrudService<ShiroSession, Int
      * @throws Exception 删除中出现的异常
      */
     public void deleteShiroSession(String sessionId) throws Exception {
-        delete("session_id", sessionId, ShiroSession.class);
+        String sql = "DELETE FROM t_oauth_session WHERE session_id = :sessionId";
+        super.simpleExecutes(sql, "session_id", new String[]{sessionId});
     }
 
     /**

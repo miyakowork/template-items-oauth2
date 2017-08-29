@@ -43,7 +43,7 @@ public class ShiroUserService extends SimpleBaseCrudService<IUser, Integer> {
         if (oldRightPassword.equals(inputPassword)) {
             user.setPassword(newPassword);
             passwordHelper.encryptPassword(user);
-            save(user, IUser.class);
+            simpleSave(user, IUser.class);
         } else throw new RuntimeException("原始密码错误");
     }
 
@@ -57,7 +57,7 @@ public class ShiroUserService extends SimpleBaseCrudService<IUser, Integer> {
     public void changePasswordByUser(IUser user, String newPassword) throws Exception {
         user.setPassword(newPassword);
         passwordHelper.encryptPassword(user);
-        edit(user, IUser.class);
+        simpleEdit(user, IUser.class);
     }
 
     /**

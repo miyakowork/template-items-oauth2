@@ -56,6 +56,6 @@ public class UserService extends SimpleBaseCrudService<IUser, Integer> {
     public void disabledUser(String ids) throws Exception {
         String[] userIds = ids.split(",");
         String sql = "UPDATE T_OAUTH_USER SET ENABLED = 0 WHERE id = :id";
-        executeBatch(sql, "id", userIds);
+        simpleExecutes(sql, "id", userIds);
     }
 }

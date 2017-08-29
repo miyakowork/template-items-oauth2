@@ -43,7 +43,7 @@ public class BaseRestController extends TemplateController {
      */
     protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneAdd(String moduleMessage, CrudService service, Entity entity, Class<Entity> clazz) {
         try {
-            if (service.save(entity, clazz)) {
+            if (service.simpleSave(entity, clazz)) {
                 moduleMessage = TP.placeholder.format("添加{}成功！", moduleMessage);
                 return R.ok(moduleMessage);
             } else {
@@ -71,7 +71,7 @@ public class BaseRestController extends TemplateController {
      */
     protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneEdit(String moduleMessage, CrudService service, Entity entity, Class<Entity> clazz) {
         try {
-            if (service.edit(entity, clazz)) {
+            if (service.simpleEdit(entity, clazz)) {
                 moduleMessage = TP.placeholder.format("修改{}成功！", moduleMessage);
                 return R.ok(moduleMessage);
             } else {
@@ -97,9 +97,9 @@ public class BaseRestController extends TemplateController {
      * @param <CrudService>
      * @return
      */
-    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneHide(String moduleMessage, String[] ids, CrudService service, Class<Entity> clazz) {
+    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneToggle(String moduleMessage, Object[] ids, CrudService service, Class<Entity> clazz) {
         try {
-            service.disabledBatch(ids, clazz);
+            service.simpleToggle(ids, clazz);
             moduleMessage = TP.placeholder.format("禁用{}成功！", moduleMessage);
             return R.ok(moduleMessage);
         } catch (Exception e) {
@@ -121,9 +121,9 @@ public class BaseRestController extends TemplateController {
      * @param <CrudService>
      * @return
      */
-    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneDelete(String moduleMessage, String[] ids, CrudService service, Class<Entity> clazz) {
+    protected <Entity extends BaseEntity, ID, CrudService extends SimpleBaseCrudService<Entity, ID>> R ajaxDoneDelete(String moduleMessage, Object[] ids, CrudService service, Class<Entity> clazz) {
         try {
-            service.deleteBatch(clazz, ids);
+            service.simpleDeletes(clazz, ids);
             moduleMessage = TP.placeholder.format("删除{}成功！", moduleMessage);
             return R.ok(moduleMessage);
         } catch (Exception e) {

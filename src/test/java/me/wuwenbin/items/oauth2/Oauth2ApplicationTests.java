@@ -3,10 +3,7 @@ package me.wuwenbin.items.oauth2;
 import me.wuwenbin.items.oauth2.config.support.password.PasswordHelper;
 import me.wuwenbin.items.oauth2.constant.CommonConsts;
 import me.wuwenbin.items.oauth2.constant.ServiceConsts;
-import me.wuwenbin.items.oauth2.entity.IMenuModule;
-import me.wuwenbin.items.oauth2.entity.IResource;
-import me.wuwenbin.items.oauth2.entity.IResourceModule;
-import me.wuwenbin.items.oauth2.entity.IUser;
+import me.wuwenbin.items.oauth2.entity.*;
 import me.wuwenbin.items.oauth2.service.ResourceService;
 import me.wuwenbin.items.oauth2.service.base.AbstractBaseCrudService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroUserService;
@@ -53,6 +50,8 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService {
 
     @Test
     public void contextLoads() {
+        String sql = SQLFactory.builder(IMenu.class).insertAllWithPk();
+        System.out.println(sql);
     }
 
     //更新测试
@@ -126,7 +125,7 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService {
             resource.setEnabled(true);
             resource.setOrderIndex(i);
             resource.preInsert();
-            resourceService.save(resource, IResource.class);
+            resourceService.simpleSave(resource, IResource.class);
         }
 
         for (int i = 1; i < 100; i++) {
@@ -138,7 +137,7 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService {
             resource.setEnabled(true);
             resource.setOrderIndex(i);
             resource.preInsert();
-            resourceService.save(resource, IResource.class);
+            resourceService.simpleSave(resource, IResource.class);
         }
     }
 }

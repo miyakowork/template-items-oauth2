@@ -24,7 +24,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * 丰富接口的实现类，提供一下额额外的操作方法（接口中未包含的方法）
+ * 丰富接口/抽象类的实现类，提供一下额额外的操作方法（接口中未包含的方法）
  *
  * @see AbstractBaseCrudService
  * Created by Wuwenbin on 2017/7/17.
@@ -43,7 +43,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
      * @return 是否插入成功
      * @throws Exception 插入时生成的异常
      */
-    public boolean save(Model model, Class<Model> clazz) throws Exception {
+    public boolean simpleSave(Model model, Class<Model> clazz) throws Exception {
         model.preInsert();
         return super.save(model, clazz) != null;
     }
@@ -56,7 +56,7 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
      * @return 编辑是否成功
      * @throws Exception 编辑时发生的异常
      */
-    public boolean edit(Model model, Class<Model> clazz) throws Exception {
+    public boolean simpleEdit(Model model, Class<Model> clazz) throws Exception {
         SQLBeanBuilder sbb = SQLFactory.builder(clazz);
         String updateSQL = sbb.updateRoutersByPk(ServiceConsts.DEFAULT_ROUTER, CommonConsts.UPDATE_ROUTER,
                 CommonConsts.ENABLED_ROUTER, CommonConsts.ORDER_ROUTER, CommonConsts.REMARK_ROUTER);
@@ -66,15 +66,15 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
     }
 
     /**
-     * 执行删除的的批量操作
+     * 执行删除的的批量操作,此方法仅适用于条件为主键id的
      *
      * @param ids 需要执行删除的值
      * @throws Exception 执行删除过程中发生的异常
      */
-    public void deleteBatch(Class<Model> clazz, String[] ids) throws Exception {
+    public void simpleDeletes(Class<Model> clazz, Object[] ids) throws Exception {
         SQLBeanBuilder sbb = SQLFactory.builder(clazz);
         Collection<Map<String, Object>> maps = new ArrayList<>(ids.length);
-        for (String id : ids) {
+        for (Object id : ids) {
             Map<String, Object> map = new HashMap<>();
             map.put(sbb.getPkField().getName(), id);//是通过id主键来约束的，即 where pk = :id
             maps.add(map);
@@ -84,55 +84,39 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
     }
 
     /**
-     * 有时候删除并不是一定根据id来删，
-     * 也有可能是根据其他唯一性的字段来删除，
-     * 这个方法就是根据指定的列来删除某条记录
+     * 有时候执行条件并不一定为id，而是其他字段则需要指定
+     * 此方法为执行增删改的批量语句的方法
+     * 此方法只能在service中使用，即需要在此类的子类中使用，因为此方法包含sql，在control层中操作不规范
+     * 注：此方法只适用于sql中只包含一个参数的情况（所以大部分情况是delete语句）,切参数形式为冒号，而不是问号
+     * 例如：update table set flag = true where constraintName = :constraintValue
      *
-     * @param columnName  列明
-     * @param columnValue 列值
-     * @param clazz       记录类型
-     * @return 删除条数
-     * @throws Exception 删除过程中的异常
-     */
-    public void delete(String columnName, Object columnValue, Class<? extends BaseEntity> clazz) throws Exception {
-        SQLBeanBuilder sbb = SQLFactory.builder(clazz);
-        SQLStrBuilder ssb = SQLFactory.builder();
-        String sql = ssb.deleteByColumns(sbb.getTableName(), columnName);
-        mysql.executeArray(sql, columnValue);
-    }
-
-
-    /**
-     * 执行增删改的批量语句的方法
-     *
-     * @param sql            sql
-     * @param constraintName 约束列名字
-     * @param ids            删除对象ids
+     * @param sql              sql
+     * @param constraintName   约束列名字
+     * @param constraintValues 约束列对象ids
      * @throws Exception e
      */
-    public void executeBatch(String sql, String constraintName, String[] ids) throws Exception {
-        Collection<Map<String, Object>> maps = new ArrayList<>(ids.length);
-        for (String id : ids) {
+    protected void simpleExecutes(String sql, String constraintName, Object[] constraintValues) throws Exception {
+        Collection<Map<String, Object>> maps = new ArrayList<>(constraintValues.length);
+        for (Object constraintValue : constraintValues) {
             Map<String, Object> map = new HashMap<>();
-            map.put(constraintName, id);//是通过id主键来约束的，即 where pk = :id
+            map.put(constraintName, constraintValue);//是通过id主键来约束的，即 where pk = :id
             maps.add(map);
         }
         mysql.executeBatchByCollectionMaps(sql, maps);
     }
 
     /**
-     * 批量禁用（逻辑删除）
+     * 批量启用/禁用（适用于enabled字段），并且条件为主键（主键字段名为id）
      *
      * @param ids
      * @param clazz
-     * @param <T>
      * @throws Exception
      */
-    public <T extends Model> void disabledBatch(String[] ids, Class<T> clazz) throws Exception {
+    public <T extends Model> void simpleToggle(Object[] ids, Class<T> clazz) throws Exception {
         SQLBeanBuilder sbb = SQLFactory.builder(clazz);
         SQLStrBuilder ssb = SQLFactory.builder();
         String sql = ssb.updateColumnsByColumnArray(sbb.getTableName(), new String[]{"enabled"}, new String[]{"id"});
-        executeBatch(sql, "id", ids);
+        simpleExecutes(sql, "id", ids);
     }
 
     /**
@@ -147,6 +131,21 @@ public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends Abstrac
         SQLStrBuilder ssb = SQLFactory.builder();
         String sql = ssb.selectAllByColumns(sbb.getTableName(), "enabled");
         return mysql.findListBeanByArray(sql, clazz, 1);
+    }
+
+    /**
+     * 根据ID查找一个可用的对象
+     *
+     * @param clazz
+     * @param id
+     * @param <T>
+     * @return
+     */
+    public <T extends Model> T findEnabledBean(Class<T> clazz, ID id) {
+        SQLBeanBuilder sbb = SQLFactory.builder(clazz);
+        SQLStrBuilder ssb = SQLFactory.builder();
+        String sql = ssb.selectAllByColumns(sbb.getTableName(), "enabled", "id");
+        return mysql.findBeanByArray(sql, clazz, 1, id);
     }
 
     /**

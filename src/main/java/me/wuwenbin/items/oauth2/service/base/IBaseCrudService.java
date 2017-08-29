@@ -42,6 +42,7 @@ public interface IBaseCrudService {
 
     /**
      * 通过id删除对象
+     * 此方法只只用于sql为：delete from xxx where id = :id
      *
      * @param ids
      * @param clazz
