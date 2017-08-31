@@ -3073,7 +3073,6 @@
                 $this.data('bootstrap.table', (data = new BootstrapTable(this, options)));
             }
         });
-
         return typeof value === 'undefined' ? this : value;
     };
 

@@ -198,7 +198,7 @@ var calc_navbar_height = function () {
                 resetWidgets: function ($this) {
 
                     $.SmartMessageBox({
-                        title: "<i class='fa fa-refresh' style='color:green'></i> 清除本地存储？",
+                        title: "<i class='fa fa-times-circle-o fa-lg' style='color:red;'></i> 清除本地存储？",
                         content: $this.data('reset-msg') || "Would you like to RESET all your saved widgets and clear LocalStorage?1",
                         buttons: '[取消][确认]'
                     }, function (ButtonPressed) {

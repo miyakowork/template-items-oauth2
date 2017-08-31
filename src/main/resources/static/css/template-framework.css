@@ -4,7 +4,7 @@
     border-radius: 0 !important;
 }
 
-body.smart-style-1 {
+body {
     font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif !important;
 }
 
@@ -39,7 +39,6 @@ body.smart-style-1 {
     padding-right: 3em !important;
 }
 
-
 .bootstrap-table .pull-right .dropdown-menu {
     min-width: 220px !important;
 }
@@ -50,4 +49,12 @@ div[id$='-toolbar'] {
 
 .cursor-pointer {
     cursor: pointer !important;
+}
+
+.smart-style-0 #logo, .smart-style-0 #tp-date {
+    color: #0C0C0C !important;
+}
+
+.smart-style-3 .login-info a:hover {
+    color: #000000 !important;
 }

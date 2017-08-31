@@ -70,31 +70,26 @@
                 <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
                     <img src="/static/img/avatars/sunny.png" alt="John Doe" class="online"/>
                 </a>
-                <ul class="dropdown-menu pull-right">
+                <ul class="dropdown-menu pull-right padding-top-0 padding-bottom-0">
                     <li>
-                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i
-                                class="fa fa-cog"></i> Setting</a>
+                        <a href="javascript:void(0);" class="padding-10"><i
+                                class="fa fa-cog"></i> <strong>Setting</strong></a>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider margin-top-0 margin-bottom-0"></li>
                     <li>
-                        <a href="#ajax/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i
-                                class="fa fa-user"></i> <u>P</u>rofile</a>
+                        <a href="javascript:void(0);" class="padding-10"> <i
+                                class="fa fa-user"></i> <strong>Profile</strong></a>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider margin-top-0 margin-bottom-0"></li>
                     <li>
-                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"
-                           data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+                        <a href="javascript:void(0);" class="padding-10"
+                           data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <strong>Shortcut</strong></a>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider margin-top-0 margin-bottom-0"></li>
                     <li>
-                        <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"
-                           data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="/logout" class="padding-10 padding-top-5 padding-bottom-5"
-                           data-action="userLogout"><i
-                                class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+                        <a href="/logout" class="padding-10" data-action="userLogout"
+                           data-logout-msg="<h1>确定即将退出当前账号，是否继续？</h1>">
+                            <i class="fa fa-sign-out fa-lg"></i> <strong>Logout</strong></a>
                     </li>
                 </ul>
             </li>
@@ -119,8 +114,7 @@
     </div>
     <!-- end pulled right: nav area -->
     <!-- #PROJECTS: projects dropdown -->
-    <div class="hidden-xs pull-right" style="padding-top: 15px;">
-        <!--<span class="label font-md"></span>-->
+    <div class="hidden-xs pull-left" style="padding-top: 15px;">
         <span class="label font-sm" id="tp-date"></span>
     </div>
 
@@ -252,7 +246,7 @@
 				<span class="ribbon-button-alignment">
 					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets"
                           rel="tooltip" data-placement="bottom"
-                          data-reset-msg="您要复位所有保存的窗口小部件并清除吗？"><i
+                          data-reset-msg="<h1>确定即将要清除本地存储，确定继续？</h1>"><i
                             class="fa fa-refresh"></i></span>
 				</span>
 
@@ -301,8 +295,7 @@
     <ul>
         <li>
             <a href="#ajax/inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i
-                    class="fa fa-envelope fa-4x"></i> <span>Mail <span
-                    class="label pull-right bg-color-darken">14</span></span> </span> </a>
+                    class="fa fa-envelope fa-4x"></i> <span>Mail </span> </span> </a>
         </li>
         <li>
             <a href="#ajax/calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i
@@ -314,7 +307,7 @@
         </li>
         <li>
             <a href="#ajax/invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i
-                    class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span>
+                    class="fa fa-book fa-4x"></i> <span>Invoice </span> </span>
             </a>
         </li>
         <li>

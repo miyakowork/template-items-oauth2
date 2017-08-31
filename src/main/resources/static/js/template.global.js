@@ -149,13 +149,13 @@ var TF = {
     showLoginDT: function () {
         $("#login-dt").html(new Date().getFullYear()
             + "-"
-            + (new Date().getMonth() + 1)
+            + ((new Date().getMonth() + 1) < 10 ? "0" + (new Date().getMonth() + 1) : (new Date().getMonth() + 1))
             + "-"
             + new Date().getDate()
             + "&nbsp;"
             + new Date().getHours()
             + ":"
-            + new Date().getMinutes()
+            + (new Date().getMinutes() < 10 ? "0" + new Date().getMinutes() : new Date().getMinutes())
             + ":"
             + new Date().getSeconds());
     },
@@ -249,7 +249,6 @@ var TF = {
             searchTimeOut: TF.common.search_trigger_time,//触发搜索时间，此处为1秒
             // searchTimeout: 0,//触发搜索延迟时间，我们不要延迟所说义设置为0秒
             trimOnSearch: false,//设置为 true 将允许空字符搜索
-            showToggle: true,//是否显示 切换试图（table/card）按钮
             idField: "id",
             uniqueId: "id",
             maintainSelected: true,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
@@ -264,6 +263,10 @@ var TF = {
         }
         if (mainOptions.singleSelect === undefined) {
             mainOptions.singleSelect = false;
+        }
+        if (mainOptions.cardView === undefined) {
+            mainOptions.cardView = false;//设置为 true将显示card视图，适用于移动设备。否则为table试图，适用于pc
+            mainOptions.showToggle = false;//是否显示 切换试图（table/card）按钮
         }
         //组装options参数
         opt.extend = function (obj) {
@@ -464,7 +467,7 @@ function date_formatter(date) {
 }
 
 //格式化是否可用一列显示方式
-function enabledFormatter(val) {
+function enabledFormatter(val, row, index) {
     return val ? "<label class='label label-success'>可用</label>" : "<label class='label label-danger'>不可用</label>";
 }
 
