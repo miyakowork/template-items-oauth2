@@ -25,7 +25,7 @@
         var laytableIns = laytable.render({
             elem: "#privilege-operation-table",
             width: 1007,
-            height: 440,
+            height: 'full-70',
             url: '/oauth2/privilegeOperation/api/list',
             where: {
                 pagePrivilegeId: parent.$("#poInPageId").val(),
@@ -35,7 +35,7 @@
             limit: 20,
             even: true,
             cols: [[
-                {field: 'id', width: 100, title: "ID", fixed: true, align: 'center'},
+                {field: 'id', width: 100, title: "ID", fixed: true, align: 'center', sort: true},
                 {
                     field: 'operationName',
                     width: 250,
@@ -44,8 +44,8 @@
                     event: 'setOperationName',
                     style: 'cursor: pointer;'
                 },
-                {field: 'url', width: 250, title: "资源url", align: 'center'},
-                {field: 'privilegePageName', width: 130, title: "所在页面名称", align: 'center'},
+                {field: 'url', width: 250, title: "资源url", align: 'center', sort: true},
+                {field: 'privilegePageName', width: 130, title: "所在页面名称", align: 'center', sort: true},
                 {field: 'pagePrivilegeId', width: 130, title: "所在页面ID", align: 'center'},
                 {field: 'operationTypeName', width: 130, title: "操作权限类型", align: 'center'},
                 {field: 'resourceName', width: 130, title: "资源名称", align: 'center'},
@@ -112,6 +112,18 @@
             active[type] ? active[type].call(this) : '';
         });
 
+        laytable.on("sort(pot)", function (obj) {
+            var sort = obj.field;
+            var order = obj.type;
+            laytableIns.reload({
+                where: {
+                    pagePrivilegeId: parent.$("#poInPageId").val(),
+                    privilegeOperationName: $("input[name='privilegeOperationName']").val(),
+                    sort: sort,
+                    order: order !== null ? order : ""
+                }
+            })
+        })
 
     });
 </script>

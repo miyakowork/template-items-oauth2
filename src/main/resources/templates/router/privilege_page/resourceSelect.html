@@ -23,18 +23,18 @@
         var tableIns = laytable.render({
             elem: "#select-resource-table",
             width: 820,
-            height: 440,
+            height: 'full-70',
             url: '/oauth2/resource/api/selectResources',
             where: {
-                systemModuleCode: parent.$.fn.zTree.getZTreeObj("privilegepageTree").getSelectedNodes()[0].other
+                systemModuleCode: parent.$.fn.zTree.getZTreeObj("privilegepageTree").getSelectedNodes()[0].other,
             },
             page: true,
             limit: 20,
             even: true,
             cols: [[
-                {field: 'id', width: 100, title: "ID", fixed: true, align: 'center'},
-                {field: 'name', width: 300, title: "资源名称", align: 'center'},
-                {field: 'url', width: 300, title: "资源url", align: 'center'},
+                {field: 'id', width: 100, title: "ID", fixed: true, align: 'center', sort: true},
+                {field: 'name', width: 300, title: "资源名称", align: 'center', sort: true},
+                {field: 'url', width: 300, title: "资源url", align: 'center', sort: true},
                 {fixed: 'right', width: 98, title: "勾选操作", align: 'center', toolbar: '#bar'}
             ]]
         });
@@ -42,6 +42,7 @@
         $("#searchNameBtn").click(function () {
             tableIns.reload({
                 where: {
+                    systemModuleCode: parent.$.fn.zTree.getZTreeObj("privilegepageTree").getSelectedNodes()[0].other,
                     name: $("#searchName").val()
                 }
             })
@@ -57,6 +58,19 @@
                 var index = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(index);
             }
+        })
+
+        laytable.on("sort(selectResource)", function (obj) {
+            var sort = obj.field;
+            var order = obj.type;
+            tableIns.reload({
+                where: {
+                    systemModuleCode: parent.$.fn.zTree.getZTreeObj("privilegepageTree").getSelectedNodes()[0].other,
+                    name: $("#searchName").val(),
+                    sort: sort,
+                    order: order !== null ? order : ""
+                }
+            })
         })
     });
 </script>

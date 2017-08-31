@@ -2,11 +2,13 @@ package me.wuwenbin.items.oauth2.support.pojo.bo;
 
 import me.wuwenbin.modules.pagination.query.model.layui.LayTableQuery;
 import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
 import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * created by Wuwenbin on 2017/8/21 at 16:36
  */
+@QueryTable(aliasName = "tor")
 public class ResourceLayBO extends LayTableQuery {
 
     private String name;//搜索的资源名称

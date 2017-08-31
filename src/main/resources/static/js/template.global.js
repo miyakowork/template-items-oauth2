@@ -372,24 +372,14 @@ $(function () {
 
     // ==========切换菜单模块的显示风格  start==========
     var __menuModuleIndex;
-    var menuModuleMini = true;
     var $changeModule = $("#change-module");
     $changeModule.hover(function () {
-        __menuModuleIndex = layer.tips('切换菜单模块展示方式', this, {
+        __menuModuleIndex = layer.tips('切换菜单模块', this, {
             tips: [2, '#fb3c4a'],
             time: 3000
         });
     }, function () {
         layer.close(__menuModuleIndex)
-    });
-    $changeModule.click(function () {
-        if (menuModuleMini) {
-            $("span.menu-module-text").hide();
-            menuModuleMini = false;
-        } else {
-            $("span.menu-module-text").show();
-            menuModuleMini = true
-        }
     });
 
 
