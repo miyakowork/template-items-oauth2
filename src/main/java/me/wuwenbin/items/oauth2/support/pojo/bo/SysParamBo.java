@@ -1,9 +1,9 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * 系统参数查询BO对象
@@ -13,7 +13,7 @@ public class SysParamBo extends BootstrapTableQuery {
 
     private String name;
 
-    @QueryColumn(value = "enabled", operation = Operator.EQ, table = "tosp")
+    @QueryColumn(column = "enabled", operator = Operator.EQ, tableAlias = "tosp")
     private Boolean selectEnabled;
 
     private String value;

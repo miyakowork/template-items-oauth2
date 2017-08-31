@@ -1,19 +1,19 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryTable;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.layui.LayTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * Created by wuwenbin on 2017/7/13.
  */
-@QueryTable("tor")
-public class ResourceBO extends BootstrapTableQuery {
+@QueryTable(aliasName = "tor")
+public class ResourceBO extends LayTableQuery {
     private String url; //资源路径
-    @QueryColumn("permission_mark")
+    @QueryColumn(column = "permission_mark")
     private String permissionMark;   //资源标识
-    @QueryColumn(value = "system_code", operation = Operator.EQ)
+    @QueryColumn(column = "system_code", operator = Operator.EQ)
     private String systemCode;  //系统代码
     private String name;  //名称
     private String enabled;   //是否可用

@@ -2,8 +2,8 @@ package me.wuwenbin.items.oauth2.service;
 
 import me.wuwenbin.items.oauth2.entity.IResource;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
-import me.wuwenbin.items.oauth2.support.pojo.bo.ResourceBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.ResourceVO;
+import me.wuwenbin.modules.pagination.query.TableQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.pojo.page.Page;
@@ -22,7 +22,7 @@ public class ResourceService extends SimpleBaseCrudService<IResource, Integer> {
      * @param page
      * @return page<IResource>
      */
-    public Page<ResourceVO> findResourcePage(ResourceBO resourceBO, Page<ResourceVO> page) {
+    public Page<ResourceVO> findResourcePage(TableQuery resourceBO, Page<ResourceVO> page) {
         String sql = "SELECT tor.*, tou1.username AS create_name, tou2.username AS update_name, tosm.name AS systemModuleName" +
                 " FROM t_oauth_resource tor, t_oauth_user tou1, t_oauth_user tou2, t_oauth_system_module tosm" +
                 " WHERE tor.create_user = tou1.id AND tor.update_user = tou2.id AND tosm.system_code = tor.system_code";

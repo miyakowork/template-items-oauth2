@@ -1,23 +1,23 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryTable;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * Created by wuwenbin on 2017/7/14.
  * 系统模块表BO
  */
-@QueryTable("tosm")
+@QueryTable(aliasName = "tosm")
 public class SystemModuleBo extends BootstrapTableQuery {
 
     private String name;
 
-    @QueryColumn(value = "system_code")
+    @QueryColumn(column = "system_code")
     private String systemCode;
 
-    @QueryColumn(operation = Operator.EQ)
+    @QueryColumn(operator = Operator.EQ)
     private Boolean enabled;
 
 

@@ -1,8 +1,8 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.LayTableQuery;
+import me.wuwenbin.modules.pagination.query.model.layui.LayTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * created by Wuwenbin on 2017/8/21 at 16:36
@@ -11,7 +11,7 @@ public class ResourceLayBO extends LayTableQuery {
 
     private String name;//搜索的资源名称
 
-    @QueryColumn(value = "system_code", operation = Operator.EQ)
+    @QueryColumn(column = "system_code", operator = Operator.EQ)
     private String systemModuleCode;//资源所属系统
 
     public String getName() {

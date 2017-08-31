@@ -103,6 +103,17 @@
 
         <dependency>
             <groupId>me.wuwenbin</groupId>
+            <artifactId>template-tools-sqlgen</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>me.wuwenbin</groupId>
+            <artifactId>template-modules-pagination</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>me.wuwenbin</groupId>
             <artifactId>template-modules-dao</artifactId>
             <version>1.7.4.RELEASE</version>
         </dependency>
@@ -116,11 +127,7 @@
             <artifactId>template-utils-json</artifactId>
             <version>1.2.1.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>me.wuwenbin</groupId>
-            <artifactId>template-tools-sqlgen</artifactId>
-            <version>1.0.0.RELEASE</version>
-        </dependency>
+
     </dependencies>
 
     <build>

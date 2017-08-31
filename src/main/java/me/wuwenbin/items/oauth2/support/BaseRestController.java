@@ -3,7 +3,8 @@ package me.wuwenbin.items.oauth2.support;
 
 import me.wuwenbin.items.oauth2.entity.base.BaseEntity;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTable;
+import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
+import me.wuwenbin.modules.pagination.model.layui.LayTable;
 import org.templateproject.lang.TP;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
@@ -27,6 +28,18 @@ public class BaseRestController extends TemplateController {
     protected <Entity extends BaseEntity> BootstrapTable<Entity> bootstrapTable(Page<Entity> page) {
         List<Entity> result = page.getTResult();
         return new BootstrapTable<>(page.getTotalCount(), result);
+    }
+
+    /**
+     * 后台返回的怕个参数返回LayTable的数据模型
+     *
+     * @param page
+     * @param <Entity>
+     * @return
+     */
+    protected <Entity extends BaseEntity> LayTable<Entity> layTable(Page<Entity> page) {
+        List<Entity> result = page.getTResult();
+        return new LayTable<Entity>(page.getTotalCount(), result);
     }
 
     /**

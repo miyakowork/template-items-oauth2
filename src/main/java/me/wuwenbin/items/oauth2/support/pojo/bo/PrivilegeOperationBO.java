@@ -1,18 +1,18 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.layui.LayTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * created by Wuwenbin on 2017/8/22 at 15:58
  */
-public class PrivilegeOperationBO extends BootstrapTableQuery {
+public class PrivilegeOperationBO extends LayTableQuery {
 
-    @QueryColumn(value = "operation_name")
+    @QueryColumn(column = "operation_name")
     private String privilegeOperationName;
 
-    @QueryColumn(value = "page_privilege_id", operation = Operator.EQ)
+    @QueryColumn(column = "page_privilege_id", operator = Operator.EQ)
     private String pagePrivilegeId;
 
     public String getPrivilegeOperationName() {

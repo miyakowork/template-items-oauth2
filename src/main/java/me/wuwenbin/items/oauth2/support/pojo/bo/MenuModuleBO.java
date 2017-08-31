@@ -1,23 +1,23 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryTable;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * Created by yuanqi on 2017/7/12/012.
  */
-@QueryTable("tomm")
+@QueryTable(aliasName = "tomm")
 public class MenuModuleBO extends BootstrapTableQuery {
 
     private String name;
 
-    @QueryColumn(value = "system_code", operation = Operator.EQ)
+    @QueryColumn(column = "system_code", operator = Operator.EQ)
     private String systemCodeName;
 
-    @QueryColumn(operation = Operator.EQ)
+    @QueryColumn(operator = Operator.EQ)
     public String enabled;
 
     public String getName() {

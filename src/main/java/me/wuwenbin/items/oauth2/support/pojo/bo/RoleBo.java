@@ -1,31 +1,31 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryTable;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * 角色管理查询BO对象
  * Created by tuchen on 2017/7/8.
  * Modify by Wuwenbin on 2017/8/5
  */
-@QueryTable("tor")
+@QueryTable(aliasName = "tor")
 public class RoleBo extends BootstrapTableQuery {
 
-    @QueryColumn(value = "parent_id", operation = Operator.EQ)
+    @QueryColumn(column = "parent_id", operator = Operator.EQ)
     private String parentId;
 
     private String name;
 
-    @QueryColumn(value = "enabled", operation = Operator.EQ)
+    @QueryColumn(column = "enabled", operator = Operator.EQ)
     private Boolean selectEnabled;
 
-    @QueryColumn(value = "cn_name")
+    @QueryColumn(column = "cn_name")
     private String cnName;
 
-    @QueryColumn(value = "system_code")
+    @QueryColumn(column = "system_code")
     private String systemCode;
 
     public String getCnName() {

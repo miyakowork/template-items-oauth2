@@ -3,11 +3,11 @@ package me.wuwenbin.items.oauth2.page.resource;
 import me.wuwenbin.items.oauth2.entity.IResource;
 import me.wuwenbin.items.oauth2.service.ResourceService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTable;
-import me.wuwenbin.items.oauth2.support.pojo.LayTable;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ResourceBO;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ResourceLayBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.ResourceVO;
+import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
+import me.wuwenbin.modules.pagination.model.layui.LayTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,13 +43,8 @@ public class ResourceRestController extends BaseRestController {
 
     @RequestMapping("selectResources")
     public LayTable<ResourceVO> selectResources(Page<ResourceVO> page, ResourceLayBO resourceBO) {
-        ResourceBO resBO = new ResourceBO();
-        resBO.setName(resourceBO.getName());
-        resBO.setPageNo(resourceBO.getPage());
-        resBO.setLimit(resourceBO.getLimit());
-        resBO.setSystemCode(resourceBO.getSystemModuleCode());
-        page = resourceService.findResourcePage(resBO, page);
-        return new LayTable<>(0, "", page.getTotalCount(), page.getTResult());
+        page = resourceService.findResourcePage(resourceBO, page);
+        return layTable(page);
     }
 
     /**

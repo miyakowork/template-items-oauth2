@@ -3,8 +3,9 @@ package me.wuwenbin.items.oauth2.page.privilegeOperation;
 import me.wuwenbin.items.oauth2.entity.IPrivilegeOperation;
 import me.wuwenbin.items.oauth2.service.PrivilegeOperationService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
-import me.wuwenbin.items.oauth2.support.pojo.LayTable;
+import me.wuwenbin.items.oauth2.support.pojo.bo.PrivilegeOperationBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.PrivilegeOperationVO;
+import me.wuwenbin.modules.pagination.model.layui.LayTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,9 +27,9 @@ public class PrivilegeOperationRestController extends BaseRestController {
     }
 
     @RequestMapping("list")
-    public LayTable<PrivilegeOperationVO> privilegeOperationPage(Page<PrivilegeOperationVO> pageVO, int page, int limit, String privilegeOperationName, String pagePrivilegeId) {
-        pageVO = privilegeOperationService.findPrivilegeOperationPage(pageVO, page, limit, privilegeOperationName, pagePrivilegeId);
-        return new LayTable<>(0, "", pageVO.getTotalCount(), pageVO.getTResult());
+    public LayTable<PrivilegeOperationVO> privilegeOperationPage(Page<PrivilegeOperationVO> page, PrivilegeOperationBO privilegeOperationBO) {
+        page = privilegeOperationService.findPrivilegeOperationPage(page, privilegeOperationBO);
+        return layTable(page);
     }
 
     @RequestMapping("add")

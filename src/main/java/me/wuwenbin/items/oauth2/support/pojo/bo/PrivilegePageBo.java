@@ -1,25 +1,25 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryTable;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * Created by zhangteng on 2017/7/19.
  * 页面资源表BO
  */
-@QueryTable("topp")
+@QueryTable(aliasName = "topp")
 public class PrivilegePageBo extends BootstrapTableQuery {
 
     private String name;  //资源模块名称
 
     private String enabled;  //是否可用
 
-    @QueryColumn(value = "resource_module_id", operation = Operator.EQ)
+    @QueryColumn(column = "resource_module_id", operator = Operator.EQ)
     private String moduleId;  //资源模块ID
 
-    @QueryColumn(value = "name", table = "tor")
+    @QueryColumn(column = "name", tableName = "tor")
     private String resourceName;  //资源名称
 
     public String getName() {

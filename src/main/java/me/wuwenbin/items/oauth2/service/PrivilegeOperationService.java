@@ -15,12 +15,7 @@ import org.templateproject.pojo.page.Page;
 @Transactional
 public class PrivilegeOperationService extends SimpleBaseCrudService<IPrivilegeOperation, Integer> {
 
-    public Page<PrivilegeOperationVO> findPrivilegeOperationPage(Page<PrivilegeOperationVO> page, int pageNo, int limit, String privilegeOperationName, String pagePrivilegeId) {
-        PrivilegeOperationBO privilegeOperationBO = new PrivilegeOperationBO();
-        privilegeOperationBO.setPrivilegeOperationName(privilegeOperationName);
-        privilegeOperationBO.setLimit(limit);
-        privilegeOperationBO.setPageNo(pageNo);
-        privilegeOperationBO.setPagePrivilegeId(pagePrivilegeId);
+    public Page<PrivilegeOperationVO> findPrivilegeOperationPage(Page<PrivilegeOperationVO> page, PrivilegeOperationBO privilegeOperationBO) {
         String sql = "SELECT topo.*,tor.url,tor.name AS resourceName,topp.name AS privilegePageName,toopt.name AS operationTypeName" +
                 " FROM t_oauth_privilege_operation topo" +
                 " LEFT JOIN t_oauth_resource tor ON tor.id=topo.resource_id " +

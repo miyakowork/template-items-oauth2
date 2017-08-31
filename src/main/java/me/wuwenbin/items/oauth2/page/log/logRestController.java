@@ -2,9 +2,9 @@ package me.wuwenbin.items.oauth2.page.log;
 
 import me.wuwenbin.items.oauth2.service.LogService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTable;
 import me.wuwenbin.items.oauth2.support.pojo.bo.LogBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.LoginLogVO;
+import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,24 +1,25 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryTable;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * Created by Administrator on 2017/7/19/019.
  */
-@QueryTable("tou")
+@QueryTable(aliasName = "tou")
 public class UserBO extends BootstrapTableQuery {
 
     private String username;//用户名
 
     private String cname;
 
-    @QueryColumn(operation = Operator.EQ)
+    @QueryColumn(operator = Operator.EQ)
     private String enabled;
 
-    @QueryColumn(operation = Operator.GTE, value = "create_date")
+    @QueryColumn(operator = Operator.GTE, column = "create_date")
     private String createDate;
 
     public String getUsername() {

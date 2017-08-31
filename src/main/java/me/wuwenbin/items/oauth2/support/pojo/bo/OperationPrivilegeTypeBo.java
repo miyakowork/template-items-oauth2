@@ -1,14 +1,15 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryTable;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
 
 /**
  * Created by zhangteng on 2017/7/12.
  * <p>
  * 操作级权限类型查询BO对象
  */
-@QueryTable("toyopt")
+@QueryTable(aliasName = "toyopt")
 public class OperationPrivilegeTypeBo extends BootstrapTableQuery {
 
     private String name;

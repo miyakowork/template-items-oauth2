@@ -1,9 +1,9 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
 
-import me.wuwenbin.items.oauth2.support.annotation.query.QueryColumn;
-import me.wuwenbin.items.oauth2.support.enumerate.Operator;
-import me.wuwenbin.items.oauth2.support.pojo.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
+import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
+import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
  * Created by Wuwenbin on 2017/7/20.
@@ -12,9 +12,9 @@ public class SessionBO extends BootstrapTableQuery {
 
     private String username;
     private String ip;
-    @QueryColumn(value = "last_visit_date", operation = Operator.BETWEEN)
+    @QueryColumn(column = "last_visit_date", operator = Operator.BETWEEN_AND)
     private String lastVisitDate;
-    @QueryColumn(value = "first_visit_date", operation = Operator.GTE)
+    @QueryColumn(column = "first_visit_date", operator = Operator.GTE)
     private String firstVisitDate;
 
     public String getIp() {
