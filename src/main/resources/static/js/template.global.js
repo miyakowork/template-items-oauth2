@@ -4,7 +4,6 @@
  */
 var layer = layui.layer;
 var laydate = layui.laydate;
-var layform = layui.form;
 
 var TF = {
 
