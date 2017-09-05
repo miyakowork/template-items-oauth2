@@ -8,6 +8,10 @@ body {
     font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif !important;
 }
 
+body.mac .fixed-header nav > ul {
+    width: 108% !important;
+}
+
 #logo {
     color: #ffffff !important;
     font-size: 20px !important;

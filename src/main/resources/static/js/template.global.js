@@ -396,7 +396,9 @@ var Global = {
 //页面初始化之后脚本操作
 $(function () {
 
-    var $body = $("body");
+    if (navigator.userAgent.indexOf('Mac OS') !== -1) {
+        $(".fixed-navigation nav>ul").css("padding-right", "32px");
+    }
 
     //bootstrap-table中文化
     $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
