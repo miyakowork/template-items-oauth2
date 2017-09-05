@@ -209,6 +209,12 @@ var menuModule = new Vue({
             },
             message: "必须二选一"
         },
+        systemCode: {
+            test: function () {
+                return String(resModule.model.systemCode.selected).length > 0
+            },
+            message: "系统代码不能为空"
+        },
         orderIndex: {
             test: function () {
                 return !isNaN(menuModule.model.orderIndex) && String(menuModule.model.orderIndex).length > 0

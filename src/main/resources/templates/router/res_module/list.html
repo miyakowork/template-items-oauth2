@@ -1,95 +1,55 @@
-<!--suppress HtmlUnknownAttribute -->
-<div id="res_module_dialog" class="hidden">
-    <!--添加弹出的窗口-->
-    <div th:replace="router/res_module/add::addResModule"></div>
-    <!--编辑弹出的窗口-->
-    <div th:replace="router/res_module/edit::editResModule"></div>
-</div>
-<!-- row -->
-<div class="row">
-    <div id="resModule-toolbar" class="form-inline">
-        <div th:replace="fragment/control::operation(resModule,true)"></div>
+<div id="res-module">
+    <div class="row">
+        <toolbar name="resModule" :show-delete="showDel" :functions="functions"></toolbar>
+        <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <bootstrap-table name="resModule" :options="tableOptions"></bootstrap-table>
+        </section>
     </div>
-    <!-- NEW WIDGET START -->
-    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <table id="resModule-table">
-            <thead>
-            <tr>
-                <th data-checkbox="true"></th>
-                <th data-field="id"
-                    data-sortable="true"
-                    data-width="30"
-                    data-title="ID"
-                    data-align="center"
-                    data-visible="false"></th>
 
-                <th data-field="name"
-                    data-sortable="true"
-                    data-title="资源模块名称"
-                    data-filter-control="input"
-                    data-filter-control-placeholder="输入名称"
-                    data-align="center"></th>
+    <section id="add_res_module_dialog">
+        <form class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
+            <form-input label="名称" placeholder="资源模块名称" v-model="model.name" :message="errors.name"></form-input>
 
-                <th data-field="systemModuleName"
-                    data-sort-name="system_code"
-                    data-sortable="true"
-                    data-filter-control="select"
-                    data-filter-data="url:/oauth2/systemModule/select"
-                    data-title="系统代码"
-                    data-align="center"></th>
+            <form-select label="所属系统模块" :message="errors.systemCode">
+                <select id="resource-module-selector-add" class="form-control"
+                        v-model="model.systemCode.selected"></select>
+            </form-select>
 
-                <th data-field="enabled"
-                    data-title="是否可用"
-                    data-formatter="enabledFormatter"
-                    data-filter-control="select"
-                    data-filter-data="url:/oauth2/common/select"
-                    data-align="center"></th>
+            <form-radio label="是否可用">
+                <input type="radio" slot="check" v-model="model.enabled" class="radiobox style-0" v-bind:value="true">
+                <input type="radio" slot="nocheck" v-model="model.enabled" class="radiobox style-0"
+                       v-bind:value="false">
+            </form-radio>
 
-                <th data-field="updateDate"
-                    data-sort-name="update_date"
-                    data-sortable="true"
-                    data-title="修改时间"
-                    data-visible="false"
-                    data-formatter="date_formatter"
-                    data-align="center"></th>
+            <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
+                        :message="errors.orderIndex"></form-input>
 
+            <form-input label="备注" placeholder="备注信息（选填）" v-model="model.remark"></form-input>
+            <button id="resModuleAdd" type="submit" class="hidden"></button>
+        </form>
+    </section>
 
-                <th data-field="createDate"
-                    data-sort-name="create_date"
-                    data-sortable="true"
-                    data-formatter="date_formatter"
-                    data-title="创建日期"
-                    data-visible="false"
-                    data-align="center"></th>
+    <section id="edit_res_module_dialog">
+        <form class="form-horizontal" @submit.prevent="handleSubmit_edit" method="post">
+            <form-input label="名称" placeholder="资源模块名称" v-model="model.name" :message="errors.name"></form-input>
 
-                <th data-field="updateUserName"
-                    data-title="修改人"
-                    data-visible="false"
-                    data-align="center"></th>
+            <form-input label="系统模块" placeholder="所属系统模块" v-model="model.systemCode.selected"
+                        :message="errors.systemCode"
+                        readonly="true"></form-input>
 
-                <th data-field="createUserName"
-                    data-title="创建人"
-                    data-visible="false"
-                    data-align="center"></th>
+            <form-radio label="是否可用">
+                <input type="radio" slot="check" v-model="model.enabled" class="radiobox style-0" v-bind:value="true">
+                <input type="radio" slot="nocheck" v-model="model.enabled" class="radiobox style-0"
+                       v-bind:value="false">
+            </form-radio>
 
-                <th data-field="orderIndex"
-                    data-sort-name="ORDER_INDEX"
-                    data-sortable="true"
-                    data-title="排序"
-                    data-visible="false"
-                    data-align="center"></th>
+            <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
+                        :message="errors.orderIndex"></form-input>
 
-                <th data-field="remark"
-                    data-sortable="true"
-                    data-title="备注"
-                    data-align="center"></th>
-            </tr>
-            </thead>
-        </table>
-    </article>
-    <!-- WIDGET END -->
-
+            <form-input label="备注" placeholder="备注信息（选填）" v-model="model.remark"></form-input>
+            <button id="resModuleEdit" type="submit" class="hidden"></button>
+        </form>
+    </section>
 </div>
 
-<!-- end row -->
 <script src="/static/js/oauth2/res_module.js"></script>

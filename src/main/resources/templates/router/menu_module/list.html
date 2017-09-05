@@ -2,38 +2,35 @@
 <article id="menu-module">
     <div class="row">
         <toolbar name="menu-module" :show-delete="showDel" :functions="functions"></toolbar>
-        <bootstrap-table name="menu-module" :options="tableOptions"></bootstrap-table>
+        <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <bootstrap-table name="menu-module" :options="tableOptions"></bootstrap-table>
+        </section>
     </div>
 
     <section id="add_menumodule_dialog" class="row">
         <form id="add-menumodule-form" class="form-horizontal" @submit.prevent="submit_add" method="post">
 
-            <form-input label="名称" placeholder="菜单模块名称"
-                        v-model="model.name" :message="errors.name"></form-input>
+            <form-input label="名称" placeholder="菜单模块名称" v-model="model.name" :message="errors.name"></form-input>
 
             <form-select label="所属系统模块" :message="errors.systemCode">
-                <select id="menumodule-selector-add" class="form-control"
-                        v-model="model.systemCode.selected"></select>
+                <select id="menumodule-selector-add" class="form-control" v-model="model.systemCode.selected"></select>
             </form-select>
 
-            <form-input label="菜单模块大图标" placeholder="大图标，图片地址"
-                        v-model="model.iconLarger"></form-input>
+            <form-input label="菜单模块大图标" placeholder="大图标，图片地址" v-model="model.iconLarger"></form-input>
 
-            <form-input label="菜单模块小图标" placeholder="小图标，字体图标class名"
-                        v-model="model.iconMini"></form-input>
+            <form-input label="菜单模块小图标" placeholder="小图标，字体图标class名" v-model="model.iconMini"></form-input>
 
             <form-radio label="是否可用">
-                <input type="radio" slot="check" v-model="model.enabled"
-                       class="radiobox style-0" v-bind:value="true">
-                <input type="radio" slot="nocheck" v-model="model.enabled"
-                       class="radiobox style-0" v-bind:value="false">
+                <input type="radio" slot="check" v-model="model.enabled" class="radiobox style-0" v-bind:value="true">
+                <input type="radio" slot="nocheck" v-model="model.enabled" class="radiobox style-0"
+                       v-bind:value="false">
             </form-radio>
 
-            <form-input label="排序" placeholder="输入排序的顺序编码"
-                        v-model="model.orderIndex" :message="errors.orderIndex"></form-input>
+            <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
+                        :message="errors.orderIndex"></form-input>
 
-            <form-input label="备注" placeholder="备注信息（选填）"
-                        v-model="model.remark"></form-input>
+            <form-input label="备注" placeholder="备注信息（选填）" v-model="model.remark"></form-input>
+
             <button id="menuModuleAdd" type="submit" class="hidden"></button>
         </form>
     </section>

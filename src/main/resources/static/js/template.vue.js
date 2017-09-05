@@ -20,7 +20,7 @@ var formItem = {
     '       <div class="form-group" :class="hasError">' +
     '           <label class="col-md-3 control-label" v-text="label"></label>' +
     '           <div class="col-md-9">' +
-    '               <input class="form-control" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)">' +
+    '               <input class="form-control" :readonly="readonly" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)">' +
     '               <div class="note-error margin-bottom-0" :class="hasErrorMsg" v-text="message"></div>' +
     '           </div>' +
     '       </div>' +
@@ -81,6 +81,10 @@ Vue.component('form-input', {
         placeholder: {
             type: String,
             default: ''
+        },
+        readonly: {
+            type: Boolean,
+            default: false
         },
         value: Object,
         message: {
@@ -207,7 +211,6 @@ Vue.component('toolbar', {
 
 //bootstrapTable组件
 var bootstrapTable =
-    '<section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">' +
     '   <table :id="tableId">' +
     '       <template v-for="col in options.columns">' +
     '           <tr>' +
@@ -244,8 +247,7 @@ var bootstrapTable =
     '                  ></th>' +
     '              </tr>' +
     '          </template> ' +
-    '      </table>' +
-    '</section>';
+    '      </table>';
 
 Vue.component('bootstrap-table', {
     template: bootstrapTable,
