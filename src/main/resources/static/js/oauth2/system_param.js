@@ -8,7 +8,7 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#system-param-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.toggleTableSearch();
+        Global.toggleTableSearch();
     });
 
     var query_params = function (params) {
@@ -24,7 +24,7 @@ var page_function = function () {
     };
 
     //加载表格
-    TF.initTable($table, {
+    Global.initTable($table, {
         url: "/oauth2/systemParam/api/list",
         toolbar: '#system-param-toolbar',
         queryParams: query_params,
@@ -71,7 +71,7 @@ var page_function = function () {
                 app.error.orderErrorMsg = $errs.orderIndex
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var datas = app.sysParam
@@ -80,19 +80,19 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/systemParam/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $('#add_sys_param_dialog').dialog('close');
                                 $table.bootstrapTable('refresh');
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
                 return false;
@@ -109,7 +109,7 @@ var page_function = function () {
                 app.error.orderErrorMsg = $errs.orderIndex
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var datas = app.sysParam
@@ -118,19 +118,19 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/systemParam/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $('#edit_sys_param_dialog').dialog('close');
                                 $table.bootstrapTable('refresh');
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
                 return false;
@@ -204,9 +204,9 @@ var page_function = function () {
     $('#edit-system-param').click(function () {
         //判断是否只选中一条信息
         if ($table.bootstrapTable('getSelections').length > 1) {
-            TF.show_error_msg("只能选择一条信息进行编辑")
+            Global.show_error_msg("只能选择一条信息进行编辑")
         } else if ($table.bootstrapTable('getSelections').length < 1) {
-            TF.show_error_msg("请选择您想要编辑的信息")
+            Global.show_error_msg("请选择您想要编辑的信息")
         }
         //将选中的信息自动显示
         else {

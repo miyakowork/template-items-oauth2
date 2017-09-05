@@ -143,12 +143,12 @@ function setPrivilege(event, treeId, treeNode) {
         type: "post",
         dataType: 'json',
         success: function (resp) {
-            if (resp.code === TF.status_code.success) {
+            if (resp.code === Global.status_code.success) {
                 layer.msg(resp.message, {
                     time: 1000
                 })
             } else {
-                TF.show_error_msg(resp.message)
+                Global.show_error_msg(resp.message)
             }
         },
         data: {

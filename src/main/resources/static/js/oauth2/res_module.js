@@ -52,7 +52,7 @@ var page_function = function () {
                 app.error.orderIndexError = Boolean($errs.orderIndex)
                 app.error.orderIndexErrorMsg = $errs.orderIndex
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var datas = app.resModule
@@ -64,21 +64,21 @@ var page_function = function () {
                     params.append('systemCode', app.resModule.systemCode.selected)
                     axios.post('/oauth2/resModule/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 setTimeout(function () {
                                     $('#add_res_module_dialog').dialog('close');
                                     $table.bootstrapTable('refresh');
                                 })
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
                 return false;
@@ -92,7 +92,7 @@ var page_function = function () {
                 app.error.orderIndexError = Boolean($errs.orderIndex)
                 app.error.orderIndexErrorMsg = $errs.orderIndex
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var datas = app.resModule
@@ -104,21 +104,21 @@ var page_function = function () {
                     params.append("systemCode", app.resModule.systemCode.selected)
                     axios.post('/oauth2/resModule/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 setTimeout(function () {
                                     $('#edit_res_module_dialog').dialog('close');
                                     $table.bootstrapTable('refresh');
                                 })
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
                 return false;
@@ -141,7 +141,7 @@ var page_function = function () {
     });
 
     //加载表格
-    TF.initTable($table, {
+    Global.initTable($table, {
         url: "/oauth2/resModule/api/list",
         toolbar: '#resModule-toolbar',
         queryParams: query_params,
@@ -187,9 +187,9 @@ var page_function = function () {
     $('#edit-resModule').click(function () {
         //判断是否只选中一条信息
         if ($table.bootstrapTable('getSelections').length > 1) {
-            TF.show_error_msg("只能选择一条信息进行编辑")
+            Global.show_error_msg("只能选择一条信息进行编辑")
         } else if ($table.bootstrapTable('getSelections').length < 1) {
-            TF.show_error_msg("请选择您想要编辑的信息")
+            Global.show_error_msg("请选择您想要编辑的信息")
         }
         //将选中的信息自动显示
         else {
@@ -238,9 +238,9 @@ var page_function = function () {
     $("#delete-resModule").click(function () {
         var ss = $table.bootstrapTable('getSelections');
         if (ss.length === 0) {
-            TF.show_error_message("错误选择", "请至少选择一项进行删除")
+            Global.show_error_message("错误选择", "请至少选择一项进行删除")
         } else {
-            TF.deleteItems($table, "/oauth2/resModule/api/delete", "name");
+            Global.deleteItems($table, "/oauth2/resModule/api/delete", "name");
         }
     });
 
@@ -259,9 +259,9 @@ var page_function = function () {
         })
         .catch(function (error) {
             if (error.response)
-                TF.show_error_msg(error.response.data.message)
+                Global.show_error_msg(error.response.data.message)
             else
-                TF.show_error_msg(error)
+                Global.show_error_msg(error)
         });
 
 };

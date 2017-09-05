@@ -8,6 +8,13 @@ body {
     font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif !important;
 }
 
+#logo {
+    color: #ffffff !important;
+    font-size: 20px !important;
+    text-align: center !important;
+    margin-top: 8px !important;
+}
+
 .router-container {
     margin-left: 10px;
 }
@@ -55,6 +62,33 @@ div[id$='-toolbar'] {
     color: #0C0C0C !important;
 }
 
+.smart-style-4 #tp-date {
+    color: #0C0C0C !important;
+}
+
 .smart-style-3 .login-info a:hover {
     color: #000000 !important;
+}
+
+.smart-style-0 .page-footer {
+    background-color: #3a3633 !important;
+    color: #c0bbb7 !important;
+}
+
+.smart-style-1 .page-footer {
+    color: #8b91a0 !important;
+}
+
+.smart-style-2 .page-footer {
+    background-color: #f7f7f7 !important;
+    color: #787572 !important;
+}
+
+.smart-style-3 .page-footer {
+    background-color: #f2f2f2 !important;
+}
+
+.smart-style-4 .page-footer {
+    background-color: #3a3f51 !important;
+    color: #bbc0cf !important;;
 }

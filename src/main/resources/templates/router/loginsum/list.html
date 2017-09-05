@@ -68,7 +68,7 @@
         $("#nextDate").click(function () {
             var addResult = setDate($endTime.val(), -$("#dateNumSelector").find("option:selected").val());
             if (addResult > getCurrentDate()) {
-                TF.show_error_message("错误消息提示", "查询日期大于当前日期", 3000)
+                Global.show_error_message("错误消息提示", "查询日期大于当前日期", 3000)
             } else {
                 $endTime.val(addResult);
                 load_loginSumChart();

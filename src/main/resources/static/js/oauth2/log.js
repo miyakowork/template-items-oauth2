@@ -13,7 +13,7 @@ var page_function = function () {
             order: params.order,
             sort: params.sort,
             username: $("input.bootstrap-table-filter-control-username").val(),
-            lastLoginDate: TF.datepickerSearch("lastLoginDate")
+            lastLoginDate: Global.datepickerSearch("lastLoginDate")
         };
     };
 
@@ -21,12 +21,12 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#log-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.toggleTableSearch();
+        Global.toggleTableSearch();
     });
 
 
     //加载表格
-    TF.initTable($table, {
+    Global.initTable($table, {
         url: "/oauth2/log/api/list",
         toolbar: '#log-toolbar',
         queryParams: query_params,

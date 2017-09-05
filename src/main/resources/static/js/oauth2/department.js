@@ -12,7 +12,7 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#department-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.toggleTableSearch(false);
+        Global.toggleTableSearch(false);
     });
 
     var query_params = function (params) {
@@ -28,7 +28,7 @@ var page_function = function () {
     };
 
     //加载表格
-    TF.initTable($table, {
+    Global.initTable($table, {
         url: "/oauth2/department/api/list",
         toolbar: '#department-toolbar',
         queryParams: query_params,
@@ -73,7 +73,7 @@ var page_function = function () {
                 app.error.enabledErrorMsg = $errs.enabled
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var departments = app.OauthDepartment
@@ -82,20 +82,20 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/department/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addDepartment").dialog("close");
                                 $table.bootstrapTable("refresh");
                                 load_departmentTree();
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
 
@@ -115,7 +115,7 @@ var page_function = function () {
                 app.error.enabledErrorMsg = $errs.enabled
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     app.OauthDepartment.parentId = $("#pIdByTree").val()
                     var params = new URLSearchParams();
@@ -128,7 +128,7 @@ var page_function = function () {
                     params.append("remark", app.OauthDepartment.remark)
                     axios.post('/oauth2/department/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#editDepartment").dialog("close");
 
@@ -141,14 +141,14 @@ var page_function = function () {
                                 $table.bootstrapTable("refresh");
 
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
             }
@@ -208,7 +208,7 @@ var page_function = function () {
 
         var editUsers = $table.bootstrapTable('getSelections');
         if (editUsers.length !== 1) {
-            TF.show_error_message("错误选择提示", "请选择一个部门来予以修改")
+            Global.show_error_message("错误选择提示", "请选择一个部门来予以修改")
         } else {
             app.OauthDepartment.id = editUsers[0].id;
             app.OauthDepartment.name = editUsers[0].name;
@@ -305,7 +305,7 @@ var page_function = function () {
         for (var i = 0, l = nodes.length; i < l; i++) {
             treeObj.checkNode(nodes[i], false, true);
         }
-        TF.reInitTable($table, {
+        Global.reInitTable($table, {
             url: "/oauth2/department/api/list",
             toolbar: '#department-toolbar',
             queryParams: query_params,

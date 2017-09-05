@@ -1,281 +1,270 @@
 pageSetUp();
 
+var menuModule = new Vue({
+    el: "#menu-module",
+    computed: {
+        $table: function () {
+            return $("#menu-module-table");
+        }
+    },
+    data: {
+        showDel: true,
+        tableOptions: {
+            url: "/oauth2/menuModule/api/list",
+            toolbar: '#menu-module-toolbar',
+            queryParams: function (params) {
+                return {
+                    limit: params.limit,
+                    offset: params.offset,
+                    order: params.order,
+                    sort: params.sort,
+                    name: $("input.bootstrap-table-filter-control-name").val(),
+                    systemCodeName: $(".bootstrap-table-filter-control-systemCode").val()
+                };
+            },
+            filterControl: true,
+            columns: [
+                {checkbox: true},
+                {field: "id", visible: false, width: 150, title: "菜单ID", align: "center"},
+                {
+                    field: "name",
+                    width: 150,
+                    title: "菜单模块名称",
+                    filterControl: "input",
+                    filterControlPlaceholder: "输入菜单模块名",
+                    align: "center"
+                },
+                {
+                    field: "systemCode",
+                    sortName: "system_code",
+                    title: "所属系统模块编码",
+                    filterControl: "select",
+                    filterData: "url:/oauth2/systemModule/select",
+                    align: "center"
+                },
+                {field: "iconLarger", title: "菜单模块大图标", align: "center"},
+                {field: "iconMini", title: "菜单模块字体图标", align: "center", formatter: "iconMiniFormatter"},
+                {
+                    field: "enabled",
+                    formatter: "enabledFormatter",
+                    title: "是否可用",
+                    filterControl: "select",
+                    filterData: "url:/oauth2/common/select",
+                    align: "center"
+                },
+                {
+                    field: "updateUsername",
+                    visible: false,
+                    title: "更新人",
+                    align: "center"
+                },
+                {
+                    field: "updateDate",
+                    visible: false,
+                    formatter: "date_formatter",
+                    title: "更新时间",
+                    align: "center"
+                },
+                {
+                    field: "createUsername",
+                    visible: false,
+                    title: "创建人",
+                    align: "center"
+                },
+                {
+                    field: "createDate",
+                    visible: false,
+                    formatter: "date_formatter",
+                    title: "创建时间",
+                    align: "center"
+                },
+                {field: "orderIndex", sortName: "order_index", title: "排序", align: "center"},
+                {field: "remark", title: "备注", align: "center"}
+            ]
+        },
+        model: {
+            id: '',
+            name: '',
+            systemCode: {
+                selected: '',
+                options: []
+            },
+            enabled: true,
+            orderIndex: 0,
+            remark: '',
+            iconLarger: '',
+            iconMini: ''
+        },
+        default: {
+            addSystemModuleCode: ''
+        },
+        functions: {
+            add: function () {
+                menuModule.$vuerify.clear();
+                Global.resetObject(menuModule.model);
+                menuModule.model.systemCode.selected = menuModule.default.addSystemModuleCode;
+                $("#add_menumodule_dialog").dialog('open');
+            },
+            edit: function () {
+                menuModule.$vuerify.clear();
+                var selectItems = menuModule.$table.bootstrapTable('getSelections');
+                if (selectItems.length === 1) {
+                    menuModule.model.id = selectItems[0].id;
+                    menuModule.model.systemCode.selected = selectItems[0].systemCode;
+                    menuModule.model.name = selectItems[0].name;
+                    menuModule.model.enabled = selectItems[0].enabled;
+                    menuModule.model.orderIndex = selectItems[0].orderIndex;
+                    menuModule.model.remark = selectItems[0].remark;
+                    menuModule.model.systemCode.selected = selectItems[0].systemCode;
+                    $('#edit_menumodule_dialog').dialog('open');
+                } else {
+                    Global.show_error_message("错误选择", "请选择一条记录进行编辑")
+                }
+            },
+            del: function () {
+                var selectItems = menuModule.$table.bootstrapTable('getSelections');
+                if (selectItems.length === 0) {
+                    Global.show_error_message("错误选择", "请至少选择一项进行禁用操作")
+                } else {
+                    Global.deleteItems(menuModule.$table, "/oauth2/menuModule/api/delete", "name");
+                }
+            }
+        }
+    },
+    methods: {
+        submit_add: function () {
+            this.$vuerify.clear();//清空之前的验证结果信息
+            var check_result = this.$vuerify.check();// 手动触发校验所有数据
+            if (!check_result) {
+                Global.show_error_msg("请修正表单错误信息之后再提交");
+            } else {
+                var params = new URLSearchParams();
+                var datas = menuModule.model;
+                for (var data in datas) {
+                    if (data === "systemCode")
+                        continue;
+                    params.append(data, datas[data])
+                }
+                params.append("systemCode", menuModule.model.systemCode.selected);
+
+                axios.post('/oauth2/menuModule/api/add', params)
+                    .then(function (response) {
+                        if (response.data.code === Global.status_code.success) {
+                            layer.msg(response.data.message);
+                            $("#add_menumodule_dialog").dialog("close");
+                            menuModule.$table.bootstrapTable("refresh");
+                        } else {
+                            Global.show_error_msg(response.data.message)
+                        }
+                    })
+                    .catch(function (error) {
+                        Global.handleAxiosError(error);
+                    });
+            }
+            return false;
+        },
+        submit_edit: function () {
+            this.$vuerify.clear();//清空之前的验证结果信息
+            var check_result = this.$vuerify.check();// 手动触发校验所有数据
+
+            if (!check_result) {
+                Global.show_error_msg("请修正表单错误信息之后再提交");
+            } else {
+                var params = new URLSearchParams();
+                var datas = menuModule.model;
+                for (var data in datas) {
+                    if (data === "systemCode") {
+                        continue;
+                    }
+                    params.append(data, datas[data])
+                }
+                params.append("systemCode", datas.systemCode.selected)
+                axios.post(' /oauth2/menuModule/api/edit', params)
+                    .then(function (response) {
+                        if (response.data.code === Global.status_code.success) {
+                            layer.msg(response.data.message);
+                            $("#edit_menumodule_dialog").dialog("close");
+                            menuModule.$table.bootstrapTable('refresh');
+                        } else {
+                            Global.show_error_msg(response.data.message)
+                        }
+                    })
+                    .catch(function (error) {
+                        Global.handleAxiosError(error);
+                    });
+            }
+            return false;
+        }
+    },
+    vuerify: {
+        name: {
+            test: function () {
+                return String(menuModule.model.name).length > 0
+            },
+            message: '名字长度不能为空'
+        },
+        enabled: {
+            test: function () {
+                return menuModule.model.enabled !== null;
+            },
+            message: "必须二选一"
+        },
+        orderIndex: {
+            test: function () {
+                return !isNaN(menuModule.model.orderIndex) && String(menuModule.model.orderIndex).length > 0
+            },
+            message: '不能为空且必须为数字'
+        }
+    }
+});
+
 // page_function
 var page_function = function () {
 
-    var $table = $("#menu-module-table");
-
-    //设置表格的搜索参数
-    var query_params = function (params) {
-        return {
-            limit: params.limit,
-            offset: params.offset,
-            order: params.order,
-            sort: params.sort,
-            name: $("input.bootstrap-table-filter-control-name").val(),
-            systemCodeName: $(".bootstrap-table-filter-control-systemCode").val()
-        };
-    };
-
-    //加载表格
-    TF.initTable($table, {
-        url: "/oauth2/menu-module/api/list",
-        toolbar: '#menu-module-toolbar',
-        queryParams: query_params,
-        filterControl: true
-    });
-
-    var app = new Vue({
-        el: "#menu-module-operation",
-        data: {
-            menumodule: {
-                id: '',
-                name: '',
-                systemCode: {
-                    selected: '',
-                    options: []
-                },
-                enabled: true,
-                orderIndex: null,
-                remark: '',
-                iconLarger: '',
-                iconMini: ''
-            },
-            error: {
-                nameError: false,
-                nameErrorMsg: '',
-                orderError: false,
-                orderErrorMsg: ''
-            }
-        },
-        computed: {
-            errors: function () {
-                return this.$vuerify.$errors // 错误信息会在 $vuerify.$errors 内体现
-            }
-        },
-        methods: {
-            handleSubmit_add: function () {
-                this.$vuerify.clear();//清空之前的验证结果信息
-                var check_result = this.$vuerify.check()// 手动触发校验所有数据
-                var $errs = this.$vuerify.$errors
-                app.error.nameError = Boolean($errs.name)
-                app.error.nameErrorMsg = $errs.name
-                app.error.orderError = Boolean($errs.orderIndex)
-                app.error.orderErrorMsg = $errs.orderIndex
-
-                if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
-                } else {
-                    var params = new URLSearchParams();
-                    var datas = app.menumodule
-
-                    for (var data in datas) {
-                        if (data === "systemCode")
-                            continue;
-                        params.append(data, datas[data])
-                    }
-                    params.append("systemCode", app.menumodule.systemCode.selected);
-                    axios.post('/oauth2/menu-module/api/add', params)
-                        .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
-                                layer.msg(response.data.message);
-                                $("#add_menumodule_dialog").dialog("close");
-                                $table.bootstrapTable("refresh");
-                            } else {
-                                TF.show_error_msg(response.data.message)
-                            }
-                        })
-                        .catch(function (error) {
-                            if (error.response)
-                                TF.show_error_msg(error.response.data.message)
-                            else
-                                TF.show_error_msg(error)
-                        });
-                }
-                return false;
-            },
-            handleSubmit_edit: function () {
-                this.$vuerify.clear();//清空之前的验证结果信息
-                var check_result = this.$vuerify.check();// 手动触发校验所有数据
-                var $errs = this.$vuerify.$errors;
-
-                app.error.nameError = Boolean($errs.name);
-                app.error.nameErrorMsg = $errs.name;
-                app.error.orderError = Boolean($errs.orderIndex);
-                app.error.orderErrorMsg = $errs.orderIndex;
-
-                if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
-                } else {
-                    var params = new URLSearchParams();
-                    var datas = app.menumodule;
-                    for (var data in datas) {
-                        if (data === "systemCode") {
-                            continue;
-                        }
-                        params.append(data, datas[data])
-                    }
-                    params.append("systemCode", datas.systemCode.selected)
-                    axios.post(' /oauth2/menu-module/api/edit', params)
-                        .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
-                                layer.msg(response.data.message);
-                                $("#edit_menumodule_dialog").dialog("close");
-                                $table.bootstrapTable('refresh');
-                            } else {
-                                TF.show_error_msg(response.data.message)
-                            }
-                        })
-                        .catch(function (error) {
-                            if (error.response)
-                                TF.show_error_msg(error.response.data.message)
-                            else
-                                TF.show_error_msg(error)
-                        });
-                }
-                return false;
-            }
-        },
-        vuerify: {
-            name: {
-                test: function () {
-                    return String(app.menumodule.name).length >= 2
-                },
-                message: '名字长度不能为空且不能过短'
-            },
-            orderIndex: {
-                test: function () {
-                    return !isNaN(app.menumodule.orderIndex)
-                },
-                message: '不能为空且必须为数字'
-            },
+    Global.smartDialog({
+        id: "add_menumodule_dialog",
+        title: "添加菜单模块",
+        confirm: function () {
+            $("#menuModuleAdd").trigger("click");
         }
     });
 
-    //监听添加事件
-    $("#add-menu-module").click(function () {
-        app.menumodule.id = "";
-        app.menumodule.name = "";
-        app.menumodule.enabled = true;
-        app.menumodule.orderIndex = "0";
-        app.menumodule.remark = "";
-
-        app.error.nameError = false;
-        app.error.nameErrorMsg = '';
-        app.error.orderIndexError = false;
-        app.error.orderIndexErrorMsg = '';
-
-        $("#add_menumodule_dialog").dialog('open');
-        return false;
-    });
-
-    $('#add_menumodule_dialog').dialog({
-        autoOpen: false,
-        width: 600,
-        resizable: true,
-        modal: true,
-        title: "<div class='widget-header'><h4><i class='icon-ok'></i> 添加菜单模块</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-plus-square-o'></i>&nbsp; 确定",
-            "class": "btn btn-info",
-            click: function () {
-                $("#menuModuleAdd").trigger("click");
-            }
-        }, {
-            html: "<i class='fa fa-times'></i>&nbsp; 取消",
-            "class": "btn btn-default",
-            click: function () {
-                $(this).dialog("close");
-            }
-        }]
-    });
-
-    //监听编辑按钮事件
-    $("#edit-menu-module").click(function () {
-
-        app.error.nameError = false;
-        app.error.nameErrorMsg = '';
-        app.error.orderIndexError = false;
-        app.error.orderIndexErrorMsg = '';
-
-        var ss = $table.bootstrapTable('getSelections');
-        if (ss.length === 1) {
-
-            var res = ss[0];
-            $('#edit_menumodule_dialog').dialog('open');
-            app.menumodule.id = res.id;
-            app.menumodule.systemCode.selected = res.systemCode;
-            app.menumodule.name = res.name;
-            app.menumodule.enabled = res.enabled;
-            app.menumodule.orderIndex = res.orderIndex;
-            app.menumodule.remark = res.remark;
-        } else {
-            TF.show_error_message("错误选择", "请选择一条记录进行编辑")
-        }
-        return false;
-    });
-
-    $('#edit_menumodule_dialog').dialog({
-        autoOpen: false,
-        width: 600,
-        resizable: true,
-        modal: true,
-        title: "<div class='widget-header'><h4><i class='icon-ok'></i> 编辑菜单</h4></div>",
-        buttons: [{
-            html: "<i class='fa fa-plus-square-o'></i>&nbsp; 确定",
-            "class": "btn btn-info",
-            click: function () {
-                $("#menuModuleEdit").trigger("click");
-            }
-        }, {
-            html: "<i class='fa fa-times'></i>&nbsp; 取消",
-            "class": "btn btn-default",
-            click: function () {
-                $(this).dialog("close");
-            }
-        }]
-    });
-
-    //删除
-    $("#delete-menu-module").click(function () {
-        var ss = $table.bootstrapTable('getSelections');
-        if (ss.length === 0) {
-            TF.show_error_message("错误选择", "请至少选择一项进行禁用操作")
-        } else {
-            TF.deleteItems($table, "/oauth2/menu-module/api/delete", "name");
+    Global.smartDialog({
+        id: "edit_menumodule_dialog",
+        title: "编辑菜单模块",
+        confirm: function () {
+            $("#menuModuleEdit").trigger("click");
         }
     });
 
-
-    //获取下拉框内容
-    axios.post('/oauth2/system-module/api/find/modules/enabled', {})
-        .then(function (response) {
-            if (response.data.length > 0) {
-                app.menumodule.systemCode = response.data;
-                var $selectSystemCode = app.menumodule.systemCode;
-                app.menumodule.systemCode.selected = $selectSystemCode[0].systemCode;//默认给下拉菜单选中第一个
-                for (var i = 0; i < $selectSystemCode.length; i++) {
-                    $('#menumodule-selector-add,#menumodule-selector-edit').append("<option value=" + $selectSystemCode[i].systemCode + ">" + $selectSystemCode[i].name + "</option>");
-                }
-            }
-        })
-        .catch(function (error) {
-            if (error.response)
-                TF.show_error_msg(error.response.data.message)
-            else
-                TF.show_error_msg(error)
-        });
+    getSelectContent($('#menumodule-selector-add,#menumodule-selector-edit'));
 };
 
-/**
- * 列中显示字体图标
- * @param value
- * @returns {string}
- */
+
+//列中显示字体图标
 function iconMiniFormatter(value) {
     if (value === null || value === "")
         return "-";
     return "<i class='" + value + "'></i>";
+}
+
+//获取下拉框内容
+function getSelectContent($selector) {
+    axios.post('/oauth2/system-module/api/find/modules/enabled', {})
+        .then(function (response) {
+            if (response.data.length > 0) {
+                menuModule.model.systemCode = response.data;
+                var $selectSystemCode = menuModule.model.systemCode;
+                menuModule.model.systemCode.selected = $selectSystemCode[0].systemCode;//默认给下拉菜单选中第一个
+                menuModule.default.addSystemModuleCode = $selectSystemCode[0].systemCode;
+                for (var i = 0; i < $selectSystemCode.length; i++) {
+                    $selector.append("<option value=" + $selectSystemCode[i].systemCode + ">" + $selectSystemCode[i].name + "</option>");
+                }
+            }
+        })
+        .catch(function (error) {
+            Global.handleAxiosError(error);
+        });
 }
 
 // load related plugins

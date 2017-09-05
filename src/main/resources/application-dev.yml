@@ -1,8 +1,2 @@
 server:
   port: 8082
-spring:
-  h2:
-    console:
-      enabled: true
-      #配置url访问h2 web console
-      path: /h2

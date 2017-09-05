@@ -85,7 +85,7 @@ var page_function = function () {
                 app.error.resourceModuleNameError = Boolean($errs.resourceModuleName);
                 app.error.resourceModuleNameErrorMsg = $errs.resourceModuleName;
                 if (!check_result) {
-                    TF.show_error_message("请修正表单错误信息之后再提交");
+                    Global.show_error_message("请修正表单错误信息之后再提交");
                 } else {
                     var params = new URLSearchParams();
                     var privilegepage = app.PrivilegePage
@@ -94,19 +94,19 @@ var page_function = function () {
                     }
                     axios.post('/oauth2/privilegePage/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addprivilegepage").dialog("close");
                                 $table.bootstrapTable('refresh');
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
 
@@ -130,7 +130,7 @@ var page_function = function () {
                 app.error.resourceModuleNameError = Boolean($errs.resourceModuleName);
                 app.error.resourceModuleNameErrorMsg = $errs.resourceModuleName;
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     params.append("id", app.PrivilegePage.id);
@@ -142,19 +142,19 @@ var page_function = function () {
                     params.append("remark", app.PrivilegePage.remark);
                     axios.post('/oauth2/privilegePage/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#editprivilegepage").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
             },
@@ -184,22 +184,22 @@ var page_function = function () {
                     params.append("operationTypeId", app.privilegeOperation.operationType.selected);
                     axios.post('/oauth2/privilegeOperation/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addprivilegeoperation").dialog("close");
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
 
                 } else {
-                    TF.show_error_msg("请更正表单错误之后再提交！");
+                    Global.show_error_msg("请更正表单错误之后再提交！");
                 }
             }
         },
@@ -249,7 +249,7 @@ var page_function = function () {
         var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
         var nodes = treeObj.getCheckedNodes(true);
         if (nodes.length === 0) {
-            TF.show_error_msg("请现在左侧勾选资源模块");
+            Global.show_error_msg("请现在左侧勾选资源模块");
         }
         else {
             app.PrivilegePage.resourceModuleName = nodes[0].name + "（其他模块请在左侧重新勾选）";
@@ -268,7 +268,7 @@ var page_function = function () {
     $("#edit-privilegepage").click(function () {
         var editUsers = $table.bootstrapTable('getSelections');
         if (editUsers.length !== 1) {
-            TF.show_error_message("错误选择提示", "请选择一条记录来编辑");
+            Global.show_error_message("错误选择提示", "请选择一条记录来编辑");
         } else {
             app.PrivilegePage.id = editUsers[0].id;
             app.PrivilegePage.resourceId = editUsers[0].resourceId;
@@ -357,9 +357,9 @@ var page_function = function () {
     $("#delete-privilegepage").click(function () {
         var ss = $table.bootstrapTable('getSelections');
         if (ss.length === 0) {
-            TF.show_error_message("错误选择", "请至少选择一项进行禁用操作")
+            Global.show_error_message("错误选择", "请至少选择一项进行禁用操作")
         } else {
-            TF.deleteItems($table, "/oauth2/privilegePage/api/delete", "name");
+            Global.deleteItems($table, "/oauth2/privilegePage/api/delete", "name");
         }
     });
 
@@ -382,9 +382,9 @@ var page_function = function () {
         })
         .catch(function (error) {
             if (error.response)
-                TF.show_error_msg(error.response.data.message)
+                Global.show_error_msg(error.response.data.message)
             else
-                TF.show_error_msg(error)
+                Global.show_error_msg(error)
         });
 
     //获取操作权限类型下拉框内容
@@ -402,9 +402,9 @@ var page_function = function () {
         })
         .catch(function (error) {
             if (error.response)
-                TF.show_error_msg(error.response.data.message)
+                Global.show_error_msg(error.response.data.message)
             else
-                TF.show_error_msg(error)
+                Global.show_error_msg(error)
         });
 
     //监听下拉框改变而来改变左侧的资源模块树
@@ -428,7 +428,7 @@ var page_function = function () {
         for (var i = 0, l = nodes.length; i < l; i++) {
             treeObj.checkNode(nodes[i], false, true);
         }
-        TF.reInitTable($table, {
+        Global.reInitTable($table, {
             url: "/oauth2/privilegePage/api/list",
             toolbar: '#privilegePage-toolbar',
             queryParams: function (params) {
@@ -488,7 +488,7 @@ function addPo(id) {
     var treeObj = $.fn.zTree.getZTreeObj("privilegepageTree");
     var nodes = treeObj.getCheckedNodes(true);
     if (nodes.length === 0) {
-        TF.show_error_msg("请先在左侧资源模块树上勾选模块")
+        Global.show_error_msg("请先在左侧资源模块树上勾选模块")
     } else {
         app.privilegeOperation.pagePrivilegeId = id;
         app.privilegeOperation.resourceId = '';
@@ -554,7 +554,7 @@ var load_privilegePageTree = function () {
         if ($table) {
             $table.bootstrapTable("destroy");
         }
-        TF.initTable($table, {
+        Global.initTable($table, {
             url: "/oauth2/privilegePage/api/list",
             toolbar: '#privilegePage-toolbar',
             clickToSelect: false,

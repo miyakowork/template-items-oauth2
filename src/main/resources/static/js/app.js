@@ -2006,7 +2006,7 @@ function drawBreadCrumb(opt_breadCrumbs) {
  */
 function pageSetUp() {
 
-    TF.load_router();//所有data-jump-href属性都可以跳转URL
+    Global.load_router();//所有data-jump-href属性都可以跳转URL
 
     $("input[type=checkbox]").prop("checked", window.__customControls___ || false);//判断是否要勾选显示搜索控件的勾选框
 
@@ -2015,9 +2015,9 @@ function pageSetUp() {
         var height;
         if ($("div.panel-body").length > 0) {
             if ($("div.panel-heading").length > 0) {
-                height = TF.getHeight() - 115;
+                height = Global.getHeight() - 115;
             } else {
-                height = TF.getHeight() - 85;
+                height = Global.getHeight() - 85;
             }
             $(".panel-body").css("min-height", height).css("max-height", height).css("height", height);
         }
@@ -2027,9 +2027,9 @@ function pageSetUp() {
             var height;
             if ($("div.panel-body").length > 0) {
                 if ($("div.panel-heading").length > 0) {
-                    height = TF.getHeight() - 115;
+                    height = Global.getHeight() - 115;
                 } else {
-                    height = TF.getHeight() - 85;
+                    height = Global.getHeight() - 85;
                 }
                 $(".panel-body").css("min-height", height).css("max-height", height).css("height", height);
             }

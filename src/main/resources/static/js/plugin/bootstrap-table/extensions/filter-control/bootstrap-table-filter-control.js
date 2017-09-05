@@ -490,7 +490,7 @@
                 }
                 var layOpt = eval("(" + laydateOptions + ")");
                 var table_id = $(that.$el[0]).attr("id");
-                return sprintf('<input placeholder="' + layOpt.placeholder + '" readonly onclick="TF.activeLaydatePicker(this,\'' + table_id + '\',' + laydateOptions + ')" class="bootstrap-laydate form-control date-filter-control date-filter-control-single bootstrap-table-filter-control-%s" style="width: 100%; visibility: %s"/>', field, isVisible);
+                return sprintf('<input placeholder="' + layOpt.placeholder + '" readonly onclick="Global.activeLaydatePicker(this,\'' + table_id + '\',' + laydateOptions + ')" class="bootstrap-laydate form-control date-filter-control date-filter-control-single bootstrap-table-filter-control-%s" style="width: 100%; visibility: %s"/>', field, isVisible);
 
             }
         },

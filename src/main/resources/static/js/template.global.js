@@ -5,7 +5,7 @@
 var layer = layui.layer;
 var laydate = layui.laydate;
 
-var TF = {
+var Global = {
 
     text: {
         check_box: 'itemChecks'
@@ -41,7 +41,7 @@ var TF = {
     load_router: function () {
         $("body").on("click", "a[data-jump-href]", function () {
             var router = $(this).data("jump-href");
-            window.location.hash = router;
+            window.location.hash = String(router);
         })
     },
 
@@ -66,7 +66,7 @@ var TF = {
      * @param content
      */
     show_error_msg: function (content) {
-        TF.show_error_message("错误信息提示", content, 3000);
+        Global.show_error_message("错误信息提示", content, 3000);
     },
 
     /**
@@ -100,64 +100,6 @@ var TF = {
         return (localhostPaht + projectName);
     },
 
-    /**
-     * 页面上运行的时钟
-     */
-    dateTimerRunner: function () {
-        var time = new Date();//获取系统当前时间
-        var year = time.getFullYear();
-        var month = time.getMonth() + 1;
-        var date = time.getDate();//系统时间月份中的日
-        var day = time.getDay();//系统时间中的星期值
-        var weeks = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-        var week = weeks[day];//显示为星期几
-        var hour = time.getHours();
-        var minutes = time.getMinutes();
-        var seconds = time.getSeconds();
-        if (month < 10) {
-            month = "0" + month;
-        }
-        if (date < 10) {
-            date = "0" + date;
-        }
-        if (hour < 10) {
-            hour = "0" + hour;
-        }
-        if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-
-        //var newDate = year+"年"+month+"月"+date+"日"+week+hour+":"+minutes+":"+seconds;
-        var timeRunner = document.getElementById("tp-date");
-        if (timeRunner) {
-            timeRunner.innerHTML = year + "年" + month + "月" + date + "日&nbsp;"
-                + week
-                + "&nbsp;" + hour + ":" + minutes + ":" + seconds
-                + "&nbsp;";
-        }
-
-    },
-
-    /**
-     /**
-     * 显示日期
-     */
-    showLoginDT: function () {
-        $("#login-dt").html(new Date().getFullYear()
-            + "-"
-            + ((new Date().getMonth() + 1) < 10 ? "0" + (new Date().getMonth() + 1) : (new Date().getMonth() + 1))
-            + "-"
-            + new Date().getDate()
-            + "&nbsp;"
-            + new Date().getHours()
-            + ":"
-            + (new Date().getMinutes() < 10 ? "0" + new Date().getMinutes() : new Date().getMinutes())
-            + ":"
-            + new Date().getSeconds());
-    },
 
     /**
      * 判断是否为中文
@@ -201,7 +143,7 @@ var TF = {
             window.__searchValues[key] = value;
             setTimeout(function () {
                 $table.bootstrapTable('refresh');
-            }, TF.common.search_trigger_time);
+            }, Global.common.search_trigger_time);
         };
 
         laydate.render(layDateOptions)
@@ -234,7 +176,7 @@ var TF = {
      */
     initTable: function ($table, mainOptions) {
         var opt = {
-            height: TF.getHeight(),
+            height: Global.getHeight(),
             striped: true,//设置为 true 会有隔行变色效果
             // method: 'post',//默认是get
             cache: false,//设置为 false 禁用 AJAX 数据缓存
@@ -243,9 +185,9 @@ var TF = {
             paginationLoop: false,
             sidePagination: "server",
             pageList: '[1,5,10,25,50,100,150,200,500,1000]',
-            selectItemName: TF.text.check_box,//radio or checkbox 的字段名
+            selectItemName: Global.text.check_box,//radio or checkbox 的字段名
             escape: true,
-            searchTimeOut: TF.common.search_trigger_time,//触发搜索时间，此处为1秒
+            searchTimeOut: Global.common.search_trigger_time,//触发搜索时间，此处为1秒
             // searchTimeout: 0,//触发搜索延迟时间，我们不要延迟所说义设置为0秒
             trimOnSearch: false,//设置为 true 将允许空字符搜索
             idField: "id",
@@ -286,7 +228,7 @@ var TF = {
      */
     reInitTable: function ($table, mainOptions) {
         $table.bootstrapTable("destroy");
-        TF.initTable($table, mainOptions);
+        Global.initTable($table, mainOptions);
     },
 
     /**
@@ -328,18 +270,18 @@ var TF = {
             if (ButtonPressed === "确认") {
                 axios.post(url + "?ids=" + ids)
                     .then(function (response) {
-                        if (response.data.code === TF.status_code.success) {
+                        if (response.data.code === Global.status_code.success) {
                             layer.msg(response.data.message);
                             $table.bootstrapTable("refresh");
                         } else {
-                            TF.show_error_msg(response.data.message)
+                            Global.show_error_msg(response.data.message)
                         }
                     })
                     .catch(function (error) {
                         if (error.response)
-                            TF.show_error_msg(error.response.data.message)
+                            Global.show_error_msg(error.response.data.message)
                         else
-                            TF.show_error_msg(error)
+                            Global.show_error_msg(error)
                     });
             }
 
@@ -354,7 +296,100 @@ var TF = {
         return $(window).height() - $('header').outerHeight(true)
             - $('div.page-footer').outerHeight(true)
             - $('#ribbon').outerHeight(true)
+    },
+
+    /**
+     * 新增数据，弹出对话框的时候，需要把上次填写的数据给清除，并且初始化数据
+     * @param object
+     * @param init 把对象初始化所对应的值，每种类型都有默认为“”、0、false、[]以及null
+     */
+    resetObject: function (object, init) {
+        init = arguments[1] ? arguments[1] : {};
+        if (init.str === undefined)
+            init.str = "";
+        if (init.num === undefined)
+            init.num = 0;
+        if (init.bool === undefined)
+            init.bool = false;
+        if (init.arr === undefined)
+            init.arr = [];
+
+        for (var obj in object) {
+            if (typeof(object[obj]) !== "object" || object[obj] instanceof Array) {
+                if (typeof(object[obj]) === "string")
+                    object[obj] = init.str;
+                else if (typeof(object[obj]) === "number")
+                    object[obj] = init.num;
+                else if (typeof(object[obj]) === "boolean")
+                    object[obj] = init.bool;
+                else if (object[obj] instanceof Array)
+                    object[obj] = init.arr;
+                else Object[obj] = null;
+            } else {
+                this.resetObject(object[obj], init);
+            }
+        }
+    },
+
+    /**
+     * 处理axios的error返回
+     * @param response
+     */
+    handleAxiosError: function (error) {
+        if (error.response)
+            Global.show_error_msg(error.response.data.message);
+        else if (error.request)
+            Global.show_error_msg(error.request);
+        else
+            Global.show_error_msg(error.message);
+    },
+
+    smartDialog: function (options) {
+        if (options.id === undefined) {
+            Global.show_error_msg("请为添加/编辑对话框添加ID属性");
+            return false;
+        }
+        if (options.width === undefined)
+            options.width = 600;
+        if (options.autoOpen === undefined)
+            options.autoOpen = false;
+        if (options.resizable === undefined)
+            options.resizable = true;
+        if (options.modal === undefined)
+            options.modal = true;
+        if (options.title === undefined)
+            options.title = "添加";
+        if (options.confirm === undefined || (typeof options.confirm) !== "function") {
+            Global.show_error_msg("没有添加确认的执行方法");
+            return false;
+        }
+        if (options.cancel === undefined || (typeof options.cancel) !== "function") {
+            options.cancel = function () {
+                $("#" + options.id).dialog("close");
+            };
+        }
+        $("#" + options.id).dialog({
+            autoOpen: options.autoOpen,
+            width: options.width,
+            resizable: options.resizable,
+            modal: options.modal,
+            title: "<div class='widget-header'><h4><i class='icon-ok'></i> " + options.title + "</h4></div>",
+            buttons: [{
+                html: "<i class='fa fa-plus-square-o'></i>&nbsp; 确定",
+                "class": "btn btn-info",
+                click: function () {
+                    options.confirm();
+                }
+            }, {
+                html: "<i class='fa fa-times'></i>&nbsp; 取消",
+                "class": "btn btn-default",
+                click: function () {
+                    options.cancel();
+                }
+            }]
+        })
     }
+
 
 };
 
@@ -366,11 +401,6 @@ $(function () {
     //bootstrap-table中文化
     $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
 
-    //时钟
-    setInterval('TF.dateTimerRunner()', 1000);
-
-    //页脚的时间
-    TF.showLoginDT();
 
     // ==========切换菜单模块的显示风格  start==========
     var __menuModuleIndex;
@@ -405,17 +435,16 @@ $(function () {
         var $table = $("table[id$='-table']");
         if ($table.length > 0) {
             $table.bootstrapTable('resetView', {
-                height: TF.getHeight()
+                height: Global.getHeight()
             });
         }
-
     });
 
     //搜索控件的显隐
-    $body.on("click", "[id$='-search-control']", function () {
-        window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.toggleTableSearch();
-    })
+    // $body.on("click", "[id$='-search-control']", function () {
+    //     window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
+    //     Global.toggleTableSearch();
+    // })
 
 });
 
@@ -489,13 +518,13 @@ $doc.ajaxSuccess(function (event, xhr, options) {
     if (data.code) {
         if (data.code === 301) {
             if (options.type === "POST") {
-                TF.show_error_msg(data.message || "登录超时，请重新登录");
+                Global.show_error_msg(data.message || "登录超时，请重新登录");
             } else if (options.type === "GET") {
                 layer.msg(data.message || "登录超时，请重新登录")
             }
         } else if (data.code !== 200) {
             if (options.type === "POST") {
-                TF.show_error_msg(data.message || "请求发生错误，请稍后重试");
+                Global.show_error_msg(data.message || "请求发生错误，请稍后重试");
             } else if (options.type === "GET") {
                 layer.msg(data.message || "请求发生错误，请稍后重试")
             }
@@ -508,7 +537,7 @@ $doc.ajaxError(function (event, xhr, options, exc) {
         var status = resp.data.status;
         var errorMsg = resp.data.error;
         var exceptionMsg = resp.data.exception;
-        TF.show_error_msg("请求发生异常！<br/>状态码：" + status + "<br/>错误信息：" + errorMsg + "<br/>异常信息：" + exceptionMsg);
+        Global.show_error_msg("请求发生异常！<br/>状态码：" + status + "<br/>错误信息：" + errorMsg + "<br/>异常信息：" + exceptionMsg);
     }
 });
 

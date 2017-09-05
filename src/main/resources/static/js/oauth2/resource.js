@@ -5,7 +5,7 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#resource-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.toggleTableSearch(false);
+        Global.toggleTableSearch(false);
     });
 
     var query_params = function (params) {
@@ -23,7 +23,7 @@ var page_function = function () {
     };
 
     //加载表格
-    TF.initTable($table, {
+    Global.initTable($table, {
         url: "/oauth2/resource/api/list",
         toolbar: '#resource-toolbar',
         queryParams: query_params,
@@ -81,7 +81,7 @@ var page_function = function () {
                 app.error.orderErrorMsg = $errs.orderIndex
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var resources = app.Resource
@@ -93,7 +93,7 @@ var page_function = function () {
                     params.append("systemCode", app.Resource.systemCode.selected)
                     axios.post('/oauth2/resource/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 app.Resource.id = " ";
                                 app.Resource.name = " ";
@@ -104,14 +104,14 @@ var page_function = function () {
                                 $("#addResource").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
 
@@ -133,7 +133,7 @@ var page_function = function () {
                 app.error.orderErrorMsg = $errs.orderIndex
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     params.append("id", app.Resource.id)
@@ -146,7 +146,7 @@ var page_function = function () {
                     params.append("remark", app.Resource.remark)
                     axios.post('/oauth2/resource/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 app.Resource.id = " ";
                                 app.Resource.name = " ";
@@ -157,14 +157,14 @@ var page_function = function () {
                                 $("#editResource").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
             }
@@ -181,7 +181,7 @@ var page_function = function () {
                 test: function () {
                     return String(app.Resource.url).length > 0
                         && app.Resource.url.startsWith("/")
-                        && !TF.isChinese(app.Resource.url)
+                        && !Global.isChinese(app.Resource.url)
                 },
                 message: '资源路径不能为空且必须以/开头且不含中文'
             },
@@ -231,7 +231,7 @@ var page_function = function () {
     $("#edit-resource").click(function () {
         var editResources = $table.bootstrapTable('getSelections');
         if (editResources.length !== 1) {
-            TF.show_error_message("错误选择提示", "请选择一份资源以供编辑信息")
+            Global.show_error_message("错误选择提示", "请选择一份资源以供编辑信息")
         } else {
             app.Resource.id = editResources[0].id;
             app.Resource.name = editResources[0].name;
@@ -250,7 +250,7 @@ var page_function = function () {
     $("#delete-resource").click(function () {
         var deleteResources = $table.bootstrapTable('getSelections');
         if (deleteResources.length === 0) {
-            TF.show_error_message("错误选择提示", "请选择资源以供删除")
+            Global.show_error_message("错误选择提示", "请选择资源以供删除")
         } else {
             $.SmartMessageBox({
                 title: "<i class='fa fa-minus-square-o' style='color:red'></i> 删除资源信息？",
@@ -265,18 +265,18 @@ var page_function = function () {
                     deleteIds = deleteIds.substr(0, deleteIds.length - 1);
                     axios.post('/oauth2/resource/api/delete?ids=' + deleteIds)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $table.bootstrapTable("refresh");
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
             })
@@ -350,9 +350,9 @@ var page_function = function () {
         })
         .catch(function (error) {
             if (error.response)
-                TF.show_error_msg(error.response.data.message)
+                Global.show_error_msg(error.response.data.message)
             else
-                TF.show_error_msg(error)
+                Global.show_error_msg(error)
         });
 }
 

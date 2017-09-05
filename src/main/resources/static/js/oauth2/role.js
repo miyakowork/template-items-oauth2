@@ -19,7 +19,7 @@ var page_function = function () {
         for (var i = 0, l = nodes.length; i < l; i++) {
             treeObj.checkNode(nodes[i], false, true);
         }
-        TF.reInitTable($table, {
+        Global.reInitTable($table, {
             url: "/oauth2/role/api/list",
             toolbar: '#role-toolbar',
             queryParams: query_params,
@@ -91,7 +91,7 @@ var page_function = function () {
                 app.error.orderErrorMsg = $errs.orderIndex
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var datas = app.role
@@ -104,7 +104,7 @@ var page_function = function () {
 
                     axios.post('/oauth2/role/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addRole").dialog("close");
                                 $table.bootstrapTable("refresh");
@@ -112,14 +112,14 @@ var page_function = function () {
                                 treeObj.destroy();
                                 loadRoleTree();
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
 
@@ -139,7 +139,7 @@ var page_function = function () {
                 app.error.orderErrorMsg = $errs.orderIndex
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     params.append("id", app.role.id)
@@ -152,7 +152,7 @@ var page_function = function () {
                     params.append("systemCode", $selectedModule.val())
                     axios.post('/oauth2/role/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#editRole").dialog("close");
                                 $table.bootstrapTable("refresh");
@@ -160,14 +160,14 @@ var page_function = function () {
                                 treeObj.destroy();
                                 loadRoleTree();
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
             }
@@ -238,7 +238,7 @@ var page_function = function () {
     $("#edit-role").click(function () {
         var editUsers = $table.bootstrapTable('getSelections');
         if (editUsers.length !== 1) {
-            TF.show_error_message("错误选择提示", "请在角色树中选择父级角色以添加子角色")
+            Global.show_error_message("错误选择提示", "请在角色树中选择父级角色以添加子角色")
         } else {
             $("#scb").val($("#select-modules").find("option:selected").text());
             app.role.id = editUsers[0].id;
@@ -345,7 +345,7 @@ var page_function = function () {
             //循环完select之后加载左侧角色树
             loadRoleTree();
             //循环完之后加载表格
-            TF.initTable($table, {
+            Global.initTable($table, {
                 url: "/oauth2/role/api/list",
                 toolbar: '#role-toolbar',
                 queryParams: function (params) {
@@ -358,9 +358,9 @@ var page_function = function () {
         })
         .catch(function (error) {
             if (error.response)
-                TF.show_error_msg(error.response.data.message)
+                Global.show_error_msg(error.response.data.message)
             else
-                TF.show_error_msg(error)
+                Global.show_error_msg(error)
         });
 
 
@@ -370,7 +370,7 @@ var page_function = function () {
         treeObj.destroy();
         $selectedModule.val($(this).val());
         loadRoleTree();
-        TF.reInitTable($table, {
+        Global.reInitTable($table, {
             url: "/oauth2/role/api/list",
             toolbar: '#role-toolbar',
             queryParams: function (params) {

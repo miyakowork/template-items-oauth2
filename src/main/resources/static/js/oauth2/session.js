@@ -7,7 +7,7 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#session-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        TF.toggleTableSearch(true)
+        Global.toggleTableSearch(true)
     });
 
     //设置表格的搜索参数
@@ -19,8 +19,8 @@ var page_function = function () {
             sort: params.sort,
             username: $("input.bootstrap-table-filter-control-username").val(),
             ip: $("input.bootstrap-table-filter-control-ip").val(),
-            lastVisitDate: TF.datepickerSearch("lastVisitDate"),
-            firstVisitDate: TF.datepickerSearch("firstVisitDate")
+            lastVisitDate: Global.datepickerSearch("lastVisitDate"),
+            firstVisitDate: Global.datepickerSearch("firstVisitDate")
         };
     };
 
@@ -34,7 +34,7 @@ var page_function = function () {
     }];
 
     //加载表格
-    TF.initTable($table, {
+    Global.initTable($table, {
         url: "/session/api/list",
         toolbar: '#session-toolbar',
         queryParams: query_params,
@@ -46,7 +46,7 @@ var page_function = function () {
     $("#delete-session").click(function () {
         var ss = $table.bootstrapTable('getSelections');
         if (ss.length === 0) {
-            TF.show_error_message("错误选择", "请选择用户然后再剔除")
+            Global.show_error_message("错误选择", "请选择用户然后再剔除")
         } else {
             var sessions = {
                 usernames: '',
@@ -58,7 +58,7 @@ var page_function = function () {
                 sessions.sessionIds += ss[s].sessionId + ","
             }
 
-            TF.show_confirm_msg(
+            Global.show_confirm_msg(
                 "<i class='fa fa-minus-square-o' style='color:red'></i> 确认剔除下列所列用户?",
                 $this.data('reset.msg') || "确认要剔除[" + sessions.usernames.substr(0, sessions.usernames.length - 1) + "]用户?",
                 function (ButtonPressed) {
@@ -69,7 +69,7 @@ var page_function = function () {
                         axios.post("/session/api/forcelogout", params)
                             .then(function (response) {
 
-                                if (response.data.code === TF.status_code.success) {
+                                if (response.data.code === Global.status_code.success) {
                                     layer.msg(response.data.message);
                                     $table.bootstrapTable("refresh");
                                 }

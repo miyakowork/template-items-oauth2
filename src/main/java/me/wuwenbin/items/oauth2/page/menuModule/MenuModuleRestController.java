@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Wuwenbin on 2017/08/01.
  */
 @RestController
-@RequestMapping("oauth2/menu-module/api")
+@RequestMapping("oauth2/menuModule/api")
 public class MenuModuleRestController extends BaseRestController {
 
     private MenuModuleService menuModuleService;

@@ -81,7 +81,7 @@
                             layer.close(index);
                             layer.msg(resp.message);
                         } else {
-                            TF.show_error_msg(resp.message)
+                            Global.show_error_msg(resp.message)
                         }
                     });
                     //同步更新表格和缓存对应的值
@@ -100,7 +100,7 @@
                                 layer.close(index);
                                 layer.msg(resp.message);
                             } else {
-                                TF.show_error_msg(resp.message)
+                                Global.show_error_msg(resp.message)
                             }
                         })
                 });

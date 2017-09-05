@@ -51,9 +51,9 @@ var page_function = function () {
         })
         .catch(function (error) {
             if (error.response)
-                TF.show_error_msg(error.response.data.message);
+                Global.show_error_msg(error.response.data.message);
             else
-                TF.show_error_msg(error);
+                Global.show_error_msg(error);
         });
 
     //监听左侧树更改模块的事件
@@ -143,7 +143,7 @@ var page_function = function () {
                 app.error = this.$vuerify.$errors;
 
                 if (!check_result) {
-                    TF.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
                     var datas = app.menu;
@@ -156,19 +156,19 @@ var page_function = function () {
                     params.append("menuModuleId", app.menu.menuModule.selected);
                     axios.post('/oauth2/menu/api/add', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addMenu").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 }
             },
@@ -194,22 +194,22 @@ var page_function = function () {
                     params.append("remark", app.menu.remark);
                     axios.post('/oauth2/menu/api/edit', params)
                         .then(function (response) {
-                            if (response.data.code === TF.status_code.success) {
+                            if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#addMenu").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
-                                TF.show_error_msg(response.data.message)
+                                Global.show_error_msg(response.data.message)
                             }
                         })
                         .catch(function (error) {
                             if (error.response)
-                                TF.show_error_msg(error.response.data.message)
+                                Global.show_error_msg(error.response.data.message)
                             else
-                                TF.show_error_msg(error)
+                                Global.show_error_msg(error)
                         });
                 } else {
-                    TF.show_error_msg("请修改错误之后在提交");
+                    Global.show_error_msg("请修改错误之后在提交");
                 }
             }
         },
@@ -295,10 +295,10 @@ var page_function = function () {
         var $roleTree = $.fn.zTree.getZTreeObj("roleTreeMenu");
         var checkedNodes = $roleTree.getCheckedNodes(true);
         if (checkedNodes.length < 1) {
-            TF.show_error_msg("请先在左侧角色树勾选一个角色");
+            Global.show_error_msg("请先在左侧角色树勾选一个角色");
         } else {
             //获取菜单模块下拉框内容
-            axios.post('/oauth2/menu-module/api/find/enables?systemModuleCode=' + app.menu.systemCode, {})
+            axios.post('/oauth2/menuModule/api/find/enables?systemModuleCode=' + app.menu.systemCode, {})
                 .then(function (response) {
                     if (response.data.length > 0) {
                         app.menu.menuModule = response.data;
@@ -335,7 +335,7 @@ var page_function = function () {
     //监听编辑按钮点击事件
     $("#edit-menu").click(function () {
         //获取菜单模块下拉框内容
-        axios.post('/oauth2/menu-module/api/find/enables?systemModuleCode=' + app.menu.systemCode, {})
+        axios.post('/oauth2/menuModule/api/find/enables?systemModuleCode=' + app.menu.systemCode, {})
             .then(function (response) {
                 if (response.data.length > 0) {
                     app.menu.menuModule = response.data;
@@ -351,7 +351,7 @@ var page_function = function () {
         app.error = {};
         var selectedMenu = $table.bootstrapTable("getSelections");
         if (selectedMenu.length === 0) {
-            TF.show_error_msg("请选择一项菜单进行编辑");
+            Global.show_error_msg("请选择一项菜单进行编辑");
         } else {
             app.menu.id = selectedMenu[0].id;
             app.menu.icon = selectedMenu[0].icon;
@@ -412,9 +412,9 @@ var page_function = function () {
     $("#delete-menu").click(function () {
         var ss = $table.bootstrapTable('getSelections');
         if (ss.length === 0) {
-            TF.show_error_message("错误选择", "请至少选择一项进行禁用操作")
+            Global.show_error_message("错误选择", "请至少选择一项进行禁用操作")
         } else {
-            TF.deleteItems($table, "/oauth2/menu/api/delete", "name");
+            Global.deleteItems($table, "/oauth2/menu/api/delete", "name");
         }
     });
 };
@@ -520,7 +520,7 @@ function initTable() {
             }
         },
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",//post方式一定得改成这种contentType,默认是application/json
-        height: TF.getHeight(),
+        height: Global.getHeight(),
         showColumns: true,//是否显示 内容列下拉框
         showRefresh: true,
         treeView: true,
