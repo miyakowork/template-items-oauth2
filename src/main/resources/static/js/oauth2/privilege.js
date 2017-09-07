@@ -24,7 +24,7 @@ function loadSystemModuleTree() {
             onClick: loadRoleTree
         }
     };
-    $.get("/oauth2/system-module/api/find/modules/enabled/moduleTree", function (json) {
+    $.get("/oauth2/systemModule/api/find/modules/enabled/moduleTree", function (json) {
         $.fn.zTree.init($("#systemModuleTree"), settings, json)
     })
 }

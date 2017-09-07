@@ -1,95 +1,49 @@
-<!--suppress HtmlUnknownAttribute -->
-<div class="row">
-
-    <div id="system-module-toolbar" class="form-inline">
-        <div th:replace="fragment/control::operation(system-module,true)"></div>
+<div id="system-module">
+    <div class="row">
+        <toolbar name="systemModule" :show-delete="showDel" :functions="functions"></toolbar>
+        <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <bootstrap-table name="resModule" :options="tableOptions"></bootstrap-table>
+        </section>
     </div>
-    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <table id="system-module-table">
-            <thead>
-            <tr>
-                <th data-checkbox="true"></th>
 
-                <th data-field="id"
-                    data-title="id"
-                    data-sortable="true"
-                    data-visible="false"
-                    data-searchable="true"
-                    data-width="200"
-                    data-align="center"></th>
+    <section id="addSystemModule">
+        <form class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
+            <form-input label="名称" placeholder="系统模块名称" v-model="model.name" :message="errors.name"></form-input>
+            <form-input label="系统代码" placeholder="系统代码" v-model="model.systemCode"
+                        :message="errors.systemCode"></form-input>
+            <form-radio label="是否可用">
+                <input type="radio" slot="check" v-model="model.enabled" class="radiobox style-0" v-bind:value="true">
+                <input type="radio" slot="nocheck" v-model="model.enabled" class="radiobox style-0"
+                       v-bind:value="false">
+            </form-radio>
+            <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
+                        :message="errors.orderIndex"></form-input>
 
-                <th data-field="name"
-                    data-sortable="true"
-                    data-title="名称"
-                    data-filter-control="input"
-                    data-filter-control-placeholder="输入名称"
-                    data-align="center"></th>
+            <form-input label="备注" placeholder="备注信息（选填）" v-model="model.remark"></form-input>
+            <button id="sa" type="submit" class="hidden"></button>
+        </form>
+    </section>
 
-                <th data-field="systemCode"
-                    data-title="系统编码"
-                    data-filter-control="input"
-                    data-filter-control-placeholder="输入系统编码"
-                    data-align="center"></th>
+    <section id="editSystemModule">
+        <form class="form-horizontal" @submit.prevent="handleSubmit_edit" method="post">
+            <form-input label="名称" placeholder="系统模块名称" v-model="model.name" :message="errors.name"></form-input>
+            <form-input label="系统代码" placeholder="系统代码" v-model="model.systemCode" :readonly="true"
+                        :message="errors.systemCode"></form-input>
+            <form-radio label="是否可用">
+                <input type="radio" slot="check" v-model="model.enabled" class="radiobox style-0" v-bind:value="true">
+                <input type="radio" slot="nocheck" v-model="model.enabled" class="radiobox style-0"
+                       v-bind:value="false">
+            </form-radio>
+            <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
+                        :message="errors.orderIndex"></form-input>
 
-                <th data-field="enabled"
-                    data-formatter="enabledFormatter"
-                    data-title="是否可用"
-                    data-searchable="true"
-                    data-filter-data="url:/oauth2/common/select"
-                    data-filter-control="select"
-                    data-align="center"></th>
+            <form-input label="备注" placeholder="备注信息（选填）" v-model="model.remark"></form-input>
+            <button id="sa_edit" type="submit" class="hidden"></button>
+        </form>
+    </section>
 
-                <th data-field="remark"
-                    data-title="备注"
-                    data-align="center"></th>
-
-                <th data-field="createDate"
-                    data-sortable="true"
-                    data-sort-name="create_date"
-                    data-formatter="date_formatter"
-                    data-visible="false"
-                    data-title="创建日期"
-                    data-align="center"></th>
-
-                <th data-field="createUserName"
-                    data-title="创建用户"
-                    data-align="center"
-                    data-visible="false"></th>
-
-                <th data-field="updateDate"
-                    data-sort-name="update_date"
-                    data-formatter="date_formatter"
-                    data-sortable="true"
-                    data-title="更新日期"
-                    data-visible="false"
-                    data-align="center"></th>
-
-                <th data-field="updateUserName"
-                    data-visible="false"
-                    data-title="更新用户"
-                    data-align="center"></th>
-
-                <th data-field="orderIndex"
-                    data-sortable="true"
-                    data-sort-name="order_index"
-                    data-title="排序"
-                    data-align="center"></th>
-            </tr>
-            </thead>
-        </table>
-    </article>
 </div>
 
-<!-- 弹出页面 -->
-<div id="add_edit" class="hidden">
-    <!-- 添加页面 -->
-    <div th:replace="router/system_module/add::addSystemModule"></div>
-
-    <!-- 编辑页面 -->
-    <div th:replace="router/system_module/edit::editSystemModule"></div>
-</div>
-
-<!--js-->
 <script src="/static/js/oauth2/system_module.js"></script>
 
 

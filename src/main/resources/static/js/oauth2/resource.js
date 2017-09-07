@@ -337,7 +337,7 @@ var page_function = function () {
 
 
     //请求系统代码下拉框数据
-    axios.post('/oauth2/system-module/api/find/modules/enabled', {})
+    axios.post('/oauth2/systemModule/api/find/modules/enabled', {})
         .then(function (response) {
             if (response.data.length > 0) {
                 app.Resource.systemCode = response.data;

@@ -48,6 +48,24 @@ var formItem = {
     '           </div>' +
     '       </div>' +
     '   </div> '
+    ,
+    fetch:
+    '<div :class="col">' +
+    '   <div class="form-group" :class="hasError">' +
+    '       <label class="col-md-3 control-label" v-text="label"></label>' +
+    '       <div class="col-md-9">' +
+    '           <div class="input-group">' +
+    '               <input class="form-control"  :readonly="readonly" :placeholder="placeholder" :value="value" @input="updateValue($event.target.value)">' +
+    '               <div class="input-group-btn">' +
+    '                   <a @click.prevent="clickToFetch" class="btn btn-default">' +
+    '                       <i class="fa fa-check-square-o"></i>&nbsp;获取' +
+    '                   </a>' +
+    '               </div>' +
+    '           </div>' +
+    '           <div class="note-error margin-bottom-0" :class="hasErrorMsg" v-text="message"></div>' +
+    '       </div>' +
+    '   </div> ' +
+    '</div>'
 };
 
 Vue.component('form-input', {
@@ -151,7 +169,55 @@ Vue.component('form-radio', {
         }
     }
 });
-
+Vue.component('form-fetch', {
+    template: formItem.fetch,
+    computed: {
+        hasError: function () {
+            return this.isHasError(this.message) ? 'has-error' : '';
+        },
+        hasErrorMsg: function () {
+            return this.isHasError(this.message) ? 'has-error text-danger margin-top-10' : '';
+        },
+        col: function () {
+            return this.double === "true" ? 'col-md-6' : 'col-md-12';
+        }
+    },
+    methods: {
+        updateValue: function (value) {
+            this.$emit("input", value);
+        },
+        clickToFetch: function () {
+            this.fetch();
+        }
+    },
+    props: {
+        //是否以两列形式摆放元素
+        double: {
+            type: Boolean,
+            default: false
+        },
+        label: {
+            type: String,
+            default: ''
+        },
+        placeholder: {
+            type: String,
+            default: ''
+        },
+        readonly: {
+            type: Boolean,
+            default: true
+        },
+        value: Object,
+        message: {
+            type: String,
+            default: ''
+        },
+        fetch: {
+            type: Function
+        }
+    }
+});
 
 //表格的toolbar组件
 var toolbar =
@@ -191,7 +257,11 @@ Vue.component('toolbar', {
             this.functions.edit();
         },
         deleteItem: function () {
-            this.functions.del();
+            if (this.functions.del) {
+                this.functions.del();
+            } else {
+                void(0);
+            }
         }
     },
     props: {
@@ -279,3 +349,23 @@ Vue.component('bootstrap-table', {
         }
     }
 });
+
+var panel =
+    '<div class="panel" :class="theme">' +
+    '   <div class="panel-heading">' +
+    '       <slot name="heading"></slot>' +
+    '   </div>' +
+    '   <div class="panel-body" style="min-height: 300px;">' +
+    '       <slot name="body"></slot>' +
+    '   </div> ' +
+    '</div>';
+
+Vue.component('panel', {
+    template: panel,
+    props: {
+        theme: {
+            type: String,
+            default: "panel-default"
+        }
+    }
+})

@@ -364,7 +364,7 @@ var page_function = function () {
     });
 
     //获取下拉框内容
-    axios.post('/oauth2/system-module/api/find/modules/enabled', {})
+    axios.post('/oauth2/systemModule/api/find/modules/enabled', {})
         .then(function (response) {
             if (response && response.status === 200) {
                 var $selectModuleControl = $('#select-modules-ps');

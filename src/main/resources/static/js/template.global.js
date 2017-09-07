@@ -684,4 +684,4 @@ var CookieUtils = {
             document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
         }
     }
-}
+};

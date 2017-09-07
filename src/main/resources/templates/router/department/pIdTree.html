@@ -28,13 +28,13 @@
                 }
             },
             view: {
-                selectedMulti: false,
+                selectedMulti: false
             },
             callback: {
                 onDblClick: function (event, treeId, treeNode) {
                     var index = parent.layer.getFrameIndex(window.name);
-                    parent.app.OauthDepartment.parentId = treeNode.id;
-                    parent.$('#pNameByTree').val(treeNode.name);
+                    parent.department.model.parentId = treeNode.id;
+                    parent.department.model.parentName = treeNode.name;
                     parent.layer.close(index);
                 }
             }
@@ -45,10 +45,9 @@
                 json[node].open = true;
             }
             $.fn.zTree.init($("#DepartmentTreeP"), settings, json);
-            var hiddenId = parent.app.OauthDepartment.id;
+            var hiddenId = parent.department.model.id;
             var treeObj = $.fn.zTree.getZTreeObj("DepartmentTreeP");
-            var node = treeObj.getNodeByParam("id", hiddenId, null);
-            treeObj.hideNode(node);
+            treeObj.hideNode(treeObj.getNodeByParam("id", hiddenId, null));
         })
     })
 

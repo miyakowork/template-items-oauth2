@@ -19,7 +19,7 @@ import java.util.List;
  * 系统面模块数据处理层
  * Created by zhangteng on 2017/7/14.
  */
-@RequestMapping("/oauth2/system-module/api")
+@RequestMapping("/oauth2/systemModule/api")
 @RestController
 public class SysModuleRestController extends BaseRestController {
 

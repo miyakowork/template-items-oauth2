@@ -256,7 +256,7 @@ function iconMiniFormatter(value) {
 
 //获取下拉框内容
 function getSelectContent($selector) {
-    axios.post('/oauth2/system-module/api/find/modules/enabled', {})
+    axios.post('/oauth2/systemModule/api/find/modules/enabled', {})
         .then(function (response) {
             if (response.data.length > 0) {
                 menuModule.model.systemCode = response.data;

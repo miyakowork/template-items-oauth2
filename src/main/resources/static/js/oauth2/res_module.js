@@ -26,7 +26,7 @@ var resModule = new Vue({
             filterControl: true,
             columns: [
                 {checkbox: true},
-                {field: "id", sortable: true, width: 30, title: "ID", align: "center", visible: false},
+                {field: "id", sortable: true, width: 100, title: "ID", align: "center", visible: false},
                 {
                     field: "name",
                     sortable: true,
@@ -217,7 +217,7 @@ var resModule = new Vue({
         },
         enabled: {
             test: function () {
-                return menuModule.model.enabled !== null;
+                return resModule.model.enabled !== null;
             },
             message: "必须二选一"
         },
@@ -261,7 +261,7 @@ var page_function = function () {
 
 //获取下拉框内容
 function getSelectContent() {
-    axios.post('/oauth2/system-module/api/find/modules/enabled', {})
+    axios.post('/oauth2/systemModule/api/find/modules/enabled', {})
         .then(function (response) {
             if (response.data.length > 0) {
                 resModule.model.systemCode = response.data;
