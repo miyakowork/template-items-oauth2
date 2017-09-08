@@ -11,9 +11,9 @@
     var sprintf = $.fn.bootstrapTable.utils.sprintf,
         objectKeys = $.fn.bootstrapTable.utils.objectKeys;
 
-    //一开始是没有的，是undefined，会报错，所以此处哈应该做一个判断
+    //一开始是没有的，是undefined，会报错，所以此处还应该做一个判断
     var getOptionsFromSelectControl = function (selectControl) {
-        if (/*window.__customControls___ &&*/ selectControl.length > 0)
+        if (window.__customControls___ && selectControl.length > 0)
             return selectControl.get(selectControl.length - 1).options;
         else
             return '';
@@ -435,6 +435,8 @@
                 sortSelectControl(selectControl);
             },
             'url': function (filterDataSource, selectControl) {
+                selectControl.empty();
+                addOptionToSelectControl(selectControl, '', '请选择');
                 $.ajax({
                     url: filterDataSource,
                     dataType: 'json',

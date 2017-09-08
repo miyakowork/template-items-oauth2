@@ -234,6 +234,10 @@ var toolbar =
 
 Vue.component('toolbar', {
     template: toolbar,
+    mounted: function () {
+        $("#" + this.operateId.searchControl).find("input[type=checkbox]").prop("checked", window.__customControls___);
+        Global.toggleTableSearch();
+    },
     computed: {
         operateId: function () {
             return {

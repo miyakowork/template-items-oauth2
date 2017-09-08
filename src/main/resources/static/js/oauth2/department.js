@@ -85,7 +85,7 @@ var department = new Vue({
         tableOptions: {
             url: '/oauth2/department/api/list',
             toolbar: '#department-toolbar',
-            query_params: function (params) {
+            queryParams: function (params) {
                 return {
                     limit: params.limit,
                     offset: params.offset,

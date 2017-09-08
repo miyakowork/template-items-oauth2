@@ -13,7 +13,7 @@ var systemModule = new Vue({
             url: "/oauth2/systemModule/api/list",
             toolbar: '#systemModule-toolbar',
             filterControl: true,
-            query_params: function (params) {
+            queryParams: function (params) {
                 return {
                     limit: params.limit,
                     offset: params.offset,

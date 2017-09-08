@@ -12,7 +12,7 @@ var resModule = new Vue({
         tableOptions: {
             url: '/oauth2/resModule/api/list',
             toolbar: '#resModule-toolbar',
-            query_params: function (params) {
+            queryParams: function (params) {
                 return {
                     limit: params.limit,
                     offset: params.offset,
@@ -144,7 +144,7 @@ var resModule = new Vue({
             }
         }
     },
-    method: {
+    methods: {
         handleSubmit_add: function () {
             this.$vuerify.clear()//清空之前的验证结果信息
             var check_result = this.$vuerify.check()// 手动触发校验所有数据
@@ -159,7 +159,7 @@ var resModule = new Vue({
                         continue
                     params.append(data, datas[data])
                 }
-                params.append('systemCode', app.resModule.systemCode.selected)
+                params.append('systemCode', resModule.model.systemCode.selected);
                 axios.post('/oauth2/resModule/api/add', params)
                     .then(function (response) {
                         if (response.data.code === Global.status_code.success) {
@@ -190,7 +190,7 @@ var resModule = new Vue({
                         continue
                     params.append(data, datas[data])
                 }
-                params.append("systemCode", app.resModule.systemCode.selected)
+                params.append("systemCode", resModule.model.systemCode.selected)
                 axios.post('/oauth2/resModule/api/edit', params)
                     .then(function (response) {
                         if (response.data.code === Global.status_code.success) {
@@ -211,7 +211,7 @@ var resModule = new Vue({
     vuerify: {
         name: {
             test: function () {
-                return String(app.resModule.name).length >= 2
+                return String(resModule.model.name).length >= 2
             },
             message: '名字长度不能为空且不能过短'
         },
@@ -229,7 +229,7 @@ var resModule = new Vue({
         },
         orderIndex: {
             test: function () {
-                return !isNaN(app.resModule.orderIndex)
+                return !isNaN(resModule.model.orderIndex)
             },
             message: '不能为空且必须为数字'
         }

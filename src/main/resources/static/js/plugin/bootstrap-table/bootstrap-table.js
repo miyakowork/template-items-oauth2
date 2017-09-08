@@ -1168,6 +1168,7 @@
 
                 that.toggleColumn($(this).val(), $this.prop('checked'), false);
                 that.trigger('column-switch', $(this).data('field'), $this.prop('checked'));
+
             });
         }
 

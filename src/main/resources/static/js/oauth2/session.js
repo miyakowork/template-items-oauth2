@@ -7,7 +7,7 @@ var page_function = function () {
     //搜索控件显影的监听事件
     $("#session-search-control").on("click", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-        Global.toggleTableSearch(true)
+        Global.toggleTableSearch();
     });
 
     //设置表格的搜索参数

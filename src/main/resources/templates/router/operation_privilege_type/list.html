@@ -1,210 +1,46 @@
-<!-- row -->
-<div class="row">
-
-    <div id="opt-toolbar" class="form-inline">
-        <div th:replace="fragment/control::operation(operationprivilegetype,false)"></div>
-    </div>
-    <!-- NEW WIDGET START -->
-    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <table id="opt-table">
-            <thead>
-            <tr>
-                <th data-checkbox="true"></th>
-                <th data-field="id"
-                    data-sortable="true"
-                    data-searchable="true"
-                    data-width="200"
-                    data-title="id"
-                    data-align="center"></th>
-
-                <th data-field="name"
-                    data-sortable="true"
-                    data-search-formatter="false"
-                    data-title="名称"
-                    data-filter-control="input"
-                    data-filter-control-placeholder="输入名称"
-                    data-align="center"></th>
-
-                <th data-field="enabled"
-                    data-formatter="enabledFormatter"
-                    data-filter-control="select"
-                    data-filter-data="url:/oauth2/common/select"
-                    data-title="是否可用"
-                    data-align="center"></th>
-
-                <th data-field="remark"
-                    data-search-formatter="false"
-                    data-title="备注"
-                    data-align="center"></th>
-
-                <th data-field="createDate"
-                    data-formatter="date_formatter"
-                    data-title="创建日期"
-                    data-sort-name="create_date"
-                    data-sortable="true"
-                    3data-visible="false"
-                    data-align="center"></th>
-
-                <th data-field="createUserName"
-                    data-search-formatter="false"
-                    data-title="创建用户"
-                    data-visible="false"
-                    data-align="center"></th>
-
-                <th data-field="updateDate"
-                    data-formatter="date_formatter"
-                    data-sort-name="update_date"
-                    data-sortable="true"
-                    data-title="更新日期"
-                    data-visible="false"
-                    data-align="center"></th>
-
-                <th data-field="updateUserName"
-                    data-search-formatter="false"
-                    data-title="更新用户"
-                    data-visible="false"
-                    data-align="center"></th>
-
-                <th data-field="orderIndex"
-                    data-sortable="true"
-                    data-visible="false"
-                    data-sort-name="order_index"
-                    data-title="排序"
-                    data-align="center"></th>
-            </tr>
-            </thead>
-        </table>
-    </article>
-    <!-- WIDGET END -->
-</div>
-
-<!-- 弹出页面 -->
-<div id="add_edit" class="hidden">
-    <!-- 添加页面 -->
-    <div id="dialog_simple" title="Dialog Simple Title">
-        <div class="col-md-12">
-            <form class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
-                <fieldset>
-                    <!--名称-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                        <label class="col-md-3 control-label">名称：</label>
-                        <div class="col-md-9">
-                            <input class="form-control" placeholder="操作级权限类型名称"
-                                   v-model="operationprivilegetype.name">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
-                                {{error.nameErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--是否可用-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">是否可用：</label>
-                        <div class="col-md-9">
-
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="operationprivilegetype.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="true" checked>
-                                <span>是</span>
-                            </label>
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="operationprivilegetype.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="false" checked>
-                                <span>否</span>
-                            </label>
-                        </div>
-                    </div>
-                    <!--排序-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                        <label class="col-md-3 control-label">排序：</label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="number" placeholder="排序"
-                                   v-model="operationprivilegetype.orderIndex">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
-                                {{error.orderErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--备注-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">备注：</label>
-                        <div class="col-md-9">
-                            <input class="form-control" placeholder="备注信息（选填）" type="text"
-                                   v-model="operationprivilegetype.remark">
-                        </div>
-                    </div>
-
-                </fieldset>
-                <button id="sa" type="submit" class="hidden"></button>
-            </form>
-        </div>
+<div id="operation-privilege-type">
+    <div class="row">
+        <toolbar name="operationPrivilegeType" :show-delete="showDel" :functions="functions"></toolbar>
+        <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <bootstrap-table name="operationPrivilegeType" :options="tableOptions"></bootstrap-table>
+        </section>
     </div>
 
-    <!-- 编辑页面 -->
-    <div id="dialog_simple_edit" title="Dialog Simple Title">
-        <div class="col-md-12">
-            <form class="form-horizontal" @submit.prevent="handleSubmit_edit" method="post">
-                <fieldset>
-                    <!--名称-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.nameError }">
-                        <label class="col-md-3 control-label">名称：</label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="text"
-                                   v-model="operationprivilegetype.name">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.nameError }">
-                                {{error.nameErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--是否可用-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">是否可用：</label>
-                        <div class="col-md-9">
+    <section id="opt_privilege_add_dialog">
+        <form class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
+            <form-input label="名称" placeholder="操作级权限类型名称" v-model="model.name" :message="errors.name"></form-input>
 
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="operationprivilegetype.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="true" checked>
-                                <span>是</span>
-                            </label>
-                            <label class="radio radio-inline">
-                                <input type="radio" v-model="operationprivilegetype.enabled"
-                                       class="radiobox style-0"
-                                       v-bind:value="false" checked>
-                                <span>否</span>
-                            </label>
-                        </div>
-                    </div>
-                    <!--排序-->
-                    <div class="form-group" v-bind:class="{ 'has-error': error.orderError }">
-                        <label class="col-md-3 control-label">排序：</label>
-                        <div class="col-md-9">
-                            <input class="form-control" type="number"
-                                   v-model="operationprivilegetype.orderIndex">
-                            <div class="note-error margin-bottom-0"
-                                 v-bind:class="{ 'has-error text-danger margin-top-10': error.orderError }">
-                                {{error.orderErrorMsg}}
-                            </div>
-                        </div>
-                    </div>
-                    <!--备注-->
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">备注：</label>
-                        <div class="col-md-9">
-                            <input class="form-control" placeholder="备注信息（选填）" type="text"
-                                   v-model="operationprivilegetype.remark">
-                        </div>
-                    </div>
+            <form-radio label="是否可用">
+                <input type="radio" slot="check" v-model="model.enabled" class="radiobox style-0" v-bind:value="true">
+                <input type="radio" slot="nocheck" v-model="model.enabled" class="radiobox style-0"
+                       v-bind:value="false">
+            </form-radio>
 
-                </fieldset>
-                <button id="sa_edit" type="submit" class="hidden"></button>
-            </form>
-        </div>
-    </div>
+            <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
+                        :message="errors.orderIndex"></form-input>
+
+            <form-input label="备注" placeholder="备注信息（选填）" v-model="model.remark"></form-input>
+            <button id="doOptAdd" type="submit" class="hidden"></button>
+        </form>
+    </section>
+
+    <section id="opt_privilege_edit_dialog">
+        <form class="form-horizontal" @submit.prevent="handleSubmit_edit" method="post">
+            <form-input label="名称" placeholder="操作级权限类型名称" v-model="model.name" :message="errors.name"></form-input>
+
+            <form-radio label="是否可用">
+                <input type="radio" slot="check" v-model="model.enabled" class="radiobox style-0" v-bind:value="true">
+                <input type="radio" slot="nocheck" v-model="model.enabled" class="radiobox style-0"
+                       v-bind:value="false">
+            </form-radio>
+
+            <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
+                        :message="errors.orderIndex"></form-input>
+
+            <form-input label="备注" placeholder="备注信息（选填）" v-model="model.remark"></form-input>
+            <button id="doOptEdit" type="submit" class="hidden"></button>
+        </form>
+    </section>
 </div>
 
 <script src="/static/js/oauth2/operation_privilege_type.js"></script>

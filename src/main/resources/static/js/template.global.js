@@ -197,6 +197,9 @@ var Global = {
             showRefresh: true,
             showMultiSort: true,//多列排序
             filterShowClear: true,//Set true to add a button to clear all the controls added by this plugin.
+            onColumnSwitch: function (field, checked) {
+                $table.bootstrapTable("refresh")
+            }
         };
 
         if (mainOptions.clickToSelect === undefined) {
@@ -233,9 +236,7 @@ var Global = {
 
     /**
      * 切换表格搜索控件显示/隐藏
-     * @param has2Datepicker
      */
-    //TODO
     toggleTableSearch: function () {
         var $header = $("div.bootstrap-table>div.fixed-table-container>div.fixed-table-header");
         if (window.__customControls___) {
@@ -354,7 +355,7 @@ var Global = {
         if (options.autoOpen === undefined)
             options.autoOpen = false;
         if (options.resizable === undefined)
-            options.resizable = true;
+            options.resizable = false;
         if (options.modal === undefined)
             options.modal = true;
         if (options.title === undefined)
@@ -443,10 +444,10 @@ $(function () {
     });
 
     //搜索控件的显隐
-    // $body.on("click", "[id$='-search-control']", function () {
-    //     window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
-    //     Global.toggleTableSearch();
-    // })
+    $.root_.on("click", "[id$='-search-control']", function () {
+        window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
+        Global.toggleTableSearch();
+    })
 
 });
 

@@ -62,4 +62,15 @@ public class SystemParamRestController extends BaseRestController {
         return ajaxDoneEdit("系统参数", systemParamService, iSystemParam, ISystemParam.class);
     }
 
+    /**
+     * 删除参数
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("delete")
+    public R delete(String ids) {
+        return ajaxDoneDelete("系统参数", ids.split(","), systemParamService, ISystemParam.class);
+    }
+
 }

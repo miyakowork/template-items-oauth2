@@ -57,8 +57,8 @@ public class DepartmentService extends SimpleBaseCrudService<IDepartment, Intege
 
 
     /**
-     * zTree形式的菜单列表
-     * 根据父节点id生成一级子节点的zTree
+     * zTree形式的部门树
+     *
      *
      * @return zTree树
      */

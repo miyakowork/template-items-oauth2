@@ -96,3 +96,7 @@ div[id$='-toolbar'] {
     background-color: #3a3f51 !important;
     color: #bbc0cf !important;;
 }
+
+.pagination > li > a, .pagination > li > span {
+    -webkit-box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0);
+}

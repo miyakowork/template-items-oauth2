@@ -24,8 +24,10 @@ public class ResourceService extends SimpleBaseCrudService<IResource, Integer> {
      */
     public Page<ResourceVO> findResourcePage(TableQuery resourceBO, Page<ResourceVO> page) {
         String sql = "SELECT tor.*, tou1.username AS create_name, tou2.username AS update_name, tosm.name AS systemModuleName" +
-                " FROM t_oauth_resource tor, t_oauth_user tou1, t_oauth_user tou2, t_oauth_system_module tosm" +
-                " WHERE tor.create_user = tou1.id AND tor.update_user = tou2.id AND tosm.system_code = tor.system_code";
+                " FROM t_oauth_resource tor " +
+                "LEFT JOIN t_oauth_user tou1 ON tor.create_user = tou1.id " +
+                "LEFT JOIN t_oauth_user tou2 ON tor.update_user = tou2.id  " +
+                "LEFT JOIN t_oauth_system_module tosm ON tosm.system_code = tor.system_code";
         return findPagination(page, ResourceVO.class, sql, resourceBO);
     }
 
