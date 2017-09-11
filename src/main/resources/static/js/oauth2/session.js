@@ -35,7 +35,7 @@ var page_function = function () {
 
     //加载表格
     Global.initTable($table, {
-        url: "/session/api/list",
+        url: "/oauth2/session/api/list",
         toolbar: '#session-toolbar',
         queryParams: query_params,
         filterControl: true,

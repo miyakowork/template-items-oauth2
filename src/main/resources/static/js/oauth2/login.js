@@ -23,13 +23,14 @@ var vm = new Vue({
             params.append("userName", vm.username);
             params.append("userPass", Base64.encode(vm.password));
             params.append("rememberMe", vm.rememberMe);
-            axios.post('/login', params, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            axios.post('/login/', params, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .then(function (result) {
+                    debugger
                     result = result.data;
                     if (result.code === 200) {//登录成功
-                        parent.location.href = '/#' + result.data || '/';
+                        parent.location.href = (('/oauth2' + result.data) || '/').concat(window.location.hash);
                     } else if (result.code === 302) {
-                        parent.location.href = '/#' + result.data || '/';
+                        parent.location.href = (('/oauth2' + result.data) || '/').concat(window.location.hash);
                     } else {
                         vm.error = true;
                         vm.errorMsg = result.message;

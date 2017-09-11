@@ -5,8 +5,10 @@ import me.wuwenbin.items.oauth2.constant.ShiroConsts;
 import me.wuwenbin.items.oauth2.entity.shiro.ShiroSession;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroSessionService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
+import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.SessionBO;
 import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ import org.templateproject.pojo.response.R;
  * Created by Wuwenbin on 2017/7/20.
  */
 @RestController
-@RequestMapping("session/api")
+@RequestMapping("oauth2/session/api")
 public class SessionRestController extends BaseRestController {
 
     private ShiroSessionService shiroSessionService;
@@ -31,6 +33,8 @@ public class SessionRestController extends BaseRestController {
     }
 
     @RequestMapping("list")
+    @RequiresPermissions("base:session:list")
+    @AuthResource(name = "获取会话列表页面的数据")
     public BootstrapTable<ShiroSession> page(Page<ShiroSession> page, SessionBO sessionBO) {
         page = shiroSessionService.findPage(page, sessionBO);
         return bootstrapTable(page);
@@ -43,6 +47,8 @@ public class SessionRestController extends BaseRestController {
      * @return 处理信息
      */
     @RequestMapping("forcelogout")
+    @RequiresPermissions("base:session:forcelogout")
+    @AuthResource(name = "强制踢出用户")
     public R forcelogout(String sessionId) {
         String[] sessionIds = sessionId.split(",");
         try {

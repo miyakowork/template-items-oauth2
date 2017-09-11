@@ -1,4 +1,4 @@
-package me.wuwenbin.items.oauth2.page.role;
+package me.wuwenbin.items.oauth2.page.session;
 
 import me.wuwenbin.items.oauth2.support.TemplateController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
@@ -15,22 +15,15 @@ import org.springframework.web.servlet.ModelAndView;
  * Created by tuchen on 2017/7/12.
  */
 @Controller
-@RequestMapping("/oauth2/role")
-public class RoleController extends TemplateController {
+@RequestMapping("oauth2/session")
+public class SessionController extends TemplateController {
 
 
     @RequestMapping
-    @RequiresPermissions("base:role:list")
-    @AuthResource(name = "角色列表页面")
+    @RequiresPermissions("base:session:list")
+    @AuthResource(name = "会话列表页面")
     public ModelAndView list() {
-        return new ModelAndView("router/role/list");
-    }
-
-    @RequestMapping("tree")
-    @RequiresPermissions("base:role:tree")
-    @AuthResource(name = "角色树页面")
-    public ModelAndView Tree() {
-        return new ModelAndView("router/role/pIdTree");
+        return new ModelAndView("router/session/list");
     }
 
 

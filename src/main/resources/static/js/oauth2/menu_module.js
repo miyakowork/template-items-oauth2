@@ -211,7 +211,7 @@ var menuModule = new Vue({
         },
         systemCode: {
             test: function () {
-                return String(resModule.model.systemCode.selected).length > 0
+                return String(menuModule.model.systemCode.selected).length > 0
             },
             message: "系统代码不能为空"
         },

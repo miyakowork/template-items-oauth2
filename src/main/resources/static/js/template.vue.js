@@ -13,6 +13,56 @@ Vue.mixin({
     }
 });
 
+var menuItem =
+    '<ul>' +
+    '   <li v-for="menu in menus">' +
+    '       <a :href="menuHref(menu.href)"  :title="menu.name" :onclick="menu.onclick">' +
+    '           <i :class="menuIcon(menu.icon,menu.id)"></i>' +
+    '           <span class="menu-item-parent" v-text="menu.name"></span>' +
+    '       </a>' +
+    '       <menu-item :menus="menu.childMenus" v-if="hasChild(menu.childMenus)"></menu-item>' +
+    '   </li>' +
+    '</ul>';
+
+Vue.component('menu-item', {
+    template: menuItem,
+    methods: {
+        hasChild: function (menu) {
+            return menu !== undefined && menu.length > 0;
+        },
+        menuIcon: function (icon, id) {
+            if (icon !== '' && icon !== null) {
+                return icon;
+            } else {
+                return id !== 0 ? 'fa fa-fw fa-lg fa-list-ul' : 'fa fa-fw fa-list-ul';
+            }
+        },
+        menuHref: function (href) {
+            if (href !== '' && href !== null) {
+                return href;
+            } else {
+                return '#';
+            }
+        }
+    },
+    props: ['menus'],
+    created: function () {
+        window.__initLeftNav = true;
+    },
+    mounted: function () {
+        //防止多次初始化
+        if (window.__initLeftNav) {
+            initApp.leftNav();
+            if ($.navAsAjax) {
+                // fire this on page load if nav exists
+                if ($('nav').length) {
+                    checkURL();
+                    window.__initLeftNav = false;
+                }
+            }
+        }
+    }
+});
 //form-item
 var formItem = {
     input:
@@ -101,10 +151,10 @@ Vue.component('form-input', {
             default: ''
         },
         readonly: {
-            type: Boolean,
-            default: false
+            type: String,
+            default: 'false'
         },
-        value: Object,
+        value: {},
         message: {
             type: String,
             default: ''
@@ -205,8 +255,8 @@ Vue.component('form-fetch', {
             default: ''
         },
         readonly: {
-            type: Boolean,
-            default: true
+            type: String,
+            default: 'true'
         },
         value: Object,
         message: {

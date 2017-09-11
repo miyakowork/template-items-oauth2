@@ -4,14 +4,14 @@
         <fieldset>
             <!--菜单名称-->
             <div class="col-md-6">
-                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.name)}">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(errors.name)}">
                     <label class="col-md-3 control-label">菜单名称</label>
                     <div class="col-md-9">
                         <input class="form-control" placeholder="菜单名称"
                                v-model="menu.name">
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10':isHasError(error.name)}">
-                            {{error.name}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10':isHasError(errors.name)}">
+                            {{errors.name}}
                         </div>
                     </div>
                 </div>
@@ -34,7 +34,7 @@
 
             <!--资源ID-->
             <div class="col-md-6" v-bind:class="{'hidden':hide.isResourceIdHidden}">
-                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.resourceId) }">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(errors.resourceId) }">
                     <label class="col-md-3 control-label">资源ID</label>
                     <div class="col-md-9">
                         <div class="input-group">
@@ -46,8 +46,8 @@
                         </div>
 
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.resourceId)  }">
-                            {{error.resourceId}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(errors.resourceId)  }">
+                            {{errors.resourceId}}
                         </div>
                     </div>
                 </div>
@@ -55,15 +55,15 @@
 
             <!--系统模块代码-->
             <div class="col-md-6">
-                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(error.systemCode)  }">
+                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(errors.systemCode)  }">
                     <label class="col-md-3 control-label">系统代码</label>
                     <div class="col-md-9">
                         <input class="form-control" placeholder="系统模块代码"
                                v-model="menu.systemModuleName"
                                readonly>
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.systemCode) }">
-                            {{error.systemCode}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(errors.systemCode) }">
+                            {{errors.systemCode}}
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <label class="col-md-3 control-label">菜单小图标</label>
                     <div class="col-md-9">
-                        <input class="form-control" placeholder="字体图标（如：fa fa-ul  填写ul即可）" v-model="menu.icon">
+                        <input class="form-control" placeholder="字体图标（如：fa fa-ul ）" v-model="menu.icon">
                     </div>
                 </div>
             </div>
@@ -91,14 +91,14 @@
 
             <!--菜单URL-->
             <div class="col-md-6" v-bind:class="{'hidden':hide.isUrlHidden}">
-                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(error.href) }">
+                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(errors.href) }">
                     <label class="col-md-3 control-label">菜单URL</label>
                     <div class="col-md-9">
                         <input class="form-control" placeholder="菜单的链接"
                                v-model="menu.href">
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10':  isHasError(error.href) }">
-                            {{error.href}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10':  isHasError(errors.href) }">
+                            {{errors.href}}
                         </div>
                     </div>
                 </div>
@@ -106,14 +106,14 @@
 
             <!--菜单点击事件-->
             <div class="col-md-6" v-bind:class="{'hidden':hide.isOnclickHidden}">
-                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(error.onclick) }">
+                <div class="form-group" v-bind:class="{ 'has-error':  isHasError(errors.onclick) }">
                     <label class="col-md-3 control-label">点击事件</label>
                     <div class="col-md-9">
                         <input class="form-control" placeholder="菜单的js的onclick事件"
                                v-model="menu.onclick">
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.onclick) }">
-                            {{error.onclick}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(errors.onclick) }">
+                            {{errors.onclick}}
                         </div>
                     </div>
                 </div>
@@ -132,15 +132,15 @@
 
             <!--角色ID -->
             <div class="col-md-6">
-                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.roleId)}">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(errors.roleId)}">
                     <label class="col-md-3 control-label">所属角色</label>
                     <div class="col-md-9">
                         <input class="form-control" placeholder="角色名称"
                                v-model="menu.roleName"
                                readonly>
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10':isHasError(error.roleId) }">
-                            {{error.roleId}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10':isHasError(errors.roleId) }">
+                            {{errors.roleId}}
                         </div>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
 
             <!--上级菜单 -->
             <div class="col-md-6">
-                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.parentId) }">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(errors.parentId) }">
                     <label class="col-md-3 control-label">上级菜单</label>
                     <div class="col-md-9">
                         <div class="input-group">
@@ -170,8 +170,8 @@
                             </div>
                         </div>
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.parentId) }">
-                            {{error.parentId}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(errors.parentId) }">
+                            {{errors.parentId}}
                         </div>
                     </div>
                 </div>
@@ -179,13 +179,13 @@
 
             <!--排序-->
             <div class="col-md-6">
-                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.orderIndex) }">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(errors.orderIndex) }">
                     <label class="col-md-3 control-label">排序</label>
                     <div class="col-md-9">
                         <input class="form-control" type="number" v-model="menu.orderIndex" placeholder="排序顺序大小">
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.orderIndex)  }">
-                            {{error.orderIndex}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(errors.orderIndex)  }">
+                            {{errors.orderIndex}}
                         </div>
                     </div>
                 </div>
@@ -193,7 +193,7 @@
 
             <!--//是否可用-->
             <div class="col-md-6">
-                <div class="form-group" v-bind:class="{ 'has-error': isHasError(error.enabled) }">
+                <div class="form-group" v-bind:class="{ 'has-error': isHasError(errors.enabled) }">
                     <label class="col-md-3 control-label">是否可用</label>
                     <div class="col-md-9">
                         <label class="radio radio-inline">
@@ -209,8 +209,8 @@
                             <span>否</span>
                         </label>
                         <div class="note-error margin-bottom-0"
-                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(error.enabled)}">
-                            {{error.enabled}}
+                             v-bind:class="{ 'has-error text-danger margin-top-10': isHasError(errors.enabled)}">
+                            {{errors.enabled}}
                         </div>
                     </div>
                 </div>

@@ -50,17 +50,16 @@ var page_function = function () {
             loadRoleTreeMenu();
         })
         .catch(function (error) {
-            if (error.response)
-                Global.show_error_msg(error.response.data.message);
-            else
-                Global.show_error_msg(error);
+            Global.handleAxiosError(error);
         });
 
     //监听左侧树更改模块的事件
     $("#select-modules-menu").on("change", function () {
         var treeObj = $.fn.zTree.getZTreeObj("roleTreeMenu");
         treeObj.destroy();
+        app.menu.systemCode = $(this).val();
         $selectedModuleMenu.val($(this).val());
+        app.menu.systemModuleName = $(this).find("option:selected").text();
         loadRoleTreeMenu();
     });
 
@@ -104,13 +103,12 @@ var page_function = function () {
                 enabled: true,
                 orderIndex: 0,
                 remark: ''
-            },
-            error: {}
+            }
         },
         methods: {
             chooseMenuType: function (value) {
                 app.menu.href = "";
-                app.error = {};
+                app.$vuerify.clear();
                 if (value === "1") {
                     app.hide.isUrlHidden = true;
                     app.hide.isOnclickHidden = true;
@@ -140,7 +138,6 @@ var page_function = function () {
             handleAddMenuSubmit: function () {
                 this.$vuerify.clear();//清空之前的验证结果信息
                 var check_result = this.$vuerify.check();// 手动触发校验所有数据
-                app.error = this.$vuerify.$errors;
 
                 if (!check_result) {
                     Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
@@ -173,22 +170,27 @@ var page_function = function () {
                 }
             },
             handleEditMenuSubmit: function () {
-                app.error = {};
+                this.$vuerify.clear();//清空之前的验证结果信息
+                var hasError = false;
                 if (app.menu.name === "") {
-                    app.error.name = "菜单名字不能为空";
+                    hasError = true;
+                    app.errors.name = "菜单名字不能为空";
                 }
                 if (app.menu.orderIndex === "") {
-                    app.menu.orderIndex = "排序字段不能为空";
+                    hasError = true;
+                    app.errors.orderIndex = "排序字段不能为空";
                 }
                 if (app.menu.enabled === "") {
-                    app.menu.enabled = "必须选择是否可用"
+                    hasError = true;
+                    app.errors.enabled = "必须选择是否可用"
                 }
-                if (app.error.length === 0) {
+
+                if (!hasError) {
                     var params = new URLSearchParams();
                     params.append("id", app.menu.id);
                     params.append("name", app.menu.name);
                     params.append("icon", app.menu.icon);
-                    params.append("iconLarge", app.menu.iconLarge);
+                    params.append("iconLarger", app.menu.iconLarge);
                     params.append("orderIndex", app.menu.orderIndex);
                     params.append("enabled", app.menu.enabled);
                     params.append("remark", app.menu.remark);
@@ -196,7 +198,7 @@ var page_function = function () {
                         .then(function (response) {
                             if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
-                                $("#addMenu").dialog("close");
+                                $("#editMenu").dialog("close");
                                 $table.bootstrapTable("refresh");
                             } else {
                                 Global.show_error_msg(response.data.message)
@@ -312,7 +314,7 @@ var page_function = function () {
                     }
                 });
 
-            app.error = {};
+            app.$vuerify.clear();
             for (var f in app.menu) {
                 if (f === "menuType") {
                 }
@@ -348,7 +350,8 @@ var page_function = function () {
                     }
                 }
             });
-        app.error = {};
+
+        app.$vuerify.clear();
         var selectedMenu = $table.bootstrapTable("getSelections");
         if (selectedMenu.length === 0) {
             Global.show_error_msg("请选择一项菜单进行编辑");
@@ -356,7 +359,7 @@ var page_function = function () {
             app.menu.id = selectedMenu[0].id;
             app.menu.icon = selectedMenu[0].icon;
             app.menu.name = selectedMenu[0].name;
-            app.menu.iconLarge = selectedMenu[0].iconLarge;
+            app.menu.iconLarge = selectedMenu[0].iconLarger;
             app.menu.enabled = selectedMenu[0].enabled;
             app.menu.remark = selectedMenu[0].remark;
             app.menu.orderIndex = selectedMenu[0].orderIndex;
@@ -458,7 +461,7 @@ function loadRoleTreeMenu() {
         //默认选择第一个
         var firstNode = treeObj.getNodes()[0];
         treeObj.selectNode(firstNode);
-
+        $table.bootstrapTable("destroy");
         initTable();
     });
 
@@ -483,7 +486,7 @@ function checkResource() {
     layer.open({
         type: 2,
         title: "资源列表",
-        area: ['850px', '550px'],
+        area: ['400px', '550px'],
         fixed: true,
         resize: false,
         offset: '200px',
@@ -493,7 +496,7 @@ function checkResource() {
 
 //表格显示字体图标
 function iconFormatter(value) {
-    return "<i class='fa fa-" + value + "'></i>";
+    return "<i class='" + value + "'></i>";
 }
 
 //表格显示菜单类型描述
@@ -540,7 +543,7 @@ function initTable() {
             {field: "href", title: "菜单链接", align: "center"},
             {field: "orderIndex", title: "菜单排序", align: "center"},
             {field: "enabled", title: "是否可用", align: "center", formatter: "enabledFormatter"},
-            {field: "remark", title: "菜单备注", align: "center", visible: false},
+            {field: "remark", title: "菜单备注", align: "center", visible: false}
         ]
     });
 }

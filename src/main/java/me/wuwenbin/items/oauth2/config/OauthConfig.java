@@ -15,6 +15,7 @@ public class OauthConfig {
     private int scan;
     private String systemModuleCode;
     private int openSa;
+    private int init;
 
     public int getScan() {
         return scan;
@@ -38,5 +39,13 @@ public class OauthConfig {
 
     public void setOpenSa(int openSa) {
         this.openSa = openSa;
+    }
+
+    public int getInit() {
+        return init;
+    }
+
+    public void setInit(int init) {
+        this.init = init;
     }
 }

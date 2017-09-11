@@ -58,7 +58,7 @@ public class PrivilegeService extends SimpleBaseCrudService {
                 ZTreeBO<String> operationTree = new ZTreeBO<>();
                 operationTree.setId(privilegeOperation.getId().toString());
                 operationTree.setName(privilegeOperation.getOperationName());
-                operationTree.setOpen(true);
+                operationTree.setOpen(false);
                 operationTree.setpId(privilegeOperation.getPagePrivilegeId().toString());
                 operationTree.setResourceId(privilegeOperation.getResourceId().toString());
                 operationTree.setisParent(false);

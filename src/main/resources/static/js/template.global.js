@@ -13,7 +13,6 @@ var Global = {
 
     common: {
         search_trigger_time: 1000,
-
     },
     /**
      * ajax常量

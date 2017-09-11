@@ -19,16 +19,16 @@ import java.util.Set;
 public class ShiroPermissionService extends SimpleBaseCrudService<IRole, Integer> {
 
     /**
-     * 通过角色id查找当前角色id的所拥有的权限表示
+     * 通过角色id查找当前角色id的所拥有的权限标识
      *
      * @param roleId 角色id
      * @return 所拥有的权限标识
      */
     public Set<String> findPermissionsByRoleId(int roleId) {
-        String sql = "SELECT tor.PERMISSION_MARK AS pm FROM T_OAUTH_RESOURCE tor" +
-                " WHERE tor.ENABLED = 1 AND tor.ID IN " +
-                "(SELECT tom.RESOURCE_ID FROM T_OAUTH_MENU tom" +
-                " WHERE tom.ENABLED = 1 AND tom.RESOURCE_ID = tor.ID AND tom.ROLE_ID = ?)";
+        String sql = "SELECT tor.permission_mark AS pm FROM t_oauth_resource tor" +
+                " WHERE tor.enabled = 1 AND tor.id IN " +
+                "(SELECT torr.RESOURCE_ID FROM t_oauth_role_resource torr" +
+                " WHERE torr.enabled = 1 AND torr.resource_id = tor.ID AND torr.role_id = ?)";
         List<Map<String, Object>> permissions = mysql.findListMapByArray(sql, roleId);
         Set<String> permissionMarks = new HashSet<>(permissions.size());
         for (Map<String, Object> map : permissions) {

@@ -3,9 +3,11 @@ package me.wuwenbin.items.oauth2.page.menuModule;
 import me.wuwenbin.items.oauth2.entity.IMenuModule;
 import me.wuwenbin.items.oauth2.service.MenuModuleService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
+import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.MenuModuleBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.MenuModuleVO;
 import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +40,8 @@ public class MenuModuleRestController extends BaseRestController {
      * @return bootstrapTable
      */
     @RequestMapping("list")
+    @RequiresPermissions("base:menuModule:list")
+    @AuthResource(name = "获取菜单模块页面的数据")
     public BootstrapTable<MenuModuleVO> list(Page<MenuModuleVO> page, MenuModuleBO menuModuleBO) {
         page = menuModuleService.findMenuModulePage(page, menuModuleBO);
         return bootstrapTable(page);
@@ -50,6 +54,8 @@ public class MenuModuleRestController extends BaseRestController {
      * @return R
      */
     @RequestMapping("add")
+    @RequiresPermissions("base:menuModule:add")
+    @AuthResource(name = "添加新的菜单模块操作")
     public R add(IMenuModule iMenuModule) {
         return ajaxDoneAdd("菜单模块", menuModuleService, iMenuModule, IMenuModule.class);
     }
@@ -62,6 +68,8 @@ public class MenuModuleRestController extends BaseRestController {
      * @return R
      */
     @RequestMapping("edit")
+    @RequiresPermissions("base:menuModule:edit")
+    @AuthResource(name = "修改菜单模块操作")
     public R doEdit(IMenuModule iMenuModule) {
         return ajaxDoneEdit("菜单模块", menuModuleService, iMenuModule, IMenuModule.class);
     }
@@ -73,6 +81,8 @@ public class MenuModuleRestController extends BaseRestController {
      * @return R
      */
     @RequestMapping("delete")
+    @RequiresPermissions("base:menuModule:delete")
+    @AuthResource(name = "删除菜单模块操作")
     public R delete(String ids) {
         return ajaxDoneDelete("菜单模块", ids.split(","), menuModuleService, IMenuModule.class);
     }
@@ -84,6 +94,8 @@ public class MenuModuleRestController extends BaseRestController {
      * @return
      */
     @RequestMapping("find/enables")
+    @RequiresPermissions("base:menuModule:enables")
+    @AuthResource(name = "查找可用的菜单模块集合操作")
     public List<IMenuModule> findEnabledMenuModules(String systemModuleCode) {
         if (TP.stringhelper.isNotEmpty(systemModuleCode))
             return menuModuleService.findEnabledMenuModuleBySystemModuleCode(systemModuleCode);

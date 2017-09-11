@@ -1,6 +1,5 @@
 package me.wuwenbin.items.oauth2.util;
 
-import me.wuwenbin.items.oauth2.entity.IUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -16,14 +15,6 @@ public class ShiroUtils {
 
     public static Subject getSubject() {
         return SecurityUtils.getSubject();
-    }
-
-    public static IUser getUserEntity() {
-        return (IUser) SecurityUtils.getSubject().getPrincipal();
-    }
-
-    public static int getUserId() {
-        return getUserEntity().getId();
     }
 
     public static void setSessionAttribute(Object key, Object value) {

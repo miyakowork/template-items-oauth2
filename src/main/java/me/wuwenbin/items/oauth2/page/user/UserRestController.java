@@ -4,9 +4,11 @@ import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.UserService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroUserService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
+import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.UserBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.UserVO;
 import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +38,12 @@ public class UserRestController extends BaseRestController {
         this.shiroUserService = shiroUserService;
     }
 
+    @RequestMapping("info")
+    @RequiresPermissions("base:user:info")
+    @AuthResource(name = "获取当前登录用户登录信息")
+    public R getCurrentUserInfo() {
+        return R.ok(getUser());
+    }
 
     /**
      * 显示数据
@@ -45,6 +53,8 @@ public class UserRestController extends BaseRestController {
      * @return
      */
     @RequestMapping("list")
+    @RequiresPermissions("base:user:list")
+    @AuthResource(name = "获取用户列表页面数据")
     public BootstrapTable<UserVO> list(Page<UserVO> page, UserBO userBO) {
         page = userService.findUserPage(page, userBO);
         return bootstrapTable(page);
@@ -57,6 +67,8 @@ public class UserRestController extends BaseRestController {
      * @return
      */
     @RequestMapping("add")
+    @RequiresPermissions("base:user:add")
+    @AuthResource(name = "添加用户")
     public R add(IUser user) {
         if (shiroUserService.findByUserName(user.getUsername()) != null) {
             return R.error("此账号已存在！");
@@ -79,6 +91,8 @@ public class UserRestController extends BaseRestController {
      * @return
      */
     @RequestMapping("edit")
+    @RequiresPermissions("base:user:edit")
+    @AuthResource(name = "编辑用户")
     public R doEdit(IUser iUser) {
         try {
             if (userService.edit(iUser))
@@ -100,6 +114,8 @@ public class UserRestController extends BaseRestController {
      * @return
      */
     @RequestMapping("editPwd")
+    @RequiresPermissions("base:user:editPwd")
+    @AuthResource(name = "修改用户密码")
     public R doEditPwd(String username, String newPwd) {
         IUser user = shiroUserService.findByUserName(username);
         if (user != null) {
@@ -123,6 +139,8 @@ public class UserRestController extends BaseRestController {
      * @return
      */
     @RequestMapping("delete")
+    @RequiresPermissions("base:user:delete")
+    @AuthResource(name = "禁用用户")
     public R delete(String ids) {
         try {
             userService.disabledUser(ids);

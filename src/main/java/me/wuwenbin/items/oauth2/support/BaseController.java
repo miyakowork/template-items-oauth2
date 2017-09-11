@@ -1,23 +1,53 @@
 package me.wuwenbin.items.oauth2.support;
 
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import me.wuwenbin.items.oauth2.util.UserUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * 通用list页面展示控制层
+ * 控制类基类
  * Created by Wuwenbin on 2017/7/31.
  */
-@Controller
-@RequestMapping("oauth2")
 public class BaseController extends TemplateController {
 
-    @RequestMapping("{module}")
-    public String listB(@PathVariable("module") String module) {
-        if (module.contains("-")) {
-            module = module.replace("-", "_");
-        }
-        return "router/".concat(module).concat("/list");
+    /**
+     * 路由页面
+     *
+     * @param router
+     * @return
+     */
+    protected ModelAndView page(String router) {
+        return new ModelAndView(router);
     }
+
+    /**
+     * 重定向页面路由
+     *
+     * @param router
+     * @return
+     */
+    protected ModelAndView redirectPage(String router) {
+        return new ModelAndView(new RedirectView(router));
+    }
+
+    /**
+     * 转发地址
+     *
+     * @param router
+     * @return
+     */
+    protected ModelAndView forwardPage(String router) {
+        return new ModelAndView("forward:".concat(router));
+    }
+
+    /**
+     * 用户是否已登录
+     *
+     * @return
+     */
+    protected boolean isUserLogged() {
+        return UserUtils.getLoginUser() != null;
+    }
+
 }

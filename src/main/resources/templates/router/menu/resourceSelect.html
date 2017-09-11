@@ -1,59 +1,152 @@
-<link rel="stylesheet" type="text/css" href="/static/js/plugin/layui/v2/css/layui.css"/>
-<div style="margin: 10px;">
-    <div class="layui-row">
-        <div class="layui-col-md12">
-            <div class="layui-inline">
-                <input class="layui-input" name="name" id="searchName" placeholder="资源名称"
-                       style="height: 30px;line-height: 30px;">
-            </div>
-            <button class="layui-btn layui-btn-small" id="searchNameBtn">搜索</button>
-            <table id="select-resource-table" lay-filter="selectResource"></table>
+<link rel="stylesheet" type="text/css" media="screen" href="/static/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" media="screen"
+      href="/static/js/plugin/bootstrap-ztree/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" type="text/css" media="screen"
+      href="/static/js/plugin/bootstrap-ztree/css/font-awesome-zTree.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/static/css/bootstrap.min.css"/>
+<div class="col-md-4" style="margin-top: 5px;">
+    <div class="panel panel-default" style="height:95%;">
+        <div class="panel-heading">
+            <i class="fa fa-list-ul"></i>&nbsp;资源模块 / 权限资源树<span id="resModuleTreeTitle"></span>
+        </div>
+        <div class="panel-body">
+            <ul id="addMenuPrivilegeResTree" class="ztree"></ul>
         </div>
     </div>
 </div>
-<script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="checkResource"><i class="layui-icon">&#xe618;</i>
-    </a>
-</script>
-<script src="/static/js/plugin/layui/v2/layui.all.js"></script>
-<script type="text/javascript">
-    var $ = layui.$;
-    var laytable = layui.table;
+<script src="/static/js/libs/jquery-2.1.1.min.js"></script>
+<script src="/static/js/bootstrap/bootstrap.min.js"></script>
+<script src="/static/js/plugin/bootstrap-ztree/js/jquery.ztree.all.min.js"></script>
+<script src="/static/js/plugin/bootstrap-ztree/js/jquery.ztree.exhide.min.js"></script>
+<script>
     $(function () {
-        var tableIns = laytable.render({
-            elem: "#select-resource-table",
-            width: 820,
-            height: 440,
-            url: '/oauth2/resource/api/selectResources',
-            where: {
-                systemModuleCode: parent.app.menu.systemCode
-            },
-            page: true,
-            limit: 20,
-            even: true,
-            cols: [[
-                {field: 'id', width: 100, title: "ID", fixed: true, align: 'center'},
-                {field: 'name', width: 300, title: "资源名称", align: 'center'},
-                {field: 'url', width: 300, title: "资源url", align: 'center'},
-                {fixed: 'right', width: 98, title: "勾选操作", align: 'center', toolbar: '#bar'}
-            ]]
-        });
-
-        $("#searchNameBtn").click(function () {
-            tableIns.reload({
-                where: {
-                    name: $("#searchName").val()
-                }
-            })
-        })
-
-        laytable.on('tool(selectResource)', function (obj) {
-            var data = obj.data;
-            if (obj.event === 'checkResource') {
-                parent.app.menu.resourceId = data.id;
-                var index = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(index);
-            }
-        })
+        loadPrivilegeTree();
     });
+
+    function loadPrivilegeTree() {
+        var settings = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    rootPId: 0
+                }
+            },
+            check: {
+                autoCheckTrigger: true,
+                enable: true,
+                chkStyle: "radio",
+                radioType: "all"
+            },
+            async: {
+                enable: true,
+                autoParam: ['id=resourceModuleId'],
+                otherParam: {
+                    roleId: parent.app.menu.roleId
+                },
+                url: '/oauth2/menu/api/addMenuRes'
+            },
+            view: {
+                selectedMulti: false
+            },
+            callback: {
+                onCheck: function (event, treeId, treeNode) {
+                    parent.app.menu.resourceId = treeNode.id;
+                    parent.app.menu.name = treeNode.name;
+                    parent.app.menu.href = treeNode.other;
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                },
+                beforeExpand: beforeExpand,
+                onExpand: onExpand
+            }
+        };
+        $.get("/oauth2/resModule/api/resModuleTree?systemModuleCode=" + parent.app.menu.systemCode, function (treeData) {
+            for (var treeNode in treeData) {
+                treeData[treeNode].isParent = true;
+                treeData[treeNode].nocheck = true;
+            }
+            $.fn.zTree.init($("#addMenuPrivilegeResTree"), settings, treeData);
+        })
+    }
+
+    //zTree保持展开单一路径
+    var curExpandNode = null;
+
+    function beforeExpand(treeId, treeNode) {
+        var pNode = curExpandNode ? curExpandNode.getParentNode() : null;
+        var treeNodeP = treeNode.parentTId ? treeNode.getParentNode() : null;
+        var zTree = $.fn.zTree.getZTreeObj(treeId);
+        for (var i = 0, l = !treeNodeP ? 0 : treeNodeP.children.length; i < l; i++) {
+            if (treeNode !== treeNodeP.children[i]) {
+                zTree.expandNode(treeNodeP.children[i], false);
+            }
+        }
+        while (pNode) {
+            if (pNode === treeNode) {
+                break;
+            }
+            pNode = pNode.getParentNode();
+        }
+        if (!pNode) {
+            singlePath(treeId, treeNode);
+        }
+
+    }
+
+    function singlePath(treeId, newNode) {
+        if (newNode === curExpandNode) return;
+
+        var zTree = $.fn.zTree.getZTreeObj(treeId),
+            rootNodes, tmpRoot, tmpTId, i, j, n;
+
+        if (!curExpandNode) {
+            tmpRoot = newNode;
+            while (tmpRoot) {
+                tmpTId = tmpRoot.tId;
+                tmpRoot = tmpRoot.getParentNode();
+            }
+            rootNodes = zTree.getNodes();
+            for (i = 0, j = rootNodes.length; i < j; i++) {
+                n = rootNodes[i];
+                if (n.tId !== tmpTId) {
+                    zTree.expandNode(n, false);
+                }
+            }
+        } else if (curExpandNode && curExpandNode.open) {
+            if (newNode.parentTId === curExpandNode.parentTId) {
+                zTree.expandNode(curExpandNode, false);
+            } else {
+                var newParents = [];
+                while (newNode) {
+                    newNode = newNode.getParentNode();
+                    if (newNode === curExpandNode) {
+                        newParents = null;
+                        break;
+                    } else if (newNode) {
+                        newParents.push(newNode);
+                    }
+                }
+                if (newParents !== null) {
+                    var oldNode = curExpandNode;
+                    var oldParents = [];
+                    while (oldNode) {
+                        oldNode = oldNode.getParentNode();
+                        if (oldNode) {
+                            oldParents.push(oldNode);
+                        }
+                    }
+                    if (newParents.length > 0) {
+                        zTree.expandNode(oldParents[Math.abs(oldParents.length - newParents.length) - 1], false);
+                    } else {
+                        zTree.expandNode(oldParents[oldParents.length - 1], false);
+                    }
+                }
+            }
+        }
+        curExpandNode = newNode;
+    }
+
+    function onExpand(event, treeId, treeNode) {
+        curExpandNode = treeNode;
+    }
 </script>

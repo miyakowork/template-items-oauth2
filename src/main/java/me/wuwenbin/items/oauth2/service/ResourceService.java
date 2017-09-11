@@ -22,14 +22,32 @@ public class ResourceService extends SimpleBaseCrudService<IResource, Integer> {
      * @param page
      * @return page<IResource>
      */
+    public Page<ResourceVO> findResourceSelectPage(TableQuery resourceBO, Page<ResourceVO> page) {
+        String sql = "SELECT tor.*, tou1.username AS create_name, tou2.username AS update_name, tosm.name AS systemModuleName" +
+                " FROM t_oauth_resource tor " +
+                "LEFT JOIN t_oauth_user tou1 ON tor.create_user = tou1.id " +
+                "LEFT JOIN t_oauth_user tou2 ON tor.update_user = tou2.id  " +
+                "LEFT JOIN t_oauth_system_module tosm ON tosm.system_code = tor.system_code " +
+                "WHERE tor.id NOT IN (" +
+                "SELECT resource_id FROM t_oauth_privilege_operation UNION SELECT resource_id FROM t_oauth_privilege_page" +
+                ") ";
+        return findPagination(page, ResourceVO.class, sql, resourceBO);
+    }
+
+    /**
+     * 根据权限标识查询数据
+     *
+     * @param resourceBO
+     * @param page
+     * @return page<IResource>
+     */
     public Page<ResourceVO> findResourcePage(TableQuery resourceBO, Page<ResourceVO> page) {
         String sql = "SELECT tor.*, tou1.username AS create_name, tou2.username AS update_name, tosm.name AS systemModuleName" +
                 " FROM t_oauth_resource tor " +
                 "LEFT JOIN t_oauth_user tou1 ON tor.create_user = tou1.id " +
                 "LEFT JOIN t_oauth_user tou2 ON tor.update_user = tou2.id  " +
-                "LEFT JOIN t_oauth_system_module tosm ON tosm.system_code = tor.system_code";
+                "LEFT JOIN t_oauth_system_module tosm ON tosm.system_code = tor.system_code ";
         return findPagination(page, ResourceVO.class, sql, resourceBO);
     }
-
 
 }

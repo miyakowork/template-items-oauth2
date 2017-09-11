@@ -36,7 +36,7 @@ public interface CommonConsts {
     /**
      * 登录URL页面地址
      */
-    String LOGIN_URL = "/login";
+    String LOGIN_URL = "/login/";
 
     /**
      * 登录路由地址

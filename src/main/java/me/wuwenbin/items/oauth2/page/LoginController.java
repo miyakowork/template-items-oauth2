@@ -1,6 +1,6 @@
 package me.wuwenbin.items.oauth2.page;
 
-import me.wuwenbin.items.oauth2.support.TemplateController;
+import me.wuwenbin.items.oauth2.support.BaseController;
 import me.wuwenbin.items.oauth2.util.ShiroUtils;
 import me.wuwenbin.items.oauth2.util.UserUtils;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Wuwenbin on 2017/7/11.
  */
 @Controller
-public class LoginController extends TemplateController {
+public class LoginController extends BaseController {
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
     public ModelAndView login() throws Exception {

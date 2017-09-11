@@ -505,7 +505,7 @@ function pp(id) {
     layer.open({
         type: 2,
         title: '页面内操作级权限管理',
-        content: '/oauth2/privilege-operation',
+        content: '/oauth2/privilegeOperation',
         area: ['1030px', '560px']
     });
 }

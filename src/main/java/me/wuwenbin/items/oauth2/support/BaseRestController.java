@@ -1,8 +1,10 @@
 package me.wuwenbin.items.oauth2.support;
 
 
+import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.entity.base.BaseEntity;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
+import me.wuwenbin.items.oauth2.util.UserUtils;
 import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
 import me.wuwenbin.modules.pagination.model.layui.LayTable;
 import org.templateproject.lang.TP;
@@ -39,7 +41,7 @@ public class BaseRestController extends TemplateController {
      */
     protected <Entity extends BaseEntity> LayTable<Entity> layTable(Page<Entity> page) {
         List<Entity> result = page.getTResult();
-        return new LayTable<Entity>(page.getTotalCount(), result);
+        return new LayTable<>(page.getTotalCount(), result);
     }
 
     /**
@@ -146,5 +148,20 @@ public class BaseRestController extends TemplateController {
         }
     }
 
+    protected IUser getUser() {
+        return UserUtils.getLoginUser();
+    }
+
+    protected Integer getUserId() {
+        return getUser().getId();
+    }
+
+    protected Integer getDefaultId() {
+        return getUser().getDefaultRoleId();
+    }
+
+    protected Integer getDeptId() {
+        return getUser().getDeptId();
+    }
 
 }

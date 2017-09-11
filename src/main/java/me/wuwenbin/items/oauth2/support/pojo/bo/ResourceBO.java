@@ -1,6 +1,6 @@
 package me.wuwenbin.items.oauth2.support.pojo.bo;
 
-import me.wuwenbin.modules.pagination.query.model.layui.LayTableQuery;
+import me.wuwenbin.modules.pagination.query.model.bootstrap.BootstrapTableQuery;
 import me.wuwenbin.modules.pagination.query.support.annotation.QueryColumn;
 import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
 import me.wuwenbin.modules.pagination.query.support.operator.Operator;
@@ -9,7 +9,7 @@ import me.wuwenbin.modules.pagination.query.support.operator.Operator;
  * Created by wuwenbin on 2017/7/13.
  */
 @QueryTable(aliasName = "tor")
-public class ResourceBO extends LayTableQuery {
+public class ResourceBO extends BootstrapTableQuery {
     private String url; //资源路径
     @QueryColumn(column = "permission_mark")
     private String permissionMark;   //资源标识

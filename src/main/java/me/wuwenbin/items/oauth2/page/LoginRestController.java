@@ -1,7 +1,7 @@
 package me.wuwenbin.items.oauth2.page;
 
 import me.wuwenbin.items.oauth2.constant.ShiroConsts;
-import me.wuwenbin.items.oauth2.support.TemplateController;
+import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.util.UserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.*;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * Created by wuwenbin on 2017/5/25.
  */
 @RestController
-public class LoginRestController extends TemplateController {
+public class LoginRestController extends BaseRestController {
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public R doLogin(HttpServletRequest request) {

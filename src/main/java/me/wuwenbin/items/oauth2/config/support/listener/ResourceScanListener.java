@@ -2,7 +2,6 @@ package me.wuwenbin.items.oauth2.config.support.listener;
 
 import me.wuwenbin.items.oauth2.config.OauthConfig;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
-import me.wuwenbin.items.oauth2.support.annotation.AuthScan;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.aop.framework.AopProxyUtils;
@@ -42,26 +41,50 @@ public class ResourceScanListener implements ApplicationListener<ContextRefreshe
      */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (oauthConfig.getInit() == 1) {
+            String init = "DELETE FROM t_oauth_resource WHERE system_code = ?";
+            try {
+                dao.executeArray(init, oauthConfig.getSystemModuleCode());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (oauthConfig.getScan() == 1) {
             if (event.getApplicationContext().getParent() == null) {
-                Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(AuthScan.class);
+                Map<String, Object> beans = event.getApplicationContext().getBeansWithAnnotation(Controller.class);
+                beans.putAll(event.getApplicationContext().getBeansWithAnnotation(RestController.class));
                 for (Object bean : beans.values()) {
+                    //此处的ultimateTargetClass方法是用来获取被spring的cglib代理类的原始类，这样才能获取到类上面的 注解（因为cglib代理类的原理是继承原始的类成成一个子类来操作）
                     if (AopProxyUtils.ultimateTargetClass(bean).isAnnotationPresent(RestController.class) || AopProxyUtils.ultimateTargetClass(bean).isAnnotationPresent(Controller.class)) {
-                        String[] prefixes = AopProxyUtils.ultimateTargetClass(bean).getAnnotation(RequestMapping.class).value();
+                        String[] prefixes;
+                        if (AopProxyUtils.ultimateTargetClass(bean).isAnnotationPresent(RequestMapping.class)) {
+                            prefixes = AopProxyUtils.ultimateTargetClass(bean).getAnnotation(RequestMapping.class).value();
+                        } else {
+                            prefixes = new String[]{""};
+                        }
+                        prefixes = prefixes.length == 0 ? new String[]{""} : prefixes;
                         for (String prefix : prefixes) {
                             Method[] methods = AopProxyUtils.ultimateTargetClass(bean).getDeclaredMethods();
                             for (Method method : methods) {
+                                String[] lasts;
                                 if (method.isAnnotationPresent(RequestMapping.class)) {
-                                    String[] lasts = method.getAnnotation(RequestMapping.class).value();
-                                    for (String last : lasts) {
-                                        String url = (prefix.startsWith("/") ? prefix : "/".concat(prefix)).concat(last.startsWith("/") ? last : "/".concat(last));
-                                        if (method.isAnnotationPresent(AuthResource.class)) {
-                                            String name = method.getAnnotation(AuthResource.class).name();
-                                            boolean enabled = method.getAnnotation(AuthResource.class).enabled();
-                                            int orderIndex = method.getAnnotation(AuthResource.class).orderIndex();
-                                            String systemCode = method.getAnnotation(AuthResource.class).systemCode();
-                                            systemCode = StringUtils.isEmpty(systemCode) ? oauthConfig.getSystemModuleCode() : systemCode;
-                                            String remark = method.getAnnotation(AuthResource.class).remark();
+                                    lasts = method.getAnnotation(RequestMapping.class).value();
+                                } else {
+                                    lasts = new String[]{""};
+                                }
+                                lasts = lasts.length == 0 ? new String[]{""} : lasts;
+                                for (String last : lasts) {
+                                    last = last.startsWith("/") ? last : "/".concat(last);
+                                    String url = (prefix.startsWith("/") ? prefix : "/".concat(prefix)).concat(last.equals("/") ? "" : last);
+                                    if (method.isAnnotationPresent(AuthResource.class)) {
+                                        String name = method.getAnnotation(AuthResource.class).name();
+                                        boolean enabled = method.getAnnotation(AuthResource.class).enabled();
+                                        int orderIndex = method.getAnnotation(AuthResource.class).orderIndex();
+                                        String systemCode = method.getAnnotation(AuthResource.class).systemCode();
+                                        systemCode = StringUtils.isEmpty(systemCode) ? oauthConfig.getSystemModuleCode() : systemCode;
+                                        String remark = method.getAnnotation(AuthResource.class).remark();
+
+                                        if (method.isAnnotationPresent(RequiresPermissions.class)) {
                                             String[] permissionMarks = method.getAnnotation(RequiresPermissions.class).value();
                                             for (String permissionMark : permissionMarks) {
                                                 String exist = "SELECT count(0) FROM t_oauth_resource WHERE url = ?";

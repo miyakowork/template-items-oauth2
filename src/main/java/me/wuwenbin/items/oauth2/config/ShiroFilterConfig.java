@@ -30,7 +30,7 @@ public class ShiroFilterConfig {
         formAuthenticationFilter.setUsernameParam("userName");
         formAuthenticationFilter.setPasswordParam("userPass");
         formAuthenticationFilter.setRememberMeParam("rememberMe");
-        formAuthenticationFilter.setLoginUrl("/login");
+        formAuthenticationFilter.setLoginUrl("/login/");
         return formAuthenticationFilter;
     }
 
@@ -51,9 +51,9 @@ public class ShiroFilterConfig {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl("/login/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+        shiroFilterFactoryBean.setSuccessUrl("/");
 
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("myAuthc", formAuthenticationFilter);
@@ -66,9 +66,10 @@ public class ShiroFilterConfig {
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/login/router", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/login/", "anon");
         filterChainDefinitionMap.put("/management/**", "forceLogout,sto,user");
         filterChainDefinitionMap.put("/oauth2/**", "forceLogout,sto,myAuthc");
+        filterChainDefinitionMap.put("/", "forceLogout,sto,myAuthc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 
         return shiroFilterFactoryBean;

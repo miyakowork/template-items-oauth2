@@ -4,7 +4,6 @@ import me.wuwenbin.items.oauth2.entity.IDepartment;
 import me.wuwenbin.items.oauth2.service.DepartmentService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
-import me.wuwenbin.items.oauth2.support.annotation.AuthScan;
 import me.wuwenbin.items.oauth2.support.pojo.bo.DepartmentBO;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ZTreeBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.DepartmentVO;
@@ -24,7 +23,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("oauth2/department/api")
-@AuthScan
 public class DepartmentRestController extends BaseRestController {
 
     private DepartmentService departmentService;
@@ -43,8 +41,8 @@ public class DepartmentRestController extends BaseRestController {
      * @return page
      */
     @RequestMapping("list")
-    @RequiresPermissions("base:department:view")
-    @AuthResource(name = "部门列表数据")
+    @RequiresPermissions("base:department:list")
+    @AuthResource(name = "获取部门列表数据")
     public BootstrapTable<DepartmentVO> departments(Page<DepartmentVO> page, DepartmentBO departmentBo) {
         page = departmentService.findDepartmentPage(departmentBo, page);
         return bootstrapTable(page);
@@ -56,8 +54,8 @@ public class DepartmentRestController extends BaseRestController {
      * @return json R
      */
     @RequestMapping("selectDepartment")
-    @RequiresPermissions("base:department:tree")
-    @AuthResource(name = "获取部门树形结构")
+    @RequiresPermissions("base:department:selectDepartment")
+    @AuthResource(name = "获取部门树形结构操作")
     public List<ZTreeBO> selectDepartment(String id) {
         return departmentService.department2ZTree(departmentService.findEnabledDepartments(id));
     }
@@ -70,7 +68,7 @@ public class DepartmentRestController extends BaseRestController {
      */
     @RequestMapping("add")
     @RequiresPermissions("base:department:add")
-    @AuthResource(name = "添加部门")
+    @AuthResource(name = "添加部门操作")
     public R add(IDepartment iDepartment) {
         return ajaxDoneAdd("部门", departmentService, iDepartment, IDepartment.class);
     }
@@ -83,7 +81,7 @@ public class DepartmentRestController extends BaseRestController {
      */
     @RequestMapping("edit")
     @RequiresPermissions("base:department:edit")
-    @AuthResource(name = "编辑部门")
+    @AuthResource(name = "编辑部门操作")
     public R edit(IDepartment iDepartment) {
         return ajaxDoneEdit("部门", departmentService, iDepartment, IDepartment.class);
     }

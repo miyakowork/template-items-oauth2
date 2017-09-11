@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Wuwenbin on 2017/8/21.
@@ -48,7 +50,7 @@ public class MenuService extends SimpleBaseCrudService<IMenu, Integer> {
      */
     public boolean editMenu(IMenu menu) throws Exception {
         String sql = "UPDATE t_oauth_menu " +
-                "SET name = :name , icon = :icon , icon_larger = :iconLarge , order_index = :orderIndex , enabled = :enabled , remark = :remark " +
+                "SET name = :name , icon = :icon , icon_larger = :iconLarger , order_index = :orderIndex , enabled = :enabled , remark = :remark " +
                 "WHERE id = :id";
         return mysql.executeBean(sql, menu) == 1;
     }
@@ -83,4 +85,38 @@ public class MenuService extends SimpleBaseCrudService<IMenu, Integer> {
         }
         return zTree;
     }
+
+    /**
+     * 添加菜单中获取当前添加菜单对应的权限资源，所对应的都是页面级的权限，
+     * 应为菜单都是有页面的链接的，按钮级别的则应该不显示。按钮级别都应该对应各自的页面上
+     *
+     * @param resourceModuleId
+     * @param roleId
+     * @return
+     */
+    public List<ZTreeBO<String>> getSelectMenuPrivilege(String resourceModuleId, String roleId) {
+        String privilegePageSql = "SELECT topp.*,tor.url  FROM t_oauth_privilege_page topp " +
+                "LEFT JOIN t_oauth_resource tor ON tor.id = topp.resource_id " +
+                "WHERE topp.resource_module_id = ? " +
+                "AND topp.resource_id IN (" +
+                "SELECT torr.resource_id FROM t_oauth_role_resource torr WHERE torr.role_id = ?" +
+                ")";
+        List<Map<String, Object>> privilegePageList = mysql.findListMapByArray(privilegePageSql, resourceModuleId, roleId);
+
+        List<ZTreeBO<String>> pagePrivilegeTree = new LinkedList<>();
+        // page_privilege
+        for (Map<String, Object> privilegePage : privilegePageList) {
+            ZTreeBO<String> pageTree = new ZTreeBO<>();
+            pageTree.setId(privilegePage.get("id").toString());
+            pageTree.setName(privilegePage.get("name").toString());
+            pageTree.setOther(privilegePage.get("url").toString());
+            pageTree.setOpen(true);
+            pageTree.setpId(privilegePage.get("resource_module_id").toString());
+            pageTree.setResourceId(privilegePage.get("resource_id").toString());
+            pageTree.setisParent(false);
+            pagePrivilegeTree.add(pageTree);
+        }
+        return pagePrivilegeTree;
+    }
+
 }

@@ -38,9 +38,9 @@ public class ShiroMenuService extends SimpleBaseCrudService<IDepartment, Integer
      * @return 侧边栏菜单
      */
     public List<IMenu> findLeftMenuByRoleId(int roleId, int menuModuleId, String systemCode) {
-        String sql = "SELECT tom.* FROM T_OAUTH_MENU tom WHERE tom.ENABLED = 1 AND tom.ROLE_ID = ? " +
-                "AND tom.MENU_MODULE_ID = ? AND tom.SYSTEM_CODE = ? AND tom.RESOURCE_ID IN " +
-                "(SELECT topp.RESOURCE_ID FROM T_OAUTH_PRIVILEGE_PAGE topp WHERE topp.ENABLED = 1)";
+        String sql = "SELECT tom.* FROM T_OAUTH_MENU tom " +
+                "WHERE tom.ENABLED = 1 AND tom.ROLE_ID = ? " +
+                "AND tom.MENU_MODULE_ID = ? AND tom.SYSTEM_CODE = ? ORDER BY order_index ASC ";
         return mysql.findListBeanByArray(sql, IMenu.class, roleId, menuModuleId, systemCode);
 
     }

@@ -5,12 +5,48 @@
     setInterval('clock()', 1000);
     setInterval('clock()', 1000);
 
-    new Vue({
-        el: "#left-panel",
-        data: {}
-    });
-
 }();
+
+var vm = new Vue({
+    el: "#left-panel",
+    data: {
+        systemCode: 'SYS_BASE',
+        user: {},
+        defaultRoleId: null,
+        menuModuleList: [],
+        defaultMenuModuleId: '',
+        menuList: []
+    },
+    computed: {
+        currentRoleId: function () {
+            return this.defaultRoleId || this.user.defaultRoleId;
+        }
+    },
+    methods: {
+        init: function () {
+            var that = this;
+            $.getJSON("/oauth2/user/api/info", function (resp) {
+                if (resp.code === Global.status_code.success) {
+                    that.user = resp.data;
+                    $.getJSON('/oauth2/menuModule/api/find/enables?systemModuleCode=' + that.systemCode, function (menuModules) {
+                        that.menuModuleList = menuModules;
+                        that.defaultMenuModuleId = menuModules.length > 0 ? menuModules[0].id : '';
+                        $.getJSON('/oauth2/menu/api/getMenuListIndex', {
+                            roleId: that.currentRoleId,
+                            systemCode: that.systemCode,
+                            menuModuleId: that.defaultMenuModuleId
+                        }, function (leftMenus) {
+                            that.menuList = toTree(leftMenus, 0);
+                        })
+                    })
+                }
+            });
+        }
+    },
+    created: function () {
+        this.init();
+    }
+});
 
 
 /**
@@ -18,13 +54,14 @@
  */
 function loginDateTime() {
     var day = new Date().getDate();
+    var hour = new Date().getHours();
     $("#login-dt").html(new Date().getFullYear()
         + "-"
         + ((new Date().getMonth() + 1) < 10 ? "0" + (new Date().getMonth() + 1) : (new Date().getMonth() + 1))
         + "-"
         + (day < 10 ? ("0" + day) : day)
         + "&nbsp;"
-        + new Date().getHours()
+        + (hour < 10 ? ("0" + hour) : hour)
         + ":"
         + (new Date().getMinutes() < 10 ? "0" + new Date().getMinutes() : new Date().getMinutes())
         + ":"
@@ -70,4 +107,25 @@ function clock() {
             + "&nbsp;";
     }
 }
+
+/**
+ * 菜单数组递归形成树结构
+ * @param menuList
+ * @param parentId
+ */
+function toTree(menuList, parentId) {
+    var result = [], temp;
+    for (var i = 0; i < menuList.length; i++) {
+        if (menuList[i].parentId === parentId) {
+            var obj = menuList[i];
+            temp = toTree(menuList, menuList[i].id);
+            if (temp.length > 0) {
+                obj.childMenus = temp;
+            }
+            result.push(obj);
+        }
+    }
+    return result;
+}
+
 

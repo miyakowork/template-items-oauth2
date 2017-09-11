@@ -35,8 +35,8 @@ public class AppContextListener implements ServletContextListener {
         LOGGER.info("------ 项目启动 ------");
         String sql = "DELETE FROM T_OAUTH_SESSION";
         try {
-            int n = dao.executeArray(sql);
-            LOGGER.info("---  删除所有数据库无效session会话，删除session会话[{}]条 ---", n);
+//            int n = dao.executeArray(sql);
+//            LOGGER.info("---  删除所有数据库无效session会话，删除session会话[{}]条 ---", n);
         } catch (Exception e) {
             LOGGER.error("--- 删除无效session会话过程中出现异常，异常信息：{} ---" + e.getMessage());
         }
@@ -54,8 +54,8 @@ public class AppContextListener implements ServletContextListener {
         LOGGER.info("------ 项目销毁中 ------");
         String sql = "DELETE FROM T_OAUTH_SESSION";
         try {
-            int n = dao.executeArray(sql);
-            LOGGER.info("---  删除所有数据库无效session会话，删除session会话[{}]条 ---", n);
+//            int n = dao.executeArray(sql);
+//            LOGGER.info("---  删除所有数据库无效session会话，删除session会话[{}]条 ---", n);
         } catch (Exception e) {
             LOGGER.error("--- 删除无效session会话过程中出现异常，异常信息：{} ---" + e.getMessage());
         }

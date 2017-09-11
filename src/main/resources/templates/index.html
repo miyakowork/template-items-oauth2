@@ -112,10 +112,11 @@
 <!-- END 页面头 -->
 
 <!-- #左侧导航栏 -->
-<aside id="left-panel">
+<div id="left-panel">
+    <aside>
 
-    <!-- 用户信息  -->
-    <div class="login-info">
+        <!-- 用户信息  -->
+        <div class="login-info">
 				<span>
 					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
 						<img src="/static/img/avatars/sunny.png" alt="me" class="online"/>
@@ -126,105 +127,108 @@
                        <i class="fa fa-list fa-lg"></i>
                     </a>
 				</span>
-    </div>
-    <!-- END  用户信息 -->
+        </div>
+        <!-- END  用户信息 -->
 
-    <nav id="menu-app">
-        <ul>
-            <li>
-                <a href="/oauth2/dashboard" title="管理系统首页"><i class="fa fa-lg fa-fw fa-dashboard"></i> <span
-                        class="menu-item-parent">管理系统首页</span></a>
-            </li>
-            <li>
-                <a href="#" title="系统模块管理"><i class="fa fa-lg fa-fw fa-cogs"></i> <span
-                        class="menu-item-parent">系统模块管理</span></a>
-                <ul>
-                    <li>
-                        <a href="/oauth2/menu-module" title="菜单模块管理"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">菜单模块管理</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/res-module" title="资源模块管理"><i class="fa fa-fw fa-clone"></i> <span
-                                class="menu-item-parent">资源模块管理</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/system-module" title="系统模块管理"><i class="fa fa-fw fa-clone"></i> <span
-                                class="menu-item-parent">系统模块管理</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" title="系统基本设置"><i class="fa fa-lg fa-fw fa-cogs"></i> <span
-                        class="menu-item-parent">系统基本设置</span></a>
-                <ul>
-                    <li>
-                        <a href="/oauth2/department" title="部门机构管理"><i class="fa fa-fw fa-building-o"></i> <span
-                                class="menu-item-parent">部门机构管理</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/system-param" title="系统参数管理"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">系统参数管理</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/operation-privilege-type" title="权限操作类型"><i
-                                class="fa fa-fw fa-list-ul"></i>
-                            <span
-                                    class="menu-item-parent">权限操作类型</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" title="角色菜单设置"><i class="fa fa-lg fa-fw fa-home"></i> <span
-                        class="menu-item-parent">角色菜单权限</span></a>
-                <ul>
-                    <li>
-                        <a href="/oauth2/menu" title="菜单配置"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">菜单配置</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/resource" title="资源管理"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">资源管理</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/privilege-page" title="资源模块分组"><i class="fa fa-fw fa-address-book-o"></i>
-                            <span
-                                    class="menu-item-parent">资源分组</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/role" title="角色管理"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">角色管理</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/user" title="用户管理"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">用户管理</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/privilege" title="权限管理"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">权限管理</span></a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" title="系统日志监控"><i class="fa fa-lg fa-fw fa-cog"></i> <span
-                        class="menu-item-parent">系统日志监控</span></a>
-                <ul>
-                    <li>
-                        <a href="/oauth2/log" title="用户登录日志"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">用户登录日志</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/loginsum" title="用户登录统计"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">用户登录统计</span></a>
-                    </li>
-                    <li>
-                        <a href="/oauth2/session" title="用户会话管理"><i class="fa fa-fw fa-list-ul"></i> <span
-                                class="menu-item-parent">用户会话管理</span></a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-</aside>
+        <nav id="menu-app">
+            <menu-item :menus="menuList"></menu-item>
+            <!--<ul><li class=""><a href="#" title="系统管理"><i class="fa fa-lg fa-fw fa-cogs"></i> <span class="menu-item-parent">系统管理</span><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b></a> <ul style="display: none;"><li><a href="#" title="其他测试菜单"><i class="fa fa-fw fa-star-o"></i> <span class="menu-item-parent">其他测试菜单</span><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b><b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b></a> <ul><li><a href="#" title="测试onclick菜单"><i class="fa fa-fw fa-lg fa-terminal"></i> <span class="menu-item-parent">测试onclick菜单</span></a> &lt;!&ndash;&ndash;&gt;</li></ul></li><li><a href="/oauth2/privilege" title="权限配置页面"><i class="fa fa-fw fa-users"></i> <span class="menu-item-parent">权限配置页面</span></a> &lt;!&ndash;&ndash;&gt;</li><li><a href="/oauth2/menu" title="菜单管理"><i class="fa fa-fw fa-list-ul"></i> <span class="menu-item-parent">菜单管理</span></a> &lt;!&ndash;&ndash;&gt;</li><li><a href="/oauth2/menuModule" title="菜单模块"><i class="fa fa-fw fa-list-ul"></i> <span class="menu-item-parent">菜单模块</span></a> &lt;!&ndash;&ndash;&gt;</li></ul></li><li><a href="#" title="系统日志及监控"><i class="fa fa-lg fa-fw fa-dashboard"></i> <span class="menu-item-parent">系统日志及监控</span></a> &lt;!&ndash;&ndash;&gt;</li></ul>-->
+            <!--<ul>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/dashboard" title="管理系统首页"><i class="fa fa-lg fa-fw fa-dashboard"></i> <span-->
+            <!--class="menu-item-parent">管理系统首页</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="#" title="系统模块管理"><i class="fa fa-lg fa-fw fa-cogs"></i> <span-->
+            <!--class="menu-item-parent">系统模块管理</span></a>-->
+            <!--<ul>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/menuModule" title="菜单分类管理"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">菜单分类管理</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/resModule" title="资源模块管理"><i class="fa fa-fw fa-clone"></i> <span-->
+            <!--class="menu-item-parent">资源模块管理</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/systemModule" title="系统模块管理"><i class="fa fa-fw fa-clone"></i> <span-->
+            <!--class="menu-item-parent">系统模块管理</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="#" title="系统基本设置"><i class="fa fa-lg fa-fw fa-cogs"></i> <span-->
+            <!--class="menu-item-parent">系统基本设置</span></a>-->
+            <!--<ul>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/department" title="部门机构管理"><i class="fa fa-fw fa-building-o"></i> <span-->
+            <!--class="menu-item-parent">部门机构管理</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/systemParam" title="系统参数管理"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">系统参数管理</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/operationPrivilegeType" title="权限操作类型"><i-->
+            <!--class="fa fa-fw fa-list-ul"></i>-->
+            <!--<span-->
+            <!--class="menu-item-parent">权限操作类型</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="#" title="角色菜单设置"><i class="fa fa-lg fa-fw fa-home"></i> <span-->
+            <!--class="menu-item-parent">角色菜单权限</span></a>-->
+            <!--<ul>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/menu" title="菜单配置"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">菜单配置</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/resource" title="资源管理"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">资源管理</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/privilegePage" title="资源模块分组"><i class="fa fa-fw fa-address-book-o"></i>-->
+            <!--<span-->
+            <!--class="menu-item-parent">资源分组</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/role" title="角色管理"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">角色管理</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/user" title="用户管理"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">用户管理</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/privilege" title="权限管理"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">权限管理</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="#" title="系统日志监控"><i class="fa fa-lg fa-fw fa-cog"></i> <span-->
+            <!--class="menu-item-parent">系统日志监控</span></a>-->
+            <!--<ul>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/log" title="用户登录日志"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">用户登录日志</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/loginsum" title="用户登录统计"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">用户登录统计</span></a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="/oauth2/session" title="用户会话管理"><i class="fa fa-fw fa-list-ul"></i> <span-->
+            <!--class="menu-item-parent">用户会话管理</span></a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--</ul>-->
+        </nav>
+    </aside>
+</div>
 <!-- END 左侧导航栏 -->
 
 <!-- #主显示内容区域 -->
@@ -313,7 +317,7 @@
 <script src="/static/js/libs/jquery-ui-1.10.3.min.js"></script>
 <script src="/static/js/notification/SmartNotification.min.js"></script>
 <script src="/static/js/smartwidgets/jarvis.widget.min.js"></script>
-<script src="/static/js/libs/vue/vue.min.js"></script>
+<script src="/static/js/libs/vue/vue.js"></script>
 <script src="/static/js/libs/vue/axios.min.js"></script>
 <script src="/static/js/libs/vue/vuerify.min.js"></script>
 <script src="/static/js/libs/vue/url-search-params.min.js"></script>
@@ -330,9 +334,9 @@
 <![endif]-->
 <!-- 项目app核心js -->
 <script src="/static/js/app.js"></script>
+<script src="/static/js/template.theme.js"></script>
 <script src="/static/js/template.global.js"></script>
 <script src="/static/js/template.vue.js"></script>
-<script src="/static/js/template.theme.js"></script>
 <script src="/static/js/template.index.js"></script>
 <!--# END 脚本区域-->
 </body>

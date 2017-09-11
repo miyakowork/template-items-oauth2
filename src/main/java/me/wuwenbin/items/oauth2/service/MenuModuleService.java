@@ -38,7 +38,7 @@ public class MenuModuleService extends SimpleBaseCrudService<IMenuModule, Intege
      * @return
      */
     public List<IMenuModule> findEnabledMenuModuleBySystemModuleCode(String systemModuleCode) {
-        String sql = "SELECT * FROM t_oauth_menu_module WHERE enabled = 1 AND system_code = ?";
+        String sql = "SELECT * FROM t_oauth_menu_module WHERE enabled = 1 AND system_code = ? ORDER BY order_index ASC ";
         return mysql.findListBeanByArray(sql, IMenuModule.class, systemModuleCode);
     }
 

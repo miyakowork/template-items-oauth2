@@ -3,11 +3,13 @@ package me.wuwenbin.items.oauth2.page.resModule;
 import me.wuwenbin.items.oauth2.entity.IResourceModule;
 import me.wuwenbin.items.oauth2.service.ResModuleService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
+import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ResModuleBo;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ZTreeBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.ResourceModuleVO;
 import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +42,8 @@ public class ResourceModuleRestController extends BaseRestController {
      * @return bootstrap table
      */
     @RequestMapping("list")
+    @RequiresPermissions("base:resModule:list")
+    @AuthResource(name = "获取资源模块管理页面的数据")
     public BootstrapTable<ResourceModuleVO> oauthResourceModule(ResModuleBo resModuleBo, Page<ResourceModuleVO> page) {
         page = resModuleService.findResModulePage(page, resModuleBo);
         return bootstrapTable(page);
@@ -52,6 +56,8 @@ public class ResourceModuleRestController extends BaseRestController {
      * @return R
      */
     @RequestMapping("add")
+    @RequiresPermissions("base:resModule:add")
+    @AuthResource(name = "添加新资源模块操作")
     public R add(IResourceModule iResourceModule) {
         return ajaxDoneAdd("资源模块", resModuleService, iResourceModule, IResourceModule.class);
     }
@@ -63,6 +69,8 @@ public class ResourceModuleRestController extends BaseRestController {
      * @return R
      */
     @RequestMapping("edit")
+    @RequiresPermissions("base:resModule:edit")
+    @AuthResource(name = "修改资源模块操作")
     public R edit(IResourceModule iResourceModule) {
         return ajaxDoneEdit("资源模块", resModuleService, iResourceModule, IResourceModule.class);
     }
@@ -74,6 +82,8 @@ public class ResourceModuleRestController extends BaseRestController {
      * @return
      */
     @RequestMapping("delete")
+    @RequiresPermissions("base:resModule:delete")
+    @AuthResource(name = "删除资源模块操作")
     public R delete(String ids) {
         return ajaxDoneDelete("资源模块", ids.split(","), resModuleService, IResourceModule.class);
     }
@@ -84,6 +94,8 @@ public class ResourceModuleRestController extends BaseRestController {
      * @return list zTree
      */
     @RequestMapping("resModuleTree")
+    @RequiresPermissions("base:resModule:resModuleTree")
+    @AuthResource(name = "查询出资源模块树")
     public List<ZTreeBO> resourceModulesTree(String systemModuleCode) {
         if (StringUtils.isEmpty(systemModuleCode))
             return resModuleService.resModuleToZTree(resModuleService.findEnabledListBean(IResourceModule.class));

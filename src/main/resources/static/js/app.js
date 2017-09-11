@@ -505,6 +505,7 @@ var calc_navbar_height = function () {
 
 initApp.addDeviceType();
 initApp.menuPos();
+
 /*
  * DOCUMENT LOADED EVENT
  * Description: Fire when DOM is ready
@@ -793,26 +794,6 @@ function runAllForms() {
         $('.slider').slider();
     }
 
-    /*
-     * SELECT2 PLUGIN
-     * Usage:
-     * Dependency: js/plugin/select2/
-     */
-    if ($.fn.select2) {
-        $('select.select2').each(function () {
-            var $this = $(this),
-                width = $this.attr('data-select-width') || '100%';
-            //, _showSearchInput = $this.attr('data-select-search') === 'true';
-            $this.select2({
-                //showSearchInput : _showSearchInput,
-                allowClear: true,
-                width: width
-            });
-
-            //clear memory reference
-            $this = null;
-        });
-    }
 
     /*
      * MASKING
@@ -835,7 +816,7 @@ function runAllForms() {
     }
 
     /*
-     * AUTOCOMPLETE
+     * AUTO COMPLETE
      * Dependency: js/jqui
      */
     if ($.fn.autocomplete) {
@@ -1661,7 +1642,6 @@ if ($.navAsAjax) {
  * CHECK TO SEE IF URL EXISTS
  */
 function checkURL() {
-
     //get the url by removing the hash
     //var url = location.hash.replace(/^#/, '');
     var url = location.href.split('#').splice(1).join('#');
@@ -1690,6 +1670,7 @@ function checkURL() {
         $('nav li.active').removeClass("active");
         // match the url and add the active class
         $('nav li:has(a[href="' + url + '"])').addClass("active");
+        $('nav li:has(a[href="' + url + '"])>ul').css("display", "block");
         var title = ($('nav a[href="' + url + '"]').attr('title'));
 
         // change page title from global var
@@ -1707,7 +1688,7 @@ function checkURL() {
         var $this = $('nav > ul > li:first-child a[href!="#"]:eq(0)');
 
         //update hash
-        window.location.hash = $this.attr('href');
+        window.location.hash = $this.attr('href') || "#";
 
         //clear dom reference
         $this = null;
@@ -2090,7 +2071,7 @@ function pageSetUp() {
  * ONE POP OVER THEORY
  * Keep only 1 active popover per trigger - also check and hide active popover if user clicks on document
  */
-$('body').on('click', function (e) {
+$.root_.on('click', function (e) {
     $('[rel="popover"], [data-rel="popover"]').each(function () {
         //the 'is' for buttons that trigger popups
         //the 'has' for icons within a button that triggers a popup

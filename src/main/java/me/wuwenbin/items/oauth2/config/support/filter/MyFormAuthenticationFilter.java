@@ -38,6 +38,7 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter impleme
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         HttpServletRequest req = (HttpServletRequest) request;
         String URI = req.getRequestURI();
+        String URL = req.getRequestURL().toString();
         String method = req.getMethod();
         LOG.info("-- FormAuthenticationFilter，访问URI：[{}]，请求方式：[{}]", URI, method);
 
