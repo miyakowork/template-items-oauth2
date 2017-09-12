@@ -82,7 +82,7 @@ var menuModule = '\
            <a @click="switchModule(module.id)" class="jarvismetro-tile big-cubes" :class="color(index)">\
                 <span class="iconbox">\
                     <i :class="module.iconMini" class="fa-4x"></i>\
-                     <span v-text="module.name" style="text-align: center;"></span>\
+                     <span v-text="moduleName(module.name,module.id)" style="text-align: center;"></span>\
                 </span>\
            </a>\
        </li>\
@@ -110,14 +110,21 @@ Vue.component('menu-module', {
     },
     methods: {
         switchModule: function (moduleId) {
-            CookieUtils.del(Global.key.LEFT_NAV_MODULE_ID);
-            CookieUtils.set(Global.key.LEFT_NAV_MODULE_ID, moduleId, '7d');
-            window.location.reload();
+            if (CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID) !== null && moduleId === Number(CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID))) {
+                layer.msg("目标为当前模块，不必切换！");
+            } else {
+                CookieUtils.del(Global.key.LEFT_NAV_MODULE_ID);
+                CookieUtils.set(Global.key.LEFT_NAV_MODULE_ID, moduleId, '7d');
+                window.location.reload();
+            }
         },
         color: function (index) {
             var categories = this.colors.length;
             var num = index % categories;
             return this.colors[num];
+        },
+        moduleName: function (name, id) {
+            return name.concat(id === Number(CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID)) ? " √" : "");
         }
     }
 });

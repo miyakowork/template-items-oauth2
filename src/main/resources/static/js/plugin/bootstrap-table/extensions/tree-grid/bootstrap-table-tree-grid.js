@@ -312,7 +312,7 @@
                             return d.parentId === item[that.options.treeId] && !d.hidden;
                         });
                         var _len = getChild(item, that.options.data, that.options.treeId).length;
-                        icon = sprintf('<span class="tree-icon %s" style="cursor: pointer; margin: 0 5px;"></span>', child.length > 0 ? that.options.expandIcon : _len > 0 ? that.options.collapseIcon : "fa fa-dot-circle-o");
+                        icon = sprintf('<span class="tree-icon %s" style="cursor: pointer; margin: 0 5px;"></span>', child.length > 0 ? that.options.expandIcon : _len > 0 ? that.options.collapseIcon : "fa fa-leaf");
                     }
                     text = that.options.cardView ? ['<div class="card-view">',
                         that.options.showHeader ? sprintf('<span class="title" %s>%s</span>', style,

@@ -31,7 +31,7 @@
     </cache>
 
     <!-- 菜单缓存 -->
-    <cache name="defaultCache"
+    <cache name="menuCache"
            maxEntriesLocalHeap="2000"
            timeToIdleSeconds="3600"
            timeToLiveSeconds="0"

@@ -28,10 +28,13 @@ public class ShiroMenuService extends SimpleBaseCrudService<IDept, Integer> {
      * @return 侧边栏菜单
      */
     public List<IMenu> findLeftMenuByRoleId(int roleId, int menuModuleId, String systemCode) {
-        List<IMenu> leftMenus = CacheUtils.get(CacheConsts.MENU_CACHE, "menu");
+        String key = "menu::" + systemCode + ":" + roleId + ":" + menuModuleId;
+        List<IMenu> leftMenus = CacheUtils.get(CacheConsts.MENU_CACHE, key);
         if (leftMenus == null || leftMenus.size() == 0) {
             String sql = "SELECT * FROM t_oauth_menu WHERE enabled = 1 AND role_id = ? AND menu_module_id = ? AND system_code = ? ORDER BY order_index ASC ";
-            return mysql.findListBeanByArray(sql, IMenu.class, roleId, menuModuleId, systemCode);
+            List<IMenu> menus = mysql.findListBeanByArray(sql, IMenu.class, roleId, menuModuleId, systemCode);
+            CacheUtils.put(CacheConsts.MENU_CACHE, key, menus);
+            return menus;
         } else {
             return leftMenus;
         }

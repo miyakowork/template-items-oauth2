@@ -1891,7 +1891,6 @@ function loadURL(url, container) {
 
             // place cog
             container.html('<h4 class="ajax-loading-animation"><i class="fa fa-cog fa-spin"></i> 正在加载中，请稍后...</h4>');
-            $("#background").show();
 
 
             // Only draw breadcrumb if it is main content material
@@ -1922,7 +1921,6 @@ function loadURL(url, container) {
             // clear data var
             data = null;
             container = null;
-            $("#background").hide();
         },
         error: function (xhr, error, thrownError) {
             if (xhr.responseText) {

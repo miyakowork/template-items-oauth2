@@ -27,6 +27,9 @@ $(function () {
             showModule: function () {
                 $('#shortcut').slideDown(200);
             },
+            changeRole: function () {
+
+            },
             init: function () {
                 var that = this;
                 $.getJSON("/oauth2/user/api/info", function (resp) {
@@ -40,10 +43,13 @@ $(function () {
                                     modules: that.menuModuleList
                                 }
                             });
-                            if (CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID) !== null && !isNaN(CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID)))
+                            if (CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID) !== null && !isNaN(CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID))) {
                                 that.defaultMenuModuleId = CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID);
-                            else
+                            } else {
                                 that.defaultMenuModuleId = menuModules.length > 0 ? menuModules[0].id : '';
+                                CookieUtils.del(Global.key.LEFT_NAV_MODULE_ID);
+                                CookieUtils.set(Global.key.LEFT_NAV_MODULE_ID, that.defaultMenuModuleId, '7d');
+                            }
                             $.getJSON('/oauth2/menu/api/getMenuListIndex', {
                                 systemCode: that.systemCode,
                                 menuModuleId: that.defaultMenuModuleId
