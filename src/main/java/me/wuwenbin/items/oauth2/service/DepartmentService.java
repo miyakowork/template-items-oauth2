@@ -1,10 +1,10 @@
 package me.wuwenbin.items.oauth2.service;
 
-import me.wuwenbin.items.oauth2.entity.IDepartment;
+import me.wuwenbin.items.oauth2.entity.IDept;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
 import me.wuwenbin.items.oauth2.support.pojo.bo.DepartmentBO;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ZTreeBO;
-import me.wuwenbin.items.oauth2.support.pojo.vo.DepartmentVO;
+import me.wuwenbin.items.oauth2.support.pojo.vo.DeptVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.pojo.page.Page;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class DepartmentService extends SimpleBaseCrudService<IDepartment, Integer> {
+public class DepartmentService extends SimpleBaseCrudService<IDept, Integer> {
 
     /**
      * 调用findPage()返回Page
@@ -27,12 +27,12 @@ public class DepartmentService extends SimpleBaseCrudService<IDepartment, Intege
      * @param departmentBO 页面查询对象
      * @return 当前Page页
      */
-    public Page<DepartmentVO> findDepartmentPage(DepartmentBO departmentBO, Page<DepartmentVO> page) {
+    public Page<DeptVO> findDepartmentPage(DepartmentBO departmentBO, Page<DeptVO> page) {
         String sql = " SELECT  tod.*, tod1.name AS parent_name, tou1.username AS create_name, tou2.username AS update_name" +
                 " FROM t_oauth_user tou1, t_oauth_user tou2, t_oauth_department tod" +
                 " LEFT JOIN t_oauth_department tod1 ON tod1.id = tod.parent_id" +
                 " WHERE tod.create_user = tou1.id AND tod.update_user = tou2.id";
-        return findPagination(page, DepartmentVO.class, sql, departmentBO);
+        return findPagination(page, DeptVO.class, sql, departmentBO);
     }
 
     /**
@@ -41,9 +41,9 @@ public class DepartmentService extends SimpleBaseCrudService<IDepartment, Intege
      * @param departments 部门集合对象
      * @return 部门的zTree
      */
-    public List<ZTreeBO> department2ZTree(Collection<IDepartment> departments) {
+    public List<ZTreeBO> department2ZTree(Collection<IDept> departments) {
         List<ZTreeBO> zTreeList = new LinkedList<>();
-        for (IDepartment next : departments) {
+        for (IDept next : departments) {
             ZTreeBO zTree = new ZTreeBO();
             zTree.setId(next.getId().toString());
             zTree.setpId(next.getParentId().toString());
@@ -62,11 +62,11 @@ public class DepartmentService extends SimpleBaseCrudService<IDepartment, Intege
      *
      * @return zTree树
      */
-    public List<IDepartment> findEnabledDepartments(String depId) {
+    public List<IDept> findEnabledDepartments(String depId) {
         String sql = " SELECT * FROM t_oauth_department tod WHERE tod.ENABLED = 1";
-        List<IDepartment> departments = mysql.findListBeanByArray(sql, IDepartment.class);
+        List<IDept> departments = mysql.findListBeanByArray(sql, IDept.class);
         if ("0".equalsIgnoreCase(depId))//如果需要显示部门根节点，则传递参数id=0即可
-            departments.add(IDepartment.root());
+            departments.add(IDept.root());
         return departments;
     }
 

@@ -13,16 +13,17 @@ Vue.mixin({
     }
 });
 
-var menuItem =
-    '<ul>' +
-    '   <li v-for="menu in menus">' +
-    '       <a :href="menuHref(menu.href)"  :title="menu.name" :onclick="menu.onclick">' +
-    '           <i :class="menuIcon(menu.icon,menu.id)"></i>' +
-    '           <span class="menu-item-parent" v-text="menu.name"></span>' +
-    '       </a>' +
-    '       <menu-item :menus="menu.childMenus" v-if="hasChild(menu.childMenus)"></menu-item>' +
-    '   </li>' +
-    '</ul>';
+var menuItem = '\
+    <ul>\
+       <li v-for="menu in menus">\
+           <a :href="menuHref(menu.href)"  :title="menu.name" :onclick="hasOnclick(menu.onclick) ? menu.onclick:\'\'" :target="menuTarget(menu.target)" v-bind="{skip:menuTarget(menu.target)==\'\'}">\
+               <i :class="menuIcon(menu.icon,menu.id)"></i>\
+               <span class="menu-item-parent" v-text="menu.name"></span>\
+           </a>\
+           <menu-item :menus="menu.childMenus" v-if="hasChild(menu.childMenus)"></menu-item>\
+       </li>\
+    </ul>\
+    ';
 
 Vue.component('menu-item', {
     template: menuItem,
@@ -43,6 +44,16 @@ Vue.component('menu-item', {
             } else {
                 return '#';
             }
+        },
+        menuTarget: function (target) {
+            if (target !== '' && target !== null) {
+                return target;
+            } else {
+                return '';
+            }
+        },
+        hasOnclick: function (onclick) {
+            return onclick !== '' && onclick !== null;
         }
     },
     props: ['menus'],
@@ -63,6 +74,54 @@ Vue.component('menu-item', {
         }
     }
 });
+
+
+var menuModule = '\
+    <ul>\
+       <li v-for="(module, index) in modules">\
+           <a @click="switchModule(module.id)" class="jarvismetro-tile big-cubes" :class="color(index)">\
+                <span class="iconbox">\
+                    <i :class="module.iconMini" class="fa-4x"></i>\
+                     <span v-text="module.name" style="text-align: center;"></span>\
+                </span>\
+           </a>\
+       </li>\
+    </ul>\
+    ';
+
+Vue.component('menu-module', {
+    template: menuModule,
+    props: ['modules'],
+    data: function () {
+        return {
+            colors: [
+                'bg-color-blue',
+                'bg-color-orange',
+                'bg-color-blueDark',
+                'bg-color-green',
+                'bg-color-purple',
+                'bg-color-red',
+                'bg-color-teal',
+                'bg-color-magenta',
+                'bg-color-pink'
+            ],
+            systemCode: 'SYS_BASE'
+        }
+    },
+    methods: {
+        switchModule: function (moduleId) {
+            CookieUtils.del(Global.key.LEFT_NAV_MODULE_ID);
+            CookieUtils.set(Global.key.LEFT_NAV_MODULE_ID, moduleId, '7d');
+            window.location.reload();
+        },
+        color: function (index) {
+            var categories = this.colors.length;
+            var num = index % categories;
+            return this.colors[num];
+        }
+    }
+});
+
 //form-item
 var formItem = {
     input:
@@ -151,8 +210,7 @@ Vue.component('form-input', {
             default: ''
         },
         readonly: {
-            type: String,
-            default: 'false'
+            default: false
         },
         value: {},
         message: {
@@ -255,8 +313,7 @@ Vue.component('form-fetch', {
             default: ''
         },
         readonly: {
-            type: String,
-            default: 'true'
+            default: false
         },
         value: Object,
         message: {

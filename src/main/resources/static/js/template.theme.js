@@ -10,6 +10,7 @@ var options =
     '<a href="javascript:void(0);" id="smart-style-3" data-skinlogo="/static/img/favicon/favicon.ico" class="btn btn-xs btn-block txt-color-white margin-top-5" style="background:#f78c40">谷歌主题</a>' +
     '<a href="javascript:void(0);" id="smart-style-4" data-skinlogo="/static/img/favicon/favicon.ico" class="btn btn-xs btn-block txt-color-white margin-top-5" style="background: #bbc0cf; border: 1px solid #59779E; color: #17273D !important;">粉碎像素</a> ' +
     '<a href="javascript:void(0);" id="smart-style-5" data-skinlogo="/static/img/favicon/favicon.ico" class="btn btn-xs btn-block txt-color-white margin-top-5" style="background: rgba(153, 179, 204, 0.2); border: 1px solid rgba(121, 161, 221, 0.8); color: #17273D !important;">透明玻璃 </a>' +
+    '<a href="javascript:void(0);" id="smart-style-6" data-skinlogo="/static/img/logo-pale.png" class="btn btn-xs btn-block txt-color-white margin-top-6" style="background: #2196F3; border: 1px solid rgba(0, 0, 0, 0.3); color: #FFF !important;">MaterialDesign  </a>' +
     '</section>' +
     '</form> ' +
     '</div>';

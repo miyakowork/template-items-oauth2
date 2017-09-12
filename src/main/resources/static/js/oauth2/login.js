@@ -25,7 +25,6 @@ var vm = new Vue({
             params.append("rememberMe", vm.rememberMe);
             axios.post('/login/', params, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .then(function (result) {
-                    debugger
                     result = result.data;
                     if (result.code === 200) {//登录成功
                         parent.location.href = (('/oauth2' + result.data) || '/').concat(window.location.hash);

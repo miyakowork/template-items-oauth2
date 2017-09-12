@@ -1,8 +1,10 @@
 package me.wuwenbin.items.oauth2.service.shiro;
 
-import me.wuwenbin.items.oauth2.entity.IDepartment;
+import me.wuwenbin.items.oauth2.constant.CacheConsts;
+import me.wuwenbin.items.oauth2.entity.IDept;
 import me.wuwenbin.items.oauth2.entity.IMenu;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
+import me.wuwenbin.items.oauth2.util.CacheUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,20 +16,8 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class ShiroMenuService extends SimpleBaseCrudService<IDepartment, Integer> {
+public class ShiroMenuService extends SimpleBaseCrudService<IDept, Integer> {
 
-    /**
-     * 根据用户的角色id、所属菜单的模块id以及哪个系统（系统代码）来查询所拥有的所有菜单
-     *
-     * @param roleId       角色id
-     * @param menuModuleId 菜单模块id
-     * @param systemCode   系统模块代码
-     * @return 所有菜单
-     */
-    public List<IMenu> findAllMenusByRoleId(int roleId, int menuModuleId, String systemCode) {
-        String sql = "SELECT * FROM T_OAUTH_MENU WHERE ROLE_ID = ? AND MENU_MODULE_ID = ? AND SYSTEM_CODE = ? AND ENABLED = 1";
-        return mysql.findListBeanByArray(sql, IMenu.class, roleId, menuModuleId, systemCode);
-    }
 
     /**
      * 根据用户的角色id、所属菜单的模块id以及哪个系统（系统代码）来查询侧边栏菜单
@@ -38,10 +28,13 @@ public class ShiroMenuService extends SimpleBaseCrudService<IDepartment, Integer
      * @return 侧边栏菜单
      */
     public List<IMenu> findLeftMenuByRoleId(int roleId, int menuModuleId, String systemCode) {
-        String sql = "SELECT tom.* FROM T_OAUTH_MENU tom " +
-                "WHERE tom.ENABLED = 1 AND tom.ROLE_ID = ? " +
-                "AND tom.MENU_MODULE_ID = ? AND tom.SYSTEM_CODE = ? ORDER BY order_index ASC ";
-        return mysql.findListBeanByArray(sql, IMenu.class, roleId, menuModuleId, systemCode);
+        List<IMenu> leftMenus = CacheUtils.get(CacheConsts.MENU_CACHE, "menu");
+        if (leftMenus == null || leftMenus.size() == 0) {
+            String sql = "SELECT * FROM t_oauth_menu WHERE enabled = 1 AND role_id = ? AND menu_module_id = ? AND system_code = ? ORDER BY order_index ASC ";
+            return mysql.findListBeanByArray(sql, IMenu.class, roleId, menuModuleId, systemCode);
+        } else {
+            return leftMenus;
+        }
 
     }
 

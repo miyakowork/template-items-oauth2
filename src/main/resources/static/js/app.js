@@ -93,7 +93,7 @@ var calc_navbar_height = function () {
      * APP DOM REFERENCES
      * Description: Obj DOM reference, please try to avoid changing these
      */
-    shortcut_dropdown = $('#shortcut'),
+    // shortcut_dropdown = $('#shortcut'),
 
     bread_crumb = $('#ribbon ol.breadcrumb'),
     /*
@@ -158,7 +158,7 @@ var calc_navbar_height = function () {
          */
         app.menuPos = function () {
 
-            if ($.root_.hasClass("menu-on-top") || localStorage.getItem('sm-setmenu') == 'top') {
+            if ($.root_.hasClass("menu-on-top") || localStorage.getItem('sm-setmenu') === 'top') {
                 topmenu = true;
                 $.root_.addClass("menu-on-top");
             }
@@ -182,7 +182,7 @@ var calc_navbar_height = function () {
                         buttons: '[取消][确认]'
 
                     }, function (ButtonPressed) {
-                        if (ButtonPressed == "确认") {
+                        if (ButtonPressed === "确认") {
                             $.root_.addClass('animated fadeOutUp');
                             setTimeout(logout, 1000);
                         }
@@ -202,11 +202,10 @@ var calc_navbar_height = function () {
                         content: $this.data('reset-msg') || "Would you like to RESET all your saved widgets and clear LocalStorage?1",
                         buttons: '[取消][确认]'
                     }, function (ButtonPressed) {
-                        if (ButtonPressed == "确认" && localStorage) {
+                        if (ButtonPressed === "确认" && localStorage) {
                             localStorage.clear();
                             location.reload();
                         }
-
                     });
                 },
 
@@ -259,8 +258,6 @@ var calc_navbar_height = function () {
                         $('html').toggleClass("hidden-menu-mobile-lock");
                         $.root_.toggleClass("hidden-menu");
                         $.root_.removeClass("minified");
-                        //} else if ( $.root_.hasClass("menu-on-top") && $.root_.hasClass("mobile-view-activated") ) {
-                        // suggested fix from Christian Jäger
                     } else if ($.root_.hasClass("menu-on-top") && $(window).width() < 979) {
                         $('html').toggleClass("hidden-menu-mobile-lock");
                         $.root_.toggleClass("hidden-menu");
@@ -269,47 +266,30 @@ var calc_navbar_height = function () {
                 },
 
                 // TOGGLE SHORTCUT
-                toggleShortcut: function () {
-
-                    if (shortcut_dropdown.is(":visible")) {
-                        shortcut_buttons_hide();
-                    } else {
-                        shortcut_buttons_show();
-                    }
-
-                    // SHORT CUT (buttons that appear when clicked on user name)
-                    shortcut_dropdown.find('a').click(function (e) {
-                        e.preventDefault();
-                        window.location = $(this).attr('href');
-                        setTimeout(shortcut_buttons_hide, 300);
-
-                    });
-
-                    // SHORTCUT buttons goes away if mouse is clicked outside of the area
-                    $(document).mouseup(function (e) {
-                        if (!shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
-                            shortcut_buttons_hide();
-                        }
-                    });
-
-                    // SHORTCUT ANIMATE HIDE
-                    function shortcut_buttons_hide() {
-                        shortcut_dropdown.animate({
-                            height: "hide"
-                        }, 300, "easeOutCirc");
-                        $.root_.removeClass('shortcut-on');
-
-                    }
-
-                    // SHORTCUT ANIMATE SHOW
-                    function shortcut_buttons_show() {
-                        shortcut_dropdown.animate({
-                            height: "show"
-                        }, 200, "easeOutCirc");
-                        $.root_.addClass('shortcut-on');
-                    }
-
-                }
+                // toggleShortcut: function () {
+                //
+                //     if (shortcut_dropdown.is(":visible")) {
+                //         shortcut_buttons_hide();
+                //     } else {
+                //         shortcut_buttons_show();
+                //     }
+                //
+                //     // SHORT CUT (buttons that appear when clicked on user name)
+                //     shortcut_dropdown.find('a').click(function (e) {
+                //         e.preventDefault();
+                //         window.location = $(this).attr('href');
+                //         setTimeout(shortcut_buttons_hide, 300);
+                //
+                //     });
+                //
+                //     // SHORTCUT buttons goes away if mouse is clicked outside of the area
+                //     $(document).mouseup(function (e) {
+                //         if (!shortcut_dropdown.is(e.target) && shortcut_dropdown.has(e.target).length === 0) {
+                //             shortcut_buttons_hide();
+                //         }
+                //     });
+                //
+                // }
 
             };
 
@@ -517,6 +497,25 @@ jQuery(document).ready(function () {
     initApp.domReadyMisc();
 
 });
+
+// SHORTCUT ANIMATE HIDE
+function shortcut_buttons_hide() {
+    shortcut_dropdown.animate({
+        height: "0"
+    }, 300, "easeOutCirc");
+    $.root_.removeClass('shortcut-on');
+
+}
+
+// SHORTCUT ANIMATE SHOW
+function shortcut_buttons_show() {
+    shortcut_dropdown.animate({
+        height: "154px"
+    }, 200, "easeOutCirc");
+    $.root_.addClass('shortcut-on');
+}
+
+
 /*
  * RESIZER WITH THROTTLE
  * Source: http://benalman.com/code/projects/jquery-resize/examples/resize/
@@ -641,9 +640,7 @@ jQuery(document).ready(function () {
  * Note: This script utilizes JSthrottle script so don't worry about memory/CPU usage
  */
 $('#main').resize(function () {
-
     initApp.mobileCheckActivation();
-
 });
 
 /* ~ END: NAV OR #LEFT-BAR RESIZE DETECT */
@@ -1685,7 +1682,7 @@ function checkURL() {
 
     } else {
         // grab the first URL from nav
-        var $this = $('nav > ul > li:first-child a[href!="#"]:eq(0)');
+        var $this = $('nav > ul > li:first-child a[href!="#"][skip]:eq(0)');
 
         //update hash
         window.location.hash = $this.attr('href') || "#";
@@ -1707,7 +1704,6 @@ function loadURL(url, container) {
         root.root.console.log("Loading URL: %c" + url, debugStyle);
     }
 
-    var layerLoadingIndex;
 
     $.ajax({
         type: "GET",
@@ -1715,7 +1711,6 @@ function loadURL(url, container) {
         dataType: 'html',
         cache: true, // (warning: setting it to false will cause a timestamp and will call the request twice)
         beforeSend: function () {
-
             //IE11 bug fix for googlemaps (delete all google map instances)
             //check if the page is ajax = true, has google map class and the container is #content
             if ($.navAsAjax && $(".google_maps")[0] && (container[0] == $("#content")[0])) {
@@ -1853,26 +1848,10 @@ function loadURL(url, container) {
                     }
                 }
 
-                if ($.fn.easyPieChart && $("#content .easy-pie-chart")[0]) {
-                    $("#content .easy-pie-chart").easyPieChart('destroy');
-
-                    if (debugState) {
-                        root.console.log("✔ EasyPieChart Charts destroyed!");
-                    }
-                }
-
 
                 // end destory all inline charts
 
                 // destroy form controls: Datepicker, select2, autocomplete, mask, bootstrap slider
-
-                if ($.fn.select2 && $("#content select.select2")[0]) {
-                    $("#content select.select2").select2('destroy');
-
-                    if (debugState) {
-                        root.console.log("✔ Select2 destroyed!");
-                    }
-                }
 
                 if ($.fn.mask && $('#content [data-mask]')[0]) {
                     $('#content [data-mask]').unmask();
@@ -1911,7 +1890,9 @@ function loadURL(url, container) {
             container.removeData().html("");
 
             // place cog
-            container.html('<h1 class="ajax-loading-animation"><i class="fa fa-cog fa-spin"></i> 正在加载中，请稍后...</h1>');
+            container.html('<h4 class="ajax-loading-animation"><i class="fa fa-cog fa-spin"></i> 正在加载中，请稍后...</h4>');
+            $("#background").show();
+
 
             // Only draw breadcrumb if it is main content material
             if (container[0] == $("#content")[0]) {
@@ -1931,17 +1912,17 @@ function loadURL(url, container) {
             // end if
         },
         success: function (data) {
-            layer.close(layerLoadingIndex)
             // dump data to container
             container.css({
                 opacity: '0.0'
             }).html(data).delay(50).animate({
                 opacity: '1.0'
-            }, 300);
+            }, 500);
 
             // clear data var
             data = null;
             container = null;
+            $("#background").hide();
         },
         error: function (xhr, error, thrownError) {
             if (xhr.responseText) {

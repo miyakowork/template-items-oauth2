@@ -1,12 +1,12 @@
 package me.wuwenbin.items.oauth2.page.department;
 
-import me.wuwenbin.items.oauth2.entity.IDepartment;
+import me.wuwenbin.items.oauth2.entity.IDept;
 import me.wuwenbin.items.oauth2.service.DepartmentService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.DepartmentBO;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ZTreeBO;
-import me.wuwenbin.items.oauth2.support.pojo.vo.DepartmentVO;
+import me.wuwenbin.items.oauth2.support.pojo.vo.DeptVO;
 import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class DepartmentRestController extends BaseRestController {
     @RequestMapping("list")
     @RequiresPermissions("base:department:list")
     @AuthResource(name = "获取部门列表数据")
-    public BootstrapTable<DepartmentVO> departments(Page<DepartmentVO> page, DepartmentBO departmentBo) {
+    public BootstrapTable<DeptVO> departments(Page<DeptVO> page, DepartmentBO departmentBo) {
         page = departmentService.findDepartmentPage(departmentBo, page);
         return bootstrapTable(page);
     }
@@ -63,27 +63,27 @@ public class DepartmentRestController extends BaseRestController {
     /**
      * 添加新的部门
      *
-     * @param iDepartment 新部门对象信息
+     * @param iDept 新部门对象信息
      * @return R
      */
     @RequestMapping("add")
     @RequiresPermissions("base:department:add")
     @AuthResource(name = "添加部门操作")
-    public R add(IDepartment iDepartment) {
-        return ajaxDoneAdd("部门", departmentService, iDepartment, IDepartment.class);
+    public R add(IDept iDept) {
+        return ajaxDoneAdd("部门", departmentService, iDept, IDept.class);
     }
 
     /**
      * 编辑部门信息
      *
-     * @param iDepartment 编辑的部门对象
+     * @param iDept 编辑的部门对象
      * @return R
      */
     @RequestMapping("edit")
     @RequiresPermissions("base:department:edit")
     @AuthResource(name = "编辑部门操作")
-    public R edit(IDepartment iDepartment) {
-        return ajaxDoneEdit("部门", departmentService, iDepartment, IDepartment.class);
+    public R edit(IDept iDept) {
+        return ajaxDoneEdit("部门", departmentService, iDept, IDept.class);
     }
 
 

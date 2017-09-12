@@ -19,7 +19,8 @@ var menuModule = new Vue({
                     order: params.order,
                     sort: params.sort,
                     name: $("input.bootstrap-table-filter-control-name").val(),
-                    systemCodeName: $(".bootstrap-table-filter-control-systemCode").val()
+                    systemCodeName: $(".bootstrap-table-filter-control-systemCode").val(),
+                    enabled: $(".bootstrap-table-filter-control-enabled").val()
                 };
             },
             filterControl: true,
@@ -116,6 +117,8 @@ var menuModule = new Vue({
                     menuModule.model.orderIndex = selectItems[0].orderIndex;
                     menuModule.model.remark = selectItems[0].remark;
                     menuModule.model.systemCode.selected = selectItems[0].systemCode;
+                    menuModule.model.iconLarger = selectItems[0].iconLarger;
+                    menuModule.model.iconMini = selectItems[0].iconMini;
                     $('#edit_menumodule_dialog').dialog('open');
                 } else {
                     Global.show_error_message("错误选择", "请选择一条记录进行编辑")

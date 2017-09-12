@@ -1,13 +1,13 @@
 package me.wuwenbin.items.oauth2.support.pojo.vo;
 
-import me.wuwenbin.items.oauth2.entity.IOperationPrivilegeType;
+import me.wuwenbin.items.oauth2.entity.IOptPriType;
 
 /**
  * Created by zhangteng on 2017/7/18.
  * <p>
  * 操作级权限类型VO
  */
-public class OperationPrivilegeTypeVO extends IOperationPrivilegeType {
+public class OptPriTypeVO extends IOptPriType {
 
 
     private String createUserName;

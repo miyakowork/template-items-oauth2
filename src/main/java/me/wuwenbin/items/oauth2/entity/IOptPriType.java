@@ -9,7 +9,7 @@ import org.templateproject.tools.sqlgen.annotation.SQLTable;
  * 操作级权限类型基础表
  */
 @SQLTable("t_oauth_operation_privilege_type")
-public class IOperationPrivilegeType extends DataEntity {
+public class IOptPriType extends DataEntity {
 
     @SQLColumn
     private String name;  //操作级权限类型名称

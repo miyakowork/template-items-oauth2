@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * 部门表
  */
 @SQLTable("t_oauth_department")
-public class IDepartment extends DataEntity {
+public class IDept extends DataEntity {
 
     @SQLColumn
     private String name;//名称
@@ -41,8 +41,8 @@ public class IDepartment extends DataEntity {
      *
      * @return root
      */
-    public static IDepartment root() {
-        IDepartment root = new IDepartment();
+    public static IDept root() {
+        IDept root = new IDept();
         root.setId(0);
         root.setName("部门根节点");
         root.setParentId(-1);

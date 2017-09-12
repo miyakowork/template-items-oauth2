@@ -6,6 +6,7 @@ import me.wuwenbin.items.oauth2.service.shiro.ShiroMenuService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ZTreeBO;
+import me.wuwenbin.items.oauth2.util.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -133,7 +134,6 @@ public class MenuRestController extends BaseRestController {
     /**
      * 首页获取左侧菜单
      *
-     * @param roleId
      * @param menuModuleId
      * @param systemCode
      * @return
@@ -141,7 +141,7 @@ public class MenuRestController extends BaseRestController {
     @RequestMapping("getMenuListIndex")
     @RequiresPermissions("base:menu:getMenuListIndex")
     @AuthResource(name = "首页获取左侧菜单")
-    public List<IMenu> getMenuListIndex(int roleId, int menuModuleId, String systemCode) {
-        return shiroMenuService.findLeftMenuByRoleId(roleId, menuModuleId, systemCode);
+    public List<IMenu> getMenuListIndex(int menuModuleId, String systemCode) {
+        return shiroMenuService.findLeftMenuByRoleId(UserUtils.getLoginUser().getDefaultRoleId(), menuModuleId, systemCode);
     }
 }

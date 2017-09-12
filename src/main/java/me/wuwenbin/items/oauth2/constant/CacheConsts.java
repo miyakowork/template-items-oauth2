@@ -17,6 +17,11 @@ public interface CacheConsts {
     String PERMIT_CACHE = "authorizationCache";
 
     /**
+     * 菜单缓存
+     */
+    String MENU_CACHE = "menuCache";
+
+    /**
      * 认证缓存
      */
     String AUTH_CACHE = "authenticationCache";
@@ -31,8 +36,4 @@ public interface CacheConsts {
      */
     String PASSWORD_RETRY_CACHE = "passwordRetryCache";
 
-    /**
-     * xml的反射sql中的缓存
-     */
-    String SQL_CACHE = "sql_cache";
 }

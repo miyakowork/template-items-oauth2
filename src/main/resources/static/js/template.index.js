@@ -7,45 +7,62 @@
 
 }();
 
-var vm = new Vue({
-    el: "#left-panel",
-    data: {
-        systemCode: 'SYS_BASE',
-        user: {},
-        defaultRoleId: null,
-        menuModuleList: [],
-        defaultMenuModuleId: '',
-        menuList: []
-    },
-    computed: {
-        currentRoleId: function () {
-            return this.defaultRoleId || this.user.defaultRoleId;
-        }
-    },
-    methods: {
-        init: function () {
-            var that = this;
-            $.getJSON("/oauth2/user/api/info", function (resp) {
-                if (resp.code === Global.status_code.success) {
-                    that.user = resp.data;
-                    $.getJSON('/oauth2/menuModule/api/find/enables?systemModuleCode=' + that.systemCode, function (menuModules) {
-                        that.menuModuleList = menuModules;
-                        that.defaultMenuModuleId = menuModules.length > 0 ? menuModules[0].id : '';
-                        $.getJSON('/oauth2/menu/api/getMenuListIndex', {
-                            roleId: that.currentRoleId,
-                            systemCode: that.systemCode,
-                            menuModuleId: that.defaultMenuModuleId
-                        }, function (leftMenus) {
-                            that.menuList = toTree(leftMenus, 0);
+$(function () {
+    var leftAppMenus = new Vue({
+        el: "#left-panel",
+        data: {
+            systemCode: 'SYS_BASE',
+            user: {},
+            defaultRoleId: null,
+            menuModuleList: [],
+            defaultMenuModuleId: '',
+            menuList: []
+        },
+        computed: {
+            currentRoleId: function () {
+                return this.defaultRoleId || this.user.defaultRoleId;
+            }
+        },
+        methods: {
+            showModule: function () {
+                $('#shortcut').slideDown(200);
+            },
+            init: function () {
+                var that = this;
+                $.getJSON("/oauth2/user/api/info", function (resp) {
+                    if (resp.code === Global.status_code.success) {
+                        that.user = resp.data;
+                        $.getJSON('/oauth2/menuModule/api/find/enables?systemModuleCode=' + that.systemCode, function (menuModules) {
+                            that.menuModuleList = menuModules;
+                            new Vue({
+                                el: "#shortcut",
+                                data: {
+                                    modules: that.menuModuleList
+                                }
+                            });
+                            if (CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID) !== null && !isNaN(CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID)))
+                                that.defaultMenuModuleId = CookieUtils.get(Global.key.LEFT_NAV_MODULE_ID);
+                            else
+                                that.defaultMenuModuleId = menuModules.length > 0 ? menuModules[0].id : '';
+                            $.getJSON('/oauth2/menu/api/getMenuListIndex', {
+                                systemCode: that.systemCode,
+                                menuModuleId: that.defaultMenuModuleId
+                            }, function (leftMenus) {
+                                that.menuList = toTree(leftMenus, 0);
+                            })
                         })
-                    })
-                }
-            });
+                    }
+                });
+            }
+        },
+        created: function () {
+            this.init();
+        },
+        mounted: function () {
+            switchRoleTips();
+            switchMenuModuleTips();
         }
-    },
-    created: function () {
-        this.init();
-    }
+    });
 });
 
 
@@ -128,4 +145,34 @@ function toTree(menuList, parentId) {
     return result;
 }
 
+/**
+ * 切换角色的提示信息
+ */
+function switchRoleTips() {
+    var __changeRoleIndex;
+    var changeRole = $("#changeRole");
+    changeRole.hover(function () {
+        __changeRoleIndex = layer.tips('点我切换角色', this, {
+            tips: [1, '#c41e31'],
+            time: 3000
+        });
+    }, function () {
+        layer.close(__changeRoleIndex)
+    });
+}
 
+/**
+ * 切换菜单模块的提示信息
+ */
+function switchMenuModuleTips() {
+    var __Index;
+    var changeRole = $("#show-shortcut");
+    changeRole.hover(function () {
+        __Index = layer.tips('点我切换菜单模块', this, {
+            tips: [1, '#c41e31'],
+            time: 3000
+        });
+    }, function () {
+        layer.close(__Index)
+    });
+}

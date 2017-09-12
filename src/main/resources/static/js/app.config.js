@@ -100,7 +100,7 @@
  * It will delete all objects during page load with these exceptions:
  * 增加一个laydate的id选项，防止被ajax加载页面时删除
  */
-        ignore_key_elms = ["#header, #left-panel, #right-panel, #main, div.page-footer, #shortcut, #divSmallBoxes, #divMiniIcons, #divbigBoxes, #voiceModal, script, .ui-chatbox, #laydate_box,.layui-laydate"],
+        ignore_key_elms = ["#header, #left-panel, #right-panel, #main, div.page-footer, #shortcut, #divSmallBoxes, #divMiniIcons, #divbigBoxes, #voiceModal, script, .ui-chatbox, #laydate_box,.layui-laydate", "#background"],
 /*
  * VOICE COMMAND CONFIG
  * dependency: js/speech/voicecommand.js

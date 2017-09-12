@@ -1,6 +1,6 @@
 package me.wuwenbin.items.oauth2.service;
 
-import me.wuwenbin.items.oauth2.entity.IDepartment;
+import me.wuwenbin.items.oauth2.entity.IDept;
 import me.wuwenbin.items.oauth2.entity.IUserLoginLog;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
 import me.wuwenbin.items.oauth2.support.pojo.bo.LoginSumBO;
@@ -57,11 +57,11 @@ public class LoginSumService extends SimpleBaseCrudService<IUserLoginLog, Intege
      * @param id
      * @return
      */
-    private List<IDepartment> getDeptId(List<IDepartment> list, Integer id) {
+    private List<IDept> getDeptId(List<IDept> list, Integer id) {
         String sql = "SELECT * FROM t_oauth_department tod WHERE  tod.parent_id  = ?";
-        List<IDepartment> departments = mysql.findListBeanByArray(sql, IDepartment.class, id);
+        List<IDept> departments = mysql.findListBeanByArray(sql, IDept.class, id);
         list.addAll(departments);
-        for (IDepartment department : departments) {
+        for (IDept department : departments) {
             getDeptId(list, department.getId());
         }
         return list;
@@ -75,9 +75,9 @@ public class LoginSumService extends SimpleBaseCrudService<IUserLoginLog, Intege
      */
     private String deptIdFormatter(Integer id) {
         StringBuilder deptIds = new StringBuilder(" " + id);
-        List<IDepartment> list = new ArrayList<>();
-        for (IDepartment iDepartment : getDeptId(list, id)) {
-            deptIds.append(",").append(iDepartment.getId());
+        List<IDept> list = new ArrayList<>();
+        for (IDept iDept : getDeptId(list, id)) {
+            deptIds.append(",").append(iDept.getId());
         }
         return deptIds.toString();
     }

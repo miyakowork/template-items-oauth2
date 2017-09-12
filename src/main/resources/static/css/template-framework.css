@@ -104,3 +104,44 @@ div[id$='-toolbar'] {
 .panel-body {
     overflow: auto !important;
 }
+
+.smart-style-2 #left-panel {
+    padding: 49px 0 0 !important;
+}
+
+.smart-style-2 nav ul li.active > a:before {
+    color: #6c6c6c !important;
+}
+
+.smart-style-2 .login-info {
+    width: 219px !important;
+}
+
+.smart-style-2 .login-info span {
+    padding: 1px 8px 1px !important;
+}
+
+.smart-style-2 .login-info a span, .smart-style-2 .login-info a {
+    font-size: 14px !important;
+}
+
+.smart-style-5 .fc-border-separate thead tr, .smart-style-5 .table thead tr, .smart-style-5 #left-panel aside {
+    background: rgba(0, 0, 0, .43) !important;
+}
+
+.smart-style-5 .ztree li a {
+    color: #fff !important;
+}
+
+#background {
+    display: none;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    background: #FFF;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}

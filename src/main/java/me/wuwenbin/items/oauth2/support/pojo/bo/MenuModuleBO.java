@@ -7,7 +7,7 @@ import me.wuwenbin.modules.pagination.query.support.annotation.QueryTable;
 import me.wuwenbin.modules.pagination.query.support.operator.Operator;
 
 /**
- * Created by yuanqi on 2017/7/12/012.
+ * Created by wuwenbin on 2017/8/12.
  */
 @QueryTable(aliasName = "tomm")
 public class MenuModuleBO extends BootstrapTableQuery {

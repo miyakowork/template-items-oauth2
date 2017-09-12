@@ -1,12 +1,12 @@
 package me.wuwenbin.items.oauth2.support.pojo.vo;
 
-import me.wuwenbin.items.oauth2.entity.IDepartment;
+import me.wuwenbin.items.oauth2.entity.IDept;
 
 /**
  * 部门管理页面的对象VO
  * Created by wuwenbin on 2017/7/16.
  */
-public class DepartmentVO extends IDepartment {
+public class DeptVO extends IDept {
 
     private String parentName;
 

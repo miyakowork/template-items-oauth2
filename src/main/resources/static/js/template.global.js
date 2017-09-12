@@ -7,8 +7,9 @@ var laydate = layui.laydate;
 
 var Global = {
 
-    text: {
-        check_box: 'itemChecks'
+    key: {
+        check_box: 'itemChecks',
+        LEFT_NAV_MODULE_ID: "__left_nav_menu_module_id__"
     },
 
     common: {
@@ -174,6 +175,17 @@ var Global = {
      * @param mainOptions  options
      */
     initTable: function ($table, mainOptions) {
+        if (mainOptions.clickToSelect === undefined) {
+            mainOptions.clickToSelect = true;//	设置true 将在点击行时，自动选择rediobox 和 checkbox
+        }
+        if (mainOptions.singleSelect === undefined) {
+            mainOptions.singleSelect = false;
+        }
+        if (mainOptions.cardView === undefined) {
+            mainOptions.cardView = false;//设置为 true将显示card视图，适用于移动设备。否则为table试图，适用于pc
+            mainOptions.showToggle = false;//是否显示 切换试图（table/card）按钮
+        }
+
         var opt = {
             height: Global.getHeight(),
             striped: true,//设置为 true 会有隔行变色效果
@@ -184,7 +196,7 @@ var Global = {
             paginationLoop: false,
             sidePagination: "server",
             pageList: '[1,5,10,25,50,100,150,200,500,1000]',
-            selectItemName: Global.text.check_box,//radio or checkbox 的字段名
+            selectItemName: Global.key.check_box,//radio or checkbox 的字段名
             escape: true,
             searchTimeOut: Global.common.search_trigger_time,//触发搜索时间，此处为1秒
             // searchTimeout: 0,//触发搜索延迟时间，我们不要延迟所说义设置为0秒
@@ -197,20 +209,17 @@ var Global = {
             showMultiSort: true,//多列排序
             filterShowClear: true,//Set true to add a button to clear all the controls added by this plugin.
             onColumnSwitch: function (field, checked) {
-                $table.bootstrapTable("refresh")
+                //清除搜索的文本
+                $.each($table.bootstrapTable("getOptions").valuesFilterControl, function (i, item) {
+                    item.value = '';
+                });
+                //清除搜索的日期
+                $(".bootstrap-laydate").val("");
+                window.__searchValues = {};
+                $table.bootstrapTable("refresh");
             }
         };
 
-        if (mainOptions.clickToSelect === undefined) {
-            mainOptions.clickToSelect = true;//	设置true 将在点击行时，自动选择rediobox 和 checkbox
-        }
-        if (mainOptions.singleSelect === undefined) {
-            mainOptions.singleSelect = false;
-        }
-        if (mainOptions.cardView === undefined) {
-            mainOptions.cardView = false;//设置为 true将显示card视图，适用于移动设备。否则为table试图，适用于pc
-            mainOptions.showToggle = false;//是否显示 切换试图（table/card）按钮
-        }
         //组装options参数
         opt.extend = function (obj) {
             for (var o in obj) {
@@ -278,10 +287,7 @@ var Global = {
                         }
                     })
                     .catch(function (error) {
-                        if (error.response)
-                            Global.show_error_msg(error.response.data.message)
-                        else
-                            Global.show_error_msg(error)
+                        Global.handleAxiosError(error)
                     });
             }
 
@@ -404,19 +410,6 @@ $(function () {
     $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales['zh-CN']);
 
 
-    // ==========切换菜单模块的显示风格  start==========
-    var __menuModuleIndex;
-    var $changeModule = $("#change-module");
-    $changeModule.hover(function () {
-        __menuModuleIndex = layer.tips('切换菜单模块', this, {
-            tips: [2, '#fb3c4a'],
-            time: 3000
-        });
-    }, function () {
-        layer.close(__menuModuleIndex)
-    });
-
-
 //初始化dialog的html形式的title
     if ($.ui) {
         $.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
@@ -446,8 +439,14 @@ $(function () {
     $.root_.on("click", "[id$='-search-control']", function () {
         window.__customControls___ = $(this).find("input[type=checkbox]").prop("checked");
         Global.toggleTableSearch();
-    })
+    });
 
+//菜单模块隐藏
+    $(document).on("click", "body", function (event) {
+        if ($(event.target).attr("id") !== "show-shortcut" && $(event.target).parent("a").attr("id") !== "show-shortcut") {
+            $("#shortcut").slideUp(200);
+        }
+    })
 });
 
 
@@ -503,6 +502,7 @@ function enabledFormatter(val, row, index) {
 
 //预先给window增加属性
 window.__searchValues = {};
+window.__customControls___ = true;
 
 //全局设置axios请求头
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -662,7 +662,7 @@ var CookieUtils = {
      * @param time
      */
     set: function (name, value, time) {
-        var msec = getMsec(time); //获取毫秒
+        var msec = this.getMsec(time); //获取毫秒
         var exp = new Date();
         exp.setTime(exp.getTime() + msec * 1);
         document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
@@ -679,8 +679,8 @@ var CookieUtils = {
     del: function (name) {
         var exp = new Date();
         exp.setTime(exp.getTime() - 1);
-        var cval = getCookie(name);
-        if (cval != null) {
+        var cval = this.get(name);
+        if (cval !== null) {
             document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
         }
     }
