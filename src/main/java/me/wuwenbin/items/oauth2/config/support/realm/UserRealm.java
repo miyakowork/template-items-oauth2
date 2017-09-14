@@ -5,13 +5,13 @@ import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroPermissionService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroRoleService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroUserService;
+import me.wuwenbin.items.oauth2.util.SpringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,24 +22,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserRealm extends AuthorizingRealm implements CacheConsts {
 
-    private ShiroUserService shiroUserService;
-    private ShiroRoleService shiroRoleService;
-    private ShiroPermissionService shiroPermissionService;
-
-    @Autowired
-    public void setShiroUserService(ShiroUserService shiroUserService) {
-        this.shiroUserService = shiroUserService;
-    }
-
-    @Autowired
-    public void setShiroRoleService(ShiroRoleService shiroRoleService) {
-        this.shiroRoleService = shiroRoleService;
-    }
-
-    @Autowired
-    public void setShiroPermissionService(ShiroPermissionService shiroPermissionService) {
-        this.shiroPermissionService = shiroPermissionService;
-    }
+    private ShiroUserService shiroUserService = SpringUtils.getBean(ShiroUserService.class);
+    private ShiroRoleService shiroRoleService = SpringUtils.getBean(ShiroRoleService.class);
+    private ShiroPermissionService shiroPermissionService = SpringUtils.getBean(ShiroPermissionService.class);
 
 
     /**

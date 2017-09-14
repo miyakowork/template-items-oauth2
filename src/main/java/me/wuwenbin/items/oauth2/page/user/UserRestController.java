@@ -23,26 +23,24 @@ import org.templateproject.pojo.response.R;
 public class UserRestController extends BaseRestController {
 
     /**
-     * 注入UserService层
+     * 注入Service层
      */
     private UserService userService;
     private ShiroUserService shiroUserService;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public UserRestController(UserService userService, ShiroUserService shiroUserService) {
         this.userService = userService;
-    }
-
-    @Autowired
-    public void setShiroUserService(ShiroUserService shiroUserService) {
         this.shiroUserService = shiroUserService;
     }
+
 
     @RequestMapping("info")
     @RequiresPermissions("base:user:info")
     @AuthResource(name = "获取当前登录用户登录信息")
-    public R getCurrentUserInfo() {
-        return R.ok(getUser());
+    public IUser getCurrentUserInfo() {
+//        Object username = ShiroUtils.getSubject().getPrincipal();
+        return /*username == null ? null :*/ shiroUserService.findByUserName("sa");
     }
 
     /**

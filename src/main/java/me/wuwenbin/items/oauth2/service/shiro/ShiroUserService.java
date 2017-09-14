@@ -1,10 +1,12 @@
 package me.wuwenbin.items.oauth2.service.shiro;
 
 import me.wuwenbin.items.oauth2.config.support.password.PasswordHelper;
+import me.wuwenbin.items.oauth2.constant.CacheConsts;
 import me.wuwenbin.items.oauth2.constant.CommonConsts;
 import me.wuwenbin.items.oauth2.constant.ServiceConsts;
 import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
+import me.wuwenbin.items.oauth2.support.annotation.TemplateCache;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class ShiroUserService extends SimpleBaseCrudService<IUser, Integer> {
     private PasswordHelper passwordHelper;
 
     @Autowired
-    public void setPasswordHelper(PasswordHelper passwordHelper) {
+    public ShiroUserService(PasswordHelper passwordHelper) {
         this.passwordHelper = passwordHelper;
     }
 
@@ -66,6 +68,7 @@ public class ShiroUserService extends SimpleBaseCrudService<IUser, Integer> {
      * @param username 用户名
      * @return 用户对象
      */
+    @TemplateCache(value = "findUser", cacheName = CacheConsts.TEMPLATE_CACHE)
     public IUser findByUserName(String username) {
         if (StringUtils.isEmpty(username))
             return null;

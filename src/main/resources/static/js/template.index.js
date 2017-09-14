@@ -32,9 +32,9 @@ $(function () {
             },
             init: function () {
                 var that = this;
-                $.getJSON("/oauth2/user/api/info", function (resp) {
-                    if (resp.code === Global.status_code.success) {
-                        that.user = resp.data;
+                $.getJSON("/oauth2/user/api/info", function (userInfo) {
+                    if (userInfo !== null) {
+                        that.user = userInfo;
                         $.getJSON('/oauth2/menuModule/api/find/enables?systemModuleCode=' + that.systemCode, function (menuModules) {
                             that.menuModuleList = menuModules;
                             new Vue({

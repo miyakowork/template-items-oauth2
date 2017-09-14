@@ -5,8 +5,6 @@ import me.wuwenbin.items.oauth2.constant.ServiceConsts;
 import me.wuwenbin.items.oauth2.entity.base.BaseEntity;
 import me.wuwenbin.modules.pagination.Pagination;
 import me.wuwenbin.modules.pagination.query.TableQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.templateproject.pojo.page.Page;
@@ -25,8 +23,6 @@ import java.util.*;
 @Service
 @Transactional
 public class SimpleBaseCrudService<Model extends BaseEntity, ID> extends AbstractBaseCrudService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleBaseCrudService.class);
 
     /**
      * 保存一条记录，id自动数据库生成
