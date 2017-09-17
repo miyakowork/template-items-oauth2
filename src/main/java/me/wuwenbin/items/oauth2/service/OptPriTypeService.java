@@ -14,7 +14,7 @@ import org.templateproject.pojo.page.Page;
  */
 @Service
 @Transactional
-public class OperationPrivilegeTypeService extends SimpleBaseCrudService<IOptPriType, Integer> {
+public class OptPriTypeService extends SimpleBaseCrudService<IOptPriType, Integer> {
 
 
     /*

@@ -1,10 +1,8 @@
 package me.wuwenbin.items.oauth2.service.shiro;
 
-import me.wuwenbin.items.oauth2.constant.CacheConsts;
 import me.wuwenbin.items.oauth2.entity.IDept;
 import me.wuwenbin.items.oauth2.entity.IMenu;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
-import me.wuwenbin.items.oauth2.support.annotation.TemplateCache;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +25,7 @@ public class ShiroMenuService extends SimpleBaseCrudService<IDept, Integer> {
      * @param systemCode   系统模块代码
      * @return 侧边栏菜单
      */
-    @TemplateCache(value = "menu", cacheName = CacheConsts.TEMPLATE_CACHE)
+//    @TemplateCache(value = "menu", cacheName = CacheConsts.TEMPLATE_CACHE)
     public List<IMenu> findLeftMenuByRoleId(int roleId, int menuModuleId, String systemCode) {
         String sql = "SELECT * FROM t_oauth_menu WHERE enabled = 1 AND role_id = ? AND menu_module_id = ? AND system_code = ? ORDER BY order_index ASC ";
         return mysql.findListBeanByArray(sql, IMenu.class, roleId, menuModuleId, systemCode);

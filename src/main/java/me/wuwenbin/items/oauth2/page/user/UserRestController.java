@@ -7,6 +7,7 @@ import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.UserBO;
 import me.wuwenbin.items.oauth2.support.pojo.vo.UserVO;
+import me.wuwenbin.items.oauth2.util.ShiroUtils;
 import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class UserRestController extends BaseRestController {
     @RequiresPermissions("base:user:info")
     @AuthResource(name = "获取当前登录用户登录信息")
     public IUser getCurrentUserInfo() {
-//        Object username = ShiroUtils.getSubject().getPrincipal();
-        return /*username == null ? null :*/ shiroUserService.findByUserName("sa");
+        Object username = ShiroUtils.getSubject().getPrincipal();
+        return username == null ? null : shiroUserService.findByUserName(username.toString());
     }
 
     /**

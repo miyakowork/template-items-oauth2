@@ -480,7 +480,7 @@ function date_formatter(date) {
         resD = date.year + "-"
             + (date.monthValue < 10 ? ("0" + date.monthValue) : date.monthValue) + "-"
             + (date.dayOfMonth < 10 ? ("0" + date.dayOfMonth) : date.dayOfMonth) + " ";
-        if (date.hour && date.minute && date.second) {
+        if (date.hour >= 0 && date.minute >= 0 && date.second >= 0) {
             resD += (date.hour < 10 ? ("0" + date.hour) : date.hour) + ":"
                 + (date.minute < 10 ? ("0" + date.minute) : date.minute) + ":"
                 + (date.second < 10 ? ("0" + date.second) : date.second);

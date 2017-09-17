@@ -38,7 +38,7 @@ public class PrivilegeService extends SimpleBaseCrudService {
             ZTreeBO<String> pageTree = new ZTreeBO<>();
             pageTree.setId(privilegePage.getId().toString());
             pageTree.setName(privilegePage.getName());
-            pageTree.setOpen(true);
+            pageTree.setOpen(false);
             pageTree.setpId(privilegePage.getResourceModuleId());
             pageTree.setResourceId(privilegePage.getResourceId().toString());
             pageTree.setisParent(false);

@@ -2,37 +2,29 @@ pageSetUp();
 
 var page_function = function () {
     loadSystemModuleTree();//加载左侧角色树
+    $("#systemModuleSelects").on("change", function () {
+        loadRoleTree($(this).find("option:selected").text(), $(this).val())
+    })
 };
 
 
 //加载左侧树结构
 function loadSystemModuleTree() {
-    var settings = {
-        data: {
-            keep: {
-                leaf: true
-            },
-            simpleData: {
-                enable: true,
-                rootPId: 0
-            }
-        },
-        view: {
-            selectedMulti: false
-        },
-        callback: {
-            onClick: loadRoleTree
+    $.get("/oauth2/systemModule/api/find/modules/enabled/moduleTree", function (systemModules) {
+        var $systemModuleSelects = $("#systemModuleSelects");
+        for (var sm in systemModules) {
+            var value = systemModules[sm].other;
+            var text = systemModules[sm].name;
+            $systemModuleSelects.append("<option value='" + value + "'>" + text + "</option>")
         }
-    };
-    $.get("/oauth2/systemModule/api/find/modules/enabled/moduleTree", function (json) {
-        $.fn.zTree.init($("#systemModuleTree"), settings, json)
+        loadRoleTree($systemModuleSelects.find("option:eq(0)").text(), $systemModuleSelects.find("option:eq(0)").val());
     })
 }
 
-//加载中间一栏的角色树
-function loadRoleTree(event, treeId, treeNode) {
-    $("#selectSystemModuleInTree").text(treeNode.name);
-    $("#roleTreeTitle").text("（" + treeNode.name + "）");
+//加载的角色树
+function loadRoleTree(name, value) {
+    $("#selectSystemModuleInTree").text(name);
+    $("#roleTreeTitle").text("（" + name + "）");
     var settings = {
         data: {
             simpleData: {
@@ -49,7 +41,7 @@ function loadRoleTree(event, treeId, treeNode) {
             onExpand: onExpand
         }
     };
-    $.get("/oauth2/role/api/selectRole?systemModuleCode=" + treeNode.other, function (treeData) {
+    $.get("/oauth2/role/api/selectRole?systemModuleCode=" + value, function (treeData) {
         for (var node in treeData) {
             treeData[node].open = false;
         }
@@ -57,10 +49,9 @@ function loadRoleTree(event, treeId, treeNode) {
     })
 }
 
-//加载第三列的树，先加载模块，而后异步加载权限资源
+//先加载模块，而后异步加载权限资源
 function loadPrivilegeTree(event, treeId, treeNode) {
-    var $systemModuleTree = $.fn.zTree.getZTreeObj("systemModuleTree");
-    var nodes = $systemModuleTree.getSelectedNodes();
+    var systemModuleCode = $("#systemModuleSelects").val();
     var $roleTree = $.fn.zTree.getZTreeObj("roleTree");
     var roleTreeSelectedNodes = $roleTree.getSelectedNodes();
     $roleTree.expandNode(treeNode, null, null, null, true);
@@ -118,7 +109,7 @@ function loadPrivilegeTree(event, treeId, treeNode) {
             onExpand: onExpand
         }
     };
-    $.get("/oauth2/resModule/api/resModuleTree?systemModuleCode=" + nodes[0].other, function (treeData) {
+    $.get("/oauth2/resModule/api/resModuleTree?systemModuleCode=" + systemModuleCode, function (treeData) {
         for (var treeNode in treeData) {
             treeData[treeNode].isParent = true;
             treeData[treeNode].nocheck = true;

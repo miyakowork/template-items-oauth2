@@ -541,7 +541,7 @@ function initTable() {
             {field: "parentId", title: "上级菜单ID", align: "center", visible: false},
             {field: "menuType", title: "菜单类型", align: "center", formatter: "menuTypeFormatter"},
             {field: "href", title: "菜单链接", align: "center"},
-            {field: "orderIndex", title: "菜单排序", align: "center"},
+            {field: "orderIndex", title: "菜单排序", align: "center", sortable: true},
             {field: "enabled", title: "是否可用", align: "center", formatter: "enabledFormatter"},
             {field: "remark", title: "菜单备注", align: "center", visible: false}
         ]

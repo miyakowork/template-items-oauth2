@@ -14,7 +14,7 @@ import org.templateproject.pojo.response.R;
 import java.util.List;
 
 /**
- * Created by tuchen on 2017/7/21.
+ * Created by wuwenbin on 2017/8/21.
  */
 @RestController
 @RequestMapping("oauth2/privilege/api")

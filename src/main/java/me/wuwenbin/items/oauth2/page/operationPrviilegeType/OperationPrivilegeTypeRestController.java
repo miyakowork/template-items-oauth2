@@ -1,7 +1,7 @@
 package me.wuwenbin.items.oauth2.page.operationPrviilegeType;
 
 import me.wuwenbin.items.oauth2.entity.IOptPriType;
-import me.wuwenbin.items.oauth2.service.OperationPrivilegeTypeService;
+import me.wuwenbin.items.oauth2.service.OptPriTypeService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.OperationPrivilegeTypeBo;
@@ -24,11 +24,11 @@ import java.util.List;
 public class OperationPrivilegeTypeRestController extends BaseRestController {
 
 
-    private OperationPrivilegeTypeService operationPrivilegeTypeService;
+    private OptPriTypeService optPriTypeService;
 
     @Autowired
-    public void setOperationPrivilegeTypeService(OperationPrivilegeTypeService operationPrivilegeTypeService) {
-        this.operationPrivilegeTypeService = operationPrivilegeTypeService;
+    public void setOptPriTypeService(OptPriTypeService optPriTypeService) {
+        this.optPriTypeService = optPriTypeService;
     }
 
     /**
@@ -42,7 +42,7 @@ public class OperationPrivilegeTypeRestController extends BaseRestController {
     @RequiresPermissions("base:operationPrivilegeType:list")
     @AuthResource(name = "获取操作级权限列表页面的数据")
     public BootstrapTable<OptPriTypeVO> org(Page<OptPriTypeVO> page, OperationPrivilegeTypeBo operationPrivilegeTypeBo) {
-        page = operationPrivilegeTypeService.findOperationPrivilegeTypePage(page, operationPrivilegeTypeBo);
+        page = optPriTypeService.findOperationPrivilegeTypePage(page, operationPrivilegeTypeBo);
         return bootstrapTable(page);
     }
 
@@ -57,7 +57,7 @@ public class OperationPrivilegeTypeRestController extends BaseRestController {
     @RequiresPermissions("base:operationPrivilegeType:add")
     @AuthResource(name = "添加操作级权限类型操作")
     public R add(IOptPriType resource) {
-        return ajaxDoneAdd("操作级权限类型", operationPrivilegeTypeService, resource, IOptPriType.class);
+        return ajaxDoneAdd("操作级权限类型", optPriTypeService, resource, IOptPriType.class);
     }
 
     /**
@@ -70,7 +70,7 @@ public class OperationPrivilegeTypeRestController extends BaseRestController {
     @RequiresPermissions("base:operationPrivilegeType:edit")
     @AuthResource(name = "编辑操作级权限类型对象操作")
     public R edit(IOptPriType resource) {
-        return ajaxDoneEdit("操作级权限类型", operationPrivilegeTypeService, resource, IOptPriType.class);
+        return ajaxDoneEdit("操作级权限类型", optPriTypeService, resource, IOptPriType.class);
     }
 
 
@@ -78,6 +78,6 @@ public class OperationPrivilegeTypeRestController extends BaseRestController {
     @RequiresPermissions("base:operationPrivilegeType:enabled")
     @AuthResource(name = "查询可用的操作级权限类型的操作")
     public List<IOptPriType> findEnabledOperationTypes() {
-        return operationPrivilegeTypeService.findEnabledListBean(IOptPriType.class);
+        return optPriTypeService.findEnabledListBean(IOptPriType.class);
     }
 }
