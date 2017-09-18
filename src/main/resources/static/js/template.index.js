@@ -28,7 +28,21 @@ $(function () {
                 $('#shortcut').slideDown(200);
             },
             changeRole: function () {
-
+                $.post("/oauth2/user/api/findCurrentUserRoles", function (roles) {
+                    var html =
+                        '<div class="layui-container padding-10" style=" word-wrap: break-word;\n' +
+                        '            word-break: break-all;">' +
+                        '<button class="layui-btn layui-btn-small layui-btn-primary" style="display: inline-block;float: left;">测试阿娜牛</button>' +
+                        '</div>'
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-demo', //样式类名
+                        closeBtn: 0, //不显示关闭按钮
+                        anim: 2,
+                        shadeClose: true, //开启遮罩关闭
+                        content: html
+                    });
+                })
             },
             init: function () {
                 var that = this;

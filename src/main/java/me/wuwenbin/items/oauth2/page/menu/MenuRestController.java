@@ -109,9 +109,9 @@ public class MenuRestController extends BaseRestController {
     @RequestMapping("menuTree")
     @RequiresPermissions("base:menu:menuTree")
     @AuthResource(name = "根据菜单模块查找菜单树操作")
-    public List<ZTreeBO> findMenuTree(String menuModuleId) {
+    public List<ZTreeBO> findMenuTree(String menuModuleId, String roleId) {
         if (TP.stringhelper.isNotEmpty(menuModuleId)) {
-            return menuService.menuList2MenuTree(menuService.findEnableMenusByMenuModuleId(menuModuleId));
+            return menuService.menuList2MenuTree(menuService.findEnableMenusByMenuModuleId(menuModuleId, roleId));
         } else {
             return menuService.menuList2MenuTree(menuService.findEnabledListBean(IMenu.class));
         }

@@ -1,7 +1,9 @@
 package me.wuwenbin.items.oauth2.page.user;
 
+import me.wuwenbin.items.oauth2.entity.IRole;
 import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.UserService;
+import me.wuwenbin.items.oauth2.service.shiro.ShiroRoleService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroUserService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
 
+import java.util.Set;
+
 /**
  * Created by wuwenbin on 2017/8/8/.
  */
@@ -28,11 +32,13 @@ public class UserRestController extends BaseRestController {
      */
     private UserService userService;
     private ShiroUserService shiroUserService;
+    private ShiroRoleService shiroRoleService;
 
     @Autowired
-    public UserRestController(UserService userService, ShiroUserService shiroUserService) {
+    public UserRestController(UserService userService, ShiroUserService shiroUserService, ShiroRoleService shiroRoleService) {
         this.userService = userService;
         this.shiroUserService = shiroUserService;
+        this.shiroRoleService = shiroRoleService;
     }
 
 
@@ -73,7 +79,7 @@ public class UserRestController extends BaseRestController {
             return R.error("此账号已存在！");
         }
         try {
-            if (shiroUserService.addNewUser(user) == 1)
+            if (shiroUserService.addNewUser(user) > 0)
                 return R.ok("添加用户成功！");
             else
                 return R.error("添加用户失败！");
@@ -148,6 +154,13 @@ public class UserRestController extends BaseRestController {
             LOGGER.error("禁用用户出现异常，异常信息：{}", e);
             return R.error("禁用用户异常，原因：" + e.getMessage());
         }
+    }
+
+    @RequestMapping("findCurrentUserRoles")
+    @RequiresPermissions("base:user:findCurrentUserRoles")
+    @AuthResource(name = "查找当前用户拥有的所有角色")
+    public Set<IRole> findCurrentUserRoles() {
+        return shiroRoleService.findCurrentUserRoles();
     }
 
 

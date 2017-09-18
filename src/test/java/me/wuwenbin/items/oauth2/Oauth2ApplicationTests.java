@@ -111,7 +111,7 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService {
         user.setDeptId(1);
         passwordHelper.encryptPassword(user);
         user.preInsert();
-        int i = shiroUserService.addNewUser(user);
+        shiroUserService.addNewUser(user);
     }
 
     @Test

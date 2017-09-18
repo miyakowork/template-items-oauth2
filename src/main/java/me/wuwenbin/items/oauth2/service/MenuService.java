@@ -24,9 +24,9 @@ public class MenuService extends SimpleBaseCrudService<IMenu, Integer> {
      * @param menuModuleId
      * @return
      */
-    public List<IMenu> findEnableMenusByMenuModuleId(String menuModuleId) {
-        String sql = "SELECT * FROM t_oauth_menu WHERE menu_module_id  = ? AND enabled = 1";
-        return mysql.findListBeanByArray(sql, IMenu.class, menuModuleId);
+    public List<IMenu> findEnableMenusByMenuModuleId(String menuModuleId, String roleId) {
+        String sql = "SELECT * FROM t_oauth_menu WHERE menu_module_id  = ? AND role_id  = ? AND enabled = 1";
+        return mysql.findListBeanByArray(sql, IMenu.class, menuModuleId, roleId);
     }
 
     /**

@@ -23,7 +23,7 @@
     <section id="addDepartment">
         <form class="form-horizontal" @submit.prevent="handleAddSubmit" method="post">
             <form-input label="部门名称" placeholder="部门名称" v-model="model.name" :message="errors.name"></form-input>
-            <form-input label="上级部门ID" placeholder="上级部门ID" v-model="model.parentId" :message="errors.parentId"
+            <form-input label="上级部门" placeholder="上级部门" v-model="model.parentName" :message="errors.parentId"
                         readonly="true"></form-input>
             <form-input label="排序" placeholder="输入排序的顺序编码" v-model="model.orderIndex"
                         :message="errors.orderIndex"></form-input>

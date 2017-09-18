@@ -43,7 +43,10 @@
             }
         };
 
-        $.get("/oauth2/menu/api/menuTree?menuModuleId=" + parent.app.menu.menuModule.selected, function (treeData) {
+        $.get("/oauth2/menu/api/menuTree", {
+            menuModuleId: parent.app.menu.menuModule.selected,
+            roleId: parent.app.menu.roleId
+        }, function (treeData) {
             var obj = {id: "0", pId: null, name: "根节点", open: true};
             treeData.unshift(obj);
             $.fn.zTree.init($("#parentMenuTree"), settings, treeData)

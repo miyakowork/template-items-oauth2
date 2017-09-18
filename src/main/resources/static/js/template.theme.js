@@ -26,8 +26,8 @@ if (theme !== undefined && theme !== "" && theme !== null) {
     $("html").removeClassPrefix("smart-style").addClass(theme);
     $smartStyles.find("a#" + theme).prepend("<i class='fa fa-check fa-fw' id='skin-checked'></i>")
 } else {
-    $.root_.removeClassPrefix("smart-style").addClass(theme);
-    $("html").removeClassPrefix("smart-style").addClass(theme);
+    $.root_.removeClassPrefix("smart-style").addClass("smart-style-0");
+    $("html").removeClassPrefix("smart-style").addClass("smart-style-0");
     $smartStyles.find("a#smart-style-0").prepend("<i class='fa fa-check fa-fw' id='skin-checked'></i>")
 }
 

@@ -91,6 +91,8 @@ public class ShiroUserService extends SimpleBaseCrudService<IUser, Integer> {
                 CommonConsts.UPDATE_ROUTER);
         user.preInsert();
         passwordHelper.encryptPassword(user);
-        return mysql.executeBean(sql, user);
+        long userId = mysql.insertBeanAutoGenKeyOut(sql, user);
+        String userRoleSql = "INSERT INTO t_oauth_user_role(user_id, role_id, enabled) VALUE (?,?,1)";
+        return mysql.executeArray(userRoleSql, userId, user.getDefaultRoleId());
     }
 }

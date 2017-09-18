@@ -25,7 +25,7 @@ public class RoleBo extends BootstrapTableQuery {
     @QueryColumn(column = "cn_name")
     private String cnName;
 
-    @QueryColumn(column = "system_code")
+    @QueryColumn(column = "system_code", operator = Operator.EQ)
     private String systemCode;
 
     public String getCnName() {

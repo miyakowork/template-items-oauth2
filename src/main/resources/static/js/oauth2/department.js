@@ -1,5 +1,4 @@
-pageSetUp();
-
+var department;
 var tableColumns = [
     {checkbox: true},
     {field: "id", width: 150, title: "ID", align: "center", visible: false},
@@ -72,196 +71,22 @@ var tableColumns = [
         align: "center"
     }
 ];
-var department = new Vue({
-    el: "#department",
-    computed: {
-        $table: function () {
-            return $("#department-table");
-        }
-    },
-    data: {
-        showDel: false,
-        tipsIndex: '',//左侧树那个重置按钮的提示弹出层的index
-        tableOptions: {
-            url: '/oauth2/department/api/list',
-            toolbar: '#department-toolbar',
-            queryParams: function (params) {
-                return {
-                    limit: params.limit,
-                    offset: params.offset,
-                    order: params.order,
-                    sort: params.sort,
-                    parentId: getParentIdOnSort(),
-                    name: $("input.bootstrap-table-filter-control-name").val(),
-                    enabled: $(".bootstrap-table-filter-control-enabled").val()
-                };
-            },
-            filterControl: true,
-            columns: tableColumns
-        },
-        model: {
-            id: '',
-            name: '',
-            parentId: null,
-            parentName: null,
-            enabled: true,
-            orderIndex: 0,
-            remark: ''
-        },
-        functions: {
-            add: function () {
-                department.$vuerify.clear();
-                Global.resetObject(department.model);
 
-                var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
-                var nodes = treeObj.getCheckedNodes(true);
-                if (nodes.length === 0) {
-                    department.model.parentId = 0;
-                    layer.confirm('即将添加一级部门节点！<br/>若要添加其它级请在左侧选择上级部门节点！', function (index) {
-                        layer.close(index);
-                        $("#addDepartment").dialog("open");
-                    });
-                } else {
-                    department.model.parentId = nodes[0].id;
-                    $("#addDepartment").dialog("open");
-                }
-            },
-            edit: function () {
-                department.$vuerify.clear();
-                var editDepartments = department.$table.bootstrapTable('getSelections');
-                if (editDepartments.length !== 1) {
-                    Global.show_error_message("错误选择提示", "请选择一个部门来予以修改")
-                } else {
-                    department.model.id = editDepartments[0].id;
-                    department.model.name = editDepartments[0].name;
-                    department.model.parentId = editDepartments[0].parentId;
-                    department.model.enabled = editDepartments[0].enabled;
-                    department.model.orderIndex = editDepartments[0].orderIndex;
-                    department.model.remark = editDepartments[0].remark;
-                    $("#editDepartment").dialog("open");
-                }
-            },
-            fetch: function () {
-                layer.open({
-                    type: 2,
-                    area: ['300px', '400px'],
-                    title: ['选择上级部门(双击选定)', 'text-align:center;'],
-                    fixed: true,
-                    resize: false,
-                    offset: '200px',
-                    content: '/oauth2/department/tree'
-                })
-            }
-        }
-    },
-    methods: {
-        //添加界面提交操作
-        handleAddSubmit: function () {
-            this.$vuerify.clear()//清空之前的验证结果信息
-            var check_result = this.$vuerify.check()// 手动触发校验所有数据
-            var $errs = this.$vuerify.$errors
+// page_function
+var page_function = function () {
 
-            app.error.nameError = Boolean($errs.name)
-            app.error.orderError = Boolean($errs.orderIndex)
-            app.error.enabledError = Boolean($errs.enabled)
-            app.error.nameErrorMsg = $errs.name
-            app.error.orderErrorMsg = $errs.orderIndex
-            app.error.enabledErrorMsg = $errs.enabled
-
-            if (!check_result) {
-                Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
-            } else {
-                var params = new URLSearchParams();
-                var departments = app.OauthDepartment
-                for (var data in departments) {
-                    params.append(data, departments[data])
-                }
-                axios.post('/oauth2/department/api/add', params)
-                    .then(function (response) {
-                        if (response.data.code === Global.status_code.success) {
-                            layer.msg(response.data.message);
-                            $("#addDepartment").dialog("close");
-                            department.$table.bootstrapTable("refresh");
-                            loadDepartmentTree();
-                        } else {
-                            Global.show_error_msg(response.data.message)
-                        }
-                    })
-                    .catch(function (error) {
-                        if (error.response)
-                            Global.show_error_msg(error.response.data.message)
-                        else
-                            Global.show_error_msg(error)
-                    });
-            }
-
-        },
-
-        //编辑界面提交操作
-        handleEditSubmit: function () {
-            this.$vuerify.clear()//清空之前的验证结果信息
-            var check_result = this.$vuerify.check()// 手动触发校验所有数据
-            var $errs = this.$vuerify.$errors
-
-            app.error.nameError = Boolean($errs.name)
-            app.error.orderError = Boolean($errs.orderIndex)
-            app.error.enabledError = Boolean($errs.enabled)
-            app.error.nameErrorMsg = $errs.name
-            app.error.orderErrorMsg = $errs.orderIndex
-            app.error.enabledErrorMsg = $errs.enabled
-
-            if (!check_result) {
-                Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
-            } else {
-                department.model.parentId = $("#pIdByTree").val()
-                var params = new URLSearchParams();
-                params.append("id", department.model.id);
-                params.append("name", department.model.name);
-                params.append("parentId", department.model.parentId);
-                params.append("enabled", department.model.enabled);
-                params.append("orderIndex", department.model.orderIndex);
-                params.append("remark", department.model.remark);
-                axios.post('/oauth2/department/api/edit', params)
-                    .then(function (response) {
-                        if (response.data.code === Global.status_code.success) {
-                            layer.msg(response.data.message);
-                            $("#editDepartment").dialog("close");
-
-                            department.model.id = "";
-                            department.model.name = "";
-                            department.model.parentId = "";
-                            department.model.orderIndex = 0;
-                            department.model.remark = "";
-                            loadDepartmentTree();
-                            department.$table.bootstrapTable("refresh");
-
-                        } else {
-                            Global.show_error_msg(response.data.message)
-                        }
-                    })
-                    .catch(function (error) {
-                        if (error.response)
-                            Global.show_error_msg(error.response.data.message)
-                        else
-                            Global.show_error_msg(error)
-                    });
+    department = new Vue({
+        el: "#department",
+        computed: {
+            $table: function () {
+                return $("#department-table");
             }
         },
-
-        //取消勾选部门树，并刷新树和表格
-        resetCheck: function () {
-            var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
-            treeObj.cancelSelectedNode();
-            var nodes = treeObj.getCheckedNodes(true);
-            if (nodes.length === 0) {
-                layer.msg("并没有选择父部门，取消勾选无效！");
-                return;
-            }
-            for (var i = 0, l = nodes.length; i < l; i++) {
-                treeObj.checkNode(nodes[i], false, true);
-            }
-            Global.reInitTable(department.$table, {
-                url: "/oauth2/department/api/list",
+        data: {
+            showDel: false,
+            tipsIndex: '',//左侧树那个重置按钮的提示弹出层的index
+            tableOptions: {
+                url: '/oauth2/department/api/list',
                 toolbar: '#department-toolbar',
                 queryParams: function (params) {
                     return {
@@ -276,53 +101,223 @@ var department = new Vue({
                 },
                 filterControl: true,
                 columns: tableColumns
-            })
-        },
+            },
+            model: {
+                id: '',
+                name: '',
+                parentId: null,
+                parentName: null,
+                enabled: true,
+                orderIndex: 0,
+                remark: ''
+            },
+            functions: {
+                add: function () {
+                    department.$vuerify.clear();
+                    Global.resetObject(department.model);
 
-        showTips: function ($event) {
-            department.tipsIndex = layer.tips($($event.target).attr("title"), $event.target);
+                    var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
+                    var nodes = treeObj.getCheckedNodes(true);
+                    if (nodes.length === 0) {
+                        department.model.parentId = 0;
+                        department.model.parentName = "根节点";
+                        layer.confirm('即将添加一级部门节点！<br/>若要添加其它级请在左侧选择上级部门节点！', function (index) {
+                            layer.close(index);
+                            $("#addDepartment").dialog("open");
+                        });
+                    } else {
+                        department.model.parentId = nodes[0].id;
+                        department.model.parentName = nodes[0].name;
+                        $("#addDepartment").dialog("open");
+                    }
+                },
+                edit: function () {
+                    department.$vuerify.clear();
+                    var editDepartments = department.$table.bootstrapTable('getSelections');
+                    if (editDepartments.length !== 1) {
+                        Global.show_error_message("错误选择提示", "请选择一个部门来予以修改")
+                    } else {
+                        department.model.id = editDepartments[0].id;
+                        department.model.name = editDepartments[0].name;
+                        department.model.parentId = editDepartments[0].parentId;
+                        department.model.enabled = editDepartments[0].enabled;
+                        department.model.orderIndex = editDepartments[0].orderIndex;
+                        department.model.remark = editDepartments[0].remark;
+                        $("#editDepartment").dialog("open");
+                    }
+                },
+                fetch: function () {
+                    layer.open({
+                        type: 2,
+                        area: ['300px', '400px'],
+                        title: ['选择上级部门(双击选定)', 'text-align:center;'],
+                        fixed: true,
+                        resize: false,
+                        offset: '200px',
+                        content: '/oauth2/department/tree'
+                    })
+                }
+            }
         },
-        hideTips: function ($event) {
-            layer.close(department.tipsIndex);
+        methods: {
+            //添加界面提交操作
+            handleAddSubmit: function () {
+                this.$vuerify.clear()//清空之前的验证结果信息
+                var check_result = this.$vuerify.check()// 手动触发校验所有数据
+                var $errs = this.$vuerify.$errors
+
+                app.error.nameError = Boolean($errs.name)
+                app.error.orderError = Boolean($errs.orderIndex)
+                app.error.enabledError = Boolean($errs.enabled)
+                app.error.nameErrorMsg = $errs.name
+                app.error.orderErrorMsg = $errs.orderIndex
+                app.error.enabledErrorMsg = $errs.enabled
+
+                if (!check_result) {
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                } else {
+                    var params = new URLSearchParams();
+                    var departments = app.OauthDepartment
+                    for (var data in departments) {
+                        params.append(data, departments[data])
+                    }
+                    axios.post('/oauth2/department/api/add', params)
+                        .then(function (response) {
+                            if (response.data.code === Global.status_code.success) {
+                                layer.msg(response.data.message);
+                                $("#addDepartment").dialog("close");
+                                department.$table.bootstrapTable("refresh");
+                                loadDepartmentTree();
+                            } else {
+                                Global.show_error_msg(response.data.message)
+                            }
+                        })
+                        .catch(function (error) {
+                            Global.handleAxiosError(error);
+                        });
+                }
+
+            },
+
+            //编辑界面提交操作
+            handleEditSubmit: function () {
+                this.$vuerify.clear()//清空之前的验证结果信息
+                var check_result = this.$vuerify.check()// 手动触发校验所有数据
+                var $errs = this.$vuerify.$errors
+
+                app.error.nameError = Boolean($errs.name)
+                app.error.orderError = Boolean($errs.orderIndex)
+                app.error.enabledError = Boolean($errs.enabled)
+                app.error.nameErrorMsg = $errs.name
+                app.error.orderErrorMsg = $errs.orderIndex
+                app.error.enabledErrorMsg = $errs.enabled
+
+                if (!check_result) {
+                    Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
+                } else {
+                    department.model.parentId = $("#pIdByTree").val()
+                    var params = new URLSearchParams();
+                    params.append("id", department.model.id);
+                    params.append("name", department.model.name);
+                    params.append("parentId", department.model.parentId);
+                    params.append("enabled", department.model.enabled);
+                    params.append("orderIndex", department.model.orderIndex);
+                    params.append("remark", department.model.remark);
+                    axios.post('/oauth2/department/api/edit', params)
+                        .then(function (response) {
+                            if (response.data.code === Global.status_code.success) {
+                                layer.msg(response.data.message);
+                                $("#editDepartment").dialog("close");
+
+                                department.model.id = "";
+                                department.model.name = "";
+                                department.model.parentId = "";
+                                department.model.orderIndex = 0;
+                                department.model.remark = "";
+                                loadDepartmentTree();
+                                department.$table.bootstrapTable("refresh");
+
+                            } else {
+                                Global.show_error_msg(response.data.message)
+                            }
+                        })
+                        .catch(function (error) {
+                            Global.handleAxiosError(error);
+                        });
+                }
+            },
+
+            //取消勾选部门树，并刷新树和表格
+            resetCheck: function () {
+                var treeObj = $.fn.zTree.getZTreeObj("DepartmentTree");
+                treeObj.cancelSelectedNode();
+                var nodes = treeObj.getCheckedNodes(true);
+                if (nodes.length === 0) {
+                    layer.msg("并没有选择父部门，取消勾选无效！");
+                    return;
+                }
+                for (var i = 0, l = nodes.length; i < l; i++) {
+                    treeObj.checkNode(nodes[i], false, true);
+                }
+                Global.reInitTable(department.$table, {
+                    url: "/oauth2/department/api/list",
+                    toolbar: '#department-toolbar',
+                    queryParams: function (params) {
+                        return {
+                            limit: params.limit,
+                            offset: params.offset,
+                            order: params.order,
+                            sort: params.sort,
+                            parentId: getParentIdOnSort(),
+                            name: $("input.bootstrap-table-filter-control-name").val(),
+                            enabled: $(".bootstrap-table-filter-control-enabled").val()
+                        };
+                    },
+                    filterControl: true,
+                    columns: tableColumns
+                })
+            },
+
+            showTips: function ($event) {
+                department.tipsIndex = layer.tips($($event.target).attr("title"), $event.target);
+            },
+            hideTips: function ($event) {
+                layer.close(department.tipsIndex);
+            }
+        },
+        vuerify: {
+            name: {
+                test: function () {
+                    return String(department.model.name).length > 0;
+                },
+                message: '部门名称不能为空'
+            },
+            parentId: {
+                test: function () {
+                    return department.model.parentId !== null;
+                },
+                message: '上级部门ID不能为空'
+            },
+            parentName: {
+                test: function () {
+                    return department.model.parentName !== null;
+                },
+                message: '上级部门名称不能为空'
+            },
+            orderIndex: {
+                test: function () {
+                    return String(department.model.orderIndex).length > 0 && !isNaN(department.model.orderIndex);
+                },
+                message: '排序索引不能为空'
+            },
+            enabled: {
+                test: function () {
+                    return department.model.enabled !== null;
+                },
+                message: "必须二选一"
+            }
         }
-    },
-    vuerify: {
-        name: {
-            test: function () {
-                return String(department.model.name).length > 0;
-            },
-            message: '部门名称不能为空'
-        },
-        parentId: {
-            test: function () {
-                return department.model.parentId !== null;
-            },
-            message: '上级部门ID不能为空'
-        },
-        parentName: {
-            test: function () {
-                return department.model.parentName !== null;
-            },
-            message: '上级部门名称不能为空'
-        },
-        orderIndex: {
-            test: function () {
-                return String(department.model.orderIndex).length > 0 && !isNaN(department.model.orderIndex);
-            },
-            message: '排序索引不能为空'
-        },
-        enabled: {
-            test: function () {
-                return department.model.enabled !== null;
-            },
-            message: "必须二选一"
-        },
-    }
-});
-
-// page_function
-var page_function = function () {
-
+    });
     loadDepartmentTree();
 
 //添加弹出框操作
@@ -382,7 +377,9 @@ function loadDepartmentTree() {
         $.fn.zTree.init($("#DepartmentTree"), settings, json)
     })
 
-};
+}
+
+pageSetUp();
 
 //格式化上级部门显示方式
 function parentNameFormatter(val) {
