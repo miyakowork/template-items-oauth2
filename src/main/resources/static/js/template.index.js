@@ -28,17 +28,29 @@ $(function () {
                 $('#shortcut').slideDown(200);
             },
             changeRole: function () {
+                var that = this;
                 $.post("/oauth2/user/api/findCurrentUserRoles", function (roles) {
-                    var html =
-                        '<div class="layui-container padding-10" style=" word-wrap: break-word;\n' +
-                        '            word-break: break-all;">' +
-                        '<button class="layui-btn layui-btn-small layui-btn-primary" style="display: inline-block;float: left;">测试阿娜牛</button>' +
-                        '</div>'
+                    var html = '<div class="layui-container" style="width: 100%;padding: 15px;">';
+                    for (var i = 0; i < roles.length; i++) {
+                        var style;
+                        var text = roles[i].cnName;
+                        var roleId = roles[i].id;
+                        if (i % 5 === 0) {
+                            style = 'border-radius: 50px !important;margin-left: 0;';
+                        } else {
+                            style = 'border-radius: 50px !important;';
+                        }
+                        if (Number(that.currentRoleId)) {
+                            var current = 'layui-btn-disabled';
+                            html += '<button onclick="exchangeRole(' + roleId + ');" class="layui-btn layui-btn-small margin-bottom-10 ' + current + '" style="' + style + '">' + text + '</button>';
+                        }
+                    }
+                    html += '</div>';
                     layer.open({
                         type: 1,
+                        title: '切换用户角色',
+                        area: ['480px', '300px'],
                         skin: 'layui-layer-demo', //样式类名
-                        closeBtn: 0, //不显示关闭按钮
-                        anim: 2,
                         shadeClose: true, //开启遮罩关闭
                         content: html
                     });
@@ -195,4 +207,8 @@ function switchMenuModuleTips() {
     }, function () {
         layer.close(__Index)
     });
+
+    function exchangeRole(roleId) {
+        alert(roleId)
+    }
 }

@@ -299,6 +299,50 @@ var page_function = function () {
             }
         }]
     });
+
+    //监听编辑按钮事件
+    $("#edit_userRole_group").click(function () {
+        var $this = $(this);
+        var ss = $table.bootstrapTable('getSelections');
+        if (ss.length === 1) {
+            var defaultRole = ss[0].defaultRoleId;
+            var html;
+            $.post("/oauth2/user/api/findCurrentUserRoles", function (roles) {
+                for (var i = 0; i < roles.length; i++) {
+                    html = '<label class="checkbox-inline"><input type="checkbox" class="checkbox style-0" value="' + roles[i].id + '"><span>' + roles[i].cnName + '</span></label>';
+                }
+                $this.find("#allRoles").append(html)
+            });
+
+            $("#user_role_group").dialog("open");
+        } else {
+            Global.show_error_msg("请选择一个用户进行操作！");
+        }
+        return false;
+    });
+
+    <!--用户组编辑-->
+    $('#user_role_group').dialog({
+        autoOpen: false,
+        width: 575,
+        resizable: false,
+        modal: true,
+        title: "<div class='widget-header'><h4><i class='icon-ok'></i> 编辑用户组</h4></div>",
+        buttons: [{
+            html: "<i class='fa fa-plus-square-o'></i>&nbsp; 确定",
+            "class": "btn btn-info",
+            click: function () {
+                $("#groupAdd").trigger("click");
+            }
+        }, {
+            html: "<i class='fa fa-times'></i>&nbsp; 取消",
+            "class": "btn btn-default",
+            click: function () {
+                $(this).dialog("close");
+            }
+        }]
+    });
+
     //监听编辑按钮事件
     $("#edit_dialog_link").click(function () {
         var ss = $table.bootstrapTable('getSelections');
@@ -326,10 +370,9 @@ var page_function = function () {
             app.user1.defaultRoleId = res.defaultRoleId;
             app.user1.enabled = res.enabled;
 
-        } else (
+        } else {
             Global.show_error_message("错误选择", "请选择一条数据进行修改操作！")
-
-        );
+        }
         return false;
     });
 

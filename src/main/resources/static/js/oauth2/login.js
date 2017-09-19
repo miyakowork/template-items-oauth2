@@ -26,10 +26,12 @@ var vm = new Vue({
             axios.post('/login/', params, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .then(function (result) {
                     result = result.data;
+                    var target = '/#/'.concat(window.location.hash.replace("#/", "") || result.data);
+                    target = target === '/#//' ? '/#/' : target;
                     if (result.code === 200) {//登录成功
-                        parent.location.href = (('/oauth2' + result.data) || '/#/').concat(window.location.hash);
+                        parent.location.href = target;
                     } else if (result.code === 302) {
-                        parent.location.href = (('/oauth2' + result.data) || '/#/').concat(window.location.hash);
+                        parent.location.href = target;
                     } else {
                         vm.error = true;
                         vm.errorMsg = result.message;
