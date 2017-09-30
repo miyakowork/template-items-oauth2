@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-15 00:34:24
+Date: 2017-09-30 10:12:51
 */
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -28,13 +28,13 @@ CREATE TABLE `t_oauth_department` (
   COMMENT '父级id',
   `enabled`     TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date` DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date` DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改时间',
-  `update_user` INT(11)          NOT NULL
+  `update_user` INT(11)                   DEFAULT NULL
   COMMENT '修改人',
-  `create_date` DATETIME         NOT NULL
+  `create_date` DATETIME                  DEFAULT NULL
   COMMENT '创建时间',
-  `create_user` INT(11)          NOT NULL
+  `create_user` INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index` INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -94,13 +94,13 @@ CREATE TABLE `t_oauth_menu` (
   COMMENT '菜单模块id',
   `enabled`        TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date`    DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date`    DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改时间',
-  `update_user`    INT(11)          NOT NULL
+  `update_user`    INT(11)                   DEFAULT NULL
   COMMENT '修改人',
-  `create_date`    DATETIME         NOT NULL
+  `create_date`    DATETIME                  DEFAULT NULL
   COMMENT '创建时间',
-  `create_user`    INT(11)          NOT NULL
+  `create_user`    INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index`    INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -117,7 +117,7 @@ CREATE TABLE `t_oauth_menu` (
   CONSTRAINT `menu_fk4` FOREIGN KEY (`menu_module_id`) REFERENCES `t_oauth_menu_module` (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 16
+  AUTO_INCREMENT = 18
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -154,14 +154,14 @@ INSERT INTO `t_oauth_menu` VALUES
   ('12', '2', '用户登录日志管理', '26', 'SYS_BASE', 'fa fa-fw fa-child', NULL, '1', '/oauth2/log', '', '', '15', '15', '1',
    '2017-09-11 09:36:45', '1', '2017-09-11 09:36:45', '1', '0', '');
 INSERT INTO `t_oauth_menu` VALUES
-  ('13', '0', '先搞一个目录', NULL, 'SYS_BASE', 'fa fa-fw fa-lg fa-bookmark-o', 'null', '4', '#', '', '', '15', '16', '1',
-   '2017-09-12 14:49:05', '1', '2017-09-12 14:49:05', '1', '3', '');
-INSERT INTO `t_oauth_menu` VALUES
-  ('14', '13', '百度一下', NULL, 'SYS_BASE', '', NULL, '2', 'http://www.baidu.com', '', '_blank', '15', '16', '1',
-   '2017-09-12 14:50:01', '1', '2017-09-12 14:50:01', '1', '0', '');
-INSERT INTO `t_oauth_menu` VALUES
   ('15', '0', '首页', '33', 'SYS_BASE', 'fa fa-fw fa-lg fa-home', NULL, '1', '/oauth2/dashboard', '', '', '15', '15', '1',
    '2017-09-12 16:56:17', '1', '2017-09-12 16:56:17', '1', '0', '');
+INSERT INTO `t_oauth_menu` VALUES
+  ('16', '1', '资源管理列表', '19', 'SYS_BASE', 'fa fa-fw fa-clone', NULL, '1', '/oauth2/resource', '', '', '15', '15', '1',
+   '2017-09-17 23:39:10', '1', '2017-09-17 23:39:10', '1', '0', '');
+INSERT INTO `t_oauth_menu` VALUES
+  ('17', '2', '用户登录统计管理', '27', 'SYS_BASE', 'fa fa-fw fa-cutlery', NULL, '1', '/oauth2/loginsum', '', '', '15', '15',
+   '1', '2017-09-28 10:21:46', '1', '2017-09-28 10:21:46', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_menu_module
@@ -180,13 +180,13 @@ CREATE TABLE `t_oauth_menu_module` (
   COMMENT '系统模块代码',
   `enabled`     TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date` DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date` DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改时间',
-  `update_user` INT(11)          NOT NULL
+  `update_user` INT(11)                   DEFAULT NULL
   COMMENT '修改人',
-  `create_date` DATETIME         NOT NULL
+  `create_date` DATETIME                  DEFAULT NULL
   COMMENT '创建时间',
-  `create_user` INT(11)          NOT NULL
+  `create_user` INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index` INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -235,13 +235,13 @@ CREATE TABLE `t_oauth_operation_privilege_type` (
   COMMENT '操作级权限类型名称',
   `enabled`     TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date` DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date` DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改时间',
-  `update_user` INT(11)          NOT NULL
+  `update_user` INT(11)                   DEFAULT NULL
   COMMENT '修改人',
-  `create_date` DATETIME         NOT NULL
+  `create_date` DATETIME                  DEFAULT NULL
   COMMENT ' 创建时间',
-  `create_user` INT(11)          NOT NULL
+  `create_user` INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index` INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -280,13 +280,13 @@ CREATE TABLE `t_oauth_privilege_operation` (
   COMMENT '操作类型id',
   `enabled`           TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date`       DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date`       DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改日期',
-  `update_user`       INT(11)          NOT NULL
+  `update_user`       INT(11)                   DEFAULT NULL
   COMMENT '修改用户',
-  `create_date`       DATETIME         NOT NULL
+  `create_date`       DATETIME                  DEFAULT NULL
   COMMENT '创建日期',
-  `create_user`       INT(11)          NOT NULL
+  `create_user`       INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index`       INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -301,7 +301,7 @@ CREATE TABLE `t_oauth_privilege_operation` (
   CONSTRAINT `privilege_operation_fk3` FOREIGN KEY (`operation_type_id`) REFERENCES `t_oauth_operation_privilege_type` (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 95
+  AUTO_INCREMENT = 97
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -456,6 +456,8 @@ INSERT INTO `t_oauth_privilege_operation`
 VALUES ('93', '获取当前登录用户登录信息', '872', '15', '1', '1', '2017-09-11 09:23:58', '1', '2017-09-11 09:23:58', '1', '0', '');
 INSERT INTO `t_oauth_privilege_operation`
 VALUES ('94', '首页获取左侧菜单', '871', '33', '1', '1', '2017-09-11 09:24:06', '1', '2017-09-11 09:24:06', '1', '0', '');
+INSERT INTO `t_oauth_privilege_operation`
+VALUES ('96', '查找当前用户所有角色', '873', '33', '1', '1', '2017-09-18 20:58:51', '1', '2017-09-18 20:58:51', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_privilege_page
@@ -472,13 +474,13 @@ CREATE TABLE `t_oauth_privilege_page` (
   COMMENT '资源模块id',
   `enabled`            TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date`        DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date`        DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改时间',
-  `update_user`        INT(11)          NOT NULL
+  `update_user`        INT(11)                   DEFAULT NULL
   COMMENT '修改用户',
-  `create_date`        DATETIME         NOT NULL
+  `create_date`        DATETIME                  DEFAULT NULL
   COMMENT '创建日期',
-  `create_user`        INT(11)          NOT NULL
+  `create_user`        INT(11)                   DEFAULT NULL
   COMMENT '创建用户',
   `order_index`        INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -596,7 +598,7 @@ CREATE TABLE `t_oauth_resource` (
   CONSTRAINT `resource_fk1` FOREIGN KEY (`system_code`) REFERENCES `t_oauth_system_module` (`system_code`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 873
+  AUTO_INCREMENT = 874
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -1475,6 +1477,9 @@ INSERT INTO `t_oauth_resource` VALUES
 INSERT INTO `t_oauth_resource` VALUES
   ('872', '/oauth2/user/api/info', '获取当前登录用户登录信息', 'base:user:info', 'SYS_BASE', '1', '2017-09-11 09:23:19', NULL, NULL,
           NULL, '0', '');
+INSERT INTO `t_oauth_resource` VALUES
+  ('873', '/oauth2/user/api/findCurrentUserRoles', '查找当前用户所有角色', 'base:user:findCurrentUserRoles', 'SYS_BASE', '1',
+          '2017-09-18 20:58:10', '1', '2017-09-18 20:58:10', '1', '0', '');
 
 -- ----------------------------
 -- Table structure for t_oauth_resource_module
@@ -1489,13 +1494,13 @@ CREATE TABLE `t_oauth_resource_module` (
   COMMENT '系统模块代码',
   `enabled`     TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date` DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date` DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '更新日期',
-  `update_user` INT(11)          NOT NULL
+  `update_user` INT(11)                   DEFAULT NULL
   COMMENT '更新人',
-  `create_date` DATETIME         NOT NULL
+  `create_date` DATETIME                  DEFAULT NULL
   COMMENT '创建日期',
-  `create_user` INT(11)          NOT NULL
+  `create_user` INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index` INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -1544,13 +1549,13 @@ CREATE TABLE `t_oauth_role` (
   COMMENT '父级角色id',
   `system_code` VARCHAR(20)      NOT NULL
   COMMENT '系统模块代码',
-  `create_date` DATETIME         NOT NULL
+  `create_date` DATETIME                  DEFAULT NULL
   COMMENT '创建时间',
-  `create_user` INT(11)          NOT NULL
+  `create_user` INT(11)                   DEFAULT NULL
   COMMENT '创建人',
-  `update_date` DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date` DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改时间',
-  `update_user` INT(11)          NOT NULL
+  `update_user` INT(11)                   DEFAULT NULL
   COMMENT '修改人',
   `order_index` INT(11)          NOT NULL
   COMMENT '排序',
@@ -1563,7 +1568,7 @@ CREATE TABLE `t_oauth_role` (
   CONSTRAINT `role_fk1` FOREIGN KEY (`system_code`) REFERENCES `t_oauth_system_module` (`system_code`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 16
+  AUTO_INCREMENT = 17
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -1614,6 +1619,9 @@ INSERT INTO `t_oauth_role` VALUES
 INSERT INTO `t_oauth_role` VALUES
   ('15', 'ROLE_BASE_SA', '超级管理开发人员', '0', 'SYS_BASE', '2017-09-13 15:43:45', '1', '2017-09-08 15:44:09', '1', '0',
          'BASE平台超级管理开发人员', '1');
+INSERT INTO `t_oauth_role` VALUES
+  ('16', 'ROLE_BASE_TEST', '基础测试角色', '0', 'SYS_BASE', '2017-09-19 08:47:42', '1', '2017-09-19 08:47:42', '1', '0', '',
+   '1');
 
 -- ----------------------------
 -- Table structure for t_oauth_role_resource
@@ -1751,6 +1759,7 @@ INSERT INTO `t_oauth_role_resource` VALUES ('15', '868', '1');
 INSERT INTO `t_oauth_role_resource` VALUES ('15', '871', '1');
 INSERT INTO `t_oauth_role_resource` VALUES ('15', '872', '1');
 INSERT INTO `t_oauth_role_resource` VALUES ('7', '114', '1');
+INSERT INTO `t_oauth_role_resource` VALUES ('15', '873', '1');
 
 -- ----------------------------
 -- Table structure for t_oauth_session
@@ -1782,7 +1791,7 @@ CREATE TABLE `t_oauth_session` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 102
+  AUTO_INCREMENT = 121
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -1995,6 +2004,52 @@ INSERT INTO `t_oauth_session` VALUES ('101', '127.0.0.1', '1d233cee-3875-4f4b-8c
                                              'http://127.0.0.1:8082/login/',
                                              'http://127.0.0.1:8082/oauth2/user/api/info',
                                              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('102', 'sa', '054560f0-4d28-4f27-8850-2ecca8ece4bf',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDA1NDU2MGYwLTRkMjgtNGYyNy04ODUwLTJlY2NhOGVjZTRiZnNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV6GRqG8eHNxAH4AA3cIAAABXoZJDF94dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAAS90AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AGAvb2F1dGgyL2xvZy9hcGkvbGlzdD9saW1pdD0xMCZvZmZzZXQ9MCZvcmRlcj1kZXNjJnNvcnQ9bGFzdF9sb2dpbl9kYXRlJnVzZXJuYW1lPSZfPTE1MDU0OTE0NjExMDZ0AE1vcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfUFJJTkNJUEFMU19TRVNTSU9OX0tFWXNyADJvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3QuU2ltcGxlUHJpbmNpcGFsQ29sbGVjdGlvbqh/WCXGowhKAwABTAAPcmVhbG1QcmluY2lwYWxzdAAPTGphdmEvdXRpbC9NYXA7eHBzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hNYXA0wE5cEGzA+wIAAVoAC2FjY2Vzc09yZGVyeHEAfgAGP0AAAAAAAAx3CAAAABAAAAABdAA5bWUud3V3ZW5iaW4uaXRlbXMub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8wc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAACP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgAYeHh4',
+                                             '127.0.0.1', '2017-09-16 00:02:09', '2017-09-16 00:04:48', '1800000',
+                                             'http://127.0.0.1:8082/', 'http://127.0.0.1:8082/oauth2/log/api/list',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('103', 'sa', 'b0ad6be7-c62c-45a9-9d84-301ac2afa6f7',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJGIwYWQ2YmU3LWM2MmMtNDVhOS05ZDg0LTMwMWFjMmFmYTZmN3NyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV6LN9MKeHNxAH4AA3cIAAABXotLWVJ4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAAS90AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AC0vb2F1dGgyL3N5c3RlbU1vZHVsZS9hcGkvZmluZC9tb2R1bGVzL2VuYWJsZWR0AE1vcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfUFJJTkNJUEFMU19TRVNTSU9OX0tFWXNyADJvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3QuU2ltcGxlUHJpbmNpcGFsQ29sbGVjdGlvbqh/WCXGowhKAwABTAAPcmVhbG1QcmluY2lwYWxzdAAPTGphdmEvdXRpbC9NYXA7eHBzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hNYXA0wE5cEGzA+wIAAVoAC2FjY2Vzc09yZGVyeHEAfgAGP0AAAAAAAAx3CAAAABAAAAABdAA5bWUud3V3ZW5iaW4uaXRlbXMub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8wc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAACP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgAYeHh4',
+                                             '127.0.0.1', '2017-09-16 23:04:05', '2017-09-16 23:25:25', '1800000',
+                                             'http://127.0.0.1:8082/',
+                                             'http://127.0.0.1:8082/oauth2/systemModule/api/find/modules/enabled',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('104', 'sa', '45cc886d-9564-4f18-9803-761006a6ec91',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDQ1Y2M4ODZkLTk1NjQtNGYxOC05ODAzLTc2MTAwNmE2ZWM5MXNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV6QTPw8eHNxAH4AA3cIAAABXpCFNGl4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAAS90AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AD4vb2F1dGgyL3JvbGUvYXBpL3NlbGVjdFJvbGU/c3lzdGVtTW9kdWxlQ29kZT1TWVNfQkFTRV9QTEFURk9STXQATW9yZy5hcGFjaGUuc2hpcm8uc3ViamVjdC5zdXBwb3J0LkRlZmF1bHRTdWJqZWN0Q29udGV4dF9QUklOQ0lQQUxTX1NFU1NJT05fS0VZc3IAMm9yZy5hcGFjaGUuc2hpcm8uc3ViamVjdC5TaW1wbGVQcmluY2lwYWxDb2xsZWN0aW9uqH9YJcajCEoDAAFMAA9yZWFsbVByaW5jaXBhbHN0AA9MamF2YS91dGlsL01hcDt4cHNyABdqYXZhLnV0aWwuTGlua2VkSGFzaE1hcDTATlwQbMD7AgABWgALYWNjZXNzT3JkZXJ4cQB+AAY/QAAAAAAADHcIAAAAEAAAAAF0ADltZS53dXdlbmJpbi5pdGVtcy5vYXV0aDIuY29uZmlnLnN1cHBvcnQucmVhbG0uVXNlclJlYWxtXzBzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hTZXTYbNdald0qHgIAAHhyABFqYXZhLnV0aWwuSGFzaFNldLpEhZWWuLc0AwAAeHB3DAAAAAI/QAAAAAAAAXQAAnNheHgAdwEBcQB+ABh4eHg=',
+                                             '127.0.0.1', '2017-09-17 22:45:18', '2017-09-17 23:46:42', '1800000',
+                                             'http://127.0.0.1:8082/',
+                                             'http://127.0.0.1:8082/oauth2/role/api/selectRole',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('110', 'sa', 'bfbb8651-cffe-4c27-9643-48ad94747d53',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJGJmYmI4NjUxLWNmZmUtNGMyNy05NjQzLTQ4YWQ5NDc0N2Q1M3NyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV6Vazt1eHNxAH4AA3cIAAABXpV+FqJ4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAAS90AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0ACUvb2F1dGgyL3VzZXIvYXBpL2ZpbmRDdXJyZW50VXNlclJvbGVzdABNb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LnN1cHBvcnQuRGVmYXVsdFN1YmplY3RDb250ZXh0X1BSSU5DSVBBTFNfU0VTU0lPTl9LRVlzcgAyb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LlNpbXBsZVByaW5jaXBhbENvbGxlY3Rpb26of1glxqMISgMAAUwAD3JlYWxtUHJpbmNpcGFsc3QAD0xqYXZhL3V0aWwvTWFwO3hwc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhxAH4ABj9AAAAAAAAMdwgAAAAQAAAAAXQAOW1lLnd1d2VuYmluLml0ZW1zLm9hdXRoMi5jb25maWcuc3VwcG9ydC5yZWFsbS5Vc2VyUmVhbG1fMHNyABdqYXZhLnV0aWwuTGlua2VkSGFzaFNldNhs11qV3SoeAgAAeHIAEWphdmEudXRpbC5IYXNoU2V0ukSFlZa4tzQDAAB4cHcMAAAAED9AAAAAAAABdAACc2F4eAB3AQFxAH4AGHh4eA==',
+                                             '127.0.0.1', '2017-09-18 22:36:26', '2017-09-18 22:57:02', '1800000',
+                                             'http://127.0.0.1:8082/',
+                                             'http://127.0.0.1:8082/oauth2/user/api/findCurrentUserRoles',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('112', '127.0.0.1', '2de3cdcf-196b-4a9d-9f90-b287550a9954',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDJkZTNjZGNmLTE5NmItNGE5ZC05ZjkwLWIyODc1NTBhOTk1NHNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV7BofvPeHNxAH4AA3cIAAABXsGjh654dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAAS90AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0ACovb2F1dGgyL3ByaXZpbGVnZS9hcGkvZ2V0QWpheFByaXZpbGVnZURhdGF0AE1vcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfUFJJTkNJUEFMU19TRVNTSU9OX0tFWXNyADJvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3QuU2ltcGxlUHJpbmNpcGFsQ29sbGVjdGlvbqh/WCXGowhKAwABTAAPcmVhbG1QcmluY2lwYWxzdAAPTGphdmEvdXRpbC9NYXA7eHBzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hNYXA0wE5cEGzA+wIAAVoAC2FjY2Vzc09yZGVyeHEAfgAGP0AAAAAAAAx3CAAAABAAAAABdAA5bWUud3V3ZW5iaW4uaXRlbXMub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8wc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAACP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgAYeHh4',
+                                             '127.0.0.1', '2017-09-27 12:39:32', '2017-09-27 12:41:13', '1800000',
+                                             'http://127.0.0.1:8082/',
+                                             'http://127.0.0.1:8082/oauth2/privilege/api/getAjaxPrivilegeData',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('118', 'sa', '44e6a855-cdd4-4783-b41f-a02c8077622c',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDQ0ZTZhODU1LWNkZDQtNDc4My1iNDFmLWEwMmM4MDc3NjIyY3NyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV7Gdb3HeHNxAH4AA3cIAAABXsZ9AgR4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AAEvdABNb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LnN1cHBvcnQuRGVmYXVsdFN1YmplY3RDb250ZXh0X1BSSU5DSVBBTFNfU0VTU0lPTl9LRVlzcgAyb3JnLmFwYWNoZS5zaGlyby5zdWJqZWN0LlNpbXBsZVByaW5jaXBhbENvbGxlY3Rpb26of1glxqMISgMAAUwAD3JlYWxtUHJpbmNpcGFsc3QAD0xqYXZhL3V0aWwvTWFwO3hwc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoTWFwNMBOXBBswPsCAAFaAAthY2Nlc3NPcmRlcnhxAH4ABj9AAAAAAAAMdwgAAAAQAAAAAXQAOW1lLnd1d2VuYmluLml0ZW1zLm9hdXRoMi5jb25maWcuc3VwcG9ydC5yZWFsbS5Vc2VyUmVhbG1fMHNyABdqYXZhLnV0aWwuTGlua2VkSGFzaFNldNhs11qV3SoeAgAAeHIAEWphdmEudXRpbC5IYXNoU2V0ukSFlZa4tzQDAAB4cHcMAAAAAj9AAAAAAAABdAACc2F4eAB3AQFxAH4AEnh4eA==',
+                                             '127.0.0.1', '2017-09-28 11:09:19', '2017-09-28 11:17:15', '1800000',
+                                             'http://127.0.0.1:8082/login/', 'http://127.0.0.1:8082/',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('119', '127.0.0.1', '0dd0cd72-12af-4814-ab72-e1339fcb7b05',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDBkZDBjZDcyLTEyYWYtNDgxNC1hYjcyLWUxMzM5ZmNiN2IwNXNyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV7QUD7aeHNxAH4AA3cIAAABXtBkQbV4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAR0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAAS90AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0ABhiZWZvcmUubG9naW4uc3VjY2Vzcy51cmx0AGwvb2F1dGgyL3N5c3RlbVBhcmFtL2FwaS9saXN0P2xpbWl0PTEwJm9mZnNldD0wJm9yZGVyPWFzYyZzb3J0PWlkJm5hbWU9JnZhbHVlPSZzZWxlY3RFbmFibGVkPSZfPTE1MDY3MzM0NzczMTd0AE1vcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfUFJJTkNJUEFMU19TRVNTSU9OX0tFWXNyADJvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3QuU2ltcGxlUHJpbmNpcGFsQ29sbGVjdGlvbqh/WCXGowhKAwABTAAPcmVhbG1QcmluY2lwYWxzdAAPTGphdmEvdXRpbC9NYXA7eHBzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hNYXA0wE5cEGzA+wIAAVoAC2FjY2Vzc09yZGVyeHEAfgAGP0AAAAAAAAx3CAAAABAAAAABdAA5bWUud3V3ZW5iaW4uaXRlbXMub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8wc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAACP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgAYeHh4',
+                                             '127.0.0.1', '2017-09-30 09:04:33', '2017-09-30 09:26:25', '1800000',
+                                             'http://127.0.0.1:8082/',
+                                             'http://127.0.0.1:8082/oauth2/systemModule/api/list',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
+INSERT INTO `t_oauth_session` VALUES ('120', 'sa', '34af5302-bfc1-4e82-bb1e-75d35ccdc5a3',
+                                             'rO0ABXNyACpvcmcuYXBhY2hlLnNoaXJvLnNlc3Npb24ubWd0LlNpbXBsZVNlc3Npb26dHKG41YxibgMAAHhwdwIA23QAJDM0YWY1MzAyLWJmYzEtNGU4Mi1iYjFlLTc1ZDM1Y2NkYzVhM3NyAA5qYXZhLnV0aWwuRGF0ZWhqgQFLWXQZAwAAeHB3CAAAAV7QhEKeeHNxAH4AA3cIAAABXtCFW8F4dxMAAAAAABt3QAAJMTI3LjAuMC4xc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAN0ABFzaGlyb1NhdmVkUmVxdWVzdHNyACZvcmcuYXBhY2hlLnNoaXJvLndlYi51dGlsLlNhdmVkUmVxdWVzdK/OPK15gsq6AgADTAAGbWV0aG9kdAASTGphdmEvbGFuZy9TdHJpbmc7TAALcXVlcnlTdHJpbmdxAH4ACkwACnJlcXVlc3RVUklxAH4ACnhwdAADR0VUcHQAAS90AFBvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfQVVUSEVOVElDQVRFRF9TRVNTSU9OX0tFWXNyABFqYXZhLmxhbmcuQm9vbGVhbs0gcoDVnPruAgABWgAFdmFsdWV4cAF0AE1vcmcuYXBhY2hlLnNoaXJvLnN1YmplY3Quc3VwcG9ydC5EZWZhdWx0U3ViamVjdENvbnRleHRfUFJJTkNJUEFMU19TRVNTSU9OX0tFWXNyADJvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3QuU2ltcGxlUHJpbmNpcGFsQ29sbGVjdGlvbqh/WCXGowhKAwABTAAPcmVhbG1QcmluY2lwYWxzdAAPTGphdmEvdXRpbC9NYXA7eHBzcgAXamF2YS51dGlsLkxpbmtlZEhhc2hNYXA0wE5cEGzA+wIAAVoAC2FjY2Vzc09yZGVyeHEAfgAGP0AAAAAAAAx3CAAAABAAAAABdAA5bWUud3V3ZW5iaW4uaXRlbXMub2F1dGgyLmNvbmZpZy5zdXBwb3J0LnJlYWxtLlVzZXJSZWFsbV8wc3IAF2phdmEudXRpbC5MaW5rZWRIYXNoU2V02GzXWpXdKh4CAAB4cgARamF2YS51dGlsLkhhc2hTZXS6RIWVlri3NAMAAHhwdwwAAAAQP0AAAAAAAAF0AAJzYXh4AHcBAXEAfgAWeHh4',
+                                             '127.0.0.1', '2017-09-30 10:01:22', '2017-09-30 10:02:34', '1800000',
+                                             'http://127.0.0.1:8082/',
+                                             'http://127.0.0.1:8082/oauth2/role/api/selectRole',
+                                             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
 
 -- ----------------------------
 -- Table structure for t_oauth_system_module
@@ -2005,17 +2060,18 @@ CREATE TABLE `t_oauth_system_module` (
   COMMENT '主键id',
   `name`        VARCHAR(20)      NOT NULL
   COMMENT '系统模块名称',
+  `index_url`   VARCHAR(500)     NOT NULL,
   `system_code` VARCHAR(20)      NOT NULL
   COMMENT '系统模块代码',
   `enabled`     TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date` DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date` DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '更新时间',
-  `update_user` INT(11)          NOT NULL
+  `update_user` INT(11)                   DEFAULT NULL
   COMMENT '更新人',
-  `create_date` DATETIME         NOT NULL
+  `create_date` DATETIME                  DEFAULT NULL
   COMMENT '创建日期',
-  `create_user` INT(11)          NOT NULL
+  `create_user` INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index` INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -2032,16 +2088,18 @@ CREATE TABLE `t_oauth_system_module` (
 -- Records of t_oauth_system_module
 -- ----------------------------
 INSERT INTO `t_oauth_system_module` VALUES
-  ('1', '测试系统平台A', 'SYS_BASE_PLATFORM', '1', '2017-08-14 14:47:52', '1', '2017-08-08 20:02:21', '1', '0',
-   '管理系统的权限、菜单、角色、用户、系统参数等功能');
+  ('1', '测试系统平台A', '', 'SYS_BASE_PLATFORM', '1', '2017-08-14 14:47:52', '1', '2017-08-08 20:02:21', '1', '0',
+        '管理系统的权限、菜单、角色、用户、系统参数等功能');
 INSERT INTO `t_oauth_system_module` VALUES
-  ('2', '测试系统平台B', 'SYS_WECHAT_PLATFORM', '1', '2017-08-14 14:48:01', '1', '2017-08-08 20:22:32', '1', '0', '微信管理平台');
+  ('2', '测试系统平台B', '', 'SYS_WECHAT_PLATFORM', '1', '2017-08-14 14:48:01', '1', '2017-08-08 20:22:32', '1', '0',
+        '微信管理平台');
+INSERT INTO `t_oauth_system_module` VALUES
+  ('3', '测试www系统平台', '', 'SYS_WWW', '0', '2017-09-06 15:31:18', '1', '2017-09-06 15:30:27', '1', '0', '这是用来测试的一条数据');
 INSERT INTO `t_oauth_system_module`
-VALUES ('3', '测试www系统平台', 'SYS_WWW', '0', '2017-09-06 15:31:18', '1', '2017-09-06 15:30:27', '1', '0', '这是用来测试的一条数据');
-INSERT INTO `t_oauth_system_module`
-VALUES ('4', '查封人生态度', 'SYS_QSDF', '0', '2017-09-06 22:32:56', '1', '2017-09-06 22:32:56', '1', '2', 'fdgfg来来来');
-INSERT INTO `t_oauth_system_module`
-VALUES ('6', '基础管理平台', 'SYS_BASE', '1', '2017-09-07 16:19:06', '1', '2017-09-07 16:18:42', '1', '0', '基础管理平台');
+VALUES ('4', '查封人生态度', '', 'SYS_QSDF', '0', '2017-09-06 22:32:56', '1', '2017-09-06 22:32:56', '1', '2', 'fdgfg来来来');
+INSERT INTO `t_oauth_system_module` VALUES
+  ('6', '基础管理平台', 'http://127.0.0.1:8082/#/', 'SYS_BASE', '1', '2017-09-07 16:19:06', '1', '2017-09-07 16:18:42', '1',
+        '0', '基础管理平台');
 
 -- ----------------------------
 -- Table structure for t_oauth_system_param
@@ -2056,13 +2114,13 @@ CREATE TABLE `t_oauth_system_param` (
   COMMENT '参数值',
   `enabled`     TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date` DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date` DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '更新时间',
-  `update_user` INT(11)          NOT NULL
+  `update_user` INT(11)                   DEFAULT NULL
   COMMENT '更新人',
-  `create_date` DATETIME         NOT NULL
+  `create_date` DATETIME                  DEFAULT NULL
   COMMENT '创建日期',
-  `create_user` INT(11)          NOT NULL
+  `create_user` INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index` INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -2112,13 +2170,13 @@ CREATE TABLE `t_oauth_user` (
   COMMENT '手机号码',
   `enabled`         TINYINT(1)       NOT NULL DEFAULT '1'
   COMMENT '是否可用',
-  `update_date`     DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `update_date`     DATETIME                  DEFAULT CURRENT_TIMESTAMP
   COMMENT '修改时间',
-  `update_user`     INT(11)          NOT NULL
+  `update_user`     INT(11)                   DEFAULT NULL
   COMMENT '修改人',
-  `create_date`     DATETIME         NOT NULL
+  `create_date`     DATETIME                  DEFAULT NULL
   COMMENT '创建时间',
-  `create_user`     INT(11)          NOT NULL
+  `create_user`     INT(11)                   DEFAULT NULL
   COMMENT '创建人',
   `order_index`     INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
@@ -2131,7 +2189,7 @@ CREATE TABLE `t_oauth_user` (
   CONSTRAINT `user_fk_1` FOREIGN KEY (`dept_id`) REFERENCES `t_oauth_department` (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 6
+  AUTO_INCREMENT = 7
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -2146,13 +2204,16 @@ INSERT INTO `t_oauth_user` VALUES
         '765934806@qq.com', NULL, NULL, '181xxxxxxxx', '1', '2017-09-05 13:36:02', '5', '2017-08-08 20:05:42', '1', '0',
    NULL);
 INSERT INTO `t_oauth_user` VALUES
-  ('3', 'test1', '5ad9dbfabd53f02cff01a6b663ea73e1', 'f168be98ce323815e3bd079bade7b6cb', '测试用户', '4', '4',
+  ('3', 'test1', '5ad9dbfabd53f02cff01a6b663ea73e1', 'f168be98ce323815e3bd079bade7b6cb', '测试用户', '4', '14',
         '12313@123123.cc', NULL, NULL, '18123256321', '0', '2017-08-12 15:24:16', '1', '2017-08-12 12:48:42', '1', '0',
    NULL);
 INSERT INTO `t_oauth_user` VALUES
   ('5', 'test23', '6940f3848099fc64f98cbedb22763329', 'd2b71cd468fca588af035b6b0dec6e6e', '托尔斯泰23', '4', '4',
         '123@123.123', NULL, NULL, '11122233355', '1', '2017-08-14 15:09:08', '1', '2017-08-14 15:09:08', '1', '0',
    NULL);
+INSERT INTO `t_oauth_user` VALUES
+  ('6', 'test4', '740e981f74f2b227415aac42e37eff70', '2418e1b77ad85342ec33a40bd16c7bf4', 'test4', '4', '16',
+        'test4@test4.test4', NULL, NULL, '', '0', '2017-09-19 09:03:24', '1', '2017-09-19 09:03:24', '1', '0', NULL);
 
 -- ----------------------------
 -- Table structure for t_oauth_user_login_log
@@ -2177,7 +2238,7 @@ CREATE TABLE `t_oauth_user_login_log` (
   COMMENT '创建时间',
   `create_user`     INT(11)                   DEFAULT NULL
   COMMENT '创建人',
-  `order_index`     INT(11)                   DEFAULT '0'
+  `order_index`     INT(11)          NOT NULL DEFAULT '0'
   COMMENT '排序',
   `remark`          VARCHAR(50)               DEFAULT NULL
   COMMENT '备注',
@@ -2186,7 +2247,7 @@ CREATE TABLE `t_oauth_user_login_log` (
   CONSTRAINT `user_login_log_fk1` FOREIGN KEY (`user_id`) REFERENCES `t_oauth_user` (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 440
+  AUTO_INCREMENT = 463
   DEFAULT CHARSET = utf8;
 
 -- ----------------------------
@@ -3070,6 +3131,52 @@ INSERT INTO `t_oauth_user_login_log`
 VALUES ('438', '1', '2017-09-13 12:32:56', '127.0.0.1', '1', '2017-09-13 12:32:56', NULL, NULL, NULL, '0', NULL);
 INSERT INTO `t_oauth_user_login_log`
 VALUES ('439', '1', '2017-09-13 14:12:42', '127.0.0.1', '1', '2017-09-13 14:12:42', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('440', '1', '2017-09-16 00:02:14', '127.0.0.1', '1', '2017-09-16 00:02:14', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('441', '1', '2017-09-16 23:04:09', '127.0.0.1', '1', '2017-09-16 23:04:09', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('442', '1', '2017-09-17 22:45:21', '127.0.0.1', '1', '2017-09-17 22:45:21', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('443', '1', '2017-09-18 20:56:24', '127.0.0.1', '1', '2017-09-18 20:56:24', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('444', '1', '2017-09-18 21:55:55', '127.0.0.1', '1', '2017-09-18 21:55:55', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('445', '1', '2017-09-18 22:27:11', '127.0.0.1', '1', '2017-09-18 22:27:11', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('446', '1', '2017-09-18 22:29:53', '127.0.0.1', '1', '2017-09-18 22:29:53', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('447', '1', '2017-09-18 22:35:51', '127.0.0.1', '1', '2017-09-18 22:35:51', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('448', '1', '2017-09-18 22:36:36', '127.0.0.1', '1', '2017-09-18 22:36:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('449', '1', '2017-09-19 08:33:08', '127.0.0.1', '1', '2017-09-19 08:33:08', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('450', '1', '2017-09-19 08:33:33', '127.0.0.1', '1', '2017-09-19 08:33:33', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('451', '1', '2017-09-19 08:33:46', '127.0.0.1', '1', '2017-09-19 08:33:46', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('452', '1', '2017-09-19 08:35:13', '127.0.0.1', '1', '2017-09-19 08:35:13', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('453', '1', '2017-09-27 11:15:54', '127.0.0.1', '1', '2017-09-27 11:15:54', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('454', '1', '2017-09-27 12:39:35', '127.0.0.1', '1', '2017-09-27 12:39:35', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('455', '1', '2017-09-28 10:08:51', '127.0.0.1', '1', '2017-09-28 10:08:51', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('456', '1', '2017-09-28 10:21:55', '127.0.0.1', '1', '2017-09-28 10:21:55', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('457', '1', '2017-09-28 11:01:43', '127.0.0.1', '1', '2017-09-28 11:01:43', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('458', '1', '2017-09-28 11:03:09', '127.0.0.1', '1', '2017-09-28 11:03:09', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('459', '1', '2017-09-28 11:05:07', '127.0.0.1', '1', '2017-09-28 11:05:07', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('460', '1', '2017-09-28 11:09:18', '127.0.0.1', '1', '2017-09-28 11:09:18', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('461', '1', '2017-09-30 09:04:36', '127.0.0.1', '1', '2017-09-30 09:04:36', NULL, NULL, NULL, '0', NULL);
+INSERT INTO `t_oauth_user_login_log`
+VALUES ('462', '1', '2017-09-30 10:01:26', '127.0.0.1', '1', '2017-09-30 10:01:26', NULL, NULL, NULL, '0', NULL);
 
 -- ----------------------------
 -- Table structure for t_oauth_user_role
@@ -3094,6 +3201,7 @@ CREATE TABLE `t_oauth_user_role` (
 -- Records of t_oauth_user_role
 -- ----------------------------
 INSERT INTO `t_oauth_user_role` VALUES ('1', '15', '1');
+INSERT INTO `t_oauth_user_role` VALUES ('6', '16', '1');
 DROP TRIGGER IF EXISTS `resource_tg1`;
 DELIMITER ;;
 CREATE TRIGGER `resource_tg1`
