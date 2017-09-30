@@ -1,7 +1,6 @@
 package me.wuwenbin.items.oauth2.config.support.filter;
 
 import me.wuwenbin.items.oauth2.constant.CommonConsts;
-import me.wuwenbin.items.oauth2.constant.ShiroConsts;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -34,12 +33,6 @@ public class SessionTimeoutFilter extends AccessControlFilter implements Templat
 
         Subject subject = getSubject(servletRequest, servletResponse);
         Session session = subject.getSession(false);
-
-        //保存登录之前的url，以供登录成功之后跳转
-        if (request.getQueryString() != null)
-            URI = URI.concat("?").concat(request.getQueryString());
-        if (!isLoginOrFavicon(URI) && request.getMethod().equalsIgnoreCase("GET") && !URI.contains("/api/"))
-            request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
 
         boolean isSessionTimeout = session == null || System.currentTimeMillis() - session.getLastAccessTime().getTime() > session.getTimeout();
         return !isSessionTimeout;

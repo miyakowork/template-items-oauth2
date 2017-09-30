@@ -16,8 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -74,7 +72,7 @@ public class MyCredentialsMatcher extends SimpleCredentialsMatcher {
             //clear retry count
             passwordRetryCache.remove(username);
 
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            HttpServletRequest request = HttpUtils.getRequest();
             HttpSession session = request.getSession();
             //验证用户成功了，把用户名信息放到session中去
             session.setAttribute(ShiroConsts.SESSION_USERNAME_KEY, username);

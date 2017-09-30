@@ -154,7 +154,6 @@ var Global = {
      * @param field data-field的属性
      * @returns {string}
      */
-    //TODO
     datepickerSearch: function (field) {
         var $th = $("div.fixed-table-header").find("th[data-field=" + field + "]");
         if ($th.find(".date-filter-control-start").length > 0 || $th.find(".date-filter-control-end").length > 0) {

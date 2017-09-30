@@ -1,6 +1,8 @@
 package me.wuwenbin.items.oauth2.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -60,5 +62,9 @@ public class HttpUtils {
     public static boolean isGet(HttpServletRequest request) {
         String method = request.getMethod();
         return StringUtils.equalsIgnoreCase("GET", method);
+    }
+
+    public static HttpServletRequest getRequest() {
+        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 }

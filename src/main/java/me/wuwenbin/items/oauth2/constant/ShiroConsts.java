@@ -8,6 +8,9 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
  */
 public interface ShiroConsts {
 
+    //用户登录时，系统模块对应的key的键值
+    String LOGIN_SYSTEM_MODULE_KEY = "login.system.module.key";
+
     //获取当前session中的用户名key
     String SESSION_USERNAME_KEY = "session.username.key";
 

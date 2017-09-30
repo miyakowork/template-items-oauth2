@@ -9,6 +9,8 @@
     <section id="addSystemModule">
         <form class="form-horizontal" @submit.prevent="handleSubmit_add" method="post">
             <form-input label="名称" placeholder="系统模块名称" v-model="model.name" :message="errors.name"></form-input>
+            <form-input label="系统首页" placeholder="系统首页URL地址" v-model="model.indexUrl"
+                        :message="errors.indexUrl"></form-input>
             <form-input label="系统代码" placeholder="系统代码" v-model="model.systemCode"
                         :message="errors.systemCode"></form-input>
             <form-radio label="是否可用">
@@ -27,6 +29,8 @@
     <section id="editSystemModule">
         <form class="form-horizontal" @submit.prevent="handleSubmit_edit" method="post">
             <form-input label="名称" placeholder="系统模块名称" v-model="model.name" :message="errors.name"></form-input>
+            <form-input label="系统首页" placeholder="系统首页URL地址" v-model="model.indexUrl"
+                        :message="errors.indexUrl"></form-input>
             <form-input label="系统代码" placeholder="系统代码" v-model="model.systemCode" readonly="true"
                         :message="errors.systemCode"></form-input>
             <form-radio label="是否可用">

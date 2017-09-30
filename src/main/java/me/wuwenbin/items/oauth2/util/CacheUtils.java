@@ -1,8 +1,8 @@
 package me.wuwenbin.items.oauth2.util;
 
 import me.wuwenbin.items.oauth2.constant.CacheConsts;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheManager;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 
 /**
@@ -18,7 +18,7 @@ public class CacheUtils implements CacheConsts {
      * @param key
      * @return
      */
-    public static <V> V get(String key) {
+    public static Object get(String key) {
         return get(SYS_CACHE, key);
     }
 
@@ -28,7 +28,7 @@ public class CacheUtils implements CacheConsts {
      * @param key
      * @return
      */
-    public static <V> void put(String key, V value) {
+    public static void put(String key, Object value) {
         put(SYS_CACHE, key, value);
     }
 
@@ -49,8 +49,8 @@ public class CacheUtils implements CacheConsts {
      * @param key
      * @return
      */
-    public static <V> V get(String cacheName, String key) {
-        Cache<String, V> cache = getCache(cacheName);
+    public static Object get(String cacheName, String key) {
+        Cache cache = getCache(cacheName);
         return cache.get(key);
     }
 
@@ -61,8 +61,8 @@ public class CacheUtils implements CacheConsts {
      * @param key
      * @param value
      */
-    public static <V> void put(String cacheName, String key, V value) {
-        Cache<String, V> cache = getCache(cacheName);
+    public static void put(String cacheName, String key, Object value) {
+        Cache cache = getCache(cacheName);
         cache.put(key, value);
     }
 
@@ -73,7 +73,7 @@ public class CacheUtils implements CacheConsts {
      * @param key
      */
     public static void remove(String cacheName, String key) {
-        getCache(cacheName).remove(key);
+        getCache(cacheName).evict(key);
     }
 
     /**
@@ -82,11 +82,10 @@ public class CacheUtils implements CacheConsts {
      * @param cacheName
      * @param key
      * @param value
-     * @param <V>
      */
-    public static <V> void update(String cacheName, String key, V value) {
-        Cache<String, V> cache = getCache(cacheName);
-        cache.remove(key);
+    public static void update(String cacheName, String key, Object value) {
+        Cache cache = getCache(cacheName);
+        cache.evict(key);
         cache.put(key, value);
     }
 
@@ -96,7 +95,7 @@ public class CacheUtils implements CacheConsts {
      * @param cacheName
      * @return
      */
-    private static <K, V> Cache<K, V> getCache(String cacheName) {
+    private static Cache getCache(String cacheName) {
         return cacheManager.getCache(cacheName);
     }
 

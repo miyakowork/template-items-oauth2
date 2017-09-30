@@ -38,15 +38,8 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter impleme
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         HttpServletRequest req = (HttpServletRequest) request;
         String URI = req.getRequestURI();
-        String URL = req.getRequestURL().toString();
         String method = req.getMethod();
         LOG.info("-- FormAuthenticationFilter，访问URI：[{}]，请求方式：[{}]", URI, method);
-
-        //保存登录之前的url，以供登录成功之后跳转
-        if (req.getQueryString() != null)
-            URI = URI.concat("?").concat(req.getQueryString());
-        if (!isLoginOrFavicon(URI))
-            req.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
 
         return super.isAccessAllowed(request, response, mappedValue);
     }
@@ -56,8 +49,8 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter impleme
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         httpServletRequest.getSession().removeAttribute(ShiroConsts.SESSION_FORCE_LOGOUT_KEY);
-        Object URI = httpServletRequest.getSession().getAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL);
-        String uri = URI != null ? StringUtils.isNotEmpty(URI.toString()) ? URI.toString() : getSuccessUrl() : getSuccessUrl();
+        Object beforeLoginSuccessUrl = httpServletRequest.getSession().getAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL);
+        String uri = beforeLoginSuccessUrl != null ? StringUtils.isNotEmpty(beforeLoginSuccessUrl.toString()) ? beforeLoginSuccessUrl.toString() : getSuccessUrl() : getSuccessUrl();
         if (!HttpUtils.isAjax(httpServletRequest)) {// 不是ajax请求
             WebUtils.getAndClearSavedRequest(request);
             WebUtils.redirectToSavedRequest(request, response, uri);
@@ -65,8 +58,7 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter impleme
         } else {
             httpServletResponse.setCharacterEncoding("UTF-8");
             PrintWriter out = httpServletResponse.getWriter();
-            String json = JoddJsonUtils.serializer()
-                    .include("code", "message", "data").serialize(R.ok("登录成功", uri));
+            String json = JoddJsonUtils.serializer().include("code", "message", "data").serialize(R.ok("登录成功", uri));
             out.println(json);
             out.flush();
             out.close();

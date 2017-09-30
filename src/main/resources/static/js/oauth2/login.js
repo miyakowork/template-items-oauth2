@@ -26,8 +26,7 @@ var vm = new Vue({
             axios.post('/login/', params, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .then(function (result) {
                     result = result.data;
-                    var target = '/#/'.concat(window.location.hash.replace("#/", "") || result.data);
-                    target = target === '/#//' ? '/#/' : target;
+                    var target = result.data;
                     if (result.code === 200) {//登录成功
                         parent.location.href = target;
                     } else if (result.code === 302) {

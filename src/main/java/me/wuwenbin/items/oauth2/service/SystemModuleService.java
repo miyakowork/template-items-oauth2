@@ -65,4 +65,15 @@ public class SystemModuleService extends SimpleBaseCrudService<ISystemModule, In
         return cnt > 0;
     }
 
+    /**
+     * 通过系统代码查找该系统的首页url地址
+     *
+     * @param systemCode
+     * @return
+     */
+    public String findIndexUrlBySystemModule(String systemCode) {
+        String sql = "select index_url from t_oauth_system_module where system_code = ?";
+        return mysql.findMapByArray(sql, systemCode).get("index_url").toString();
+    }
+
 }

@@ -10,12 +10,15 @@ import java.time.LocalDateTime;
  * Created by zhangteng on 2017/7/14.
  * 系统模块表
  */
-@SQLTable("T_OAUTH_SYSTEM_MODULE")
+@SQLTable("t_oauth_system_module")
 public class ISystemModule extends DataEntity {
 
 
     @SQLColumn
     private String name; //系统模块名称
+
+    @SQLColumn
+    private String indexUrl;//系统首页
 
     @SQLColumn
     private String systemCode;  //系统模块代码
@@ -27,6 +30,14 @@ public class ISystemModule extends DataEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIndexUrl() {
+        return indexUrl;
+    }
+
+    public void setIndexUrl(String indexUrl) {
+        this.indexUrl = indexUrl;
     }
 
     public String getSystemCode() {

@@ -1,7 +1,6 @@
 package me.wuwenbin.items.oauth2.config.support.filter;
 
 import me.wuwenbin.items.oauth2.constant.CommonConsts;
-import me.wuwenbin.items.oauth2.constant.ShiroConsts;
 import me.wuwenbin.items.oauth2.util.ShiroUtils;
 import org.apache.shiro.web.filter.authc.UserFilter;
 import org.slf4j.Logger;
@@ -24,12 +23,6 @@ public class MyUserFilter extends UserFilter implements TemplateFilter {
         String URI = req.getRequestURI();
         String method = req.getMethod();
         LOG.info("-- MyUserFilter，访问URI：[{}]，请求方式：[{}]", URI, method);
-
-        //保存登录之前的url，以供登录成功之后跳转
-        if (req.getQueryString() != null)
-            URI = URI.concat("?").concat(req.getQueryString());
-        if (!isLoginOrFavicon(URI))
-            req.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, URI);
 
         boolean isRemembered = ShiroUtils.getSubject().isRemembered();
         return isRemembered || super.isAccessAllowed(request, response, mappedValue);

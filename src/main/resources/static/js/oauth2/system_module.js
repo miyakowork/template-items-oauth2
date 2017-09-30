@@ -36,6 +36,11 @@ var systemModule = new Vue({
                     align: "center"
                 },
                 {
+                    field: "indexUrl",
+                    title: "系统首页地址",
+                    align: "center"
+                },
+                {
                     field: "systemCode",
                     sortName: "system_code",
                     sortable: true,
@@ -99,6 +104,7 @@ var systemModule = new Vue({
         model: {
             id: '',
             name: '',
+            indexUrl: '',
             systemCode: '',
             enabled: false,
             orderIndex: 0,
@@ -122,6 +128,7 @@ var systemModule = new Vue({
                     var selectItem = selectItems[0];
                     systemModule.model.id = selectItem.id;
                     systemModule.model.name = selectItem.name;
+                    systemModule.model.indexUrl = selectItem.indexUrl;
                     systemModule.model.systemCode = selectItem.systemCode;
                     systemModule.model.enabled = selectItem.enabled;
                     systemModule.model.orderIndex = selectItem.orderIndex;
@@ -222,6 +229,12 @@ var systemModule = new Vue({
             },
             message: "必须二选一"
         },
+        indexUrl: {
+            test: function () {
+                return systemModule.model.indexUrl.length !== 0;
+            },
+            message: "系统首页不能为空"
+        }
     }
 });
 

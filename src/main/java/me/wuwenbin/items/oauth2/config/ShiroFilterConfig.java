@@ -53,7 +53,8 @@ public class ShiroFilterConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         shiroFilterFactoryBean.setLoginUrl("/login/");
         shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
-        shiroFilterFactoryBean.setSuccessUrl("/");
+        //此处设置的应该是登录选择系统的界面，因为有可能该用户包含多个可登录的系统的权限
+        shiroFilterFactoryBean.setSuccessUrl("/oauth2/systems");
 
         Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("myAuthc", formAuthenticationFilter);

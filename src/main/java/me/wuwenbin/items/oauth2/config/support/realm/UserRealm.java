@@ -5,6 +5,7 @@ import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroPermissionService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroRoleService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroUserService;
+import me.wuwenbin.items.oauth2.util.HttpUtils;
 import me.wuwenbin.items.oauth2.util.SpringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -13,6 +14,8 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 用户权限认证
@@ -51,6 +54,10 @@ public class UserRealm extends AuthorizingRealm implements CacheConsts {
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken token) throws RuntimeException {
         String username = (String) token.getPrincipal();
+        HttpServletRequest request = HttpUtils.getRequest();
+        //TODO:此处先判断登录的用户是否含有多个可登录的系统模块，如果仅有一个可登录系统，则直接让用户登录该系统的首页，即把该系统的首页放入session中，否则不做操作
+//        if (StringUtils.isNotEmpty(systemModule))
+//            request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, SpringUtils.getBean(SystemModuleService.class).findIndexUrlBySystemModule(systemModule));
         IUser user = shiroUserService.findByUserName(username);
         if (user == null) {
             throw new UnknownAccountException();// 没找到帐号

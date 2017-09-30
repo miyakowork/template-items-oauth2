@@ -207,8 +207,12 @@ function switchMenuModuleTips() {
     }, function () {
         layer.close(__Index)
     });
+}
 
-    function exchangeRole(roleId) {
-        alert(roleId)
-    }
+/**
+ * 切换角色
+ * @param roleId
+ */
+function exchangeRole(roleId) {
+    alert(roleId)
 }

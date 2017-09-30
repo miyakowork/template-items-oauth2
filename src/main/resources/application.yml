@@ -11,3 +11,6 @@ spring:
     static-path-pattern: /static/**
     favicon:
       enabled: false
+  cache:
+    ehcache:
+      config: ehcache/ehcache.xml
