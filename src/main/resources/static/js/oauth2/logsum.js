@@ -58,7 +58,8 @@ function getCurrentDate() {
     if (date.getMonth() > 9) {
         month = date.getMonth() + 1;
     } else {
-        month = "0" + (date.getMonth() + 1);
+        month = date.getMonth() + 1;
+        month = month < 10 ? ("0" + month) : month;
     }
     var day = date.getDate();
     day = day < 10 ? ("0" + day) : day;

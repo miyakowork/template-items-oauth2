@@ -14,6 +14,7 @@ import me.wuwenbin.modules.pagination.model.bootstrap.BootstrapTable;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
@@ -41,7 +42,11 @@ public class UserRestController extends BaseRestController {
         this.shiroRoleService = shiroRoleService;
     }
 
-
+    /**
+     * 获取当前登录用户登录信息
+     *
+     * @return
+     */
     @RequestMapping("info")
     @RequiresPermissions("base:user:info")
     @AuthResource(name = "获取当前登录用户登录信息")
@@ -156,12 +161,34 @@ public class UserRestController extends BaseRestController {
         }
     }
 
+    /**
+     * 查找当前用户拥有的所有角色
+     *
+     * @return
+     */
     @RequestMapping("findCurrentUserRoles")
     @RequiresPermissions("base:user:findCurrentUserRoles")
     @AuthResource(name = "查找当前用户拥有的所有角色")
-    public Set<IRole> findCurrentUserRoles() {
-        return shiroRoleService.findCurrentUserRoles();
+    public Set<IRole> findCurrentUserRoles(String userId) {
+        return shiroRoleService.findCurrentUserRoles(userId);
     }
 
 
+    /**
+     * 修改用户的所属角色
+     *
+     * @param roles
+     * @return
+     */
+    @RequestMapping("modifyUserRoles")
+    @RequiresPermissions("base:user:modifyUserRoles")
+    @AuthResource(name = "修改用户的所属角色")
+    public R modifyUserRoles(@RequestParam(value = "roles") String[] roles, String userId) {
+        try {
+            userService.modifyUserRoles(roles, userId);
+            return R.ok("修改用户角色组成功");
+        } catch (Exception e) {
+            return R.error("修改用户角色组失败，错误信息：" + e.getMessage());
+        }
+    }
 }

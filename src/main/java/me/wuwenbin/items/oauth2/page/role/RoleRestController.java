@@ -16,6 +16,7 @@ import org.templateproject.pojo.page.Page;
 import org.templateproject.pojo.response.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tuchen on 2017/7/13.
@@ -83,6 +84,14 @@ public class RoleRestController extends BaseRestController {
     @AuthResource(name = "根据父节点和系统模块获取该节点下面的树数据")
     public List<ZTreeBO> selectRoleZTree(String id, String systemModuleCode) {
         return roleService.findRoleTree(id, systemModuleCode);
+    }
+
+
+    @RequestMapping("findAllRoles")
+    @RequiresPermissions("base:role:findAllRoles")
+    @AuthResource(name = "查找出所有的角色数据")
+    public List<Map<String, Object>> findAllRoles() {
+        return roleService.findAllRoles();
     }
 
 }

@@ -4,10 +4,14 @@ import me.wuwenbin.items.oauth2.entity.IRole;
 import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
 import me.wuwenbin.items.oauth2.util.UserUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * shiro用户角色service
@@ -68,15 +72,16 @@ public class ShiroRoleService extends SimpleBaseCrudService<IRole, Integer> {
      *
      * @return 当前用户的所有角色信息集合
      */
-    public Set<IRole> findCurrentUserRoles() {
-        IUser user = UserUtils.getLoginUser();
-        if (user == null)
-            return Collections.emptySet();
-        else {
-            String sql = "SELECT tor.* FROM T_OAUTH_ROLE tor WHERE tor.ID IN" +
-                    " (SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?)" +
-                    " AND tor.ENABLED = 1";
+    public Set<IRole> findCurrentUserRoles(String userId) {
+        String sql = "SELECT tor.* FROM T_OAUTH_ROLE tor WHERE tor.ID IN" +
+                " (SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?)" +
+                " AND tor.ENABLED = 1";
+        if (StringUtils.isEmpty(userId)) {
+            IUser user = UserUtils.getLoginUser();
             List<IRole> roles = mysql.findListBeanByArray(sql, IRole.class, user.getId());
+            return new HashSet<>(roles);
+        } else {
+            List<IRole> roles = mysql.findListBeanByArray(sql, IRole.class, userId);
             return new HashSet<>(roles);
         }
     }

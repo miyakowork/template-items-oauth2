@@ -380,11 +380,12 @@
         </form>
     </div>
 
-    <!--用户组陪住-->
+    <!--用户组配置-->
     <div id="user_role_group">
         <form class="form-horizontal" @submit.prevent="handleSubmit_group" method="post">
             <fieldset>
                 <div class="form-group">
+                    <input id="editUserId" type="hidden" name="cUserId">
                     <div class="col-md-12" id="allRoles">
 
                     </div>

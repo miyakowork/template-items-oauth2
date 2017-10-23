@@ -1,7 +1,10 @@
 package me.wuwenbin.items.oauth2.config.support.realm;
 
 import me.wuwenbin.items.oauth2.constant.CacheConsts;
+import me.wuwenbin.items.oauth2.constant.ShiroConsts;
+import me.wuwenbin.items.oauth2.entity.ISystemModule;
 import me.wuwenbin.items.oauth2.entity.IUser;
+import me.wuwenbin.items.oauth2.service.UserService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroPermissionService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroRoleService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroUserService;
@@ -16,6 +19,7 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 用户权限认证
@@ -55,9 +59,16 @@ public class UserRealm extends AuthorizingRealm implements CacheConsts {
             AuthenticationToken token) throws RuntimeException {
         String username = (String) token.getPrincipal();
         HttpServletRequest request = HttpUtils.getRequest();
-        //TODO:此处先判断登录的用户是否含有多个可登录的系统模块，如果仅有一个可登录系统，则直接让用户登录该系统的首页，即把该系统的首页放入session中，否则不做操作
-//        if (StringUtils.isNotEmpty(systemModule))
-//            request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, SpringUtils.getBean(SystemModuleService.class).findIndexUrlBySystemModule(systemModule));
+        List<ISystemModule> systemModules = SpringUtils.getBean(UserService.class).findSystemModuleUserCanLogin(username);
+        if (systemModules != null) {//表示该用户有可登录的系统
+            if (systemModules.size() == 1)//表示该用户仅有一个可登录的系统，直接让他登录此系统首页，不显示系统选择界面
+                request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, systemModules.get(0).getIndexUrl());
+            //其余的则表示该用户有多个可登录的系统，登陆成功之后显示系统选择界面
+        } else {//表示该用户没有一个可以登录的系统，显示错误页面
+            //TODO:转向错误提示页面（提示该用户没有一个系统可以让他登录）
+            request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, "这里将写上提示用户没有可登录的系统的页面");
+        }
+
         IUser user = shiroUserService.findByUserName(username);
         if (user == null) {
             throw new UnknownAccountException();// 没找到帐号

@@ -12,6 +12,7 @@ import org.templateproject.pojo.page.Page;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 继承AbstractBaseCrudService
@@ -36,6 +37,15 @@ public class RoleService extends SimpleBaseCrudService<IRole, Integer> {
         return findPagination(page, RoleVO.class, sql, roleBo);
     }
 
+    /**
+     * 查找所有的角色按照系统代码排序
+     *
+     * @return
+     */
+    public List<Map<String, Object>> findAllRoles() {
+        String sql = "select r.*,sm.name from t_oauth_role r left join t_oauth_system_module sm on sm.system_code = r.system_code order by r.system_code";
+        return mysql.findListMapByArray(sql);
+    }
 
     /**
      * zTree形式的j角色树列表

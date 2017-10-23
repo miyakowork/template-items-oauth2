@@ -141,3 +141,7 @@ div[id$='-toolbar'] {
     left: 0;
     z-index: 9999;
 }
+
+.role-group {
+    margin-left: 0 !important;
+}

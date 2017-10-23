@@ -159,10 +159,7 @@ var page_function = function () {
                             }
                         })
                         .catch(function (error) {
-                            if (error.response)
-                                Global.show_error_msg(error.response.data.message)
-                            else
-                                Global.show_error_msg(error)
+                            Global.handleAxiosError(error);
                         });
                 }
                 return false;
@@ -193,6 +190,29 @@ var page_function = function () {
                         });
                 }
                 return false;
+            },
+            handleSubmit_group: function () {
+                var roles = $("#allRoles").find("label>input[type=checkbox]:checked");
+                var roleArray = new Array(roles.length);
+                for (var i = 0; i < roles.length; i++) {
+                    roleArray[i] = roles[i].value;
+                }
+                var userId = $("#editUserId").val();
+                var params = new URLSearchParams();
+                params.append("roles", roleArray);
+                params.append("userId", userId)
+                axios.post('/oauth2/user/api/modifyUserRoles', params)
+                    .then(function (response) {
+                        if (response.data.code === Global.status_code.success) {
+                            layer.msg(response.data.message);
+                            $('#user_role_group ').dialog('close');
+                        } else {
+                            Global.show_error_msg(response.data.message)
+                        }
+                    })
+                    .catch(function (error) {
+                        Global.handleAxiosError(error);
+                    });
             }
         },
         vuerify: {
@@ -302,19 +322,37 @@ var page_function = function () {
 
     //监听编辑按钮事件
     $("#edit_userRole_group").click(function () {
-        var $this = $(this);
         var ss = $table.bootstrapTable('getSelections');
         if (ss.length === 1) {
             var defaultRole = ss[0].defaultRoleId;
-            var html;
-            $.post("/oauth2/user/api/findCurrentUserRoles", function (roles) {
-                for (var i = 0; i < roles.length; i++) {
-                    html = '<label class="checkbox-inline"><input type="checkbox" class="checkbox style-0" value="' + roles[i].id + '"><span>' + roles[i].cnName + '</span></label>';
+            var hasRoles, html = "";
+            $.post("/oauth2/user/api/findCurrentUserRoles", {userId: ss[0].id}, function (hadRoles) {
+                if (hadRoles.code === undefined) {
+                    if (hadRoles instanceof Array) {//判断是不是登陆过期了，如果登录过期了，则返回的是一个提示对象json，不是role数组，所以可以使用此判断
+                        hasRoles = hadRoles;
+                        $.post("/oauth2/role/api/findAllRoles", function (roles) {
+                            html += '<span class=" text-danger">' + roles[0].name + "</span><br/>";
+                            for (var i = 0; i < roles.length; i++) {
+                                if (i > 0 && roles[i].system_code !== roles[i - 1].system_code)
+                                    html += '<hr><span class=" text-danger">' + roles[i].name + "</span><br/>";
+                                var include = false;
+                                for (var r in hasRoles) {
+                                    if (hasRoles[r].id === roles[i].id)
+                                        include = true;
+                                }
+                                var c = (include || defaultRole === roles[i].id) ? "checked" : "";
+                                var d = defaultRole === roles[i].id ? " disabled='disabled'" : '';
+                                var t = defaultRole === roles[i].id ? "（默认角色）" : "";
+                                html += '<label class="checkbox-inline role-group"><input type="checkbox" class="checkbox style-0" value="' + roles[i].id + '"' + c + d + '><span>' + roles[i].cn_name + t + '</span></label>';
+                            }
+                            $("#allRoles").html(html)
+                            $("#editUserId").val(ss[0].id);
+                            $("#user_role_group").dialog("open");
+                        });
+                    }
                 }
-                $this.find("#allRoles").append(html)
             });
 
-            $("#user_role_group").dialog("open");
         } else {
             Global.show_error_msg("请选择一个用户进行操作！");
         }
@@ -487,6 +525,11 @@ var page_function = function () {
     });
 };
 
+$.root_.on("click", ".role-group", function () {
+    var $this = $(this).find("input[type=checkbox]:not([disabled=disabled])");
+    var s = $this.prop("checked");
+    $this.prop("checked", !s);
+});
 
 page_function();
 
