@@ -1,8 +1,9 @@
 package me.wuwenbin.items.oauth2.page;
 
 import me.wuwenbin.items.oauth2.config.support.realm.UserRealm;
+import me.wuwenbin.items.oauth2.entity.IUser;
+import me.wuwenbin.items.oauth2.service.UserService;
 import me.wuwenbin.items.oauth2.support.BaseController;
-import me.wuwenbin.items.oauth2.util.ShiroUtils;
 import me.wuwenbin.items.oauth2.util.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,12 @@ public class IndexController extends BaseController {
 
     private static final String TO_ROLE_ID = "roleId";
 
+    private UserService userService;
     private UserRealm userRealm;
 
     @Autowired
-    public void setUserRealm(UserRealm userRealm) {
+    public void setUserRealm(UserService userService, UserRealm userRealm) {
+        this.userService = userService;
         this.userRealm = userRealm;
     }
 
@@ -34,11 +37,14 @@ public class IndexController extends BaseController {
     @RequestMapping({"", "/"})
     public ModelAndView index() {
         //切换角色id
-        //TODO:做更改菜单缓存的操作以及切换菜单
         if (!StringUtils.isEmpty(getRequest().getParameter(TO_ROLE_ID))) {
-            userRealm.clearCachedAuthorizationInfo(ShiroUtils.getSubject().getPrincipals());
             int toRoleId = getParameter(Integer.class, TO_ROLE_ID);
-            UserUtils.getLoginUser().setDefaultRoleId(toRoleId);
+            IUser user = UserUtils.getLoginUser();
+            //TODO:获取修改之前的默认角色id，然后清除该角色id的当前系统的菜单缓存
+            try {
+                userService.setDefaultRoleId(user.getId(), toRoleId);
+            } catch (Exception ignore) {
+            }
         }
         if (isRouter()) //防止路由地址无限循环请求
             return page("router/dashboard");

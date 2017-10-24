@@ -55,8 +55,7 @@ public class UserRealm extends AuthorizingRealm implements CacheConsts {
      * 登录认证 登录时验证
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(
-            AuthenticationToken token) throws RuntimeException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws RuntimeException {
         String username = (String) token.getPrincipal();
         HttpServletRequest request = HttpUtils.getRequest();
         List<ISystemModule> systemModules = SpringUtils.getBean(UserService.class).findSystemModuleUserCanLogin(username);
@@ -86,15 +85,26 @@ public class UserRealm extends AuthorizingRealm implements CacheConsts {
     }
 
 
+    /**
+     * 清除授权
+     *
+     * @param principals
+     */
     @Override
     public void clearCachedAuthorizationInfo(PrincipalCollection principals) {
         super.clearCachedAuthorizationInfo(principals);
     }
 
+    /**
+     * 清除认证
+     *
+     * @param principals
+     */
     @Override
     public void clearCachedAuthenticationInfo(PrincipalCollection principals) {
         super.clearCachedAuthenticationInfo(principals);
     }
+
 
     @Override
     public void clearCache(PrincipalCollection principals) {

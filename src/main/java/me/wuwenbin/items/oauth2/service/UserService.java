@@ -94,4 +94,16 @@ public class UserService extends SimpleBaseCrudService<IUser, Integer> {
         sql = "insert into t_oauth_user_role(user_id,role_id,enabled) values(:userId,:roleId,1)";
         mysql.executeBatchByCollectionMaps(sql, maps);
     }
+
+    /**
+     * 设置更换默认角色id
+     *
+     * @param userId
+     * @param roleId
+     * @throws Exception
+     */
+    public void setDefaultRoleId(int userId, int roleId) throws Exception {
+        String sql = "update t_oauth_user set default_role_id = ? where id = ?";
+        mysql.executeArray(sql, roleId, userId);
+    }
 }

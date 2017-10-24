@@ -119,12 +119,17 @@
         <!-- 用户信息  -->
         <div class="login-info">
 				<span>
-					<a id="show-shortcut" @click.prevent.stop="showModule" class="cursor-pointer">
+					<a id="show-shortcut" class="cursor-pointer">
 						<img src="/static/img/avatars/sunny.png"/>
 						<span>超级管理员</span>
 					</a>
-                    <a @click.prevent.stop="changeRole" class="pull-right margin-top-10 cursor-pointer" id="changeRole">
+                     <a @click.prevent.stop="changeRole" class="pull-right margin-top-10 cursor-pointer"
+                        id="changeRole">
                        <i class="fa fa-user-o fa-lg"></i>
+                    </a>
+                    <a @click.prevent.stop="showModule" class="pull-right margin-top-10 cursor-pointer margin-right-5"
+                       id="changeMenuModule">
+                       <i class="fa fa-cube fa-lg"></i>
                     </a>
 				</span>
         </div>

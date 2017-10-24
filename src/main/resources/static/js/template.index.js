@@ -40,10 +40,11 @@ $(function () {
                         } else {
                             style = 'border-radius: 50px !important;';
                         }
-                        if (Number(that.currentRoleId)) {
-                            var current = 'layui-btn-disabled';
-                            html += '<button onclick="exchangeRole(' + roleId + ');" class="layui-btn layui-btn-small margin-bottom-10 ' + current + '" style="' + style + '">' + text + '</button>';
+                        var current = 'layui-btn-primary';
+                        if (Number(that.currentRoleId) === roles[i].id) {
+                            current = 'layui-btn-disabled';
                         }
+                        html += '<button onclick="exchangeRole(this,' + roleId + ');" class="layui-btn layui-btn-small margin-bottom-10 ' + current + '" style="' + style + '">' + text + '</button>';
                     }
                     html += '</div>';
                     layer.open({
@@ -198,7 +199,7 @@ function switchRoleTips() {
  */
 function switchMenuModuleTips() {
     var __Index;
-    var changeRole = $("#show-shortcut");
+    var changeRole = $("#changeMenuModule");
     changeRole.hover(function () {
         __Index = layer.tips('点我切换菜单模块', this, {
             tips: [1, '#c41e31'],
@@ -213,6 +214,8 @@ function switchMenuModuleTips() {
  * 切换角色
  * @param roleId
  */
-function exchangeRole(roleId) {
-    alert(roleId)
+function exchangeRole(elem, roleId) {
+    if (!$(elem).hasClass("layui-btn-disabled")) {
+        alert(roleId)
+    }
 }

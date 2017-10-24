@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Wuwenbin on 2017/7/11.
  */
 @Configuration
-public class DaoConfig implements ConfigConsts {
+public class TemplateDaoConfig implements ConfigConsts {
 
     @Bean
     public DataSourceX dataSourceX(DruidDataSource dataSource) {
