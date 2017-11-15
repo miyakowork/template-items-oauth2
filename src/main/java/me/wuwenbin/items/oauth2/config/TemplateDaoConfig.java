@@ -35,4 +35,6 @@ public class TemplateDaoConfig implements ConfigConsts {
         daoFactory.setDefaultDao(dataSourceX);
         return daoFactory;
     }
+
+
 }

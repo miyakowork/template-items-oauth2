@@ -19,17 +19,20 @@ import org.templateproject.tools.sqlgen.entrance.SQLFactory;
 import org.templateproject.tools.sqlgen.factory.SQLBeanBuilder;
 import org.templateproject.tools.sqlgen.factory.SQLStrBuilder;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class Oauth2ApplicationTests extends AbstractBaseCrudService {
 
-    public static void main(String[] args) {
-        SQLBeanBuilder sbb = SQLFactory.builder(IUser.class);
-        System.out.println(sbb.insertAllWithoutPk());
+
+    @Test
+    public void testRepoData() {
     }
 
     private AncestorDao dao;
@@ -138,6 +141,18 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService {
             resource.setOrderIndex(i);
             resource.preInsert();
             resourceService.simpleSave(resource, IResource.class);
+        }
+    }
+
+    @Test
+    public void testIn() {
+        Collection<Integer> ids = Stream.of(1, 2, 3, 6).collect(Collectors.toList());
+        String sql = "select id,username from t_oauth_user where id in (:uId)";
+        Map<String, Object> p = new HashMap<>();
+        p.put("uId", ids);
+        List<IUser> findUsers = dao.findListBeanByMap(sql, IUser.class, p);
+        for (IUser findUser : findUsers) {
+            System.out.println(findUser.toString());
         }
     }
 }

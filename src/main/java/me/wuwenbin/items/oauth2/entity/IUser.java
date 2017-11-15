@@ -125,4 +125,24 @@ public class IUser extends DataEntity {
     public String getCredentialsSalt() {
         return username + salt;
     }
+
+    @Override
+    public String toString() {
+        return "IUser{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", cname='" + cname + '\'' +
+                ", deptId=" + deptId +
+                ", salt='" + salt + '\'' +
+                ", email='" + email + '\'' +
+                ", defaultRoleId=" + defaultRoleId +
+                ", qq='" + qq + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", enabled=" + enabled +
+                ", orderIndex=" + orderIndex +
+                ", remark='" + remark + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }
