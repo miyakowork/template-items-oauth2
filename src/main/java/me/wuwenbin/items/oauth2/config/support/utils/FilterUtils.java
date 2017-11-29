@@ -1,6 +1,6 @@
 package me.wuwenbin.items.oauth2.config.support.utils;
 
-import me.wuwenbin.json.JoddJsonUtils;
+import jodd.json.JsonSerializer;
 import org.templateproject.pojo.response.R;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +22,7 @@ public class FilterUtils {
     public static void ajaxControl(HttpServletResponse response, String ajaxMessage) throws IOException {
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        String json = JoddJsonUtils.serializer().include("code", "message").serialize(R.custom(301, ajaxMessage));
+        String json = new JsonSerializer().include("code", "message").serialize(R.custom(301, ajaxMessage));
         out.println(json);
         out.flush();
         out.close();

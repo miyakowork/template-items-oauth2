@@ -2,6 +2,7 @@ package me.wuwenbin.items.oauth2.page.menuModule;
 
 import me.wuwenbin.items.oauth2.entity.IMenuModule;
 import me.wuwenbin.items.oauth2.service.MenuModuleService;
+import me.wuwenbin.items.oauth2.service.shiro.ShiroMenuService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.MenuModuleBO;
@@ -25,10 +26,12 @@ import java.util.List;
 public class MenuModuleRestController extends BaseRestController {
 
     private MenuModuleService menuModuleService;
+    private ShiroMenuService shiroMenuService;
 
     @Autowired
-    public void setMenuModuleService(MenuModuleService menuModuleService) {
+    public MenuModuleRestController(MenuModuleService menuModuleService, ShiroMenuService shiroMenuService) {
         this.menuModuleService = menuModuleService;
+        this.shiroMenuService = shiroMenuService;
     }
 
 
@@ -98,7 +101,7 @@ public class MenuModuleRestController extends BaseRestController {
     @AuthResource(name = "查找可用的菜单模块集合操作")
     public List<IMenuModule> findEnabledMenuModules(String systemModuleCode) {
         if (TP.stringhelper.isNotEmpty(systemModuleCode))
-            return menuModuleService.findEnabledMenuModuleBySystemModuleCode(systemModuleCode);
+            return shiroMenuService.findMenuModulesByCurrentUserDefaultRole(systemModuleCode);
         else
             return menuModuleService.findEnabledListBean(IMenuModule.class);
     }

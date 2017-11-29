@@ -59,13 +59,13 @@ public class UserRealm extends AuthorizingRealm implements CacheConsts {
         String username = (String) token.getPrincipal();
         HttpServletRequest request = HttpUtils.getRequest();
         List<ISystemModule> systemModules = SpringUtils.getBean(UserService.class).findSystemModuleUserCanLogin(username);
-        if (systemModules != null) {//表示该用户有可登录的系统
+        if (systemModules != null) {
             if (systemModules.size() == 1)//表示该用户仅有一个可登录的系统，直接让他登录此系统首页，不显示系统选择界面
                 request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, systemModules.get(0).getIndexUrl());
             //其余的则表示该用户有多个可登录的系统，登陆成功之后显示系统选择界面
         } else {//表示该用户没有一个可以登录的系统，显示错误页面
             //TODO:转向错误提示页面（提示该用户没有一个系统可以让他登录）
-            request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, "这里将写上提示用户没有可登录的系统的页面");
+            request.getSession().setAttribute(ShiroConsts.BEGORE_LOGIN_SUCCESS_URL, "/error/404");
         }
 
         IUser user = shiroUserService.findByUserName(username);

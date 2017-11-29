@@ -72,4 +72,14 @@ public interface CommonConsts {
      * remark字段的router值
      */
     int REMARK_ROUTER = 1609934;
+
+    /**
+     * 默认列
+     */
+    int DEFAULT_ROUTER = Integer.MIN_VALUE;
+
+    /**
+     * 主键列
+     */
+    int PK_ROUTER = Integer.MIN_VALUE + 1;
 }

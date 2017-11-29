@@ -1,6 +1,7 @@
 package me.wuwenbin.items.oauth2.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import me.wuwenbin.items.oauth2.constant.ConfigConsts;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Wuwenbin on 2017/7/11.
  */
 @Configuration
-public class TemplateDaoConfig implements ConfigConsts {
+public class DataAccessConfig implements ConfigConsts {
+
+    @Bean
+    public DruidDataSource dataSource() {
+        return DruidDataSourceBuilder.create().build();
+    }
 
     @Bean
     public DataSourceX dataSourceX(DruidDataSource dataSource) {

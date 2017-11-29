@@ -72,16 +72,16 @@ public class ShiroRoleService extends SimpleBaseCrudService<IRole, Integer> {
      *
      * @return 当前用户的所有角色信息集合
      */
-    public Set<IRole> findCurrentUserRoles(String userId) {
+    public Set<IRole> findCurrentUserRoles(String userId, String systemCode) {
         String sql = "SELECT tor.* FROM T_OAUTH_ROLE tor WHERE tor.ID IN" +
                 " (SELECT tour.ROLE_ID FROM T_OAUTH_USER_ROLE tour WHERE tour.USER_ID = ?)" +
-                " AND tor.ENABLED = 1";
+                " AND tor.ENABLED = 1 AND tor.system_code = ? order by tor.id ";
         if (StringUtils.isEmpty(userId)) {
             IUser user = UserUtils.getLoginUser();
-            List<IRole> roles = mysql.findListBeanByArray(sql, IRole.class, user.getId());
+            List<IRole> roles = mysql.findListBeanByArray(sql, IRole.class, user.getId(), systemCode);
             return new HashSet<>(roles);
         } else {
-            List<IRole> roles = mysql.findListBeanByArray(sql, IRole.class, userId);
+            List<IRole> roles = mysql.findListBeanByArray(sql, IRole.class, userId, systemCode);
             return new HashSet<>(roles);
         }
     }

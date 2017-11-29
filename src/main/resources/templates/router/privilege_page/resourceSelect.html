@@ -6,13 +6,13 @@
                 <input class="layui-input" name="name" id="searchName" placeholder="资源名称"
                        style="height: 30px;line-height: 30px;">
             </div>
-            <button class="layui-btn layui-btn-small" id="searchNameBtn">搜索</button>
+            <button class="layui-btn layui-btn-xsl" id="searchNameBtn">搜索</button>
             <table id="select-resource-table" lay-filter="selectResource"></table>
         </div>
     </div>
 </div>
 <script type="text/html" id="bar">
-    <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="checkResource"><i class="layui-icon">&#xe618;</i>
+    <a class="layui-btn layui-btn-primary  layui-btn-xs" lay-event="checkResource"><i class="layui-icon">&#xe618;</i>
     </a>
 </script>
 <script src="/static/js/plugin/layui/v2/layui.all.js"></script>
@@ -32,10 +32,10 @@
             limit: 20,
             even: true,
             cols: [[
-                {field: 'id', width: 100, title: "ID", fixed: true, align: 'center', sort: true},
-                {field: 'name', width: 300, title: "资源名称", align: 'center', sort: true},
-                {field: 'url', width: 300, title: "资源url", align: 'center', sort: true},
-                {fixed: 'right', width: 98, title: "勾选操作", align: 'center', toolbar: '#bar'}
+                {field: 'id', title: "ID", fixed: true, align: 'center', sort: true},
+                {field: 'name', title: "资源名称", align: 'center', sort: true},
+                {field: 'url', title: "资源url", align: 'center', sort: true},
+                {fixed: 'right', title: "勾选操作", align: 'center', toolbar: '#bar'}
             ]]
         });
 

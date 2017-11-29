@@ -169,8 +169,8 @@ public class UserRestController extends BaseRestController {
     @RequestMapping("findCurrentUserRoles")
     @RequiresPermissions("base:user:findCurrentUserRoles")
     @AuthResource(name = "查找当前用户拥有的所有角色")
-    public Set<IRole> findCurrentUserRoles(String userId) {
-        return shiroRoleService.findCurrentUserRoles(userId);
+    public Set<IRole> findCurrentUserRoles(String userId, String systemCode) {
+        return shiroRoleService.findCurrentUserRoles(userId, systemCode);
     }
 
 

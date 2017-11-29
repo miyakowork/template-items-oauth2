@@ -35,9 +35,11 @@ public class ShiroConfig implements CacheConsts {
         userRealm.setCredentialsMatcher(credentialsMatcher);
         userRealm.setCachingEnabled(false);
         userRealm.setAuthenticationCachingEnabled(true);
-        userRealm.setAuthenticationCacheName(AUTH_CACHE);//认证缓存的key
+        //认证缓存的key
+        userRealm.setAuthenticationCacheName(AUTH_CACHE);
         userRealm.setAuthorizationCachingEnabled(true);
-        userRealm.setAuthorizationCacheName(PERMIT_CACHE);//权限缓存的key
+        //权限缓存的key
+        userRealm.setAuthorizationCacheName(PERMIT_CACHE);
         return userRealm;
     }
 
@@ -70,7 +72,8 @@ public class ShiroConfig implements CacheConsts {
     @Bean
     public CookieRememberMeManager rememberMeManager(SimpleCookie rememberMeCookie) {
         CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
-        rememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));//rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）
+        rememberMeManager.setCipherKey(Base64.decode("4AvVhmFLUs0KTA3Kprsdag=="));
         rememberMeManager.setCookie(rememberMeCookie);
         return rememberMeManager;
     }
@@ -84,7 +87,8 @@ public class ShiroConfig implements CacheConsts {
     @Bean
     public QuartzSessionValidationScheduler sessionValidationScheduler(DefaultWebSessionManager sessionManager) {
         QuartzSessionValidationScheduler sessionValidationScheduler = new QuartzSessionValidationScheduler();
-        sessionValidationScheduler.setSessionManager(sessionManager);//设置会话验证调度器进行会话验证时的会话管理器
+        //设置会话验证调度器进行会话验证时的会话管理器
+        sessionValidationScheduler.setSessionManager(sessionManager);
         return sessionValidationScheduler;
     }
 
@@ -99,9 +103,11 @@ public class ShiroConfig implements CacheConsts {
     @Bean
     public DefaultWebSessionManager sessionManager(SimpleCookie sessionIdCookie, MySQLSessionDao sessionDao) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setGlobalSessionTimeout(30 * 60 * 1000);//session有效空闲时间30分钟默认
-        sessionManager.setDeleteInvalidSessions(true);//删除失效的会话
-        sessionManager.setSessionDAO(sessionDao);//sessionDAO
+        //session有效空闲时间30分钟默认
+        sessionManager.setGlobalSessionTimeout(30 * 60 * 1000);
+        //删除失效的会话
+        sessionManager.setDeleteInvalidSessions(true);
+        sessionManager.setSessionDAO(sessionDao);
         sessionManager.setSessionIdCookie(sessionIdCookie);
         sessionManager.setSessionIdCookieEnabled(true);
         return sessionManager;

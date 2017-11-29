@@ -29,7 +29,7 @@ $(function () {
             },
             changeRole: function () {
                 var that = this;
-                $.post("/oauth2/user/api/findCurrentUserRoles", function (roles) {
+                $.post("/oauth2/user/api/findCurrentUserRoles?systemCode=" + that.systemCode, function (roles) {
                     var html = '<div class="layui-container" style="width: 100%;padding: 15px;">';
                     for (var i = 0; i < roles.length; i++) {
                         var style;
@@ -44,7 +44,7 @@ $(function () {
                         if (Number(that.currentRoleId) === roles[i].id) {
                             current = 'layui-btn-disabled';
                         }
-                        html += '<button onclick="exchangeRole(this,' + roleId + ');" class="layui-btn layui-btn-small margin-bottom-10 ' + current + '" style="' + style + '">' + text + '</button>';
+                        html += '<button onclick="exchangeRole(this,' + roleId + ');" class="layui-btn layui-btn-sm margin-bottom-10 ' + current + '" style="' + style + '">' + text + '</button>';
                     }
                     html += '</div>';
                     layer.open({
@@ -216,6 +216,6 @@ function switchMenuModuleTips() {
  */
 function exchangeRole(elem, roleId) {
     if (!$(elem).hasClass("layui-btn-disabled")) {
-        alert(roleId)
+        window.location.href = "/?roleId=" + roleId;
     }
 }

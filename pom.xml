@@ -94,16 +94,21 @@
             <version>1.9.22</version>
         </dependency>
 
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>3.1</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>cglib</groupId>-->
+        <!--<artifactId>cglib</artifactId>-->
+        <!--<version>3.1</version>-->
+        <!--</dependency>-->
 
+        <!--<dependency>-->
+        <!--<groupId>com.alibaba</groupId>-->
+        <!--<artifactId>druid</artifactId>-->
+        <!--<version>1.0.18</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.0.18</version>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.5</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -132,17 +137,26 @@
             <version>2.7.3.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>me.wuwenbin</groupId>
-            <artifactId>template-utils-json</artifactId>
-            <version>1.2.1.RELEASE</version>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-json</artifactId>
+            <version>3.9.1</version>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>me.wuwenbin</groupId>-->
+        <!--<artifactId>template-utils-json</artifactId>-->
+        <!--<version>1.2.1.RELEASE</version>-->
+        <!--</dependency>-->
 
-
-        <dependency>
-            <groupId>me.wuwenbin</groupId>
-            <artifactId>template-modules-repodata</artifactId>
-            <version>1.1.0.RELEASE</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>javax</groupId>-->
+        <!--<artifactId>javaee-api</artifactId>-->
+        <!--<version>6.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>me.wuwenbin</groupId>-->
+        <!--<artifactId>template-modules-repodata</artifactId>-->
+        <!--<version>1.1.0.RELEASE</version>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

@@ -1,10 +1,10 @@
 package me.wuwenbin.items.oauth2.config.support.filter;
 
+import jodd.json.JsonSerializer;
 import me.wuwenbin.items.oauth2.config.support.utils.FilterUtils;
 import me.wuwenbin.items.oauth2.constant.CommonConsts;
 import me.wuwenbin.items.oauth2.constant.ShiroConsts;
 import me.wuwenbin.items.oauth2.util.HttpUtils;
-import me.wuwenbin.json.JoddJsonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -58,7 +58,7 @@ public class MyFormAuthenticationFilter extends FormAuthenticationFilter impleme
         } else {
             httpServletResponse.setCharacterEncoding("UTF-8");
             PrintWriter out = httpServletResponse.getWriter();
-            String json = JoddJsonUtils.serializer().include("code", "message", "data").serialize(R.ok("登录成功", uri));
+            String json = new JsonSerializer().include("code", "message", "data").serialize(R.ok("登录成功", uri));
             out.println(json);
             out.flush();
             out.close();

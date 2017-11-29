@@ -60,4 +60,9 @@ public class IndexController extends BaseController {
     public String dashboard() {
         return "router/dashboard";
     }
+
+    @RequestMapping("oauth2/systems")
+    public String systems() {
+        return "systems";
+    }
 }

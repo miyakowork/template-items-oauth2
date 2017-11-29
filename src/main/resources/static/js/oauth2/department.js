@@ -1,6 +1,6 @@
 var department;
 var tableColumns = [
-    {checkbox: true},
+    {checkbox: true, field: "itemChecks"},
     {field: "id", width: 150, title: "ID", align: "center", visible: false},
     {
         field: "name",
@@ -133,16 +133,17 @@ var page_function = function () {
                 },
                 edit: function () {
                     department.$vuerify.clear();
-                    var editDepartments = department.$table.bootstrapTable('getSelections');
-                    if (editDepartments.length !== 1) {
+                    var editDept = department.$table.bootstrapTable('getSelections');
+                    if (editDept.length !== 1) {
                         Global.show_error_message("错误选择提示", "请选择一个部门来予以修改")
                     } else {
-                        department.model.id = editDepartments[0].id;
-                        department.model.name = editDepartments[0].name;
-                        department.model.parentId = editDepartments[0].parentId;
-                        department.model.enabled = editDepartments[0].enabled;
-                        department.model.orderIndex = editDepartments[0].orderIndex;
-                        department.model.remark = editDepartments[0].remark;
+                        department.model.id = editDept[0].id;
+                        department.model.name = editDept[0].name;
+                        department.model.parentId = editDept[0].parentId;
+                        department.model.parentName = editDept[0].parentId === 0 ? "部门根节点" : editDept[0].parentName;
+                        department.model.enabled = editDept[0].enabled;
+                        department.model.orderIndex = editDept[0].orderIndex;
+                        department.model.remark = editDept[0].remark;
                         $("#editDepartment").dialog("open");
                     }
                 },
@@ -164,20 +165,12 @@ var page_function = function () {
             handleAddSubmit: function () {
                 this.$vuerify.clear()//清空之前的验证结果信息
                 var check_result = this.$vuerify.check()// 手动触发校验所有数据
-                var $errs = this.$vuerify.$errors
-
-                app.error.nameError = Boolean($errs.name)
-                app.error.orderError = Boolean($errs.orderIndex)
-                app.error.enabledError = Boolean($errs.enabled)
-                app.error.nameErrorMsg = $errs.name
-                app.error.orderErrorMsg = $errs.orderIndex
-                app.error.enabledErrorMsg = $errs.enabled
 
                 if (!check_result) {
                     Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
                     var params = new URLSearchParams();
-                    var departments = app.OauthDepartment
+                    var departments = department.model;
                     for (var data in departments) {
                         params.append(data, departments[data])
                     }
@@ -201,21 +194,12 @@ var page_function = function () {
 
             //编辑界面提交操作
             handleEditSubmit: function () {
-                this.$vuerify.clear()//清空之前的验证结果信息
-                var check_result = this.$vuerify.check()// 手动触发校验所有数据
-                var $errs = this.$vuerify.$errors
-
-                app.error.nameError = Boolean($errs.name)
-                app.error.orderError = Boolean($errs.orderIndex)
-                app.error.enabledError = Boolean($errs.enabled)
-                app.error.nameErrorMsg = $errs.name
-                app.error.orderErrorMsg = $errs.orderIndex
-                app.error.enabledErrorMsg = $errs.enabled
+                this.$vuerify.clear();//清空之前的验证结果信息
+                var check_result = this.$vuerify.check();// 手动触发校验所有数据
 
                 if (!check_result) {
                     Global.show_error_message("错误消息提示", "请修正表单错误信息之后再提交", 3000)
                 } else {
-                    department.model.parentId = $("#pIdByTree").val()
                     var params = new URLSearchParams();
                     params.append("id", department.model.id);
                     params.append("name", department.model.name);
@@ -228,22 +212,13 @@ var page_function = function () {
                             if (response.data.code === Global.status_code.success) {
                                 layer.msg(response.data.message);
                                 $("#editDepartment").dialog("close");
-
-                                department.model.id = "";
-                                department.model.name = "";
-                                department.model.parentId = "";
-                                department.model.orderIndex = 0;
-                                department.model.remark = "";
+                                Global.resetObject(department.model, {bool: true});
                                 loadDepartmentTree();
                                 department.$table.bootstrapTable("refresh");
-
                             } else {
                                 Global.show_error_msg(response.data.message)
                             }
                         })
-                        .catch(function (error) {
-                            Global.handleAxiosError(error);
-                        });
                 }
             },
 
@@ -274,6 +249,7 @@ var page_function = function () {
                         };
                     },
                     filterControl: true,
+                    // checkboxHeader:true,
                     columns: tableColumns
                 })
             },
@@ -383,7 +359,7 @@ pageSetUp();
 
 //格式化上级部门显示方式
 function parentNameFormatter(val) {
-    return val === null || val === "-" ? "根节点" : val;
+    return val === null || val === "-" ? "部门根节点" : val;
 }
 
 //获取左侧的部门树上选中的部门，当做要添加部门的父id

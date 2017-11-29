@@ -338,7 +338,7 @@ var Global = {
 
     /**
      * 处理axios的error返回
-     * @param response
+     * @param error
      */
     handleAxiosError: function (error) {
         if (error.response)
@@ -505,10 +505,22 @@ window.__customControls___ = true;
 
 //全局设置axios请求头
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
+//全局拦截axios的异常
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (err) {
+    if (err && err.response) {
+        Global.show_error_msg(err.response.data.message);
+    } else if (err.request) {
+        Global.show_error_msg(err.request);
+    } else {
+        Global.show_error_msg(err.message);
+    }
+    return Promise.reject(err);
+});
 
 //全局ajax拦截处理
-var $doc = $(document);
-$doc.ajaxSuccess(function (event, xhr, options) {
+$(document).ajaxSuccess(function (event, xhr, options) {
     var respTxt = String(xhr.responseText);
     var data = {};
     try {
@@ -532,7 +544,8 @@ $doc.ajaxSuccess(function (event, xhr, options) {
         }
     }
 });
-$doc.ajaxError(function (event, xhr, options, exc) {
+
+$(document).ajaxError(function (event, xhr, options, exc) {
     if (xhr.responseJSON !== undefined && xhr.responseJSON) {
         var resp = xhr.responseJSON;
         var status = resp.data.status;

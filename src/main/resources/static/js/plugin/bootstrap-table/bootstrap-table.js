@@ -1684,7 +1684,7 @@
                 title_ = '',
                 column = that.columns[j];
 
-            if (that.fromHtml && typeof value_ === 'undefined') {
+            if (that.fromHtml && typeof value_ === 'undefined' && !column.checkbox) {
                 return;
             }
 

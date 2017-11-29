@@ -159,7 +159,7 @@ var formItem = {
     '           <label class="col-md-3 control-label" v-text="label"></label>' +
     '           <div class="col-md-9">' +
     '               <label class="radio radio-inline"><slot name="check"></slot><span>是</span></label>' +
-    '                   <label class="radio radio-inline"><slot name="nocheck"></slot><span>否</span></label>' +
+    '               <label class="radio radio-inline"><slot name="nocheck"></slot><span>否</span></label>' +
     '               <div class="note-error margin-bottom-0" :class="hasErrorMsg" v-text="message"></div>' +
     '           </div>' +
     '       </div>' +
@@ -322,7 +322,10 @@ Vue.component('form-fetch', {
         readonly: {
             default: false
         },
-        value: Object,
+        value: {
+            type: [String, Number],
+            default: ''
+        },
         message: {
             type: String,
             default: ''

@@ -1,8 +1,11 @@
 package me.wuwenbin.items.oauth2.service;
 
+import me.wuwenbin.items.oauth2.constant.CacheConsts;
 import me.wuwenbin.items.oauth2.entity.IMenu;
 import me.wuwenbin.items.oauth2.service.base.SimpleBaseCrudService;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ZTreeBO;
+import me.wuwenbin.items.oauth2.util.CacheUtils;
+import me.wuwenbin.items.oauth2.util.UserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +51,12 @@ public class MenuService extends SimpleBaseCrudService<IMenu, Integer> {
      * @return
      * @throws Exception
      */
-    public boolean editMenu(IMenu menu) throws Exception {
+    public synchronized boolean editMenu(IMenu menu) throws Exception {
+        String roleId = String.valueOf(UserUtils.getLoginUser().getDefaultRoleId());
+        IMenu oldMenu = mysql.findBeanByArray("select * from t_oauth_menu where id = ?", IMenu.class, menu.getId());
+        String menuModuleId = String.valueOf(oldMenu.getMenuModuleId());
+        String key = oldMenu.getSystemCode().concat(":").concat(roleId).concat(":").concat(menuModuleId);
+        CacheUtils.remove(CacheConsts.MENU_CACHE, key);
         String sql = "UPDATE t_oauth_menu " +
                 "SET name = :name , icon = :icon , icon_larger = :iconLarger , order_index = :orderIndex , enabled = :enabled , remark = :remark " +
                 "WHERE id = :id";
@@ -62,7 +70,12 @@ public class MenuService extends SimpleBaseCrudService<IMenu, Integer> {
      * @return
      * @throws Exception
      */
-    public boolean deleteMenu(String id) throws Exception {
+    public synchronized boolean deleteMenu(String id) throws Exception {
+        String roleId = String.valueOf(UserUtils.getLoginUser().getDefaultRoleId());
+        IMenu menu = mysql.findBeanByArray("select * from t_oauth_menu where id = ?", IMenu.class, id);
+        String menuModuleId = String.valueOf(menu.getMenuModuleId());
+        String key = menu.getSystemCode().concat(":").concat(roleId).concat(":").concat(menuModuleId);
+        CacheUtils.remove(CacheConsts.MENU_CACHE, key);
         String sql = "DELETE FROM t_oauth_menu WHERE id = ? OR parent_id = ?";
         return mysql.executeArray(sql, id, id) > 0;
     }

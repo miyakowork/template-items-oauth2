@@ -3,7 +3,10 @@ package me.wuwenbin.items.oauth2;
 import me.wuwenbin.items.oauth2.config.support.password.PasswordHelper;
 import me.wuwenbin.items.oauth2.constant.CommonConsts;
 import me.wuwenbin.items.oauth2.constant.ServiceConsts;
-import me.wuwenbin.items.oauth2.entity.*;
+import me.wuwenbin.items.oauth2.entity.IMenuModule;
+import me.wuwenbin.items.oauth2.entity.IResource;
+import me.wuwenbin.items.oauth2.entity.IResourceModule;
+import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.ResourceService;
 import me.wuwenbin.items.oauth2.service.base.AbstractBaseCrudService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroUserService;
@@ -52,9 +55,11 @@ public class Oauth2ApplicationTests extends AbstractBaseCrudService {
     }
 
     @Test
-    public void contextLoads() {
-        String sql = SQLFactory.builder(IMenu.class).insertAllWithPk();
-        System.out.println(sql);
+    public void contextLoads() throws Exception {
+//        String sql = SQLFactory.builder(IMenu.class).insertAllWithPk();
+//        System.out.println(sql);
+        IUser u = shiroUserService.findByUserName("wuwenbin");
+        shiroUserService.changePasswordByUser(u, "123456");
     }
 
     //更新测试

@@ -1,11 +1,13 @@
 package me.wuwenbin.items.oauth2.page.menu;
 
+import me.wuwenbin.items.oauth2.constant.CacheConsts;
 import me.wuwenbin.items.oauth2.entity.IMenu;
 import me.wuwenbin.items.oauth2.service.MenuService;
 import me.wuwenbin.items.oauth2.service.shiro.ShiroMenuService;
 import me.wuwenbin.items.oauth2.support.BaseRestController;
 import me.wuwenbin.items.oauth2.support.annotation.AuthResource;
 import me.wuwenbin.items.oauth2.support.pojo.bo.ZTreeBO;
+import me.wuwenbin.items.oauth2.util.CacheUtils;
 import me.wuwenbin.items.oauth2.util.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,10 @@ public class MenuRestController extends BaseRestController {
     @RequiresPermissions("base:menu:add")
     @AuthResource(name = "添加菜单操作")
     public R add(IMenu menu) {
+        String roleId = String.valueOf(UserUtils.getLoginUser().getDefaultRoleId());
+        String menuModuleId = String.valueOf(menu.getMenuModuleId());
+        String key = menu.getSystemCode().concat(":").concat(roleId).concat(":").concat(menuModuleId);
+        CacheUtils.get(CacheConsts.MENU_CACHE, key);
         return ajaxDoneAdd("菜单", menuService, menu, IMenu.class);
     }
 

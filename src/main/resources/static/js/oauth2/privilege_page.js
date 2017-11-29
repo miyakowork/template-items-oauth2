@@ -102,12 +102,6 @@ var page_function = function () {
                                 Global.show_error_msg(response.data.message)
                             }
                         })
-                        .catch(function (error) {
-                            if (error.response)
-                                Global.show_error_msg(error.response.data.message)
-                            else
-                                Global.show_error_msg(error)
-                        });
                 }
 
             },
@@ -150,12 +144,6 @@ var page_function = function () {
                                 Global.show_error_msg(response.data.message)
                             }
                         })
-                        .catch(function (error) {
-                            if (error.response)
-                                Global.show_error_msg(error.response.data.message)
-                            else
-                                Global.show_error_msg(error)
-                        });
                 }
             },
 

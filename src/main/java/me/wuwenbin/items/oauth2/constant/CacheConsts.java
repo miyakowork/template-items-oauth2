@@ -19,7 +19,7 @@ public interface CacheConsts {
     /**
      * 菜单缓存
      */
-    String TEMPLATE_CACHE = "templateCache";
+    String MENU_CACHE = "templateCache";
 
     /**
      * 认证缓存

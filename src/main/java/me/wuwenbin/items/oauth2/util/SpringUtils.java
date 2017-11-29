@@ -10,11 +10,14 @@ import org.springframework.stereotype.Component;
  * SpringBean工具
  * Created By cc
  */
+@SuppressWarnings("unchecked")
 @Component
 public final class SpringUtils implements BeanFactoryPostProcessor {
 
-    private static ConfigurableListableBeanFactory beanFactory; // Spring应用上下文环境
+    // Spring应用上下文环境
+    private static ConfigurableListableBeanFactory beanFactory;
 
+    @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         SpringUtils.beanFactory = beanFactory;
     }
@@ -38,8 +41,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
      * @throws BeansException
      */
     public static <T> T getBean(Class<T> clz) throws BeansException {
-        T result = beanFactory.getBean(clz);
-        return result;
+        return beanFactory.getBean(clz);
     }
 
     /**
