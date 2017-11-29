@@ -26,7 +26,28 @@
 ## 系统正在进一步完善中
 + 2017年8月28日：目前已完成第一版本开发，可以作为可以使用的版本，后续将继续完善跟进，文档也将一并放出
 
-## 系统预览图
+## 系统部分预览图
 + dashboard首页
 ![dashboard首页](https://github.com/miyakowork/template-items-oauth2/blob/master/images/dashboard.png)
-
++ 部门管理
+![部门管理](https://github.com/miyakowork/template-items-oauth2/blob/master/images/department.png)
++ 登录页面
+![登录页面](https://github.com/miyakowork/template-items-oauth2/blob/master/images/login.png)
++ 注销页面
+![注销页面](https://github.com/miyakowork/template-items-oauth2/blob/master/images/logout.png)
++ 多主题选择
+![多主题选择](https://github.com/miyakowork/template-items-oauth2/blob/master/images/multiTheme.png)
++ 权限资源管理
+![权限资源](https://github.com/miyakowork/template-items-oauth2/blob/master/images/privilegeResource.png)
++ 权限资源管理2
+![权限资源2](https://github.com/miyakowork/template-items-oauth2/blob/master/images/privilegeResource2.png)
++ 资源编辑
+![资源编辑](https://github.com/miyakowork/template-items-oauth2/blob/master/images/resEdit.png)
++ 角色权限管理
+![角色权限管理](https://github.com/miyakowork/template-items-oauth2/blob/master/images/rolePrivilege.png)
++ 会话管理
+![会话管理](https://github.com/miyakowork/template-items-oauth2/blob/master/images/session.png)
++ 登录统计页面
+![登录统计](https://github.com/miyakowork/template-items-oauth2/blob/master/images/sumlogin.png)
++ 用户菜单管理
+![用户菜单](https://github.com/miyakowork/template-items-oauth2/blob/master/images/usermenu.png)
