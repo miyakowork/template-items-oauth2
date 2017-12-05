@@ -88,7 +88,7 @@ var page_function = function () {
                 systemCode: '',
                 systemModuleName: '',
                 icon: '',
-                iconLarge: '',
+                iconLarger: '',
                 href: '',
                 onclick: '',
                 target: '',
@@ -190,7 +190,7 @@ var page_function = function () {
                     params.append("id", app.menu.id);
                     params.append("name", app.menu.name);
                     params.append("icon", app.menu.icon);
-                    params.append("iconLarger", app.menu.iconLarge);
+                    params.append("iconLarger", app.menu.iconLarger);
                     params.append("orderIndex", app.menu.orderIndex);
                     params.append("enabled", app.menu.enabled);
                     params.append("remark", app.menu.remark);
@@ -204,12 +204,6 @@ var page_function = function () {
                                 Global.show_error_msg(response.data.message)
                             }
                         })
-                        .catch(function (error) {
-                            if (error.response)
-                                Global.show_error_msg(error.response.data.message)
-                            else
-                                Global.show_error_msg(error)
-                        });
                 } else {
                     Global.show_error_msg("请修改错误之后在提交");
                 }
@@ -359,7 +353,10 @@ var page_function = function () {
             app.menu.id = selectedMenu[0].id;
             app.menu.icon = selectedMenu[0].icon;
             app.menu.name = selectedMenu[0].name;
-            app.menu.iconLarge = selectedMenu[0].iconLarger;
+            app.menu.parentId = selectedMenu[0].parentId;
+            app.menu.menuModule.selected = selectedMenu[0].menuModuleId;
+            app.menu.roleId = selectedMenu[0].roleId;
+            app.menu.iconLarger = selectedMenu[0].iconLarger;
             app.menu.enabled = selectedMenu[0].enabled;
             app.menu.remark = selectedMenu[0].remark;
             app.menu.orderIndex = selectedMenu[0].orderIndex;

@@ -61,7 +61,7 @@ public class MenuRestController extends BaseRestController {
         String roleId = String.valueOf(UserUtils.getLoginUser().getDefaultRoleId());
         String menuModuleId = String.valueOf(menu.getMenuModuleId());
         String key = menu.getSystemCode().concat(":").concat(roleId).concat(":").concat(menuModuleId);
-        CacheUtils.get(CacheConsts.MENU_CACHE, key);
+        CacheUtils.remove(CacheConsts.MENU_CACHE, key);
         return ajaxDoneAdd("菜单", menuService, menu, IMenu.class);
     }
 
