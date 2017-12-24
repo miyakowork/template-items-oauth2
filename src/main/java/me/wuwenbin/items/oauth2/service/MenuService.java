@@ -58,7 +58,7 @@ public class MenuService extends SimpleBaseCrudService<IMenu, Integer> {
         String key = oldMenu.getSystemCode().concat(":").concat(roleId).concat(":").concat(menuModuleId);
         CacheUtils.remove(CacheConsts.MENU_CACHE, key);
         String sql = "UPDATE t_oauth_menu " +
-                "SET name = :name , icon = :icon , icon_larger = :iconLarger , order_index = :orderIndex , enabled = :enabled , remark = :remark " +
+                "SET parent_id = :parentId, name = :name , icon = :icon , icon_larger = :iconLarger , order_index = :orderIndex , enabled = :enabled , remark = :remark " +
                 "WHERE id = :id";
         return mysql.executeBean(sql, menu) == 1;
     }

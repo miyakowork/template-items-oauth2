@@ -249,7 +249,7 @@ var page_function = function () {
                         };
                     },
                     filterControl: true,
-                    // checkboxHeader:true,
+                    checkboxHeader: true,
                     columns: tableColumns
                 })
             },

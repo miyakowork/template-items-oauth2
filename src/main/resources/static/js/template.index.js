@@ -62,6 +62,12 @@ $(function () {
                 $.getJSON("/oauth2/user/api/info", function (userInfo) {
                     if (userInfo !== null) {
                         that.user = userInfo;
+                        $.getJSON('/oauth2/getPermissionsByRoleId?roleId=' + that.user.defaultRoleId, function (permissionMarks) {
+                            window.permissions = permissionMarks;
+                        });
+                        $.getJSON('/oauth2/getRoleNamesByUserId?userId=' + that.user.id, function (rNames) {
+                            window.roleNames = rNames;
+                        });
                         $.getJSON('/oauth2/menuModule/api/find/enables?systemModuleCode=' + that.systemCode, function (menuModules) {
                             that.menuModuleList = menuModules;
                             new Vue({
@@ -82,6 +88,7 @@ $(function () {
                                 menuModuleId: that.defaultMenuModuleId
                             }, function (leftMenus) {
                                 that.menuList = toTree(leftMenus, 0);
+                                location.href = "/#/";
                             })
                         })
                     }
@@ -218,4 +225,54 @@ function exchangeRole(elem, roleId) {
     if (!$(elem).hasClass("layui-btn-disabled")) {
         window.location.href = "/?roleId=" + roleId;
     }
+}
+
+/**
+ * 是否含有此权限
+ * @param permission
+ * @returns {boolean}
+ */
+function hasPermission(permission) {
+    return window.permissions.indexOf(permission) > -1;
+}
+
+/**
+ *判断是否有其中之一的权限
+ * @param permissions 逗号隔开
+ */
+function hasAnyPermission(permissions) {
+    var r = false;
+    var p = permissions.split(",");
+    for (var i = 0; i < p.length; i++) {
+        var obj = p[i];
+        if (window.permissions.indexOf(obj) > -1) {
+            return true;
+        }
+    }
+    return r;
+}
+
+/**
+ * 是否含有此角色
+ * @param rName
+ * @returns {boolean}
+ */
+function hasRole(rName) {
+    return window.roleNames.indexOf(rName) > -1;
+}
+
+/**
+ *判断是否有其中之一的角色
+ * @param rNames 逗号隔开
+ */
+function hasAnyRole(rNames) {
+    var r = false;
+    var p = rNames.split(",");
+    for (var i = 0; i < p.length; i++) {
+        var obj = p[i];
+        if (window.roleNames.indexOf(obj) > -1) {
+            return true;
+        }
+    }
+    return r;
 }

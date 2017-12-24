@@ -1,6 +1,5 @@
 package me.wuwenbin.items.oauth2.page;
 
-import me.wuwenbin.items.oauth2.config.support.realm.UserRealm;
 import me.wuwenbin.items.oauth2.entity.IUser;
 import me.wuwenbin.items.oauth2.service.UserService;
 import me.wuwenbin.items.oauth2.support.BaseController;
@@ -21,12 +20,10 @@ public class IndexController extends BaseController {
     private static final String TO_ROLE_ID = "roleId";
 
     private UserService userService;
-    private UserRealm userRealm;
 
     @Autowired
-    public void setUserRealm(UserService userService, UserRealm userRealm) {
+    public void setUserRealm(UserService userService) {
         this.userService = userService;
-        this.userRealm = userRealm;
     }
 
     /**
@@ -40,7 +37,6 @@ public class IndexController extends BaseController {
         if (!StringUtils.isEmpty(getRequest().getParameter(TO_ROLE_ID))) {
             int toRoleId = getParameter(Integer.class, TO_ROLE_ID);
             IUser user = UserUtils.getLoginUser();
-            //TODO:获取修改之前的默认角色id，然后清除该角色id的当前系统的菜单缓存
             try {
                 userService.setDefaultRoleId(user.getId(), toRoleId);
             } catch (Exception ignore) {

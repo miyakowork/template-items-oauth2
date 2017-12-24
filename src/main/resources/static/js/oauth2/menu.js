@@ -194,6 +194,7 @@ var page_function = function () {
                     params.append("orderIndex", app.menu.orderIndex);
                     params.append("enabled", app.menu.enabled);
                     params.append("remark", app.menu.remark);
+                    params.append("parentId", app.menu.parentId);
                     axios.post('/oauth2/menu/api/edit', params)
                         .then(function (response) {
                             if (response.data.code === Global.status_code.success) {
@@ -330,21 +331,6 @@ var page_function = function () {
 
     //监听编辑按钮点击事件
     $("#edit-menu").click(function () {
-        //获取菜单模块下拉框内容
-        axios.post('/oauth2/menuModule/api/find/enables?systemModuleCode=' + app.menu.systemCode, {})
-            .then(function (response) {
-                if (response.data.length > 0) {
-                    app.menu.menuModule = response.data;
-                    var $selectMenuModule = app.menu.menuModule;
-                    app.menu.menuModule.selected = $selectMenuModule[0].id;//默认给下拉菜单选中第一个
-                    var $menuSelector = $('#menu-selector-edit');
-                    $menuSelector.html("");
-                    for (var i = 0; i < $selectMenuModule.length; i++) {
-                        $menuSelector.append("<option value=" + $selectMenuModule[i].id + ">" + $selectMenuModule[i].name + "</option>");
-                    }
-                }
-            });
-
         app.$vuerify.clear();
         var selectedMenu = $table.bootstrapTable("getSelections");
         if (selectedMenu.length === 0) {
